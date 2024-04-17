@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore: ^4.16.1
   flutter_screenutil: ^5.9.0
   envied: ^0.5.4+1
+  build_runner: ^2.4.9
 
 dev_dependencies:
   flutter_test:
