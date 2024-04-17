@@ -4,7 +4,6 @@ part 'env.g.dart';
 
 @Envied(path: 'lib/env/.env', useConstantCase: true)
 abstract class Env {
-
   // SAMPLE_ACCOUNT_INFO
   // @EnviedField()
   // static const String sampleAccountUserid = _Env.sampleAccountUserid;
