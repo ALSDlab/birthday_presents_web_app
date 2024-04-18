@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myk_market_app/view/page/product_page/product_page.dart';
 
 import 'main_page.dart';
 
@@ -22,7 +23,7 @@ class _NavigationState extends State<Navigation> {
         controller: pageViewController,
         children: const [
           MainPage(),
-          // ProductPage(),
+          ProductPage(),
           // ShoppingCartPage(),
           // ProfilePage(),
         ],
