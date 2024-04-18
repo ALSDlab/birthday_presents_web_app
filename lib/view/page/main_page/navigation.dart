@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myk_market_app/view/page/register_page/agreement_page.dart';
 
 import 'main_page.dart';
 
@@ -22,7 +21,7 @@ class _NavigationState extends State<Navigation> {
       body: PageView(
         controller: pageViewController,
         children: const [
-          AgreementPage(),
+          MainPage(),
           // ProductPage(),
           // ShoppingCartPage(),
           // ProfilePage(),
