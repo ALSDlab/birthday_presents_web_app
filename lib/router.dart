@@ -4,8 +4,15 @@ import 'package:myk_market_app/view/page/main_page/navigation.dart';
 final router = GoRouter(initialLocation: '/main_page', routes: [
   // 회사소개 메인페이지
   GoRoute(
-      path: '/main_page',
-      builder: (context, state) => Navigation(selectedIndex: 0,
-      ),),
-
+    path: '/main_page',
+    builder: (context, state) => Navigation(
+      selectedIndex: 0,
+    ),
+  ),
+  GoRoute(
+    path: '/signup_page',
+    builder: (context, state) => Navigation(
+      selectedIndex: 3,
+    ),
+  ),
 ]);
