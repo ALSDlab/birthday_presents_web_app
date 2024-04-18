@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:myk_market_app/view/page/signup_page/post_searching_page.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 
 class SignupPage extends StatefulWidget {
@@ -18,6 +18,8 @@ class _SignupPageState extends State<SignupPage> {
   var phoneController = TextEditingController();
   var addressController = TextEditingController();
 
+  DataModel? _daumPostcodeSearchDataModel;
+
   @override
   void dispose() {
     idController.dispose();
@@ -31,6 +33,19 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    TableRow buildTableRow(String label, String value) {
+      return TableRow(
+        children: [
+          TableCell(
+            verticalAlignment: TableCellVerticalAlignment.middle,
+            child: Text(label, textAlign: TextAlign.center),
+          ),
+          TableCell(
+            child: Text(value, textAlign: TextAlign.center),
+          ),
+        ],
+      );
+    }
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -71,6 +86,102 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      try {
+                        DataModel model = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const PostSearchingPage(),
+                          ),
+                        );
+
+                        setState(
+                              () {
+                            _daumPostcodeSearchDataModel = model;
+                          },
+                        );
+                      } catch (error) {
+                        print(error);
+                      }
+                    },
+                    icon: const Icon(Icons.search),
+                    label: const Text("주소 검색"),
+                  ),
+                  Visibility(
+                    visible: _daumPostcodeSearchDataModel != null,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: RichText(
+                                text: TextSpan(
+                                  style:
+                                  const TextStyle(color: Colors.black, fontSize: 20),
+                                  children: [
+                                    WidgetSpan(
+                                      child: Icon(
+                                        Icons.check_circle,
+                                        color:
+                                        Theme.of(context).colorScheme.secondary,
+                                      ),
+                                    ),
+                                    const TextSpan(text: "주소 검색 결과"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Table(
+                              border: TableBorder.symmetric(
+                                  inside: const BorderSide(color: Colors.grey)),
+                              columnWidths: const {
+                                0: FlexColumnWidth(1),
+                                1: FlexColumnWidth(2),
+                              },
+                              children: [
+                                buildTableRow(
+                                  "한글주소",
+                                  _daumPostcodeSearchDataModel?.address ?? "",
+                                ),
+                                buildTableRow(
+                                  "영문주소",
+                                  _daumPostcodeSearchDataModel?.addressEnglish ??
+                                      "",
+                                ),
+                                buildTableRow(
+                                  "우편번호",
+                                  _daumPostcodeSearchDataModel?.zonecode ?? "",
+                                ),
+                                buildTableRow(
+                                  "지번주소",
+                                  _daumPostcodeSearchDataModel?.autoJibunAddress ??
+                                      "",
+                                ),
+                                buildTableRow(
+                                  "지번주소(영문)",
+                                  _daumPostcodeSearchDataModel
+                                      ?.autoJibunAddressEnglish ??
+                                      "",
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
           ],
         ),
       ),

@@ -234,7 +234,7 @@ class _AgreementPageState extends State<AgreementPage> {
                         });
                       }
                       else {
-                        //TODO : 개인정보입력 화면으로 넘어가기
+                        //TODO : 약관동의여부 서버로 전송, 개인정보입력 화면으로 넘어가기
                       }
                     },
                     style: ButtonStyle(
