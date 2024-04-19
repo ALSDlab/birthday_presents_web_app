@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/view/page/product_page/product_image_widget.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -11,6 +11,15 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  @override
+  void initState() {
+    Future.microtask(() {
+      final ProductViewModel viewModel = context.read<ProductViewModel>();
+      viewModel.getProducts();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = ProductViewModel();
@@ -49,6 +58,7 @@ class _ProductPageState extends State<ProductPage> {
             Divider(),
             Text('상품 목록'),
             Divider(),
+            Text( '${state.products.length}'),
             Expanded(
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -58,7 +68,10 @@ class _ProductPageState extends State<ProductPage> {
                 ),
                 itemCount: state.products.length,
                 itemBuilder: (context, index) {
-                  return ProductImageWidget(product: state.products[index],);
+                  print(state.products.length);
+                  return ProductImageWidget(
+                    product: state.products[index],
+                  );
                 },
               ),
             ),

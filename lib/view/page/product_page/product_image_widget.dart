@@ -13,11 +13,11 @@ class ProductImageWidget extends StatelessWidget {
     return Column(
       children: [
         ClipRRect(
+          borderRadius: BorderRadius.circular(10),
           child: Image.network(
             product.representativeImage,
             fit: BoxFit.cover,
           ),
-          borderRadius: BorderRadius.circular(10),
         ),
         Text(product.title),
         Text(product.price as String)

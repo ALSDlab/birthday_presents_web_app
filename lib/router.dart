@@ -13,10 +13,7 @@ final router = GoRouter(initialLocation: '/main_page', routes: [
   ),
   GoRoute(
       path: '/product_page',
-      builder: (context, state) => ChangeNotifierProvider(
-            create: (_) => ProductViewModel(),
-            child: Navigation(
-              selectedIndex: 1,
-            ),
-          )),
+      builder: (context, state) => Navigation(
+        selectedIndex: 1,
+      ),),
 ]);

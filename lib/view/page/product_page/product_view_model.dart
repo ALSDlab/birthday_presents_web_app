@@ -11,6 +11,8 @@ class ProductViewModel extends ChangeNotifier {
 
   void getProducts() async {
     _state = state.copyWith(products: await repository.getFirebaseProduct());
+    // return await repository.getFirebaseProduct();
     notifyListeners();
+    print(state.products);
   }
 }
