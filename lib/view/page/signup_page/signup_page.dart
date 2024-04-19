@@ -1,5 +1,6 @@
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:myk_market_app/styles/app_text_colors.dart';
 import 'package:myk_market_app/view/page/signup_page/post_searching_page.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 
@@ -16,7 +17,6 @@ class _SignupPageState extends State<SignupPage> {
   var passwordConfController = TextEditingController();
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
-  var addressController = TextEditingController();
 
   DataModel? _daumPostcodeSearchDataModel;
 
@@ -27,12 +27,18 @@ class _SignupPageState extends State<SignupPage> {
     passwordController.dispose();
     nameController.dispose();
     phoneController.dispose();
-    addressController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final controllers = [
+      idController,
+      passwordController,
+      passwordConfController,
+      nameController,
+      phoneController
+    ];
     TableRow buildTableRow(String label, String value) {
       return TableRow(
         children: [
@@ -46,6 +52,7 @@ class _SignupPageState extends State<SignupPage> {
         ],
       );
     }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -58,29 +65,40 @@ class _SignupPageState extends State<SignupPage> {
                 Text('* 표시된 항목은 필수 입력해야 합니다.'),
               ],
             ),
+            Divider(),
             Expanded(
               child: Form(
                 child: ListView.builder(
                   itemCount: 6,
+                  padding: EdgeInsets.all(16.0),
                   itemBuilder: (context, index) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          '*',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        Expanded(
-                            child:
-                                Text(SignupViewModel().gridLeftArray[index])),
-                        Expanded(
-                          flex: 3,
-                          child: TextFormField(
-                            controller: idController,
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            '*',
+                            style: TextStyle(color: Colors.red),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Text(SignupViewModel().gridLeftArray[index]),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: index != 5
+                                ? TextFormField(
+                                    decoration: const InputDecoration(
+                                      border:
+                                          OutlineInputBorder(gapPadding: 8.0),
+                                    ),
+                                    controller: controllers[index],
+                                  )
+                                : Text('주소 받아오는 곳'),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -97,12 +115,10 @@ class _SignupPageState extends State<SignupPage> {
                       try {
                         DataModel model = await Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const PostSearchingPage(),
-                          ),
+                              builder: (context) => const PostSearchingPage()),
                         );
-
                         setState(
-                              () {
+                          () {
                             _daumPostcodeSearchDataModel = model;
                           },
                         );
@@ -124,14 +140,15 @@ class _SignupPageState extends State<SignupPage> {
                               padding: const EdgeInsets.all(10),
                               child: RichText(
                                 text: TextSpan(
-                                  style:
-                                  const TextStyle(color: Colors.black, fontSize: 20),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 20),
                                   children: [
                                     WidgetSpan(
                                       child: Icon(
                                         Icons.check_circle,
-                                        color:
-                                        Theme.of(context).colorScheme.secondary,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
                                       ),
                                     ),
                                     const TextSpan(text: "주소 검색 결과"),
@@ -153,7 +170,8 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                                 buildTableRow(
                                   "영문주소",
-                                  _daumPostcodeSearchDataModel?.addressEnglish ??
+                                  _daumPostcodeSearchDataModel
+                                          ?.addressEnglish ??
                                       "",
                                 ),
                                 buildTableRow(
@@ -162,13 +180,14 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                                 buildTableRow(
                                   "지번주소",
-                                  _daumPostcodeSearchDataModel?.autoJibunAddress ??
+                                  _daumPostcodeSearchDataModel
+                                          ?.autoJibunAddress ??
                                       "",
                                 ),
                                 buildTableRow(
                                   "지번주소(영문)",
                                   _daumPostcodeSearchDataModel
-                                      ?.autoJibunAddressEnglish ??
+                                          ?.autoJibunAddressEnglish ??
                                       "",
                                 )
                               ],
@@ -181,7 +200,27 @@ class _SignupPageState extends State<SignupPage> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('취소'),
+                  ),
+                  TextButton(
+                    style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(AppColors.mainButton)),
+                    onPressed: () {
 
+                    },
+                    child: Text('회원가입'),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
