@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 
 class ProductImageWidget extends StatelessWidget {
-  Product product;
+  final Product product;
 
-  ProductImageWidget({super.key,
+  const ProductImageWidget({super.key,
     required this.product,
   });
 
@@ -20,7 +20,7 @@ class ProductImageWidget extends StatelessWidget {
           ),
         ),
         Text(product.title),
-        Text(product.price as String)
+        Text('${product.price}원')
       ],
     );
   }
