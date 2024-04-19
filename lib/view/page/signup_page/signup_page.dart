@@ -1,7 +1,9 @@
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/foundation.dart';
 import 'package:myk_market_app/view/page/signup_page/post_searching_page.dart';
+import 'package:myk_market_app/view/page/signup_page/post_searching_page_web.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 
 import '../../../styles/app_text_colors.dart';
@@ -99,17 +101,23 @@ class _SignupPageState extends State<SignupPage> {
                   ElevatedButton.icon(
                     onPressed: () async {
                       try {
-                        DataModel model = await Navigator.of(context).push(
+                        if(kIsWeb) {Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const PostSearchingPage(),
+                            builder: (context) => const PostSearchingPageWeb(),
                           ),
-                        );
-
-                        setState(
-                          () {
-                            _daumPostcodeSearchDataModel = model;
-                          },
-                        );
+                        );}
+                        else {
+                          DataModel model = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const PostSearchingPage(),
+                            ),
+                          );
+                          setState(
+                                () {
+                              _daumPostcodeSearchDataModel = model;
+                            },
+                          );
+                        }
                       } catch (error) {
                         print(error);
                       }

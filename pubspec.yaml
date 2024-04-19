@@ -43,6 +43,8 @@ dependencies:
   envied: ^0.5.4+1
   envied_generator: ^0.5.4+1
   daum_postcode_search: ^0.0.2
+  webview_all: ^0.4.1
+
 
 dev_dependencies:
   flutter_test:
