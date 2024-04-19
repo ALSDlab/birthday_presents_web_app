@@ -16,4 +16,9 @@ final router = GoRouter(initialLocation: '/main_page', routes: [
       builder: (context, state) => Navigation(
         selectedIndex: 1,
       ),),
+  GoRoute(
+    path: '/register_page',
+    builder: (context, state) => Navigation(
+      selectedIndex: 3,
+    ),),
 ]);

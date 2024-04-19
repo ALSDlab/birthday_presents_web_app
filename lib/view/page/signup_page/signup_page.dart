@@ -1,7 +1,7 @@
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart' as check;
 import 'package:myk_market_app/styles/app_text_colors.dart';
-import 'package:myk_market_app/view/page/signup_page/post_searching_page.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 
 class SignupPage extends StatefulWidget {
@@ -115,7 +115,8 @@ class _SignupPageState extends State<SignupPage> {
                       try {
                         DataModel model = await Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => const PostSearchingPage()),
+                              builder: (context) =>
+                                  check.pr),
                         );
                         setState(
                           () {
@@ -212,10 +213,10 @@ class _SignupPageState extends State<SignupPage> {
                     child: Text('취소'),
                   ),
                   TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(AppColors.mainButton)),
-                    onPressed: () {
-
-                    },
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(AppColors.mainButton)),
+                    onPressed: () {},
                     child: Text('회원가입'),
                   ),
                 ],

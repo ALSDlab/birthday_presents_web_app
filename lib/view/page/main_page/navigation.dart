@@ -3,6 +3,7 @@ import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../register_page/agreement_page.dart';
 import 'main_page.dart';
 
 class Navigation extends StatefulWidget {
@@ -30,7 +31,7 @@ class _NavigationState extends State<Navigation> {
             child: const ProductPage(),
           ),
           // ShoppingCartPage(),
-          // ProfilePage(),
+          const AgreementPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
