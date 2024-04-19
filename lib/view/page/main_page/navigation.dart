@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myk_market_app/view/page/register_page/agreement_page.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 
 import 'main_page.dart';
@@ -26,7 +27,7 @@ class _NavigationState extends State<Navigation> {
           // ProductPage(),
           // ShoppingCartPage(),
           // ProfilePage(),
-          SignupPage(),
+          AgreementPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

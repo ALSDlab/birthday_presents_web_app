@@ -1,7 +1,10 @@
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myk_market_app/view/page/signup_page/post_searching_page.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
+
+import '../../../styles/app_text_colors.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -46,6 +49,7 @@ class _SignupPageState extends State<SignupPage> {
         ],
       );
     }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -102,7 +106,7 @@ class _SignupPageState extends State<SignupPage> {
                         );
 
                         setState(
-                              () {
+                          () {
                             _daumPostcodeSearchDataModel = model;
                           },
                         );
@@ -124,14 +128,15 @@ class _SignupPageState extends State<SignupPage> {
                               padding: const EdgeInsets.all(10),
                               child: RichText(
                                 text: TextSpan(
-                                  style:
-                                  const TextStyle(color: Colors.black, fontSize: 20),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 20),
                                   children: [
                                     WidgetSpan(
                                       child: Icon(
                                         Icons.check_circle,
-                                        color:
-                                        Theme.of(context).colorScheme.secondary,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
                                       ),
                                     ),
                                     const TextSpan(text: "주소 검색 결과"),
@@ -153,7 +158,8 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                                 buildTableRow(
                                   "영문주소",
-                                  _daumPostcodeSearchDataModel?.addressEnglish ??
+                                  _daumPostcodeSearchDataModel
+                                          ?.addressEnglish ??
                                       "",
                                 ),
                                 buildTableRow(
@@ -162,13 +168,14 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                                 buildTableRow(
                                   "지번주소",
-                                  _daumPostcodeSearchDataModel?.autoJibunAddress ??
+                                  _daumPostcodeSearchDataModel
+                                          ?.autoJibunAddress ??
                                       "",
                                 ),
                                 buildTableRow(
                                   "지번주소(영문)",
                                   _daumPostcodeSearchDataModel
-                                      ?.autoJibunAddressEnglish ??
+                                          ?.autoJibunAddressEnglish ??
                                       "",
                                 )
                               ],
@@ -178,10 +185,53 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                            minimumSize:
+                                MaterialStateProperty.all(Size(100.w, 40.h)),
+                            //테두리 모양 조절
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            backgroundColor:
+                                MaterialStateProperty.all(AppColors.caution)),
+                        child: const Text(
+                          '이전',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          //TODO : 회원정보 서버로 전송, 로그인화면으로 이동
+                        },
+                        style: ButtonStyle(
+                            minimumSize:
+                                MaterialStateProperty.all(Size(100.w, 40.h)),
+                            //테두리 모양 조절
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            backgroundColor:
+                                MaterialStateProperty.all(AppColors.icon)),
+                        child: const Text(
+                          '완료',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
-
           ],
         ),
       ),
