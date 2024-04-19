@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
+import 'package:myk_market_app/view/page/product_page/product_page.dart';
+import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
+import 'package:provider/provider.dart';
 
 import 'main_page.dart';
 
@@ -21,12 +23,14 @@ class _NavigationState extends State<Navigation> {
     return Scaffold(
       body: PageView(
         controller: pageViewController,
-        children: const [
-          MainPage(),
-          // ProductPage(),
+        children:  [
+          const MainPage(),
+          ChangeNotifierProvider(
+            create: (_) => ProductViewModel(),
+            child: const ProductPage(),
+          ),
           // ShoppingCartPage(),
           // ProfilePage(),
-          SignupPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
