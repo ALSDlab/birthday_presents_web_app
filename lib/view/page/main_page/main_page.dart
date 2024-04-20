@@ -13,7 +13,7 @@ class MainPage extends StatelessWidget {
         children: [
           Row(
             children: [
-              Image.asset('회사 이미지1'),
+              Image.network('회사 이미지1'),
               Text('BRAND STORY'),
             ],
           )
