@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/product_page/product_image_widget.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
@@ -69,8 +70,10 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                       itemCount: state.products.length,
                       itemBuilder: (context, index) {
-                        return ProductImageWidget(
-                          product: state.products[index],
+                        return GestureDetector(onTap:(){context.push('/product_detail_page',extra: {'product' :state.products[index]});},
+                          child: ProductImageWidget(
+                            product: state.products[index],
+                          ),
                         );
                       },
                     ),
