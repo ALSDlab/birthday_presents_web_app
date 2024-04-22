@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
@@ -70,92 +68,103 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.4,
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(widget.product.title),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 16, bottom: 32),
-                                child: Text('${widget.product.price}원'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16, top: 4, right: 8, bottom: 8),
-                                child: Container(
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.zero),
+                        return StatefulBuilder(builder:
+                            (BuildContext context, StateSetter setState) {
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(widget.product.title),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16, bottom: 32),
+                                  child: Text('${widget.product.price}원'),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16, top: 4, right: 8, bottom: 8),
+                                  child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(),
+                                        borderRadius: BorderRadius.zero),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  viewModel.minusCartCount();
+                                                });
+                                              },
+                                              child: const Icon(Icons.remove)),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text('${viewModel.cartCount}'),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  viewModel.plusCartCount();
+                                                });
+                                              },
+                                              child: const Icon(Icons.add)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const Text(''),
+                                const Divider(),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16, top: 16, right: 16, bottom: 4),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: InkWell(
-                                            onTap: () {},
-                                            child: const Icon(Icons.remove)),
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.all(4.0),
-                                        child: Text('n'),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: InkWell(
-                                            onTap: () {},
-                                            child: const Icon(Icons.add)),
-                                      ),
+                                      Text('수량 ${viewModel.cartCount}개'),
+                                      Text(
+                                          '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
                                     ],
                                   ),
                                 ),
-                              ),
-                              const Text(''),
-                              const Divider(),
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                    left: 16, top: 16, right: 16, bottom: 4),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                const Divider(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text('수량 n 개'),
-                                    Text('0000000000원')
-                                  ],
-                                ),
-                              ),
-                              const Divider(),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.zero),
-                                        backgroundColor:
-                                            const Color(0xFF2F362F),
-                                      ),
-                                      onPressed: () {},
-                                      child: const Text(
-                                        '장바구니 담기',
-                                        style: TextStyle(color: Colors.white),
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.zero),
+                                          backgroundColor:
+                                              const Color(0xFF2F362F),
+                                        ),
+                                        onPressed: () {},
+                                        child: const Text(
+                                          '장바구니 담기',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        });
                       });
                 },
                 child: const Text(
@@ -177,97 +186,110 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.4,
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(widget.product.title),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 16, bottom: 32),
-                                child: Text('${widget.product.price}원'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16, top: 4, right: 8, bottom: 8),
-                                child: Container(
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.zero),
+                        return StatefulBuilder(builder:
+                            (BuildContext context, StateSetter setState) {
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(widget.product.title),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16, bottom: 32),
+                                  child: Text('${widget.product.price}원'),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16, top: 4, right: 8, bottom: 8),
+                                  child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(),
+                                        borderRadius: BorderRadius.zero),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: InkWell(
+                                              onTap: () {
+                                                // setState(() {
+                                                //   if (count > 1) count--;
+                                                // });
+                                                setState(() {
+                                                  viewModel
+                                                      .minusPurchaseCount();
+                                                });
+                                              },
+                                              child: const Icon(Icons.remove)),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(
+                                              '${viewModel.purchaseCount}'),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  viewModel.plusPurchaseCount();
+                                                });
+
+                                                // viewModel.plusCount();
+                                              },
+                                              child: const Icon(Icons.add)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const Text(''),
+                                const Divider(),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16, top: 16, right: 16, bottom: 4),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: InkWell(
-                                            onTap: () {
-                                              viewModel.minusCount();
-                                            },
-                                            child: const Icon(Icons.remove)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Text('${state.count}'),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: InkWell(
-                                            onTap: () {
-                                              viewModel.plusCount();
-                                            },
-                                            child: const Icon(Icons.add)),
-                                      ),
+                                      Text('수량 ${viewModel.purchaseCount}개'),
+                                      Text(
+                                          '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
                                     ],
                                   ),
                                 ),
-                              ),
-                              const Text(''),
-                              const Divider(),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16, top: 16, right: 16, bottom: 4),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                const Divider(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text('수량 ${state.count}개'),
-                                    Text(
-                                        '${viewModel.formatKoreanNumber(state.count * int.parse(widget.product.price.replaceAll(',', '')))}원')
-                                  ],
-                                ),
-                              ),
-                              const Divider(),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.zero),
-                                        backgroundColor:
-                                            const Color(0xFF2F362F),
-                                      ),
-                                      onPressed: () {},
-                                      child: const Text(
-                                        '구매하기',
-                                        style: TextStyle(color: Colors.white),
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.zero),
+                                          backgroundColor:
+                                              const Color(0xFF2F362F),
+                                        ),
+                                        onPressed: () {},
+                                        child: const Text(
+                                          '구매하기',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        });
                       });
                 },
                 child: const Text(
