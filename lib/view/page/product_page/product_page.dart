@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/product_page/product_image_widget.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
@@ -11,18 +12,20 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+
+  final filterController = TextEditingController();
+
   @override
   void initState() {
     Future.microtask(() {
-      final ProductViewModel viewModel = context.read<ProductViewModel>();
-      viewModel.getProducts();
+      context.read<ProductViewModel>().getProducts();
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = ProductViewModel();
+    final viewModel = context.watch<ProductViewModel>();
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
@@ -36,45 +39,49 @@ class _ProductPageState extends State<ProductPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                controller: filterController,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(width: 2),
+                    borderSide: const BorderSide(width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(width: 2),
+                    borderSide: const BorderSide(width: 2),
                   ),
                   hintText: '찾으시는 상품을 검색하세요',
                   suffixIcon: IconButton(
                     onPressed: () {},
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.search,
                     ),
                   ),
                 ),
               ),
             ),
-            Divider(),
-            Text('상품 목록'),
-            Divider(),
-            Text( '${state.products.length}'),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 32,
-                  crossAxisSpacing: 32,
-                ),
-                itemCount: state.products.length,
-                itemBuilder: (context, index) {
-                  print(state.products.length);
-                  return ProductImageWidget(
-                    product: state.products[index],
-                  );
-                },
-              ),
-            ),
+            const Divider(),
+            const Text('상품 목록'),
+            const Divider(),
+            // Text( '${state.products.length}'),
+            state.isLoading
+                ? const CircularProgressIndicator()
+                : Expanded(
+                    child: GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 32,
+                        crossAxisSpacing: 32,
+                      ),
+                      itemCount: state.products.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(onTap:(){context.push('/product_detail_page',extra: {'product' :state.products[index]});},
+                          child: ProductImageWidget(
+                            product: state.products[index],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

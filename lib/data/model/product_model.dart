@@ -1,6 +1,6 @@
 class Product {
   String representativeImage;
-  num price;
+  String price;
   String title;
 
 //<editor-fold desc="Data Methods">
@@ -30,7 +30,7 @@ class Product {
 
   Product copyWith({
     String? representativeImage,
-    num? price,
+    String? price,
     String? title,
   }) {
     return Product(
@@ -42,16 +42,16 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return {
-      'representativeImage': this.representativeImage,
-      'price': this.price,
-      'title': this.title,
+      'representativeImage': representativeImage,
+      'price': price,
+      'title': title,
     };
   }
 
   factory Product.fromJson(Map<String, dynamic> map) {
     return Product(
       representativeImage: map['representativeImage'] as String,
-      price: map['price'] as num,
+      price: map['price'] as String,
       title: map['title'] as String,
     );
   }
