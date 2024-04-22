@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myk_market_app/view/page/register_page/agreement_texts.dart';
+import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 
 import '../../../styles/app_text_colors.dart';
 
@@ -19,7 +20,7 @@ class _AgreementPageState extends State<AgreementPage> {
   bool isPersonalInfoOpened = false;
   bool isPersonalInfoForDeliverChecked = false;
   bool isPersonalInfoForDeliverOpened = false;
-  bool inevitableChecked = true;
+  bool inevitableChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -197,11 +198,16 @@ class _AgreementPageState extends State<AgreementPage> {
                   ],
                 ),
               ),
-              inevitableChecked
-                  ? Container()
-                  : ((isTermsNConditionsChecked == false)
-                      ? const Text('(필수) 이용약관 을 체크해주세요.')
-                      : const Text('(필수) 개인정보 수집 및 이용 을 체크해주세요.')),
+              Visibility(
+                visible: (inevitableChecked == true && isTermsNConditionsChecked == false),
+                child: const Text('(필수) 이용약관 을 체크해주세요.'),
+
+              ),
+              Visibility(
+                visible: (inevitableChecked == true && isTermsNConditionsChecked == true && isPersonalInfoChecked == false),
+                child: const Text('(필수) 개인정보 수집 및 이용 을 체크해주세요.'),
+
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -230,11 +236,15 @@ class _AgreementPageState extends State<AgreementPage> {
                       if (isTermsNConditionsChecked == false ||
                           isPersonalInfoChecked == false) {
                         setState(() {
-                          inevitableChecked = false;
+                          inevitableChecked = true;
                         });
                       }
                       else {
-                        //TODO : 약관동의여부 서버로 전송, 개인정보입력 화면으로 넘어가기
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const SignupPage(),
+                          ),
+                        );
                       }
                     },
                     style: ButtonStyle(

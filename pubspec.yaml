@@ -48,7 +48,7 @@ dependencies:
   get_it: ^7.7.0
   http: ^1.2.1
   daum_postcode_search: ^0.0.2
-  flutter_inappwebview: ^5.8.0
+  kpostal_web: ^0.0.2
 
 
 dev_dependencies:

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../register_page/agreement_page.dart';
 import 'main_page.dart';
 
 class Navigation extends StatefulWidget {
@@ -15,22 +17,24 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-
   @override
   Widget build(BuildContext context) {
     final PageController pageViewController =
-    PageController(initialPage: widget.selectedIndex);
+        PageController(initialPage: widget.selectedIndex);
     return Scaffold(
       body: PageView(
         controller: pageViewController,
-        children:  [
-          const MainPage(),
+        children: [
+          ChangeNotifierProvider(
+            create: (_) => StoreViewModel(),
+            child: const MainPage(),
+          ),
           ChangeNotifierProvider(
             create: (_) => ProductViewModel(),
             child: const ProductPage(),
           ),
           // ShoppingCartPage(),
-          // ProfilePage(),
+          const AgreementPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -68,7 +72,7 @@ class _NavigationState extends State<Navigation> {
           pageViewController.animateToPage(
             index,
             duration: const Duration(milliseconds: 400),
-            curve: Curves.easeInOut,
+            curve: Curves.linear,
           );
         },
       ),
