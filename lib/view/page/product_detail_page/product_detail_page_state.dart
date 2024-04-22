@@ -8,8 +8,7 @@ part 'product_detail_page_state.g.dart';
 @freezed
 class ProductDetailPageState with _$ProductDetailPageState {
   const factory ProductDetailPageState({
-    @Default(false)isLoading,
-    @Default(1)count,
+    @Default(false) bool isLoading,
   }) = _ProductDetailPageState;
 
   factory ProductDetailPageState.fromJson(Map<String, Object?> json) => _$ProductDetailPageStateFromJson(json);
