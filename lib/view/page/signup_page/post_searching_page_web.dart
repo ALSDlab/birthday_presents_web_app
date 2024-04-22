@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kpostal_web/widget/kakao_address_widget.dart';
+import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 
 class PostSearchingPageWeb extends StatefulWidget {
   const PostSearchingPageWeb({super.key});
@@ -19,23 +20,11 @@ class _PostSearchingPageWebState extends State<PostSearchingPageWeb> {
       body: Row(
         children: [
           Expanded(
-            child: SizedBox(
-              height: double.infinity,
-              child: Container(
-                alignment: Alignment.center,
-                color: Colors.blue,
-                child: const Text(
-                  '오른쪽 KakaoAddressWidget이 위젯트리 내에서 잘 동작됩니다.',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
             flex: 2,
             child: KakaoAddressWidget(
               onComplete: (kakaoAddress) {
                 print('onComplete KakaoAddress: $kakaoAddress');
+                SignupViewModel().address = kakaoAddress.address;
               },
               onClose: () {
                 Navigator.of(context).pop();
