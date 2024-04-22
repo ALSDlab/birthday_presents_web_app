@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/main_page/navigation.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
-import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
 
 final router = GoRouter(initialLocation: '/main_page', routes: [

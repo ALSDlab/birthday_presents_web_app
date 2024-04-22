@@ -12,6 +12,9 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+
+  final filterController = TextEditingController();
+
   @override
   void initState() {
     Future.microtask(() {
@@ -36,6 +39,7 @@ class _ProductPageState extends State<ProductPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                controller: filterController,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
