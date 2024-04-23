@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
+import 'package:myk_market_app/view/page/order_page/fill_order_form_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../register_page/agreement_page.dart';
+import '../shopping_cart_page/shopping_cart_page.dart';
 import 'main_page.dart';
 
 class Navigation extends StatefulWidget {
@@ -33,7 +35,7 @@ class _NavigationState extends State<Navigation> {
             create: (_) => ProductViewModel(),
             child: const ProductPage(),
           ),
-          // ShoppingCartPage(),
+          const FillOrderFormPage(),
           const AgreementPage(),
         ],
       ),
