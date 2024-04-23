@@ -23,12 +23,8 @@ class _PostSearchingPageWebState extends State<PostSearchingPageWeb> {
             flex: 2,
             child: KakaoAddressWidget(
               onComplete: (kakaoAddress) {
-                print('onComplete KakaoAddress: $kakaoAddress');
-                print('주소: ${kakaoAddress.address}');
-                print('우편번호: ${kakaoAddress.postCode}');
                 SignupViewModel viewModel = SignupViewModel();
                 viewModel.setAddress(kakaoAddress.address, kakaoAddress.postCode);
-                print(viewModel.address);
               },
               onClose: () {
                 Navigator.of(context).pop();

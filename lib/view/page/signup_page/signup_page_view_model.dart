@@ -25,5 +25,15 @@ class SignupViewModel {
     _zoneCode = newZoneCode;
   }
 
+  String? passwordValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return '비밀번호를 입력하세요.';
+    }
+    if (value.length < 6) {
+      return '6자리 이상 입력하세요';
+    }
+    return null;
+  }
+
 
 }

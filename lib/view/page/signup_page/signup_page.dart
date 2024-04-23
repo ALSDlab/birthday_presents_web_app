@@ -13,6 +13,8 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final _formKey = GlobalKey<FormState>();
+
   var idController = TextEditingController();
   var passwordController = TextEditingController();
   var passwordConfController = TextEditingController();
@@ -60,6 +62,7 @@ class _SignupPageState extends State<SignupPage> {
               const Divider(),
               Expanded(
                 child: Form(
+                  key: _formKey,
                   child: ListView.builder(
                     itemCount: 6,
                     padding: const EdgeInsets.all(16.0),
@@ -80,39 +83,33 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                             Expanded(
                               flex: 2,
-                              child: index != 5
-                                  ? TextFormField(
-                                      style: TextStyle(fontSize: 12),
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                      ),
-                                      controller: controllers[index],
-                                    )
-                                  : Column(
+                              child: index == 5
+                                  ? Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             Text(viewModel
                                                     .daumPostcodeSearchDataModel
                                                     ?.address ??
                                                 viewModel.address),
                                             Text(viewModel
-                                                .daumPostcodeSearchDataModel
-                                                ?.zonecode ??
+                                                    .daumPostcodeSearchDataModel
+                                                    ?.zonecode ??
                                                 viewModel.zoneCode),
                                           ],
                                         ),
                                         TextFormField(
                                           controller: addressController,
-                                          style: TextStyle(fontSize: 12, ),
-                                          decoration:
-                                          const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            hintText: '상세 주소'
+                                          style: TextStyle(
+                                            fontSize: 12,
                                           ),
+                                          decoration: const InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              hintText: '상세 주소'),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -126,7 +123,8 @@ class _SignupPageState extends State<SignupPage> {
                                                       builder: (context) =>
                                                           check.pr),
                                                 );
-                                                setState(() {
+                                                setState(
+                                                  () {
                                                     viewModel
                                                             .daumPostcodeSearchDataModel =
                                                         model;
@@ -141,6 +139,22 @@ class _SignupPageState extends State<SignupPage> {
                                           ),
                                         ),
                                       ],
+                                    )
+                                  : TextFormField(
+                                      obscureText: (index == 1 || index == 2)
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return '필수항목입니다.';
+                                        }
+                                        return null;
+                                      },
+                                      style: TextStyle(fontSize: 12),
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      controller: controllers[index],
                                     ),
                             ),
                           ],
@@ -165,7 +179,11 @@ class _SignupPageState extends State<SignupPage> {
                       style: const ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll(AppColors.mainButton)),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState?.save();
+                        }
+                      },
                       child: const Text('회원가입'),
                     ),
                   ],
