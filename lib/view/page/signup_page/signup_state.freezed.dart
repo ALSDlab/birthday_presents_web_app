@@ -25,6 +25,7 @@ mixin _$SignupState {
   String get password => throw _privateConstructorUsedError;
   int get phone => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
+  String get zoneCode => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,7 +40,12 @@ abstract class $SignupStateCopyWith<$Res> {
       _$SignupStateCopyWithImpl<$Res, SignupState>;
   @useResult
   $Res call(
-      {String name, String id, String password, int phone, String address});
+      {String name,
+      String id,
+      String password,
+      int phone,
+      String address,
+      String zoneCode});
 }
 
 /// @nodoc
@@ -60,6 +66,7 @@ class _$SignupStateCopyWithImpl<$Res, $Val extends SignupState>
     Object? password = null,
     Object? phone = null,
     Object? address = null,
+    Object? zoneCode = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -82,6 +89,10 @@ class _$SignupStateCopyWithImpl<$Res, $Val extends SignupState>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
+      zoneCode: null == zoneCode
+          ? _value.zoneCode
+          : zoneCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -95,7 +106,12 @@ abstract class _$$SignupStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String name, String id, String password, int phone, String address});
+      {String name,
+      String id,
+      String password,
+      int phone,
+      String address,
+      String zoneCode});
 }
 
 /// @nodoc
@@ -114,6 +130,7 @@ class __$$SignupStateImplCopyWithImpl<$Res>
     Object? password = null,
     Object? phone = null,
     Object? address = null,
+    Object? zoneCode = null,
   }) {
     return _then(_$SignupStateImpl(
       name: null == name
@@ -136,6 +153,10 @@ class __$$SignupStateImplCopyWithImpl<$Res>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
+      zoneCode: null == zoneCode
+          ? _value.zoneCode
+          : zoneCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -144,29 +165,36 @@ class __$$SignupStateImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SignupStateImpl implements _SignupState {
   const _$SignupStateImpl(
-      {required this.name,
-      required this.id,
-      required this.password,
-      required this.phone,
-      required this.address});
+      {this.name = '',
+      this.id = '',
+      this.password = '',
+      this.phone = 0,
+      required this.address,
+      required this.zoneCode});
 
   factory _$SignupStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$SignupStateImplFromJson(json);
 
   @override
+  @JsonKey()
   final String name;
   @override
+  @JsonKey()
   final String id;
   @override
+  @JsonKey()
   final String password;
   @override
+  @JsonKey()
   final int phone;
   @override
   final String address;
+  @override
+  final String zoneCode;
 
   @override
   String toString() {
-    return 'SignupState(name: $name, id: $id, password: $password, phone: $phone, address: $address)';
+    return 'SignupState(name: $name, id: $id, password: $password, phone: $phone, address: $address, zoneCode: $zoneCode)';
   }
 
   @override
@@ -179,13 +207,15 @@ class _$SignupStateImpl implements _SignupState {
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.address, address) || other.address == address));
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.zoneCode, zoneCode) ||
+                other.zoneCode == zoneCode));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, name, id, password, phone, address);
+      Object.hash(runtimeType, name, id, password, phone, address, zoneCode);
 
   @JsonKey(ignore: true)
   @override
@@ -203,11 +233,12 @@ class _$SignupStateImpl implements _SignupState {
 
 abstract class _SignupState implements SignupState {
   const factory _SignupState(
-      {required final String name,
-      required final String id,
-      required final String password,
-      required final int phone,
-      required final String address}) = _$SignupStateImpl;
+      {final String name,
+      final String id,
+      final String password,
+      final int phone,
+      required final String address,
+      required final String zoneCode}) = _$SignupStateImpl;
 
   factory _SignupState.fromJson(Map<String, dynamic> json) =
       _$SignupStateImpl.fromJson;
@@ -222,6 +253,8 @@ abstract class _SignupState implements SignupState {
   int get phone;
   @override
   String get address;
+  @override
+  String get zoneCode;
   @override
   @JsonKey(ignore: true)
   _$$SignupStateImplCopyWith<_$SignupStateImpl> get copyWith =>

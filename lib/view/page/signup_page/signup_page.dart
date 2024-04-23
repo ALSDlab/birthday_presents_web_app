@@ -18,6 +18,7 @@ class _SignupPageState extends State<SignupPage> {
   var passwordConfController = TextEditingController();
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
+  var addressController = TextEditingController();
 
   @override
   void dispose() {
@@ -26,6 +27,7 @@ class _SignupPageState extends State<SignupPage> {
     passwordController.dispose();
     nameController.dispose();
     phoneController.dispose();
+    addressController.dispose();
     super.dispose();
   }
 
@@ -38,19 +40,9 @@ class _SignupPageState extends State<SignupPage> {
       nameController,
       phoneController
     ];
-    TableRow buildTableRow(String label, String value) {
-      return TableRow(
-        children: [
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: Text(label, textAlign: TextAlign.center),
-          ),
-          TableCell(
-            child: Text(value, textAlign: TextAlign.center),
-          ),
-        ],
-      );
-    }
+
+    final viewModel = SignupViewModel();
+    // final state = viewModel.state;
 
     return Scaffold(
       body: SafeArea(
@@ -100,37 +92,53 @@ class _SignupPageState extends State<SignupPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(SignupViewModel()
-                                                .daumPostcodeSearchDataModel
-                                                ?.address ??
-                                            SignupViewModel().address),
-                                        Text(SignupViewModel()
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(viewModel
+                                                    .daumPostcodeSearchDataModel
+                                                    ?.address ??
+                                                viewModel.address),
+                                            Text(viewModel
                                                 .daumPostcodeSearchDataModel
                                                 ?.zonecode ??
-                                            ''),
-                                        ElevatedButton.icon(
-                                          onPressed: () async {
-                                            try {
-                                              DataModel model =
-                                                  await Navigator.of(context)
-                                                      .push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        check.pr),
-                                              );
-                                              setState(
-                                                () {
-                                                  SignupViewModel()
-                                                          .daumPostcodeSearchDataModel =
-                                                      model;
-                                                },
-                                              );
-                                            } catch (error) {
-                                              print(error);
-                                            }
-                                          },
-                                          icon: const Icon(Icons.search),
-                                          label: const Text("주소 검색"),
+                                                viewModel.zoneCode),
+                                          ],
+                                        ),
+                                        TextFormField(
+                                          controller: addressController,
+                                          style: TextStyle(fontSize: 12, ),
+                                          decoration:
+                                          const InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            hintText: '상세 주소'
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ElevatedButton.icon(
+                                            onPressed: () async {
+                                              try {
+                                                DataModel? model =
+                                                    await Navigator.of(context)
+                                                        .push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          check.pr),
+                                                );
+                                                setState(() {
+                                                    viewModel
+                                                            .daumPostcodeSearchDataModel =
+                                                        model;
+                                                  },
+                                                );
+                                              } catch (error) {
+                                                print(error);
+                                              }
+                                            },
+                                            icon: const Icon(Icons.search),
+                                            label: const Text("주소 검색"),
+                                          ),
                                         ),
                                       ],
                                     ),
