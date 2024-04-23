@@ -9,9 +9,9 @@ part 'product_state.g.dart';
 @freezed
 class ProductState with _$ProductState {
   const factory ProductState({
-    @Default([]) List<Product> products,
     @Default(false) bool isLoading,
   }) = _ProductState;
 
-  factory ProductState.fromJson(Map<String, Object?> json) => _$ProductStateFromJson(json);
+  factory ProductState.fromJson(Map<String, Object?> json) =>
+      _$ProductStateFromJson(json);
 }

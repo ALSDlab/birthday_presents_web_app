@@ -20,7 +20,6 @@ ProductState _$ProductStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProductState {
-  List<Product> get products => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +34,7 @@ abstract class $ProductStateCopyWith<$Res> {
           ProductState value, $Res Function(ProductState) then) =
       _$ProductStateCopyWithImpl<$Res, ProductState>;
   @useResult
-  $Res call({List<Product> products, bool isLoading});
+  $Res call({bool isLoading});
 }
 
 /// @nodoc
@@ -51,14 +50,9 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? products = null,
     Object? isLoading = null,
   }) {
     return _then(_value.copyWith(
-      products: null == products
-          ? _value.products
-          : products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -75,7 +69,7 @@ abstract class _$$ProductStateImplCopyWith<$Res>
       __$$ProductStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Product> products, bool isLoading});
+  $Res call({bool isLoading});
 }
 
 /// @nodoc
@@ -89,14 +83,9 @@ class __$$ProductStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? products = null,
     Object? isLoading = null,
   }) {
     return _then(_$ProductStateImpl(
-      products: null == products
-          ? _value._products
-          : products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -108,21 +97,10 @@ class __$$ProductStateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ProductStateImpl with DiagnosticableTreeMixin implements _ProductState {
-  const _$ProductStateImpl(
-      {final List<Product> products = const [], this.isLoading = false})
-      : _products = products;
+  const _$ProductStateImpl({this.isLoading = false});
 
   factory _$ProductStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductStateImplFromJson(json);
-
-  final List<Product> _products;
-  @override
-  @JsonKey()
-  List<Product> get products {
-    if (_products is EqualUnmodifiableListView) return _products;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_products);
-  }
 
   @override
   @JsonKey()
@@ -130,7 +108,7 @@ class _$ProductStateImpl with DiagnosticableTreeMixin implements _ProductState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductState(products: $products, isLoading: $isLoading)';
+    return 'ProductState(isLoading: $isLoading)';
   }
 
   @override
@@ -138,7 +116,6 @@ class _$ProductStateImpl with DiagnosticableTreeMixin implements _ProductState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ProductState'))
-      ..add(DiagnosticsProperty('products', products))
       ..add(DiagnosticsProperty('isLoading', isLoading));
   }
 
@@ -147,15 +124,13 @@ class _$ProductStateImpl with DiagnosticableTreeMixin implements _ProductState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProductStateImpl &&
-            const DeepCollectionEquality().equals(other._products, _products) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_products), isLoading);
+  int get hashCode => Object.hash(runtimeType, isLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -172,15 +147,11 @@ class _$ProductStateImpl with DiagnosticableTreeMixin implements _ProductState {
 }
 
 abstract class _ProductState implements ProductState {
-  const factory _ProductState(
-      {final List<Product> products,
-      final bool isLoading}) = _$ProductStateImpl;
+  const factory _ProductState({final bool isLoading}) = _$ProductStateImpl;
 
   factory _ProductState.fromJson(Map<String, dynamic> json) =
       _$ProductStateImpl.fromJson;
 
-  @override
-  List<Product> get products;
   @override
   bool get isLoading;
   @override
