@@ -10,6 +10,7 @@ class StoreViewModel extends ChangeNotifier {
 
   void getStoreList() async {
     _state = state.copyWith(storeList: await repository.getFirebaseStore());
+    print(state.storeList);
     notifyListeners();
   }
 
