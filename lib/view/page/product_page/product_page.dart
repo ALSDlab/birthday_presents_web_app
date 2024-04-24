@@ -74,7 +74,7 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                       itemCount: state.products.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(onTap:(){context.push('/product_detail_page',extra: {'product' :state.products[index]});},
+                        return GestureDetector(onTap:(){context.push('/product_page/product_detail_page',extra: {'product' :state.products[index]});},
                           child: ProductImageWidget(
                             product: state.products[index],
                           ),

@@ -14,6 +14,8 @@ class FillOrderFormPage extends StatefulWidget {
 }
 
 class _FillOrderFormPageState extends State<FillOrderFormPage> {
+  final _formKey = GlobalKey<FormState>();
+
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
   var addressController = TextEditingController();
@@ -39,6 +41,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
       extraAddressController,
       commentController
     ];
+
+    final viewModel = FillOrderFormPageViewModel();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -59,6 +63,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
               const Text('배송 정보'),
               Expanded(
                 child: Form(
+                  key: _formKey,
                   child: ListView.builder(
                     itemCount: 4,
                     padding: const EdgeInsets.all(16.0),
@@ -79,74 +84,78 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                             ),
                             Expanded(
                               flex: 2,
-                              child: index != 2
-                                  ? TextFormField(
+                              child: index == 2
+                                  ? Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  TextFormField(
+                                    style:
+                                    const TextStyle(fontSize: 12),
+                                    decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        hintText: (viewModel
+                                            .daumPostcodeSearchDataModel
+                                            ?.zonecode !=
+                                            null)
+                                            ? viewModel
+                                            .daumPostcodeSearchDataModel!
+                                            .zonecode
+                                            : '',
+                                        suffixIcon: ElevatedButton(
+                                            onPressed: () async {
+                                              try {
+                                                DataModel model =
+                                                await Navigator.of(
+                                                    context)
+                                                    .push(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                      check.pr),
+                                                );
+                                                setState(
+                                                      () {
+                                                    viewModel
+                                                        .daumPostcodeSearchDataModel =
+                                                        model;
+                                                  },
+                                                );
+                                              } catch (error) {
+                                                print(error);
+                                              }
+                                            },
+                                            child: Text('주소검색'))
+                                    ),
+                                    readOnly: true,
+                                  ),
+                                  TextFormField(
+                                    style: const TextStyle(fontSize: 12),
+                                    decoration: InputDecoration(
+                                        border:
+                                        const OutlineInputBorder(),
+                                        hintText: (viewModel
+                                            .daumPostcodeSearchDataModel
+                                            ?.address !=
+                                            null)
+                                            ? viewModel
+                                            .daumPostcodeSearchDataModel!
+                                            .address
+                                            : '',
+                                        ),
+                                    readOnly: true,
+                                  ),
+
+                                ],
+                              )
+                                  : TextFormField(
                                       style: const TextStyle(fontSize: 12),
                                       decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
                                       ),
                                       controller: controllers[index],
                                     )
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TextFormField(
-                                          style: const TextStyle(fontSize: 12),
-                                          decoration: InputDecoration(
-                                              border:
-                                                  const OutlineInputBorder(),
-                                              suffixIcon: ElevatedButton(
-                                                  onPressed: () async {
-                                                    try {
-                                                      DataModel model =
-                                                          await Navigator.of(
-                                                                  context)
-                                                              .push(
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    check.pr),
-                                                      );
-                                                      setState(
-                                                        () {
-                                                          FillOrderFormPageViewModel()
-                                                                  .daumPostcodeSearchDataModel =
-                                                              model;
-                                                        },
-                                                      );
-                                                    } catch (error) {
-                                                      print(error);
-                                                    }
-                                                  },
-                                                  child: Text('주소검색'))),
-                                          readOnly: true,
-                                          initialValue: (FillOrderFormPageViewModel()
-                                                      .daumPostcodeSearchDataModel
-                                                      ?.address !=
-                                                  null)
-                                              ? FillOrderFormPageViewModel()
-                                                  .daumPostcodeSearchDataModel!
-                                                  .address
-                                              : '',
-                                        ),
-                                        TextFormField(
-                                            style:
-                                                const TextStyle(fontSize: 12),
-                                            decoration: const InputDecoration(
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            readOnly: true,
-                                            initialValue: (FillOrderFormPageViewModel()
-                                                        .daumPostcodeSearchDataModel
-                                                        ?.zonecode !=
-                                                    null)
-                                                ? FillOrderFormPageViewModel()
-                                                    .daumPostcodeSearchDataModel!
-                                                    .zonecode
-                                                : '')
-                                      ],
-                                    ),
+                                  ,
                             ),
                           ],
                         ),
