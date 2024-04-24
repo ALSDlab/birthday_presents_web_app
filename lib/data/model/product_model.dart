@@ -4,6 +4,7 @@ class Product {
   String title;
   String delivery;
   String ingredients;
+  List<String> images;
 
 //<editor-fold desc="Data Methods">
   Product({
@@ -12,6 +13,7 @@ class Product {
     required this.title,
     required this.delivery,
     required this.ingredients,
+    required this.images,
   });
 
   @override
@@ -23,7 +25,8 @@ class Product {
           price == other.price &&
           title == other.title &&
           delivery == other.delivery &&
-          ingredients == other.ingredients);
+          ingredients == other.ingredients &&
+          images == other.images);
 
   @override
   int get hashCode =>
@@ -31,11 +34,12 @@ class Product {
       price.hashCode ^
       title.hashCode ^
       delivery.hashCode ^
-      ingredients.hashCode;
+      ingredients.hashCode ^
+      images.hashCode;
 
   @override
   String toString() {
-    return 'Product{ representativeImage: $representativeImage, price: $price, title: $title, delivery: $delivery, ingredients: $ingredients,}';
+    return 'Product{ representativeImage: $representativeImage, price: $price, title: $title, delivery: $delivery, ingredients: $ingredients, images: $images,}';
   }
 
   Product copyWith({
@@ -44,6 +48,7 @@ class Product {
     String? title,
     String? delivery,
     String? ingredients,
+    List<String>? images,
   }) {
     return Product(
       representativeImage: representativeImage ?? this.representativeImage,
@@ -51,6 +56,7 @@ class Product {
       title: title ?? this.title,
       delivery: delivery ?? this.delivery,
       ingredients: ingredients ?? this.ingredients,
+      images: images ?? this.images,
     );
   }
 
@@ -61,6 +67,7 @@ class Product {
       'title': title,
       'delivery': delivery,
       'ingredients': ingredients,
+      'images': images,
     };
   }
 
@@ -71,6 +78,7 @@ class Product {
       title: map['title'] as String,
       delivery: map['delivery'] as String,
       ingredients: map['ingredients'] as String,
+      images: (map['images'] as List<dynamic>).map((image) => image.toString()).toList(),
     );
   }
 
