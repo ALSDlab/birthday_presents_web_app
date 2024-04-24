@@ -52,6 +52,51 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 child: Text('${widget.product.price}원'),
               ),
             ),
+            const Divider(),
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    '재료',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        widget.product.ingredients,
+                        style: const TextStyle(color: Color(0xFF555555)),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    '배송',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.product.delivery,
+                    style: const TextStyle(
+                      color: Color(0xFF555555),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(),
           ],
         ),
       ),
