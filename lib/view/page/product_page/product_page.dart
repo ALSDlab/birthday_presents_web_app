@@ -17,10 +17,17 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
-    Future.microtask(() {
-      context.read<ProductViewModel>().getProducts();
+    Future.microtask(() async {
+      final ProductViewModel viewModel = context.read<ProductViewModel>();
+      await viewModel.getProducts();
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    filterController.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,6 +46,7 @@ class _ProductPageState extends State<ProductPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                onChanged: viewModel.onChanged,
                 controller: filterController,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -59,7 +67,10 @@ class _ProductPageState extends State<ProductPage> {
                 ),
               ),
             ),
-            const Divider(),
+            const Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Divider(),
+            ),
             const Text('상품 목록'),
             const Divider(),
             // Text( '${state.products.length}'),
@@ -67,16 +78,21 @@ class _ProductPageState extends State<ProductPage> {
                 ? const CircularProgressIndicator()
                 : Expanded(
                     child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 32,
                         crossAxisSpacing: 32,
                       ),
-                      itemCount: state.products.length,
+                      itemCount: viewModel.products.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(onTap:(){context.push('/product_page/product_detail_page',extra: {'product' :state.products[index]});},
+                        return GestureDetector(
+                          onTap: () {
+                            context.push('/product_detail_page',
+                                extra: {'product': viewModel.products[index]});
+                          },
                           child: ProductImageWidget(
-                            product: state.products[index],
+                            product: viewModel.products[index],
                           ),
                         );
                       },
