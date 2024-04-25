@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_state.dart';
 
 class SignupViewModel {
@@ -33,6 +35,19 @@ class SignupViewModel {
       return '6자리 이상 입력하세요';
     }
     return null;
+  }
+
+  Future saveUserInfo(String id, String name, String password, String phone, String postcode, String address, String addrDetail, DateTime created) async {
+    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: id, password: password);
+    await FirebaseFirestore.instance.collection('user').doc(created.toString() + id).set({
+      'id': id,
+      'name' : name,
+      'phone' : phone,
+      'postcode' : postcode,
+      'address' : address,
+      'addressDetail' : addrDetail,
+      'created' : created,
+    });
   }
 
 

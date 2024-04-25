@@ -22,6 +22,8 @@ class _SignupPageState extends State<SignupPage> {
   var phoneController = TextEditingController();
   var addressController = TextEditingController();
 
+  late int postCode;
+
   @override
   void dispose() {
     idController.dispose();
@@ -177,11 +179,49 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     TextButton(
                       style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(AppColors.mainButton)),
+                        backgroundColor:
+                            MaterialStatePropertyAll(AppColors.mainButton),
+                      ),
                       onPressed: () {
+                        // TODO: postcode, address 수정
                         if (_formKey.currentState!.validate()) {
-                          _formKey.currentState?.save();
+                          // _formKey.currentState?.save();
+                          viewModel.saveUserInfo(
+                            idController.text,
+                            nameController.text,
+                            passwordController.text,
+                            phoneController.text,
+                            viewModel.zoneCode,
+                            viewModel.address,
+                            addressController.text,
+                            DateTime.now(),
+                          );
+                          AlertDialog(
+                            content: Text('회원가입이 완료되었습니다. 로그인을 해주세요.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // TODO: 로그인 페이지 or 홈페이지로 이동
+                                },
+                                child: const Text('확인'),
+                              ),
+                            ],
+                          );
+                        }
+                        if (passwordController.text !=
+                            passwordConfController.text) {
+                          AlertDialog(
+                            title: Text('알림'),
+                            content: Text('비밀번호가 서로 다릅니다.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('확인'),
+                              ),
+                            ],
+                          );
                         }
                       },
                       child: const Text('회원가입'),

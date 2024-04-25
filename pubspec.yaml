@@ -50,6 +50,7 @@ dependencies:
   daum_postcode_search: ^0.0.2
   kpostal_web: ^0.0.2
   persistent_bottom_nav_bar_v2: ^5.2.2
+  firebase_auth: ^4.19.4
 
 
 dev_dependencies:
