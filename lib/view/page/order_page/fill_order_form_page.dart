@@ -52,7 +52,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('주문서 작성'),
+                  Text(
+                    '주문서 작성',
+                    style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+                  ),
                   Text('* 표시된 항목은 필수 입력해야 합니다.'),
                 ],
               ),
@@ -86,76 +89,72 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                               flex: 2,
                               child: index == 2
                                   ? Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  TextFormField(
-                                    style:
-                                    const TextStyle(fontSize: 12),
-                                    decoration: InputDecoration(
-                                        border: const OutlineInputBorder(),
-                                        hintText: (viewModel
-                                            .daumPostcodeSearchDataModel
-                                            ?.zonecode !=
-                                            null)
-                                            ? viewModel
-                                            .daumPostcodeSearchDataModel!
-                                            .zonecode
-                                            : '',
-                                        suffixIcon: ElevatedButton(
-                                            onPressed: () async {
-                                              try {
-                                                DataModel model =
-                                                await Navigator.of(
-                                                    context)
-                                                    .push(
-                                                  MaterialPageRoute(
-                                                      builder:
-                                                          (context) =>
-                                                      check.pr),
-                                                );
-                                                setState(
-                                                      () {
-                                                    viewModel
-                                                        .daumPostcodeSearchDataModel =
-                                                        model;
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextFormField(
+                                          style: const TextStyle(fontSize: 12),
+                                          decoration: InputDecoration(
+                                              border:
+                                                  const OutlineInputBorder(),
+                                              hintText: (viewModel
+                                                          .daumPostcodeSearchDataModel
+                                                          ?.zonecode !=
+                                                      null)
+                                                  ? viewModel
+                                                      .daumPostcodeSearchDataModel!
+                                                      .zonecode
+                                                  : '',
+                                              suffixIcon: ElevatedButton(
+                                                  onPressed: () async {
+                                                    try {
+                                                      DataModel model =
+                                                          await Navigator.of(
+                                                                  context)
+                                                              .push(
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    check.pr),
+                                                      );
+                                                      setState(
+                                                        () {
+                                                          viewModel
+                                                                  .daumPostcodeSearchDataModel =
+                                                              model;
+                                                        },
+                                                      );
+                                                    } catch (error) {
+                                                      print(error);
+                                                    }
                                                   },
-                                                );
-                                              } catch (error) {
-                                                print(error);
-                                              }
-                                            },
-                                            child: Text('주소검색'))
-                                    ),
-                                    readOnly: true,
-                                  ),
-                                  TextFormField(
-                                    style: const TextStyle(fontSize: 12),
-                                    decoration: InputDecoration(
-                                        border:
-                                        const OutlineInputBorder(),
-                                        hintText: (viewModel
-                                            .daumPostcodeSearchDataModel
-                                            ?.address !=
-                                            null)
-                                            ? viewModel
-                                            .daumPostcodeSearchDataModel!
-                                            .address
-                                            : '',
+                                                  child: Text('주소검색'))),
+                                          readOnly: true,
                                         ),
-                                    readOnly: true,
-                                  ),
-
-                                ],
-                              )
+                                        TextFormField(
+                                          style: const TextStyle(fontSize: 12),
+                                          decoration: InputDecoration(
+                                            border: const OutlineInputBorder(),
+                                            hintText: (viewModel
+                                                        .daumPostcodeSearchDataModel
+                                                        ?.address !=
+                                                    null)
+                                                ? viewModel
+                                                    .daumPostcodeSearchDataModel!
+                                                    .address
+                                                : '',
+                                          ),
+                                          readOnly: true,
+                                        ),
+                                      ],
+                                    )
                                   : TextFormField(
                                       style: const TextStyle(fontSize: 12),
                                       decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
                                       ),
                                       controller: controllers[index],
-                                    )
-                                  ,
+                                    ),
                             ),
                           ],
                         ),
@@ -182,7 +181,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                       onPressed: () {
                         //TODO: 결재페이지로 이동
                       },
-                      child: const Text('결재하기'),
+                      child: const Text('결제하기'),
                     ),
                   ],
                 ),

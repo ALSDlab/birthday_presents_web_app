@@ -12,7 +12,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-
   final filterController = TextEditingController();
 
   @override
@@ -36,7 +35,10 @@ class _ProductPageState extends State<ProductPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('민영기 염소탕'),
+        title: const Text(
+          '민영기 염소탕',
+          style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+        ),
         centerTitle: true,
       ),
       body: Padding(

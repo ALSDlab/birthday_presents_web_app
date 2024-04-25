@@ -22,7 +22,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('민영기 염소탕'),
+        title: const Text(
+          '민영기 염소탕',
+          style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

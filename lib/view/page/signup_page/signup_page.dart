@@ -57,7 +57,7 @@ class _SignupPageState extends State<SignupPage> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('기본정보'),
+                  Text('기본정보', style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),),
                   Text('* 표시된 항목은 필수 입력해야 합니다.'),
                 ],
               ),

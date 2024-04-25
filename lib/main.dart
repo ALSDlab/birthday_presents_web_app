@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          fontFamily: 'Jalnan',
+          fontFamily: 'Kopub',
 // useMaterial3: false,
           colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF325c6a)),
         ),

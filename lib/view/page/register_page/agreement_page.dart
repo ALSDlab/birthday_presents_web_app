@@ -30,7 +30,7 @@ class _AgreementPageState extends State<AgreementPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Center(child: Text('약관 동의')),
+              const Center(child: Text('약관 동의', style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),)),
               Expanded(
                 child: ListView(
                   children: [

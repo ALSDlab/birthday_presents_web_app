@@ -26,7 +26,8 @@ class _MainPageState extends State<MainPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: Text('민영기 염소탕 회사소개'),
+        title: const Text('민영기 염소탕 회사소개', style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+        ),
       ),
       body: Column(
         children: [

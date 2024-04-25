@@ -26,12 +26,15 @@ final router = GoRouter(
             item: ItemConfig(
               icon: const Icon(Icons.home),
               title: "홈",
+                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)
+
             ),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
               icon: const Icon(Icons.format_align_justify),
               title: "상품",
+              textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)
             ),
           ),
           PersistentRouterTabConfig(
@@ -40,6 +43,8 @@ final router = GoRouter(
                 Icons.shopping_cart,
               ),
               title: "장바구니",
+                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)
+
             ),
           ),
           PersistentRouterTabConfig(
@@ -48,6 +53,8 @@ final router = GoRouter(
                 Icons.person,
               ),
               title: "마이페이지",
+                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)
+
             ),
           ),
         ],
@@ -79,21 +86,6 @@ final router = GoRouter(
                 create: (_) => ProductViewModel(),
                 child: const ProductPage(),
               ),
-              routes: [
-                GoRoute(
-                  path: "product_detail_page",
-                  builder: (context, state) {
-                    final productDetailMap =
-                        state.extra! as Map<String, dynamic>;
-                    return ChangeNotifierProvider(
-                      create: (_) => ProductDetailPageViewModel(),
-                      child: ProductDetailPage(
-                        product: productDetailMap['product'],
-                      ),
-                    );
-                  },
-                ),
-              ],
             ),
           ],
         ),
@@ -121,6 +113,19 @@ final router = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: "/product_detail_page",
+      builder: (context, state) {
+        final productDetailMap =
+        state.extra! as Map<String, dynamic>;
+        return ChangeNotifierProvider(
+          create: (_) => ProductDetailPageViewModel(),
+          child: ProductDetailPage(
+            product: productDetailMap['product'],
+          ),
+        );
+      },
     ),
   ],
 );

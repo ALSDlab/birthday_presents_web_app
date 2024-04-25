@@ -97,6 +97,12 @@ flutter:
     - family: Jalnan
       fonts:
         - asset: assets/fonts/Jalnan2TTF.ttf
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Regular.ttf
+    - family: KoPub
+      fonts:
+        - asset: assets/fonts/KoPubWorld Dotum Bold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
