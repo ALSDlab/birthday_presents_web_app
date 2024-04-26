@@ -35,7 +35,7 @@ class SignupViewModel {
     return null;
   }
 
-  Future saveUserInfo(String id, String name, String password, String phone, String postcode, String address, String addrDetail, int created) async {
+  Future saveUserInfo(String id, String name, String password, String phone, String postcode, String address, String addrDetail, int created, bool checked) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: id, password: password);
     } catch (e) {
@@ -49,6 +49,7 @@ class SignupViewModel {
       'address' : address,
       'addressDetail' : addrDetail,
       'created' : created,
+      'checked' : checked,
     });
   }
 

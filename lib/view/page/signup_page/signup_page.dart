@@ -245,6 +245,7 @@ class _SignupPageState extends State<SignupPage> {
                                   viewModel.address,
                               addressController.text,
                               DateTime.now().millisecondsSinceEpoch,
+                              false,
                             );
                             showDialog(
                               context: context,
