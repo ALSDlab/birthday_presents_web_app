@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:myk_market_app/view/page/signup_page/signup_state.dart';
 
 class SignupViewModel {
   static final SignupViewModel _instance = SignupViewModel._internal();
@@ -12,7 +11,6 @@ class SignupViewModel {
 
   SignupViewModel._internal();
 
-  // SignupState state = const SignupState(address: 'wn', zoneCode: 'dn');
   final gridLeftArray = ['아이디', '비밀번호', '비밀번호 확인', '이름', '휴대폰 번호', '주소'];
   DataModel? daumPostcodeSearchDataModel;
 
@@ -37,8 +35,12 @@ class SignupViewModel {
     return null;
   }
 
-  Future saveUserInfo(String id, String name, String password, String phone, String postcode, String address, String addrDetail, DateTime created) async {
-    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: id, password: password);
+  Future saveUserInfo(String id, String name, String password, String phone, String postcode, String address, String addrDetail, int created) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: id, password: password);
+    } catch (e) {
+      print(e);
+    }
     await FirebaseFirestore.instance.collection('user').doc(created.toString() + id).set({
       'id': id,
       'name' : name,
@@ -48,6 +50,20 @@ class SignupViewModel {
       'addressDetail' : addrDetail,
       'created' : created,
     });
+  }
+
+  Future<bool> checkIfIdInUse(String id) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance
+          .collection('user')
+          .where('id', isEqualTo: id)
+          .get();
+      return query.docs.isNotEmpty; // 이미 사용 중
+    } catch (e) {
+      // ignore: avoid_print
+      print('에러: $e');
+      return false;
+    }
   }
 
 
