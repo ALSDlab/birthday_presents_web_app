@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
@@ -26,26 +25,31 @@ class _MainPageState extends State<MainPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('민영기 염소탕 회사소개', style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+        title: const Text(
+          '민영기 염소탕 회사소개',
+          style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
         ),
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(child: Image.network(state.storeList[0].titleImage)),
-            ],
-          ),
-          Text('BRAND STORY'),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(state.storeList[0].introText),
-          ),
-        ],
-      ),
+      body: state.storeList.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                        child: Image.network(state.storeList[0].titleImage)),
+                  ],
+                ),
+                const Text('BRAND STORY'),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(state.storeList[0].introText),
+                ),
+              ],
+            ),
     );
   }
 }
