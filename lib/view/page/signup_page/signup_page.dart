@@ -1,5 +1,6 @@
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
 import 'package:myk_market_app/styles/app_text_colors.dart';
@@ -21,8 +22,6 @@ class _SignupPageState extends State<SignupPage> {
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
   var addressController = TextEditingController();
-
-  late int postCode;
 
   @override
   void dispose() {
@@ -46,7 +45,6 @@ class _SignupPageState extends State<SignupPage> {
     ];
 
     final viewModel = SignupViewModel();
-    // final state = viewModel.state;
 
     return Scaffold(
       body: SafeArea(
@@ -57,7 +55,10 @@ class _SignupPageState extends State<SignupPage> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('기본정보', style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),),
+                  Text(
+                    '기본정보',
+                    style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+                  ),
                   Text('* 표시된 항목은 필수 입력해야 합니다.'),
                 ],
               ),
@@ -150,6 +151,15 @@ class _SignupPageState extends State<SignupPage> {
                                         if (value == null || value.isEmpty) {
                                           return '필수항목입니다.';
                                         }
+                                        if (index == 0) {
+                                          viewModel
+                                              .checkIfIdInUse(idController.text)
+                                              .then((value) {
+                                            if (value) {
+                                              return '사용중인 아이디입니다.';
+                                            }
+                                          });
+                                        }
                                         return null;
                                       },
                                       style: TextStyle(fontSize: 12),
@@ -183,45 +193,77 @@ class _SignupPageState extends State<SignupPage> {
                             MaterialStatePropertyAll(AppColors.mainButton),
                       ),
                       onPressed: () {
-                        // TODO: postcode, address 수정
-                        if (_formKey.currentState!.validate()) {
-                          // _formKey.currentState?.save();
-                          viewModel.saveUserInfo(
-                            idController.text,
-                            nameController.text,
-                            passwordController.text,
-                            phoneController.text,
-                            viewModel.zoneCode,
-                            viewModel.address,
-                            addressController.text,
-                            DateTime.now(),
-                          );
-                          AlertDialog(
-                            content: Text('회원가입이 완료되었습니다. 로그인을 해주세요.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  // TODO: 로그인 페이지 or 홈페이지로 이동
-                                },
-                                child: const Text('확인'),
-                              ),
-                            ],
-                          );
-                        }
                         if (passwordController.text !=
                             passwordConfController.text) {
-                          AlertDialog(
-                            title: Text('알림'),
-                            content: Text('비밀번호가 서로 다릅니다.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('확인'),
-                              ),
-                            ],
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('알림'),
+                                content: Text('비밀번호가 서로 다릅니다.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('확인'),
+                                  ),
+                                ],
+                              );
+                            },
                           );
+                        } else if (viewModel
+                                    .daumPostcodeSearchDataModel?.address ==
+                                null &&
+                            viewModel.address == '') {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                  content: Text('주소검색을 해주세요.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('확인'),
+                                    )
+                                  ]);
+                            },
+                          );
+                        } else {
+                          if (_formKey.currentState!.validate()) {
+                            // _formKey.currentState?.save();
+                            viewModel.saveUserInfo(
+                              idController.text,
+                              nameController.text,
+                              passwordController.text,
+                              phoneController.text,
+                              viewModel.daumPostcodeSearchDataModel?.zonecode ??
+                                  viewModel.zoneCode,
+                              viewModel.daumPostcodeSearchDataModel?.address ??
+                                  viewModel.address,
+                              addressController.text,
+                              DateTime.now().millisecondsSinceEpoch,
+                            );
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: Text('회원가입이 완료되었습니다. 로그인을 해주세요.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        context.go('/main_page');
+                                      },
+                                      child: const Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         }
                       },
                       child: const Text('회원가입'),
