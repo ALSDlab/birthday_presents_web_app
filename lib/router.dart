@@ -8,6 +8,7 @@ import 'package:myk_market_app/view/page/product_detail_page/product_detail_page
 import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:myk_market_app/view/page/register_page/agreement_page.dart';
+import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:provider/provider.dart';
@@ -24,38 +25,31 @@ final router = GoRouter(
         tabs: [
           PersistentRouterTabConfig(
             item: ItemConfig(
-              icon: const Icon(Icons.home),
-              title: "홈",
-                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)
-
-            ),
+                icon: const Icon(Icons.home),
+                title: "홈",
+                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-              icon: const Icon(Icons.format_align_justify),
-              title: "상품",
-              textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)
-            ),
+                icon: const Icon(Icons.format_align_justify),
+                title: "상품",
+                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-              icon: const Icon(
-                Icons.shopping_cart,
-              ),
-              title: "장바구니",
-                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)
-
-            ),
+                icon: const Icon(
+                  Icons.shopping_cart,
+                ),
+                title: "장바구니",
+                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-              icon: const Icon(
-                Icons.person,
-              ),
-              title: "마이페이지",
-                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)
-
-            ),
+                icon: const Icon(
+                  Icons.person,
+                ),
+                title: "마이페이지",
+                textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
         ],
         navBarBuilder: (navBarConfig) => Style4BottomNavBar(
@@ -91,10 +85,11 @@ final router = GoRouter(
         ),
         // 장바구니 페이지
         StatefulShellBranch(
+          // navigatorKey: _shellNavigatorKey,
           routes: <RouteBase>[
             GoRoute(
               path: "/shopping_cart_page",
-              builder: (context, state) => const FillOrderFormPage(),
+              builder: (context, state) => const ShoppingCartPage(),
             ),
           ],
         ),
@@ -117,13 +112,23 @@ final router = GoRouter(
     GoRoute(
       path: "/product_detail_page",
       builder: (context, state) {
-        final productDetailMap =
-        state.extra! as Map<String, dynamic>;
+        final productDetailMap = state.extra! as Map<String, dynamic>;
         return ChangeNotifierProvider(
           create: (_) => ProductDetailPageViewModel(),
           child: ProductDetailPage(
             product: productDetailMap['product'],
           ),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/fill_order_page",
+      builder: (context, state) {
+        final fillOrderFormPageMap = state.extra! as Map<String, dynamic>;
+        return FillOrderFormPage(
+          title: fillOrderFormPageMap['title'],
+          count: fillOrderFormPageMap['count'],
+          price: fillOrderFormPageMap['price'],
         );
       },
     ),

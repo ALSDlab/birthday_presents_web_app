@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
@@ -328,7 +329,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           backgroundColor:
                                               const Color(0xFF2F362F),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context
+                                              .push('/fill_order_page', extra: {
+                                            'title': widget.product.title,
+                                            'count': viewModel.purchaseCount,
+                                            'price': widget.product.price
+                                          });
+                                        },
                                         child: const Text(
                                           '구매하기',
                                           style: TextStyle(color: Colors.white),

@@ -7,7 +7,16 @@ import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.d
 import '../../../styles/app_text_colors.dart';
 
 class FillOrderFormPage extends StatefulWidget {
-  const FillOrderFormPage({super.key});
+
+  FillOrderFormPage({super.key,
+    required this.title,
+    required this.count,
+    required this.price,
+  });
+
+  String title;
+  int count;
+  String price;
 
   @override
   State<FillOrderFormPage> createState() => _FillOrderFormPageState();
