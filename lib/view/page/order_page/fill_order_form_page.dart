@@ -4,19 +4,13 @@ import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_mo
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
 
+import '../../../data/model/order_model.dart';
 import '../../../styles/app_text_colors.dart';
 
 class FillOrderFormPage extends StatefulWidget {
+  FillOrderFormPage({super.key, required this.forOrderItems});
 
-  FillOrderFormPage({super.key,
-    required this.title,
-    required this.count,
-    required this.price,
-  });
-
-  String title;
-  int count;
-  String price;
+  List<OrderModel> forOrderItems;
 
   @override
   State<FillOrderFormPage> createState() => _FillOrderFormPageState();

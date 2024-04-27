@@ -344,11 +344,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             count: viewModel.cartCount,
                                           );
                                           context
-                                              .push('/fill_order_page', extra: {
-                                            'title': widget.product.title,
-                                            'count': viewModel.purchaseCount,
-                                            'price': widget.product.price
-                                          });
+                                              .push('/fill_order_page', extra: [directOrderItem]);
                                         },
                                         child: const Text(
                                           '구매하기',
