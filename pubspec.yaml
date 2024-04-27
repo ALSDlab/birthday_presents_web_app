@@ -51,6 +51,7 @@ dependencies:
   kpostal_web: ^0.0.2
   persistent_bottom_nav_bar_v2: ^5.2.2
   firebase_auth: ^4.19.4
+  shared_preferences: ^2.2.3
 
 
 dev_dependencies:
