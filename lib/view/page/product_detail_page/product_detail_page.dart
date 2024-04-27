@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
+import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
+
+import '../../../data/model/order_model.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
@@ -122,7 +125,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         return StatefulBuilder(builder:
                             (BuildContext context, StateSetter setState) {
                           return SizedBox(
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -145,7 +151,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         borderRadius: BorderRadius.zero),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
@@ -182,11 +188,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       left: 16, top: 16, right: 16, bottom: 4),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text('수량 ${viewModel.cartCount}개'),
                                       Text(
-                                          '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
+                                          '${viewModel.formatKoreanNumber(
+                                              viewModel.cartCount * int.parse(
+                                                  widget.product.price
+                                                      .replaceAll(',', '')))}원')
                                     ],
                                   ),
                                 ),
@@ -201,9 +210,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.zero),
                                           backgroundColor:
-                                              const Color(0xFF2F362F),
+                                          const Color(0xFF2F362F),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          final item = ShoppingProductForCart(
+                                              orderId: widget.product.productId,
+                                              orderProductName: widget.product
+                                                  .title,
+                                              price: widget.product.price,
+                                              count: viewModel.cartCount);
+                                          await viewModel.addToShoppingCartList(
+                                              item, context);
+                                        },
                                         child: const Text(
                                           '장바구니 담기',
                                           style: TextStyle(color: Colors.white),
@@ -240,7 +258,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         return StatefulBuilder(builder:
                             (BuildContext context, StateSetter setState) {
                           return SizedBox(
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -263,7 +284,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         borderRadius: BorderRadius.zero),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
@@ -307,11 +328,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       left: 16, top: 16, right: 16, bottom: 4),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text('수량 ${viewModel.purchaseCount}개'),
                                       Text(
-                                          '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
+                                          '${viewModel.formatKoreanNumber(
+                                              viewModel.purchaseCount *
+                                                  int.parse(widget.product.price
+                                                      .replaceAll(',', '')))}원')
                                     ],
                                   ),
                                 ),
@@ -326,9 +350,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.zero),
                                           backgroundColor:
-                                              const Color(0xFF2F362F),
+                                          const Color(0xFF2F362F),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          final OrderModel directOrderItem = OrderModel(
+                                              orderId:widget.product.productId,
+                                              orderProductName: widget.product
+                                                  .title,
+                                              representativeImage: widget.product.representativeImage,
+                                              price: widget.product.price,
+                                              count: viewModel.cartCount,
+                                              );
+
+
+                                        },
                                         child: const Text(
                                           '구매하기',
                                           style: TextStyle(color: Colors.white),
