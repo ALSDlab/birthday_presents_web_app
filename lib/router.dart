@@ -103,7 +103,7 @@ final router = GoRouter(
                 routes: [
                   GoRoute(
                     path: "signup_page",
-                    builder: (context, state) => const SignupPage(),
+                    builder: (context, state) => SignupPage(isPersonalInfoForDeliverChecked: state.extra! as bool,),
                   ),
                 ]),
           ],

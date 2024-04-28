@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/register_page/agreement_texts.dart';
-import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 
 import '../../../styles/app_text_colors.dart';
 
@@ -30,12 +30,20 @@ class _AgreementPageState extends State<AgreementPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Row(mainAxisAlignment: MainAxisAlignment.start,
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('회원가입', style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),),
+                  Text(
+                    '회원가입',
+                    style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+                  ),
                 ],
               ),
-              const Center(child: Text('약관 동의', style: TextStyle(fontSize: 20),)),
+              const Center(
+                  child: Text(
+                '약관 동의',
+                style: TextStyle(fontSize: 20),
+              )),
               Expanded(
                 child: ListView(
                   children: [
@@ -102,9 +110,13 @@ class _AgreementPageState extends State<AgreementPage> {
                         ),
                       ],
                     ),
-                    isTermsNConditionsOpened
-                        ? Text(agreementTexts[0])
-                        : Container(),
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 500),
+                      child: SizedBox(
+                          height: isTermsNConditionsOpened? null : 0.0,
+                          child: Text(agreementTexts[0]),
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -149,9 +161,13 @@ class _AgreementPageState extends State<AgreementPage> {
                         ),
                       ],
                     ),
-                    isPersonalInfoOpened
-                        ? Text(agreementTexts[1])
-                        : Container(),
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 500),
+                      child: SizedBox(
+                        height: isPersonalInfoOpened? null : 0.0,
+                        child: Text(agreementTexts[1]),
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -197,21 +213,26 @@ class _AgreementPageState extends State<AgreementPage> {
                         ),
                       ],
                     ),
-                    isPersonalInfoForDeliverOpened
-                        ? Text(agreementTexts[2])
-                        : Container(),
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 500),
+                      child: SizedBox(
+                        height: isPersonalInfoForDeliverOpened? null : 0.0,
+                        child: Text(agreementTexts[2]),
+                      ),
+                    ),
                   ],
                 ),
               ),
               Visibility(
-                visible: (inevitableChecked == true && isTermsNConditionsChecked == false),
+                visible: (inevitableChecked == true &&
+                    isTermsNConditionsChecked == false),
                 child: const Text('(필수) 이용약관 을 체크해주세요.'),
-
               ),
               Visibility(
-                visible: (inevitableChecked == true && isTermsNConditionsChecked == true && isPersonalInfoChecked == false),
+                visible: (inevitableChecked == true &&
+                    isTermsNConditionsChecked == true &&
+                    isPersonalInfoChecked == false),
                 child: const Text('(필수) 개인정보 수집 및 이용 을 체크해주세요.'),
-
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -243,13 +264,9 @@ class _AgreementPageState extends State<AgreementPage> {
                         setState(() {
                           inevitableChecked = true;
                         });
-                      }
-                      else {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const SignupPage(),
-                          ),
-                        );
+                      } else {
+                        context.push('/my_detail_page/signup_page',
+                            extra: isPersonalInfoForDeliverChecked);
                       }
                     },
                     style: ButtonStyle(

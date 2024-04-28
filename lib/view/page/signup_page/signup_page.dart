@@ -7,7 +7,9 @@ import 'package:myk_market_app/styles/app_text_colors.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+  const SignupPage({super.key, required this.isPersonalInfoForDeliverChecked});
+
+  final bool isPersonalInfoForDeliverChecked;
 
   @override
   State<SignupPage> createState() => _SignupPageState();
