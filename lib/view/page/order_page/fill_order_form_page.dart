@@ -6,6 +6,7 @@ import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.d
 
 import '../../../data/model/order_model.dart';
 import '../../../styles/app_text_colors.dart';
+import 'for_order_list_widget.dart';
 
 class FillOrderFormPage extends StatefulWidget {
   FillOrderFormPage({super.key, required this.forOrderItems});
@@ -46,11 +47,13 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
     ];
 
     final viewModel = FillOrderFormPageViewModel();
+    print(widget.forOrderItems.length);
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             children: [
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,10 +66,23 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                 ],
               ),
               const Divider(),
-              const Text('주문 상품'),
-              //TODO: 주문 상품 불러오기
+              const Text('주문 상품', style: TextStyle(fontSize: 18),),
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 16),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: widget.forOrderItems.length,
+                  itemBuilder: (context, index) {
+                    final forOrderItem = widget.forOrderItems[index];
+                    return ForOrderListWidget(
+                      orderItem: forOrderItem,
+                    );
+                  },
+                ),
+              ),
               const Divider(),
-              const Text('배송 정보'),
+              const Text('배송 정보', style: TextStyle(fontSize: 18),),
               Expanded(
                 child: Form(
                   key: _formKey,

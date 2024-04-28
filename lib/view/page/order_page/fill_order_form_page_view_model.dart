@@ -22,4 +22,6 @@ class FillOrderFormPageViewModel {
     _address = newAddress;
     _zoneCode = newZoneCode;
   }
+
+
 }

@@ -35,13 +35,7 @@ class User {
 
   @override
   String toString() {
-    return 'User{' +
-        ' name: $name,' +
-        ' id: $id,' +
-        ' password: $password,' +
-        ' phone: $phone,' +
-        ' address: $address,' +
-        '}';
+    return 'User{ name: $name, id: $id, password: $password, phone: $phone, address: $address,}';
   }
 
   User copyWith({
@@ -60,17 +54,17 @@ class User {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'name': this.name,
-      'id': this.id,
-      'password': this.password,
-      'phone': this.phone,
-      'address': this.address,
+      'name': name,
+      'id': id,
+      'password': password,
+      'phone': phone,
+      'address': address,
     };
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
+  factory User.fromJson(Map<String, dynamic> map) {
     return User(
       name: map['name'] as String,
       id: map['id'] as String,

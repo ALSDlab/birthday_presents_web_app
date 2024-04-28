@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
-import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -333,18 +333,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               const Color(0xFF2F362F),
                                         ),
                                         onPressed: () {
+                                          final createdDate =
+                                              DateFormat('ddMMyyHHmmss')
+                                                  .format(DateTime.now());
                                           final OrderModel directOrderItem =
                                               OrderModel(
-                                            orderId: widget.product.productId,
+                                            orderId: createdDate +
+                                                widget.product.productId,
                                             orderProductName:
                                                 widget.product.title,
                                             representativeImage: widget
                                                 .product.representativeImage,
                                             price: widget.product.price,
-                                            count: viewModel.cartCount,
+                                            count: viewModel.purchaseCount,
+                                            orderedDate: createdDate,
                                           );
-                                          context
-                                              .push('/fill_order_page', extra: [directOrderItem]);
+                                          context.push('/fill_order_page',
+                                              extra: [directOrderItem]);
                                         },
                                         child: const Text(
                                           '구매하기',
