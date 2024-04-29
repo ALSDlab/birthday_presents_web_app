@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
+
+import '../../../data/model/order_model.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
@@ -330,12 +333,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               const Color(0xFF2F362F),
                                         ),
                                         onPressed: () {
-                                          context
-                                              .push('/fill_order_page', extra: {
-                                            'title': widget.product.title,
-                                            'count': viewModel.purchaseCount,
-                                            'price': widget.product.price
-                                          });
+                                          final createdDate =
+                                              DateFormat('ddMMyyHHmmss')
+                                                  .format(DateTime.now());
+                                          final OrderModel directOrderItem =
+                                              OrderModel(
+                                            orderId: createdDate +
+                                                widget.product.productId,
+                                            orderProductName:
+                                                widget.product.title,
+                                            representativeImage: widget
+                                                .product.representativeImage,
+                                            price: widget.product.price,
+                                            count: viewModel.purchaseCount,
+                                            orderedDate: createdDate,
+                                          );
+                                          context.push('/fill_order_page',
+                                              extra: [directOrderItem]);
                                         },
                                         child: const Text(
                                           '구매하기',

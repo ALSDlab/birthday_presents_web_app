@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductDetailPageViewModel extends ChangeNotifier {
   ProductDetailPageState _state = ProductDetailPageState();
@@ -17,6 +21,7 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     if (purchaseCount > 1) purchaseCount--;
     notifyListeners();
   }
+
   void plusCartCount() {
     cartCount++;
     notifyListeners();
@@ -44,4 +49,76 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     }
     return buffer.toString();
   }
+
+  // shared_preferences를 이용하여 장바구니에 담는 기능 구현 (장바구니에서 삭제하는 기능 포함)
+  static const String _key = 'shoppingCartList';
+
+  // 장바구니 불러오는 기능
+  static Future<List<ShoppingProductForCart>> getShoppingCartList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? selectedProducts = prefs.getString(_key);
+
+    if (selectedProducts != null) {
+      // 저장된 데이터가 있다면 JSON을 파싱하여 리스트로 변환
+      final jsonList = jsonDecode(selectedProducts) as List<dynamic>;
+      return jsonList.map((e) => ShoppingProductForCart.fromJson(e)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  // 장바구니에 담는 메서드
+  Future<void> addToShoppingCartList(
+      ShoppingProductForCart item, BuildContext context) async {
+    List<ShoppingProductForCart> currentList = await getShoppingCartList();
+
+    // 중복 체크
+    var index = currentList.indexWhere(
+        (product) => product.orderId == item.orderId);
+    if (index == -1) {
+      currentList.add(item);
+    } else {
+      currentList[index].count += item.count;
+    }
+    // 다시 저장
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonString =
+    jsonEncode(currentList.map((e) => e.toJson()).toList());
+    prefs.setString(_key, jsonString);
+
+    // 스낵바로 표시
+    if (context.mounted) {
+      cartAddSnackBar(context);
+    }
+  }
+
+  // 스낵바 구현 매서드
+  void cartAddSnackBar(BuildContext context) {
+    const snackBar = SnackBar(
+      content: Text('장바구니에 담겼습니다.', style: TextStyle(fontFamily: 'Jalnan')),
+      duration: Duration(seconds: 1),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+
+  // 장바구니에서 제거하는 기능
+  Future<void> removeFromCartList(ShoppingProductForCart item) async {
+    try {
+      List<ShoppingProductForCart> currentList = await getShoppingCartList();
+      currentList.remove(item);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String jsonString =
+          jsonEncode(currentList.map((e) => e.toJson()).toList());
+      prefs.setString(_key, jsonString);
+    } catch (e) {
+      print('Error during removal: $e');
+    }
+  }
+
+
+
+
+
 }
