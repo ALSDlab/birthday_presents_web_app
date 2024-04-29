@@ -37,6 +37,12 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    SignupViewModel().getUserArray();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final controllers = [
       idController,
@@ -154,13 +160,14 @@ class _SignupPageState extends State<SignupPage> {
                                           return '필수항목입니다.';
                                         }
                                         if (index == 0) {
-                                          viewModel
-                                              .checkIfIdInUse(idController.text)
-                                              .then((value) {
-                                            if (value) {
+                                            if (viewModel.userArray.contains(idController.text)) {
                                               return '사용중인 아이디입니다.';
                                             }
-                                          });
+                                        }
+                                        if (index == 1) {
+                                          if (passwordController.text.length < 6) {
+                                            return '6자리 이상 입력해주세요.';
+                                          }
                                         }
                                         return null;
                                       },
@@ -236,7 +243,7 @@ class _SignupPageState extends State<SignupPage> {
                         } else {
                           if (_formKey.currentState!.validate()) {
                             // _formKey.currentState?.save();
-                            viewModel.saveUserInfo(
+                            final message = viewModel.saveUserInfo(
                               idController.text,
                               nameController.text,
                               passwordController.text,
@@ -247,7 +254,7 @@ class _SignupPageState extends State<SignupPage> {
                                   viewModel.address,
                               addressController.text,
                               DateTime.now().millisecondsSinceEpoch,
-                              false,
+                              widget.isPersonalInfoForDeliverChecked,
                             );
                             showDialog(
                               context: context,

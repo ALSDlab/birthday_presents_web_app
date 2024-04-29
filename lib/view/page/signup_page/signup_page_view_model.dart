@@ -17,7 +17,10 @@ class SignupViewModel {
   String _address = '';
   String _zoneCode = '';
 
+  List<String> userArray = [];
+
   String get address => _address;
+
   String get zoneCode => _zoneCode;
 
   void setAddress(String newAddress, String newZoneCode) {
@@ -35,37 +38,49 @@ class SignupViewModel {
     return null;
   }
 
-  Future saveUserInfo(String id, String name, String password, String phone, String postcode, String address, String addrDetail, int created, bool checked) async {
+  Future saveUserInfo(
+      String id,
+      String name,
+      String password,
+      String phone,
+      String postcode,
+      String address,
+      String addrDetail,
+      int created,
+      bool checked) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: id, password: password);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: '$id@gmail.com', password: password);
     } catch (e) {
-      print(e);
+      return e.toString();
     }
-    await FirebaseFirestore.instance.collection('user').doc(created.toString() + id).set({
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(created.toString() + id)
+        .set({
       'id': id,
-      'name' : name,
-      'phone' : phone,
-      'postcode' : postcode,
-      'address' : address,
-      'addressDetail' : addrDetail,
-      'created' : created,
-      'checked' : checked,
+      'name': name,
+      'phone': phone,
+      'postcode': postcode,
+      'address': address,
+      'addressDetail': addrDetail,
+      'created': created,
+      'checked': checked,
     });
   }
 
-  Future<bool> checkIfIdInUse(String id) async {
+  Future getUserArray() async {
     try {
-      QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance
-          .collection('user')
-          .where('id', isEqualTo: id)
-          .get();
-      return query.docs.isNotEmpty; // 이미 사용 중
+      QuerySnapshot<Map<String, dynamic>> query =
+          await FirebaseFirestore.instance.collection('user').get();
+
+      for (var element in query.docs) {
+        String userId = element.data()['id'];
+        userArray.add(userId);
+      }
     } catch (e) {
-      // ignore: avoid_print
       print('에러: $e');
       return false;
     }
   }
-
-
 }

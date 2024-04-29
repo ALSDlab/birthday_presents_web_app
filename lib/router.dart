@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
+import 'package:myk_market_app/view/page/login_page/login_page.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page.dart';
@@ -98,14 +99,21 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: <RouteBase>[
             GoRoute(
-                path: "/my_detail_page",
-                builder: (context, state) => const AgreementPage(),
+                path: "/login_page",
+                builder:(context, state) => const LoginPage(),
                 routes: [
                   GoRoute(
-                    path: "signup_page",
-                    builder: (context, state) => SignupPage(isPersonalInfoForDeliverChecked: state.extra! as bool,),
-                  ),
-                ]),
+                      path: "my_detail_page",
+                      builder: (context, state) => const AgreementPage(),
+                      routes: [
+                        GoRoute(
+                          path: "signup_page",
+                          builder: (context, state) => SignupPage(isPersonalInfoForDeliverChecked: state.extra! as bool,),
+                        ),
+                      ]),
+                ]
+            )
+
           ],
         ),
       ],
