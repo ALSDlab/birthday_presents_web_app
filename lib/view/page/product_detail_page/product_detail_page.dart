@@ -3,9 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
+import '../../../data/model/shopping_cart_model.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
@@ -207,7 +209,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           backgroundColor:
                                               const Color(0xFF2F362F),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          final ShoppingProductForCart
+                                          shoppingCartItem =
+                                          ShoppingProductForCart(
+                                            orderId: widget.product.productId,
+                                            orderProductName:
+                                            widget.product.title,
+                                            representativeImage: widget
+                                                .product.representativeImage,
+                                            price: widget.product.price,
+                                            count: viewModel.cartCount,
+                                          );
+                                          GoRouter.of(context).go('/shopping_cart_page',
+                                            extra: [shoppingCartItem],);
+                                        },
                                         child: const Text(
                                           '장바구니 담기',
                                           style: TextStyle(color: Colors.white),
@@ -333,13 +349,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               const Color(0xFF2F362F),
                                         ),
                                         onPressed: () {
-                                          final createdDate =
-                                              DateFormat('ddMMyyHHmmss')
-                                                  .format(DateTime.now());
+                                          final createdDate = DateTime.now().toString().substring(2, 10).replaceAll('-', '');
                                           final OrderModel directOrderItem =
                                               OrderModel(
-                                            orderId: createdDate +
-                                                widget.product.productId,
+                                            orderId: viewModel.generateLicensePlate(createdDate),
                                             orderProductName:
                                                 widget.product.title,
                                             representativeImage: widget

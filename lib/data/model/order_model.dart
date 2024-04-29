@@ -14,14 +14,15 @@ abstract class OrderModel with _$OrderModel {
     @JsonKey(name: 'price') required String price,
     @JsonKey(name: 'count') required int count,
     @JsonKey(name: 'orderedDate') String? orderedDate,
-    @JsonKey(name: 'orderFormAgreement') bool? orderFormAgreement,
+    @JsonKey(name: 'personalInfoForDeliverChecked') bool? personalInfoForDeliverChecked,
     @JsonKey(name: 'ordererId') String? ordererId,
     @JsonKey(name: 'ordererName') String? ordererName,
     @JsonKey(name: 'ordererPhoneNo') String? ordererPhoneNo,
     @JsonKey(name: 'ordererAddress') String? ordererAddress,
     @JsonKey(name: 'ordererAddressDetail') String? ordererAddressDetail,
     @JsonKey(name: 'ordererPostcode') String? ordererPostcode,
-    @JsonKey(name: 'isPayed') bool? isPayed,
+    @JsonKey(name: 'isPayed') int? isPayed,
+    @JsonKey(name: 'payAmount') int? payAmount,
     @JsonKey(name: 'paymentDate') String? paymentDate,
   }) = _OrderModel;
 
