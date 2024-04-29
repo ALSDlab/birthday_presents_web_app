@@ -95,7 +95,7 @@ final router = GoRouter(
               path: "/shopping_cart_page",
               builder: (context, state) => const ShoppingCartPage(),
               routes: [
-                GoRoute(path: "/pay_page",
+                GoRoute(path: "pay_page",
                 builder: (context, state) => PayPage(forOrderItems: [],),)
               ]
             ),
