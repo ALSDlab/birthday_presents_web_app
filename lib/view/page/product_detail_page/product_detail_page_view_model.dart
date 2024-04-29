@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
@@ -49,6 +50,24 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     }
     return buffer.toString();
   }
+
+
+  // 주문번호 생성하는 매서드 (연월일(YYMMDD) + 모든 영문자 4자리 형식)
+  String generateLicensePlate(String currentDate) {
+
+    // 4자리의 랜덤한 영문자 생성
+    String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    String randomLetters = '';
+    Random random = Random();
+    for (int i = 0; i < 4; i++) {
+      randomLetters += letters[random.nextInt(26)];
+    }
+
+    // 주문번호 조합
+    String licensePlate = currentDate + randomLetters;
+    return licensePlate;
+  }
+
 
   // shared_preferences를 이용하여 장바구니에 담는 기능 구현 (장바구니에서 삭제하는 기능 포함)
   static const String _key = 'shoppingCartList';

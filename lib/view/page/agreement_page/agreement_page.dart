@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:myk_market_app/view/page/register_page/agreement_texts.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import '../../../styles/app_text_colors.dart';
+import 'agreement_texts.dart';
 
 class AgreementPage extends StatefulWidget {
   const AgreementPage({super.key});
@@ -240,6 +241,7 @@ class _AgreementPageState extends State<AgreementPage> {
                   ElevatedButton(
                     onPressed: () {
                       //TODO : 이전 화면으로 돌아가기
+                      PersistentTabController().jumpToTab(2);
                     },
                     style: ButtonStyle(
                         minimumSize:
