@@ -1,4 +1,5 @@
 class Product {
+  String productId;
   String representativeImage;
   String price;
   String title;
@@ -8,6 +9,7 @@ class Product {
 
 //<editor-fold desc="Data Methods">
   Product({
+    required this.productId,
     required this.representativeImage,
     required this.price,
     required this.title,
@@ -21,6 +23,7 @@ class Product {
       identical(this, other) ||
       (other is Product &&
           runtimeType == other.runtimeType &&
+          productId == other.productId &&
           representativeImage == other.representativeImage &&
           price == other.price &&
           title == other.title &&
@@ -30,6 +33,7 @@ class Product {
 
   @override
   int get hashCode =>
+      productId.hashCode ^
       representativeImage.hashCode ^
       price.hashCode ^
       title.hashCode ^
@@ -39,10 +43,11 @@ class Product {
 
   @override
   String toString() {
-    return 'Product{ representativeImage: $representativeImage, price: $price, title: $title, delivery: $delivery, ingredients: $ingredients, images: $images,}';
+    return 'Product{productId: $productId, representativeImage: $representativeImage, price: $price, title: $title, delivery: $delivery, ingredients: $ingredients, images: $images,}';
   }
 
   Product copyWith({
+    String? productId,
     String? representativeImage,
     String? price,
     String? title,
@@ -51,6 +56,7 @@ class Product {
     List<String>? images,
   }) {
     return Product(
+      productId: productId ?? this.productId,
       representativeImage: representativeImage ?? this.representativeImage,
       price: price ?? this.price,
       title: title ?? this.title,
@@ -62,6 +68,7 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return {
+      'productId': productId,
       'representativeImage': representativeImage,
       'price': price,
       'title': title,
@@ -73,6 +80,7 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> map) {
     return Product(
+      productId: map['productId'] as String,
       representativeImage: map['representativeImage'] as String,
       price: map['price'] as String,
       title: map['title'] as String,

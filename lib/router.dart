@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page.dart';
@@ -102,7 +103,7 @@ final router = GoRouter(
                 routes: [
                   GoRoute(
                     path: "signup_page",
-                    builder: (context, state) => const SignupPage(),
+                    builder: (context, state) => SignupPage(isPersonalInfoForDeliverChecked: state.extra! as bool,),
                   ),
                 ]),
           ],
@@ -124,11 +125,9 @@ final router = GoRouter(
     GoRoute(
       path: "/fill_order_page",
       builder: (context, state) {
-        final fillOrderFormPageMap = state.extra! as Map<String, dynamic>;
+        final fillOrderFormList = state.extra! as List<OrderModel>;
         return FillOrderFormPage(
-          title: fillOrderFormPageMap['title'],
-          count: fillOrderFormPageMap['count'],
-          price: fillOrderFormPageMap['price'],
+          forOrderItems: fillOrderFormList,
         );
       },
     ),
