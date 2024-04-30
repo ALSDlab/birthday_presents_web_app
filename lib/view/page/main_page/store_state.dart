@@ -13,5 +13,6 @@ class StoreState with _$StoreState {
     @Default(false) bool isLoading,
   }) = _StoreState;
 
-  factory StoreState.fromJson(Map<String, dynamic> json) => _$StoreStateFromJson(json);
+  factory StoreState.fromJson(Map<String, dynamic> json) =>
+      _$StoreStateFromJson(json);
 }

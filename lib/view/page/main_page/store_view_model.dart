@@ -1,17 +1,28 @@
 import 'package:flutter/cupertino.dart';
+import 'package:myk_market_app/data/model/store_model.dart';
 import 'package:myk_market_app/data/repository/store_repository_impl.dart';
 import 'package:myk_market_app/view/page/main_page/store_state.dart';
 
 class StoreViewModel extends ChangeNotifier {
   StoreRepositoryImpl repository = StoreRepositoryImpl();
   StoreState _state = StoreState();
+  List<Store> storeList = [];
 
   StoreState get state => _state;
 
-  void getStoreList() async {
-    _state = state.copyWith(storeList: await repository.getFirebaseStore());
-    print(state.storeList);
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  void loadingHome() async {
+    _isLoading = true;
+    notifyListeners();
+
+    storeList = await repository.getFirebaseStore();
+
+    _isLoading = false;
     notifyListeners();
   }
+
 
 }

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -16,13 +18,18 @@ class _MainPageState extends State<MainPage> {
       final StoreViewModel viewModel = context.read<StoreViewModel>();
       viewModel.getStoreList();
     });
+
     super.initState();
+    //   Future.delayed(Duration.zero,() {
+    //     _loadData();
+    //   });
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StoreViewModel>();
     final state = viewModel.state;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -30,26 +37,46 @@ class _MainPageState extends State<MainPage> {
           style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
         ),
       ),
-      body: state.storeList.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
+      body: ListView(
+        children: [
+          viewModel.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Expanded(
+                  child: Image.network(
+                    viewModel.storeList[0].titleImage,
+                  ),
+                ),
+          Container(
+            child: Text(
+              'BRAND STORY',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                        child: Image.network(state.storeList[0].titleImage)),
-                  ],
-                ),
-                const Text('BRAND STORY'),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(state.storeList[0].introText),
-                ),
+                Text(viewModel.storeList[0].introText),
               ],
             ),
+          ),
+          Container(
+            child: Text(viewModel.storeList[0].introTextOne),
+          ),
+          Container(
+            child: Expanded(
+              child: Image.network(viewModel.storeList[0].images[1]),
+            ),
+          ),
+          Container(child: Image.network(viewModel.storeList[0].images[3])),
+        ],
+      ),
     );
   }
 }
