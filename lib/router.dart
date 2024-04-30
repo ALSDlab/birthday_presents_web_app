@@ -90,7 +90,10 @@ final router = GoRouter(
           routes: <RouteBase>[
             GoRoute(
               path: "/shopping_cart_page",
-              builder: (context, state) => const ShoppingCartPage(),
+              builder: (context, state) {
+                return const ShoppingCartPage(
+                );
+              },
             ),
           ],
         ),

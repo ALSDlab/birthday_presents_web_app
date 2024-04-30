@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
-import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:badges/badges.dart' as badges;
 
 import '../../../data/model/order_model.dart';
 
@@ -26,6 +26,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          badges.Badge(
+            position: badges.BadgePosition.topEnd(top: 10, end: 10),
+            child: IconButton(
+                onPressed: () {}, icon: Icon(Icons.shopping_cart_rounded)),
+          ),
+        ],
         title: const Text(
           '민영기 염소탕',
           style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
@@ -207,7 +214,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           backgroundColor:
                                               const Color(0xFF2F362F),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          GoRouter.of(context)
+                                              .go('/shopping_cart_page');
+                                        },
                                         child: const Text(
                                           '장바구니 담기',
                                           style: TextStyle(color: Colors.white),
@@ -343,8 +353,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             price: widget.product.price,
                                             count: viewModel.cartCount,
                                           );
-                                          context
-                                              .push('/fill_order_page', extra: [directOrderItem]);
+                                          context.push('/fill_order_page',
+                                              extra: [directOrderItem]);
                                         },
                                         child: const Text(
                                           '구매하기',

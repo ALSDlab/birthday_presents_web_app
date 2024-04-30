@@ -1,6 +1,7 @@
 class ShoppingProductForCart {
   String orderId;
   String orderProductName;
+  String representativeImage;
   String price;
   int count;
 
@@ -8,6 +9,7 @@ class ShoppingProductForCart {
   ShoppingProductForCart({
     required this.orderId,
     required this.orderProductName,
+    required this.representativeImage,
     required this.price,
     required this.count,
   });
@@ -19,6 +21,7 @@ class ShoppingProductForCart {
           runtimeType == other.runtimeType &&
           orderId == other.orderId &&
           orderProductName == other.orderProductName &&
+          representativeImage == other.representativeImage &&
           price == other.price &&
           count == other.count);
 
@@ -26,23 +29,26 @@ class ShoppingProductForCart {
   int get hashCode =>
       orderId.hashCode ^
       orderProductName.hashCode ^
+      representativeImage.hashCode ^
       price.hashCode ^
       count.hashCode;
 
   @override
   String toString() {
-    return 'ShoppingProductForCart{ orderId: $orderId, orderProductName: $orderProductName, price: $price, count: $count,}';
+    return 'ShoppingProductForCart{ orderId: $orderId, orderProductName: $orderProductName, representativeImage: $representativeImage, price: $price, count: $count,}';
   }
 
   ShoppingProductForCart copyWith({
     String? orderId,
     String? orderProductName,
+    String? representativeImage,
     String? price,
     int? count,
   }) {
     return ShoppingProductForCart(
       orderId: orderId ?? this.orderId,
       orderProductName: orderProductName ?? this.orderProductName,
+      representativeImage: representativeImage ?? this.representativeImage,
       price: price ?? this.price,
       count: count ?? this.count,
     );
@@ -52,6 +58,7 @@ class ShoppingProductForCart {
     return {
       'orderId': orderId,
       'orderProductName': orderProductName,
+      'representativeImage': representativeImage,
       'price': price,
       'count': count,
     };
@@ -61,6 +68,7 @@ class ShoppingProductForCart {
     return ShoppingProductForCart(
       orderId: map['orderId'] as String,
       orderProductName: map['orderProductName'] as String,
+      representativeImage: map['representativeImage'] as String,
       price: map['price'] as String,
       count: map['count'] as int,
     );
