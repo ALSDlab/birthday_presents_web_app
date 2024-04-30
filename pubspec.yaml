@@ -52,6 +52,9 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^5.2.2
   firebase_auth: ^4.19.4
   shared_preferences: ^2.2.3
+  intl: ^0.19.0
+  cached_network_image: ^3.3.1
+  badges: ^3.1.2
 
 
 dev_dependencies:
