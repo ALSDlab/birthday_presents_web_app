@@ -6,6 +6,7 @@ class Store {
   String introTextFour = '';
   String introTextFive = '';
   String introTextSix = '';
+  String introTextSeven = '';
 
   String titleImage = '';
 
@@ -21,6 +22,7 @@ class Store {
     required this.introTextFour,
     required this.introTextFive,
     required this.introTextSix,
+    required this.introTextSeven,
   });
 
   Store.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Store {
     introTextFour = json['introTextFour'];
     introTextFive = json['introTextFive'];
     introTextSix = json['introTextSix'];
+    introTextSeven = json['introTextSeven'];
     titleImage = json['titleImage'];
     images = json['images'].cast<String>();
   }
@@ -44,6 +47,7 @@ class Store {
     data['introTextFour'] = this.introTextFour;
     data['introTextFive'] = this.introTextFive;
     data['introTextSix'] = this.introTextSix;
+    data['introTextSeven'] = this.introTextSeven;
     data['titleImage'] = this.titleImage;
     data['images'] = this.images;
     return data;
