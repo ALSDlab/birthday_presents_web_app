@@ -255,7 +255,7 @@ class _SignupPageState extends State<SignupPage> {
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        context.go('/main_page');
+                                        context.go('/login_page');
                                       },
                                       child: const Text('확인'),
                                     ),
