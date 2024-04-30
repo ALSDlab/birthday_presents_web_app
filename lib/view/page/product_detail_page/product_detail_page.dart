@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:provider/provider.dart';
+import 'package:badges/badges.dart' as badges;
 
 import '../../../data/model/order_model.dart';
-import '../../../data/model/shopping_cart_model.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
@@ -28,6 +26,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          badges.Badge(
+            position: badges.BadgePosition.topEnd(top: 10, end: 10),
+            child: IconButton(
+                onPressed: () {}, icon: Icon(Icons.shopping_cart_rounded)),
+          ),
+        ],
         title: const Text(
           '민영기 염소탕',
           style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
@@ -210,19 +215,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               const Color(0xFF2F362F),
                                         ),
                                         onPressed: () {
-                                          final ShoppingProductForCart
-                                          shoppingCartItem =
-                                          ShoppingProductForCart(
-                                            orderId: widget.product.productId,
-                                            orderProductName:
-                                            widget.product.title,
-                                            representativeImage: widget
-                                                .product.representativeImage,
-                                            price: widget.product.price,
-                                            count: viewModel.cartCount,
-                                          );
-                                          GoRouter.of(context).go('/shopping_cart_page',
-                                            extra: [shoppingCartItem],);
+                                          GoRouter.of(context)
+                                              .go('/shopping_cart_page');
                                         },
                                         child: const Text(
                                           '장바구니 담기',
