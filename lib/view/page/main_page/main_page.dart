@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -11,38 +12,88 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  @override
+  // @override
   void initState() {
     Future.microtask(() {
       final StoreViewModel viewModel = context.read<StoreViewModel>();
-      viewModel.getStoreList();
+      viewModel.loadingHome();
     });
+
     super.initState();
+    //   Future.delayed(Duration.zero,() {
+    //     _loadData();
+    //   });
   }
+
+  // Future<void> _loadData() async {
+  //   final viewModel = context.read<StoreViewModel>();
+  //   await viewModel.loadingHome();
+  // }
+
+  //void initData() async {
+  //   ? Center(
+  //       child: CircularProgressIndicator(),
+  //     )
+  //   : Expanded(
+  // child: viewModel.storeList,
+  // child: Card(
+  //
+  //   shape: BeveledRectangleBorder(
+  //       borderRadius: BorderRadius.circular(16.0),
+  //       side: BorderSide(width: 5.0)),
+  //   elevation: 4.0,
+  //   color: Colors.red,
+  // ),
+
+  //}
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StoreViewModel>();
     final state = viewModel.state;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('민영기 염소탕 회사소개'),
       ),
-      body: Column(
+      body: ListView(
         children: [
-          Row(
-            children: [
-              Expanded(child: Image.network(state.storeList[0].titleImage)),
-            ],
+          viewModel.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Expanded(
+                  child: Image.network(
+                    viewModel.storeList[0].titleImage,
+                  ),
+                ),
+          Container(
+            child: Text(
+              'BRAND STORY',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
           ),
-          Text('BRAND STORY'),
           SizedBox(
             height: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(state.storeList[0].introText),
+          Container(
+            child: Column(
+              children: [
+                Text(viewModel.storeList[0].introText),
+              ],
+            ),
           ),
+          Container(
+            child: Text(viewModel.storeList[0].introTextOne),
+          ),
+          Container(
+            child: Expanded(
+              child: Image.network(viewModel.storeList[0].images[1]),
+            ),
+          ),
+          Container(child: Image.network(viewModel.storeList[0].images[3])),
         ],
       ),
     );

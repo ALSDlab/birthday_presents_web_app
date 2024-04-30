@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myk_market_app/data/model/store_model.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
@@ -17,13 +18,22 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: widget.selectedIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final PageController pageViewController =
-        PageController(initialPage: widget.selectedIndex);
+    // final PageController pageViewController =
+    //     PageController(initialPage: widget.selectedIndex);
+
     return Scaffold(
       body: PageView(
-        controller: pageViewController,
+        controller: _pageController,
         children: [
           ChangeNotifierProvider(
             create: (_) => StoreViewModel(),
@@ -69,11 +79,16 @@ class _NavigationState extends State<Navigation> {
           setState(() {
             widget.selectedIndex = index;
           });
-          pageViewController.animateToPage(
+          _pageController.animateToPage(
             index,
             duration: const Duration(milliseconds: 400),
             curve: Curves.linear,
           );
+
+          // if (index == 0) {
+          //   final viewModel = context.read<StoreViewModel>();
+          //   viewModel.loadingHome();
+          // }
         },
       ),
     );

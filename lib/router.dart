@@ -7,12 +7,14 @@ final router = GoRouter(initialLocation: '/main_page', routes: [
     path: '/main_page',
     builder: (context, state) => Navigation(
       selectedIndex: 0,
+
     ),
   ),
   GoRoute(
       path: '/product_page',
       builder: (context, state) => Navigation(
         selectedIndex: 1,
+
       ),),
   GoRoute(
     path: '/register_page',
