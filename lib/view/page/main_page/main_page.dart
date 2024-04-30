@@ -16,7 +16,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     Future.microtask(() {
       final StoreViewModel viewModel = context.read<StoreViewModel>();
-      viewModel.getStoreList();
+      viewModel.loadingHome();
     });
 
     super.initState();
@@ -45,9 +45,13 @@ class _MainPageState extends State<MainPage> {
                 )
               : Expanded(
                   child: Image.network(
-                    viewModel.storeList[0].titleImage,
+                    viewModel.storeList![0].titleImage,
+
                   ),
+
                 ),
+
+
           Container(
             child: Text(
               'BRAND STORY',
