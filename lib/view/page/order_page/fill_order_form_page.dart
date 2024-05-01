@@ -1,12 +1,13 @@
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
 import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
-import '../../../styles/app_text_colors.dart';
 import '../agreement_page/agreement_texts.dart';
 import 'for_order_list_widget.dart';
 
@@ -74,7 +75,9 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
       viewModel.currentUser.isEmpty ? '' : viewModel.currentUser[0].name,
       viewModel.currentUser.isEmpty ? '' : viewModel.currentUser[0].phone,
       viewModel.currentUser.isEmpty ? '' : viewModel.currentUser[0].address,
-      viewModel.currentUser.isEmpty ? '' : viewModel.currentUser[0].addressDetail
+      viewModel.currentUser.isEmpty
+          ? ''
+          : viewModel.currentUser[0].addressDetail
     ];
 
     return Scaffold(
@@ -187,7 +190,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           print(error);
                                                         }
                                                       },
-                                                      child: Text('주소검색'))),
+                                                      child:
+                                                          const Text('주소검색'))),
                                               readOnly: true,
                                             ),
                                             TextFormField(
@@ -447,12 +451,26 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                       },
                       child: const Text('취소'),
                     ),
-                    TextButton(
-                      style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(AppColors.mainButton)),
-                      onPressed: () {
-                        print(viewModel.daumPostcodeSearchDataModel!.address);
+                    AsyncButtonBuilder(
+                      loadingWidget: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 16.0,
+                          width: 16.0,
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        ),
+                      ),
+                      successWidget: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.purpleAccent,
+                        ),
+                      ),
+                      onPressed: () async {
                         if (isTermsNConditionsChecked == false ||
                             isPersonalInfoChecked == false) {
                           setState(() {
@@ -470,40 +488,157 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                               .substring(2, 10)
                               .replaceAll('-', '');
                           final ordererId = viewModel.currentUser.isEmpty
-                              ? 'notRegistered' : viewModel.currentUser[0].id;
+                              ? 'notRegistered'
+                              : viewModel.currentUser[0].id;
                           final personalInfoForDeliverChecked =
                               viewModel.currentUser.isEmpty
                                   ? isPersonalInfoForDeliverChecked
                                   : viewModel.currentUser[0].checked;
                           final ordererName = nameController.text;
                           final ordererPhoneNo = phoneController.text;
-                          final ordererAddress = viewModel.daumPostcodeSearchDataModel!.address;
+                          final ordererAddress =
+                              viewModel.daumPostcodeSearchDataModel!.address;
                           final ordererAddressDetail =
                               extraAddressController.text;
                           final ordererPostcode =
                               viewModel.daumPostcodeSearchDataModel!.zonecode;
-
-                          widget.forOrderItems
-                              .asMap()
-                              .forEach((index, item) async {
+                          await Future.forEach(
+                              widget.forOrderItems.asMap().entries,
+                              (entry) async {
+                            final index = entry.key;
+                            final item = entry.value;
                             await viewModel.saveOrdersInfo(
-                                item,
-                                index.toString(),
-                                orderedDate,
-                                personalInfoForDeliverChecked,
-                                ordererId,
-                                ordererName,
-                                ordererPhoneNo,
-                                ordererAddress,
-                                ordererAddressDetail,
-                                ordererPostcode);
+                              item,
+                              index.toString(),
+                              orderedDate,
+                              personalInfoForDeliverChecked,
+                              ordererId,
+                              ordererName,
+                              ordererPhoneNo,
+                              ordererAddress,
+                              ordererAddressDetail,
+                              ordererPostcode,
+                            );
                           });
 
-                          //TODO: 결재페이지로 이동
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('주문생성 완료.'),
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
+                            GoRouter.of(context).go(
+                                '/shopping_cart_page/fill_order_page/pay_page',
+                                extra: widget.forOrderItems);
+                          }
                         }
                       },
-                      child: const Text('다음'),
+                      loadingSwitchInCurve: Curves.bounceInOut,
+                      loadingTransitionBuilder: (child, animation) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 1.0),
+                            end: const Offset(0, 0),
+                          ).animate(animation),
+                          child: child,
+                        );
+                      },
+                      builder: (context, child, callback, state) {
+                        return Material(
+                          color: state.maybeWhen(
+                            success: () => Colors.purple[100],
+                            orElse: () => Colors.blue,
+                          ),
+                          // This prevents the loading indicator showing below the
+                          // button
+                          clipBehavior: Clip.hardEdge,
+                          shape: const StadiumBorder(),
+                          child: InkWell(
+                            onTap: callback,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
+                        child: Text(
+                          '다음',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
+
+                    // TextButton(
+                    //   style: const ButtonStyle(
+                    //       backgroundColor:
+                    //           MaterialStatePropertyAll(AppColors.mainButton)),
+                    //   onPressed: () {
+                    //     if (isTermsNConditionsChecked == false ||
+                    //         isPersonalInfoChecked == false) {
+                    //       setState(() {
+                    //         inevitableChecked = true;
+                    //       });
+                    //     } else if (nameController.text == '' ||
+                    //         phoneController.text == '' ||
+                    //         viewModel.daumPostcodeSearchDataModel == null) {
+                    //       setState(() {
+                    //         moreDataNeed = true;
+                    //       });
+                    //     } else {
+                    //       final orderedDate = DateTime.now()
+                    //           .toString()
+                    //           .substring(2, 10)
+                    //           .replaceAll('-', '');
+                    //       final ordererId = viewModel.currentUser.isEmpty
+                    //           ? 'notRegistered'
+                    //           : viewModel.currentUser[0].id;
+                    //       final personalInfoForDeliverChecked =
+                    //           viewModel.currentUser.isEmpty
+                    //               ? isPersonalInfoForDeliverChecked
+                    //               : viewModel.currentUser[0].checked;
+                    //       final ordererName = nameController.text;
+                    //       final ordererPhoneNo = phoneController.text;
+                    //       final ordererAddress =
+                    //           viewModel.daumPostcodeSearchDataModel!.address;
+                    //       final ordererAddressDetail =
+                    //           extraAddressController.text;
+                    //       final ordererPostcode =
+                    //           viewModel.daumPostcodeSearchDataModel!.zonecode;
+                    //
+                    //       widget.forOrderItems
+                    //           .asMap()
+                    //           .forEach((index, item) async {
+                    //         await viewModel.saveOrdersInfo(
+                    //             item,
+                    //             index.toString(),
+                    //             orderedDate,
+                    //             personalInfoForDeliverChecked,
+                    //             ordererId,
+                    //             ordererName,
+                    //             ordererPhoneNo,
+                    //             ordererAddress,
+                    //             ordererAddressDetail,
+                    //             ordererPostcode);
+                    //       });
+                    //       if (mounted) {
+                    //         ScaffoldMessenger.of(context).showSnackBar(
+                    //           const SnackBar(
+                    //             content: Text('주문생성 완료.'),
+                    //             duration: Duration(seconds: 3),
+                    //           ),
+                    //         );
+                    //         GoRouter.of(context).go(
+                    //             '/shopping_cart_page/fill_order_page/pay_page',
+                    //             extra: widget.forOrderItems[0].orderId);
+                    //       }
+                    //     }
+                    //   },
+                    //   child: const Text('다음'),
+                    // ),
                   ],
                 ),
               )

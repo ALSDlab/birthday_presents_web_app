@@ -7,6 +7,7 @@ import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/user_model.dart';
+import 'fill_order_form_page_state.dart';
 
 class FillOrderFormPageViewModel extends ChangeNotifier {
   static final FillOrderFormPageViewModel _instance =
@@ -31,6 +32,25 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
 
   List<User> get currentUser => _currentUser;
 
+  FillOrderFormPageState _state = const FillOrderFormPageState();
+
+  FillOrderFormPageState get state => _state;
+
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
+  }
+
   void setAddress(String newAddress, String newZoneCode) {
     _address = newAddress;
     _zoneCode = newZoneCode;
@@ -54,7 +74,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveOrdersInfo(
+  Future<bool> saveOrdersInfo(
     OrderModel item,
     String index,
     String currentDate,
@@ -66,28 +86,42 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     String ordererAddressDetail,
     String ordererPostcode,
   ) async {
-    await FirebaseFirestore.instance
-        .collection('orders')
-        .doc(item.orderId + index)
-        .set(
-      {
-        'orderId': item.orderId,
-        'orderProductName': item.orderProductName,
-        'representativeImage': item.representativeImage,
-        'price': item.price,
-        'count': item.count,
-        'orderedDate': item.orderedDate,
-        'personalInfoForDeliverChecked': personalInfoForDeliverChecked,
-        'ordererId' : ordererId,
-        'ordererName': ordererName,
-        'ordererPhoneNo': ordererPhoneNo,
-        'ordererAddress': ordererAddress,
-        'ordererAddressDetail': ordererAddressDetail,
-        'ordererPostcode': ordererPostcode,
-        'isPayed': 0,
-        'payAmount': int.parse(item.price.replaceAll(',', '')) * item.count,
-        'paymentDate': ''
-      },
-    );
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('orders')
+          .doc(item.orderId + index)
+          .set(
+        {
+          'orderId': item.orderId,
+          'orderProductName': item.orderProductName,
+          'representativeImage': item.representativeImage,
+          'price': item.price,
+          'count': item.count,
+          'orderedDate': item.orderedDate,
+          'personalInfoForDeliverChecked': personalInfoForDeliverChecked,
+          'ordererId': ordererId,
+          'ordererName': ordererName,
+          'ordererPhoneNo': ordererPhoneNo,
+          'ordererAddress': ordererAddress,
+          'ordererAddressDetail': ordererAddressDetail,
+          'ordererPostcode': ordererPostcode,
+          'payAndStatus': 0,
+          'payAmount': int.parse(item.price.replaceAll(',', '')) * item.count,
+          'paymentDate': ''
+        },
+      );
+    } catch (error) {
+      // 에러 처리
+      debugPrint('Error saving ordersInfo: $error');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
+    }
+    return true;
   }
 }

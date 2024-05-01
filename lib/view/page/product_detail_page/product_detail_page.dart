@@ -361,8 +361,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             count: viewModel.purchaseCount,
                                             orderedDate: createdDate,
                                           );
-                                          context.push('/fill_order_page',
-                                              extra: [directOrderItem]);
+                                          final List<OrderModel> orderItemList = [directOrderItem];
+                                          GoRouter.of(context).go(
+                                              '/shopping_cart_page/fill_order_page',
+                                              extra: orderItemList);
+                                          // context.push('/fill_order_page',
+                                          //     extra: [directOrderItem]);
                                         },
                                         child: const Text(
                                           '구매하기',
