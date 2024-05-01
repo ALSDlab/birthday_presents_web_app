@@ -105,6 +105,7 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     jsonEncode(currentList.map((e) => e.toJson()).toList());
     prefs.setString(_key, jsonString);
 
+
     // 스낵바로 표시
     if (context.mounted) {
       cartAddSnackBar(context);

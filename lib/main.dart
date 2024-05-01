@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myk_market_app/di/get_it.dart';
 import 'package:myk_market_app/router.dart';
 
 import 'firebase_options.dart';
@@ -10,6 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  diSetup();
   runApp(const MyApp());
 }
 
