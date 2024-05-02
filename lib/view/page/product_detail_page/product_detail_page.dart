@@ -1,9 +1,9 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart' as badges;
 
 import '../../../data/model/order_model.dart';
 
@@ -343,10 +343,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               const Color(0xFF2F362F),
                                         ),
                                         onPressed: () {
-                                          final createdDate = DateTime.now().toString().substring(2, 10).replaceAll('-', '');
+                                          final createdDate = DateTime.now()
+                                              .toString()
+                                              .substring(2, 10)
+                                              .replaceAll('-', '');
                                           final OrderModel directOrderItem =
                                               OrderModel(
-                                            orderId: viewModel.generateLicensePlate(createdDate),
+                                            orderId:
+                                                viewModel.generateLicensePlate(
+                                                    createdDate),
                                             orderProductName:
                                                 widget.product.title,
                                             representativeImage: widget
@@ -354,8 +359,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             price: widget.product.price,
                                             count: viewModel.purchaseCount,
                                             orderedDate: createdDate,
+                                            payAndStatus: 0,
                                           );
-                                          final List<OrderModel> orderItemList = [directOrderItem];
+                                          final List<OrderModel> orderItemList =
+                                              [directOrderItem];
                                           GoRouter.of(context).go(
                                               '/shopping_cart_page/fill_order_page',
                                               extra: orderItemList);

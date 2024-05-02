@@ -57,7 +57,7 @@ class PayPageViewModel extends ChangeNotifier {
     try {
       final myOrder =
           await orderRepository.getFirebaseMyOrders(orderNumberForPay);
-      print(myOrder);
+      logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
 
       notifyListeners();
@@ -98,16 +98,16 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  void bootpayPayment(
-    BuildContext context,
-    List<OrderModel> orderItems,
-  ) {
+
+
+  void bootpayPayment(BuildContext context, List<OrderModel> orderItems) {
     int totalCount = 0;
     int totalAmount = 0;
-    orderItems.forEach((e) {
-      totalCount += e.count!;
+    for (var e in orderItems) {
+      totalCount += e.count;
       totalAmount += e.payAmount!;
-    });
+    }
+    totalAmount = 100; // 테스트용
     Payload payload = getPayload(totalCount, totalAmount);
     if (kIsWeb) {
       payload.extra?.openType = "iframe";

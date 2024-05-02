@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
+import 'package:myk_market_app/view/page/pay_page/pay_address_widget.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -16,14 +17,15 @@ class PayPage extends StatefulWidget {
 }
 
 class _PayPageState extends State<PayPage> {
-  bool finalConfirm = false;
+  bool finalConfirmNeed = false;
+  bool finalConfirmDemand = false;
 
   @override
   void initState() {
     Future.microtask(() {
       final payViewModel = context.read<PayPageViewModel>();
 
-      payViewModel.init(widget.forOrderItems[0].orderId);
+      payViewModel.init(widget.forOrderItems.first.orderId);
     });
     super.initState();
   }
@@ -60,8 +62,11 @@ class _PayPageState extends State<PayPage> {
                             '배송지 정보',
                             style: TextStyle(fontSize: 18),
                           ),
-                          // TODO: 배송지 정보 위젯 만들기
-                          // UserAddressWidget(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            child: PayAddressWidget(
+                                orderFirstItem: state.orderItems.first),
+                          ),
                           const Divider(),
                           const Text(
                             '주문 상품',
@@ -76,49 +81,59 @@ class _PayPageState extends State<PayPage> {
                               itemBuilder: (context, index) {
                                 final forOrderItem = state.orderItems[index];
                                 return ForOrderListWidget(
-                                  orderItem: forOrderItem,
+                                  orderItem: forOrderItem, forConfirm: true,
                                 );
                               },
+                            ),
+                          ),
+                          const Divider(),
+                          Visibility(
+                            visible: ((state.orderItems.isNotEmpty) &&
+                                (state.orderItems[0].payAndStatus! < 1)),
+                            // -1: 결제실패, 0: 결제전, 1: 결제완료, 2: 결제취소, 3: 배송중, 4: 배송완료
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '청약의사 재확인',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(''),
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: ((state.orderItems.isNotEmpty) &&
+                                (state.orderItems[0].payAndStatus! < 1)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 16, bottom: 16),
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: finalConfirmNeed,
+                                    onChanged: (bool? newValue) {
+                                      setState(() {
+                                        finalConfirmNeed = newValue!;
+                                      });
+                                    },
+                                    activeColor: Colors.green,
+                                    checkColor: Colors.white,
+                                  ),
+                                  const Text(
+                                    '(필수) 구매하실 상품의 모든 정보를 확인하였으며,\n 구매진행에 동의합니다.',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const Divider(),
                     Visibility(
-                      visible: ((state.orderItems.isNotEmpty) &&
-                          (state.orderItems[0].payAndStatus! < 1)),
-                      // -1: 결제실패, 0: 결제전, 1: 결제완료, 2: 결제취소, 3: 배송중, 4: 배송완료
-                      child: const Text(
-                        '청약의사 재확인',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    Visibility(
-                      visible: ((state.orderItems.isNotEmpty) &&
-                          (state.orderItems[0].payAndStatus! < 1)),
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            value: finalConfirm,
-                            onChanged: (bool? newValue) {
-                              setState(() {
-                                finalConfirm = newValue!;
-                              });
-                            },
-                            activeColor: Colors.green,
-                            checkColor: Colors.white,
-                          ),
-                          const Text(
-                            '(필수) 구매하실 상품의 모든 정보를 확인하였으며, 구매진행에 동의합니다.',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Visibility(
-                      visible: (finalConfirm == false),
+                      visible: (finalConfirmDemand == true),
                       child: const Text('(필수) 청약의사 재확인을 동의하셔야 주문이 진행됩니다.'),
                     ),
                     Padding(
@@ -137,9 +152,14 @@ class _PayPageState extends State<PayPage> {
                                 backgroundColor: MaterialStatePropertyAll(
                                     AppColors.mainButton)),
                             onPressed: () {
-                              //TODO: 결재페이지로 이동
-                              viewModel.bootpayPayment(context,
-                                  state.orderItems);
+                              if (finalConfirmNeed == false) {
+                                setState(() {
+                                  finalConfirmDemand = true;
+                                });
+                              } else {
+                                viewModel.bootpayPayment(
+                                    context, state.orderItems);
+                              }
                             },
                             child: const Text('다음'),
                           ),

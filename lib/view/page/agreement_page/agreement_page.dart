@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import '../../../styles/app_text_colors.dart';
 import 'agreement_texts.dart';
@@ -114,8 +113,8 @@ class _AgreementPageState extends State<AgreementPage> {
                     AnimatedSize(
                       duration: const Duration(milliseconds: 500),
                       child: SizedBox(
-                          height: isTermsNConditionsOpened? null : 0.0,
-                          child: Text(agreementTexts[0]),
+                        height: isTermsNConditionsOpened ? null : 0.0,
+                        child: Text(agreementTexts[0]),
                       ),
                     ),
                     Row(
@@ -165,7 +164,7 @@ class _AgreementPageState extends State<AgreementPage> {
                     AnimatedSize(
                       duration: const Duration(milliseconds: 500),
                       child: SizedBox(
-                        height: isPersonalInfoOpened? null : 0.0,
+                        height: isPersonalInfoOpened ? null : 0.0,
                         child: Text(agreementTexts[1]),
                       ),
                     ),
@@ -217,7 +216,7 @@ class _AgreementPageState extends State<AgreementPage> {
                     AnimatedSize(
                       duration: const Duration(milliseconds: 500),
                       child: SizedBox(
-                        height: isPersonalInfoForDeliverOpened? null : 0.0,
+                        height: isPersonalInfoForDeliverOpened ? null : 0.0,
                         child: Text(agreementTexts[2]),
                       ),
                     ),
@@ -240,8 +239,7 @@ class _AgreementPageState extends State<AgreementPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      //TODO : 이전 화면으로 돌아가기
-                      PersistentTabController().jumpToTab(2);
+                      context.pop();
                     },
                     style: ButtonStyle(
                         minimumSize:
