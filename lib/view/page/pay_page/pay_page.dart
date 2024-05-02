@@ -138,6 +138,8 @@ class _PayPageState extends State<PayPage> {
                                     AppColors.mainButton)),
                             onPressed: () {
                               //TODO: 결재페이지로 이동
+                              viewModel.bootpayPayment(context,
+                                  state.orderItems);
                             },
                             child: const Text('다음'),
                           ),
