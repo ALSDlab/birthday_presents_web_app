@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
@@ -17,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   var orderNumberController = TextEditingController();
   var orderedUserController = TextEditingController();
 
+  StreamSubscription? authStateChanges;
+
   @override
   void dispose() {
     super.dispose();
@@ -25,6 +30,21 @@ class _LoginPageState extends State<LoginPage> {
     orderedUserController.dispose();
     orderNumberController.dispose();
   }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      LoginViewModel().initPreferences();
+    });
+    authStateChanges = FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        GoRouter.of(context).go('/main_page', extra: 0);
+        return;
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         viewModel.signIn(idController.text, passwordController.text, context);
+                        GoRouter.of(context).go('/main_page');
                       }
                     },
                     child: const Text('로그인'),
