@@ -1,12 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+SharedPreferences? prefs;
 
 class LoginViewModel {
   Future signIn(String id, String password, BuildContext context) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: '$id@gmail.com', password: password);
-      context.go('/main_page');
+      if (context.mounted) {
+        prefs!.setString('_email', '$id@gmail.com');
+        context.go('/main_page', extra: 0);
+      }
     } catch (e) {
       showDialog(context: context, builder: (context) {
         print(e);
@@ -24,5 +30,11 @@ class LoginViewModel {
         );
       });
     }
+  }
+
+  Future<String> initPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    String idMemory = prefs!.getString('_email') ?? '';
+    return idMemory;
   }
 }

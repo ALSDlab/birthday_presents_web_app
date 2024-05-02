@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
@@ -13,6 +14,7 @@ import 'package:myk_market_app/view/page/product_detail_page/product_detail_page
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
+import 'package:myk_market_app/view/page/profile_page/profile_page.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
@@ -127,23 +129,28 @@ final router = GoRouter(
         // 마이페이지
         StatefulShellBranch(
           routes: <RouteBase>[
-            GoRoute(
-                path: "/login_page",
-                builder: (context, state) => const LoginPage(),
-                routes: [
-                  GoRoute(
-                      path: "my_detail_page",
-                      builder: (context, state) => const AgreementPage(),
-                      routes: [
+            FirebaseAuth.instance.currentUser != null
+                ? GoRoute(
+                    path: "/profile_page",
+                    builder: (context, state) => const ProfilePage(),
+                  )
+                : GoRoute(
+                    path: "/login_page",
+                    builder: (context, state) => const LoginPage(),
+                    routes: [
                         GoRoute(
-                          path: "signup_page",
-                          builder: (context, state) => SignupPage(
-                            isPersonalInfoForDeliverChecked:
-                                state.extra! as bool,
-                          ),
-                        ),
-                      ]),
-                ])
+                            path: "my_detail_page",
+                            builder: (context, state) => const AgreementPage(),
+                            routes: [
+                              GoRoute(
+                                path: "signup_page",
+                                builder: (context, state) => SignupPage(
+                                  isPersonalInfoForDeliverChecked:
+                                      state.extra! as bool,
+                                ),
+                              ),
+                            ]),
+                      ])
           ],
         ),
       ],
