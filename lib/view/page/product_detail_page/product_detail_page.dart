@@ -2,6 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
+import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,18 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
+  void initState() {
+    Future.microtask(() async {
+      final ProductDetailPageViewModel viewModel =
+          context.read<ProductDetailPageViewModel>();
+      // final state = viewModel.state;
+      await viewModel.getBadgeCount();
+      // print(state.forBadgeList);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ProductDetailPageViewModel>();
     final state = viewModel.state;
@@ -28,9 +41,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       appBar: AppBar(
         actions: [
           badges.Badge(
-            position: badges.BadgePosition.topEnd(top: 10, end: 10),
+            position: badges.BadgePosition.topEnd(top: 0, end: 5),
+            badgeContent: Text("${state.forBadgeList.length}"),
             child: IconButton(
-                onPressed: () {}, icon: Icon(Icons.shopping_cart_rounded)),
+                onPressed: () {
+                  GoRouter.of(context).go('/shopping_cart_page');
+                },
+                icon: const Icon(Icons.shopping_cart_rounded)),
           ),
         ],
         title: const Text(
@@ -214,9 +231,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           backgroundColor:
                                               const Color(0xFF2F362F),
                                         ),
-                                        onPressed: () {
-                                          GoRouter.of(context)
-                                              .go('/shopping_cart_page');
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                          ShoppingProductForCart item =
+                                              ShoppingProductForCart(
+                                                  orderId:
+                                                      widget.product.productId,
+                                                  orderProductName:
+                                                      widget.product.title,
+                                                  price: widget.product.price,
+                                                  representativeImage: widget
+                                                      .product
+                                                      .representativeImage,
+                                                  count: viewModel.cartCount);
+                                          await viewModel.addToShoppingCartList(
+                                              item, context);
+                                          await viewModel.getBadgeCount();
+                                          setState(() {});
+
                                         },
                                         child: const Text(
                                           '장바구니 담기',
@@ -283,9 +315,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           padding: const EdgeInsets.all(4.0),
                                           child: InkWell(
                                               onTap: () {
-                                                // setState(() {
-                                                //   if (count > 1) count--;
-                                                // });
                                                 setState(() {
                                                   viewModel
                                                       .minusPurchaseCount();
@@ -305,8 +334,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 setState(() {
                                                   viewModel.plusPurchaseCount();
                                                 });
-
-                                                // viewModel.plusCount();
                                               },
                                               child: const Icon(Icons.add)),
                                         ),
