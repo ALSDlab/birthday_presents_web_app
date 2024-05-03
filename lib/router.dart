@@ -13,6 +13,7 @@ import 'package:myk_market_app/view/page/product_detail_page/product_detail_page
 import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page.dart';
+import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:provider/provider.dart';
@@ -92,13 +93,19 @@ final router = GoRouter(
           // navigatorKey: _shellNavigatorKey,
           routes: <RouteBase>[
             GoRoute(
-              path: "/shopping_cart_page",
-              builder: (context, state) => const ShoppingCartPage(),
-              routes: [
-                GoRoute(path: "pay_page",
-                builder: (context, state) => PayPage(forOrderItems: [],),)
-              ]
-            ),
+                path: "/shopping_cart_page",
+                builder: (context, state) => ChangeNotifierProvider(
+                      create: (_) => ShoppingCartViewModel(),
+                      child: ShoppingCartPage(),
+                    ),
+                routes: [
+                  GoRoute(
+                    path: "pay_page",
+                    builder: (context, state) => PayPage(
+                      forOrderItems: [],
+                    ),
+                  )
+                ]),
           ],
         ),
         // 마이페이지
@@ -106,7 +113,7 @@ final router = GoRouter(
           routes: <RouteBase>[
             GoRoute(
                 path: "/login_page",
-                builder:(context, state) => const LoginPage(),
+                builder: (context, state) => const LoginPage(),
                 routes: [
                   GoRoute(
                       path: "my_detail_page",
@@ -114,12 +121,13 @@ final router = GoRouter(
                       routes: [
                         GoRoute(
                           path: "signup_page",
-                          builder: (context, state) => SignupPage(isPersonalInfoForDeliverChecked: state.extra! as bool,),
+                          builder: (context, state) => SignupPage(
+                            isPersonalInfoForDeliverChecked:
+                                state.extra! as bool,
+                          ),
                         ),
                       ]),
-                ]
-            )
-
+                ])
           ],
         ),
       ],
@@ -142,7 +150,8 @@ final router = GoRouter(
         final fillOrderFormList = state.extra! as List<OrderModel>;
         return ChangeNotifierProvider(
           create: (_) => FillOrderFormPageViewModel(),
-          child: FillOrderFormPage(forOrderItems: fillOrderFormList,
+          child: FillOrderFormPage(
+            forOrderItems: fillOrderFormList,
           ),
         );
       },

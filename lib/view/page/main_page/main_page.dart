@@ -44,71 +44,85 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          viewModel.isLoading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Expanded(
-                  child: Image.network(
-                    viewModel.storeList![0].titleImage,
-                  ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (viewModel.isLoading)
+              Center(
+                child: CircularProgressIndicator(),
+              )
+            else if (viewModel.storeList.isNotEmpty)
+              Expanded(
+                child: Image.network(
+                  viewModel.storeList![0].titleImage,
                 ),
-          Container(
-            child: Text(
-              textAlign: TextAlign.center,
-              'BRAND STORY',
-              style: TextStyle(
-                fontSize: 16.0,
+              ),
+            Container(
+              child: Text(
+                textAlign: TextAlign.center,
+                'BRAND STORY',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            child: Column(
-              children: [
-                Text(viewModel.storeList[0].introText),
-              ],
+            SizedBox(
+              height: 20,
             ),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: Text(viewModel.storeList[0].introTextOne),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: Text(viewModel.storeList[0].introTextTwo),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: Text(viewModel.storeList[0].introTextThree),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: Text(viewModel.storeList[0].introTextFour),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: Text(viewModel.storeList[0].introTextFive),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: Text(viewModel.storeList[0].introTextSix),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: Text(viewModel.storeList[0].introTextSeven),
-          ),
-          Container(
-            child: Expanded(
-              child: Image.network(viewModel.storeList[0].images[1]),
+            Container(
+              child: viewModel.storeList.isNotEmpty
+                  ? Text(viewModel.storeList[0].introText)
+                  : Text('No data availabe'),
             ),
-          ),
-          Container(child: Image.network(viewModel.storeList[0].images[3])),
-        ],
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Text(viewModel.storeList[0].introTextOne),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Text(viewModel.storeList[0].introTextTwo),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Text(viewModel.storeList[0].introTextThree),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Text(viewModel.storeList[0].introTextFour),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Text(viewModel.storeList[0].introTextFive),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Text(viewModel.storeList[0].introTextSix),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Text(viewModel.storeList[0].introTextSeven),
+            ),
+            Container(
+              child: Expanded(
+                child: Image.network(viewModel.storeList[0].images[5]),
+              ),
+            ),
+            Container(
+              child: Expanded(
+                child: Image.network(viewModel.storeList[0].images[7]),
+              ),
+            ),
+            Container(
+              child: Image.network(viewModel.storeList[0].images[12]),
+            ),
+            Container(
+              child: Expanded(
+                child: Image.network(viewModel.storeList[0].images[14]),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
