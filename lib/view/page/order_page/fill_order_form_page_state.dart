@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../data/model/user_model.dart';
+
 part 'fill_order_form_page_state.freezed.dart';
 part 'fill_order_form_page_state.g.dart';
 
@@ -7,6 +9,7 @@ part 'fill_order_form_page_state.g.dart';
 class FillOrderFormPageState with _$FillOrderFormPageState {
   const factory FillOrderFormPageState({
     @Default(false) bool isLoading,
+    @Default([]) List<UserModel> userData,
   }) = _FillOrderFormPageState;
 
   factory FillOrderFormPageState.fromJson(Map<String, dynamic> json) =>
