@@ -104,7 +104,7 @@ final router = GoRouter(
                       path: "fill_order_page",
                       builder: (context, state) {
                         return ChangeNotifierProvider(
-                          create: (_) => FillOrderFormPageViewModel(),
+                          create: (_) => getIt<FillOrderFormPageViewModel>(),
                           child: FillOrderFormPage(
                             forOrderItems: state.extra! as List<OrderModel>,
                           ),

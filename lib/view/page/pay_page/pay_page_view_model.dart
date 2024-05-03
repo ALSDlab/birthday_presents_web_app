@@ -6,8 +6,8 @@ import 'package:bootpay/model/item.dart';
 import 'package:bootpay/model/payload.dart';
 import 'package:bootpay/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/order_repository.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
@@ -98,8 +98,6 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-
-
   void bootpayPayment(BuildContext context, List<OrderModel> orderItems) {
     int totalCount = 0;
     int totalAmount = 0;
@@ -127,7 +125,23 @@ class PayPageViewModel extends ChangeNotifier {
       },
       onClose: () {
         logger.info('------- onClose');
-        Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
+
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: const Text('주문이 완료되었습니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
         // GoRouter.of(context).go('/shopping_cart_page/fill_order_page/pay_page');
       },
       onIssued: (String data) {
