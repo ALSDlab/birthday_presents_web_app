@@ -21,14 +21,14 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  late bool _showCartBadge;
+
   @override
   void initState() {
     Future.microtask(() async {
       final ProductDetailPageViewModel viewModel =
           context.read<ProductDetailPageViewModel>();
-      // final state = viewModel.state;
       await viewModel.getBadgeCount();
-      // print(state.forBadgeList);
     });
     super.initState();
   }
@@ -37,12 +37,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<ProductDetailPageViewModel>();
     final state = viewModel.state;
+    _showCartBadge = state.forBadgeList.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
         actions: [
           badges.Badge(
             position: badges.BadgePosition.topEnd(top: 0, end: 5),
             badgeContent: Text("${state.forBadgeList.length}"),
+            showBadge: _showCartBadge,
             child: IconButton(
                 onPressed: () {
                   GoRouter.of(context).go('/shopping_cart_page');
@@ -248,7 +250,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               item, context);
                                           await viewModel.getBadgeCount();
                                           setState(() {});
-
                                         },
                                         child: const Text(
                                           '장바구니 담기',
