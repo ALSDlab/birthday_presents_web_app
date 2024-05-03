@@ -12,18 +12,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  @override
-  void initState() {
-    Future.microtask(() {
-      final StoreViewModel viewModel = context.read<StoreViewModel>();
-      viewModel.loadingHome();
-    });
 
-    super.initState();
-    //   Future.delayed(Duration.zero,() {
-    //     _loadData();
-    //   });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +26,13 @@ class _MainPageState extends State<MainPage> {
           style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
         ),
       ),
-      body: ListView(
+      body: viewModel.isLoading
+          ? const Center(
+        child: CircularProgressIndicator(),
+      )
+          : ListView(
         children: [
-          viewModel.isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Image.network(
+          Image.network(
                 viewModel.storeList[0].titleImage,
               ),
           const Text(

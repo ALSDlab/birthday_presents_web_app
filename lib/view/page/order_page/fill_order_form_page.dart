@@ -125,6 +125,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                     suffixIcon: ElevatedButton(
                                                         onPressed: () async {
                                                           try {
+                                                            viewModel.addressChangeRequest();
                                                             DataModel model =
                                                                 await Navigator.of(
                                                                         context)

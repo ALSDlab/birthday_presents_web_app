@@ -9,7 +9,7 @@ part 'fill_order_form_page_state.g.dart';
 class FillOrderFormPageState with _$FillOrderFormPageState {
   const factory FillOrderFormPageState({
     @Default(false) bool isLoading,
-    @Default([]) List<UserModel> userData,
+    @Default(false) bool addressChange,
   }) = _FillOrderFormPageState;
 
   factory FillOrderFormPageState.fromJson(Map<String, dynamic> json) =>

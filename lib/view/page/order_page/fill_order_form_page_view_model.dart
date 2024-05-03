@@ -95,13 +95,13 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       phoneController.text =
           (_currentUser.isNotEmpty) ? _currentUser.first.phone : '';
       controllers.add(phoneController);
-      postcodeController.text = (_currentUser.isNotEmpty)
+      postcodeController.text = (_currentUser.isNotEmpty && state.addressChange == false)
           ? _currentUser.first.postcode
           : (daumPostcodeSearchDataModel?.zonecode != null)
               ? daumPostcodeSearchDataModel!.zonecode
               : zoneCode;
       controllers.add(postcodeController);
-      addressController.text = (_currentUser.isNotEmpty)
+      addressController.text = (_currentUser.isNotEmpty && state.addressChange == false)
           ? _currentUser.first.address
           : (daumPostcodeSearchDataModel?.address != null)
               ? daumPostcodeSearchDataModel!.address
@@ -120,6 +120,10 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
         notifyListeners();
       });
     }
+  }
+
+  void addressChangeRequest(){
+    _state = state.copyWith(addressChange: true);
   }
 
   Future<bool> saveOrdersInfo(
