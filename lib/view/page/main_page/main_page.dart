@@ -40,41 +40,29 @@ class _MainPageState extends State<MainPage> {
       body: ListView(
         children: [
           viewModel.isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : Expanded(
-                  child: Image.network(
-                    viewModel.storeList[0].titleImage,
-                  ),
-                ),
-          Container(
-            child: Text(
-              'BRAND STORY',
-              style: TextStyle(
-                fontSize: 16.0,
+              : Image.network(
+                viewModel.storeList[0].titleImage,
               ),
+          const Text(
+            'BRAND STORY',
+            style: TextStyle(
+              fontSize: 16.0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Container(
-            child: Column(
-              children: [
-                Text(viewModel.storeList[0].introText),
-              ],
-            ),
+          Column(
+            children: [
+              Text(viewModel.storeList[0].introText),
+            ],
           ),
-          Container(
-            child: Text(viewModel.storeList[0].introTextOne),
-          ),
-          Container(
-            child: Expanded(
-              child: Image.network(viewModel.storeList[0].images[1]),
-            ),
-          ),
-          Container(child: Image.network(viewModel.storeList[0].images[3])),
+          Text(viewModel.storeList[0].introTextOne),
+          Image.network(viewModel.storeList[0].images[1]),
+          Image.network(viewModel.storeList[0].images[3]),
         ],
       ),
     );

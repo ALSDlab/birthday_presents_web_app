@@ -14,7 +14,9 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
 
   FillOrderFormPageViewModel({
     required this.userRepository,
-  });
+  }) {
+    getUserList();
+  }
 
   // static final FillOrderFormPageViewModel _instance =
   //     FillOrderFormPageViewModel._internal();
@@ -25,7 +27,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   //
   // FillOrderFormPageViewModel._internal();
 
-  final gridLeftArray = ['주문자', '휴대폰번호', '주소', '상세주소'];
+  final gridLeftArray = ['주문자', '휴대폰번호', '주소', '', '상세주소'];
   List<TextEditingController> controllers = [];
   DataModel? daumPostcodeSearchDataModel;
 
@@ -79,20 +81,36 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       final userId = users?.replaceAll('@gmail.com', '');
 
       logger.info(userId);
-
-      _currentUser = await userRepository.getFirebaseUserData(userId!);
+      if (userId != null) {
+        _currentUser = await userRepository.getFirebaseUserData(userId);
+      }
       TextEditingController nameController = TextEditingController();
       TextEditingController phoneController = TextEditingController();
+      TextEditingController postcodeController = TextEditingController();
       TextEditingController addressController = TextEditingController();
       TextEditingController extraAddressController = TextEditingController();
-      nameController.text = _currentUser.first.name;
+      nameController.text =
+          (_currentUser.isNotEmpty) ? _currentUser.first.name : '';
       controllers.add(nameController);
-      phoneController.text = _currentUser.first.phone;
+      phoneController.text =
+          (_currentUser.isNotEmpty) ? _currentUser.first.phone : '';
       controllers.add(phoneController);
-      addressController.text = _currentUser.first.address;
+      postcodeController.text = (_currentUser.isNotEmpty)
+          ? _currentUser.first.postcode
+          : (daumPostcodeSearchDataModel?.zonecode != null)
+              ? daumPostcodeSearchDataModel!.zonecode
+              : zoneCode;
+      controllers.add(postcodeController);
+      addressController.text = (_currentUser.isNotEmpty)
+          ? _currentUser.first.address
+          : (daumPostcodeSearchDataModel?.address != null)
+              ? daumPostcodeSearchDataModel!.address
+              : address;
       controllers.add(addressController);
-      extraAddressController.text = _currentUser.first.addressDetail;
+      extraAddressController.text =
+          (_currentUser.isNotEmpty) ? _currentUser.first.addressDetail : '';
       controllers.add(extraAddressController);
+      notifyListeners();
     } catch (error) {
       // 에러 처리
       debugPrint('Error saving ordersInfo: $error');
