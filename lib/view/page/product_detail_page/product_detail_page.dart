@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
@@ -7,6 +8,7 @@ import 'package:myk_market_app/view/page/product_detail_page/product_detail_page
 import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
+import '../main_page/image_load_widget.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
@@ -46,10 +48,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             badgeContent: Text("${state.forBadgeList.length}"),
             showBadge: _showCartBadge,
             child: IconButton(
-                onPressed: () {
-                  GoRouter.of(context).go('/shopping_cart_page');
-                },
-                icon: const Icon(Icons.shopping_cart_rounded)),
+              onPressed: () {
+                GoRouter.of(context).go('/shopping_cart_page');
+              },
+              icon: const FaIcon(FontAwesomeIcons.cartArrowDown),
+            ),
           ),
         ],
         title: const Text(
@@ -66,8 +69,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             const Divider(),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.network(
-                widget.product.representativeImage,
+              child: ImageLoadWidget(
+                width: MediaQuery.of(context).size.width,
+                widthHeightRatio: 0.6,
+                imageUrl: widget.product.representativeImage,
               ),
             ),
             const Divider(),
@@ -130,9 +135,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ],
             ),
             const Divider(),
-            Image.network(widget.product.images[22]),
-            Image.network(widget.product.images[23]),
-            Image.network(widget.product.images[24]),
+            ImageLoadWidget(
+              width: MediaQuery.of(context).size.width,
+              widthHeightRatio: 2.5,
+              imageUrl: widget.product.images[22],
+            ),ImageLoadWidget(
+              width: MediaQuery.of(context).size.width,
+              widthHeightRatio: 2.5,
+              imageUrl: widget.product.images[23],
+            ),ImageLoadWidget(
+              width: MediaQuery.of(context).size.width,
+              widthHeightRatio: 2.5,
+              imageUrl: widget.product.images[24],
+            ),
           ],
         ),
       ),

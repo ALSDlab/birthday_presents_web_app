@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/agreement_page/agreement_page.dart';
@@ -34,34 +35,32 @@ final router = GoRouter(
         tabs: [
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const Icon(Icons.home),
+                icon: const FaIcon(FontAwesomeIcons.houseChimney),
                 title: "홈",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const Icon(Icons.format_align_justify),
+                icon: const FaIcon(FontAwesomeIcons.gripVertical),
                 title: "상품",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const Icon(
-                  Icons.shopping_cart,
-                ),
+                icon: const FaIcon(FontAwesomeIcons.cartArrowDown),
                 title: "장바구니",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const Icon(
-                  Icons.person,
-                ),
+                activeForegroundColor: Colors.black,
+                icon: const FaIcon(FontAwesomeIcons.faceGrin),
                 title: "마이페이지",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
         ],
         navBarBuilder: (navBarConfig) => Style4BottomNavBar(
+          navBarDecoration: const NavBarDecoration(color: Colors.yellowAccent),
           navBarConfig: navBarConfig,
         ),
         navigationShell: navigationShell,

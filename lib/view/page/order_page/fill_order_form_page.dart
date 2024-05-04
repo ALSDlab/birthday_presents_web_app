@@ -63,6 +63,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                     const Divider(),
                     Expanded(
                       child: ListView(
+                        physics: const BouncingScrollPhysics(),
                         children: [
                           const Text(
                             '주문 상품',

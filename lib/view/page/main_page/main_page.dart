@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
+
+import 'image_load_widget.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,8 +12,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
-
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StoreViewModel>();
@@ -28,32 +26,44 @@ class _MainPageState extends State<MainPage> {
       ),
       body: viewModel.isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : ListView(
-        children: [
-          Image.network(
-                viewModel.storeList[0].titleImage,
-              ),
-          const Text(
-            'BRAND STORY',
-            style: TextStyle(
-              fontSize: 16.0,
+              children: [
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 0.6,
+                  imageUrl: viewModel.storeList[0].titleImage,
+                ),
+                const Text(
+                  'BRAND STORY',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  children: [
+                    Text(viewModel.storeList[0].introText),
+                  ],
+                ),
+                Text(viewModel.storeList[0].introTextOne),
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 1.5,
+                  imageUrl: viewModel.storeList[0].images[1],
+                ),
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 1.5,
+                  imageUrl: viewModel.storeList[0].images[3],
+                ),
+                // Image.network(viewModel.storeList[0].images[1]),
+                // Image.network(viewModel.storeList[0].images[3]),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Column(
-            children: [
-              Text(viewModel.storeList[0].introText),
-            ],
-          ),
-          Text(viewModel.storeList[0].introTextOne),
-          Image.network(viewModel.storeList[0].images[1]),
-          Image.network(viewModel.storeList[0].images[3]),
-        ],
-      ),
     );
   }
 }
