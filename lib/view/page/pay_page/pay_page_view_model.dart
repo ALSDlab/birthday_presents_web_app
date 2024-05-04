@@ -99,12 +99,12 @@ class PayPageViewModel extends ChangeNotifier {
   }
 
   void bootpayPayment(BuildContext context, List<OrderModel> orderItems) {
-    int totalCount = 0;
+    int totalCount = _state.orderItems.length;
     int totalAmount = 0;
-    for (var e in orderItems) {
-      totalCount += e.count;
-      totalAmount += e.payAmount!;
-    }
+    // for (var e in orderItems) {
+    //   totalCount += e.count;
+    //   totalAmount += e.payAmount!;
+    // }
     totalAmount = 100; // 테스트용
     Payload payload = getPayload(totalCount, totalAmount);
     if (kIsWeb) {
@@ -180,8 +180,8 @@ class PayPageViewModel extends ChangeNotifier {
     Payload payload = Payload();
     Item item1 = Item();
     item1.name = (_state.orderItems.length > 1)
-        ? '${_state.orderItems.first.orderProductName} 외 ${_state.orderItems.length - 1}건'
-        : _state.orderItems.first.orderProductName; // 주문정보에 담길 상품명
+        ? '${_state.orderItems.first.orderProductName} 외 ${_state.orderItems.length - 1}건 (주문번호: ${_state.orderItems.first.orderId})'
+        : '${_state.orderItems.first.orderProductName} (주문번호: ${_state.orderItems.first.orderId})'; // 주문정보에 담길 상품명
     item1.qty = totalCount; // 해당 상품의 주문 수량
     item1.id = "ITEM_CODE_MYK_GOAT"; // 해당 상품의 고유 키
     item1.price = totalAmount.toDouble(); // 상품의 가격

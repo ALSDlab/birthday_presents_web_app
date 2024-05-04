@@ -41,20 +41,20 @@ final router = GoRouter(
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const FaIcon(FontAwesomeIcons.gripVertical),
+                icon: const FaIcon(FontAwesomeIcons.boxesStacked),
                 title: "상품",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const FaIcon(FontAwesomeIcons.cartArrowDown),
+                icon: const FaIcon(FontAwesomeIcons.cartShopping),
                 title: "장바구니",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
                 activeForegroundColor: Colors.black,
-                icon: const FaIcon(FontAwesomeIcons.faceGrin),
+                icon: const FaIcon(FontAwesomeIcons.addressCard),
                 title: "마이페이지",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),

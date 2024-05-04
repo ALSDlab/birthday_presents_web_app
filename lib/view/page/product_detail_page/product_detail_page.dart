@@ -51,7 +51,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               onPressed: () {
                 GoRouter.of(context).go('/shopping_cart_page');
               },
-              icon: const FaIcon(FontAwesomeIcons.cartArrowDown),
+              icon: const FaIcon(FontAwesomeIcons.cartShopping),
             ),
           ),
         ],
