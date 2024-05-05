@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
+import 'package:myk_market_app/view/page/pay_page/send_sms_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'image_load_widget.dart';
@@ -23,6 +24,13 @@ class _MainPageState extends State<MainPage> {
           '민영기 염소탕 회사소개',
           style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
         ),
+
+        // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
+        // actions: [
+        //   TextButton(onPressed: (){
+        //     sendSMS('0410000000', '01032084619', 'SMS테스트입니다.');
+        //   }, child: Text('SMS테스트'))
+        // ],
       ),
       body: viewModel.isLoading
           ? const Center(

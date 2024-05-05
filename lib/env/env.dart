@@ -4,15 +4,6 @@ part 'env.g.dart';
 
 @Envied(path: 'lib/env/.env', useConstantCase: true)
 abstract class Env {
-  // SAMPLE_ACCOUNT_INFO
-  // @EnviedField()
-  // static const String sampleAccountUserid = _Env.sampleAccountUserid;
-  // @EnviedField()
-  // static const String sampleAccountUsername = _Env.sampleAccountUsername;
-  // @EnviedField()
-  // static const String sampleAccountEmail = _Env.sampleAccountEmail;
-  // @EnviedField()
-  // static const String sampleAccountPassword = _Env.sampleAccountPassword;
 
   // ANDROID_APPLICATION_ID
   @EnviedField()
@@ -21,4 +12,22 @@ abstract class Env {
   // IOS_APPLICATION_ID
   @EnviedField()
   static const String iosApplicationId = _Env.iosApplicationId;
+
+  // NAVER_CLOUD_ACCESS_KEY_ID
+  @EnviedField()
+  static const String naverCloudAccessKeyId = _Env.naverCloudAccessKeyId;
+
+  // NAVER_CLOUD_SECRET_KEY
+  @EnviedField()
+  static const String naverCloudSecretKey = _Env.naverCloudSecretKey;
+
+  // SENS_API_URL
+  @EnviedField()
+  static const String sensApiUrl = _Env.sensApiUrl;
+
+  // SENS_SERVICE_ID
+  @EnviedField()
+  static const String sensServiceId = _Env.sensServiceId;
+
+
 }
