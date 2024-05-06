@@ -26,11 +26,11 @@ class _MainPageState extends State<MainPage> {
         ),
 
         // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
-        // actions: [
-        //   TextButton(onPressed: (){
-        //     sendSMS('0410000000', '01032084619', 'SMS테스트입니다.');
-        //   }, child: Text('SMS테스트'))
-        // ],
+        actions: [
+          TextButton(onPressed: (){
+            sendSMS('0410000000', '01032084619', 'SMS테스트입니다.');
+          }, child: Text('SMS테스트'))
+        ],
       ),
       body: viewModel.isLoading
           ? const Center(
