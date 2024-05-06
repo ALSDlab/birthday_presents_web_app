@@ -17,6 +17,7 @@ import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:myk_market_app/view/page/profile_page/profile_page.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page.dart';
+import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:provider/provider.dart';
@@ -97,7 +98,10 @@ final router = GoRouter(
           routes: <RouteBase>[
             GoRoute(
                 path: "/shopping_cart_page",
-                builder: (context, state) => const ShoppingCartPage(),
+                builder: (context, state) => ChangeNotifierProvider(
+                  create: (_) => ShoppingCartViewModel(),
+                  child: const ShoppingCartPage(),
+                ),
                 routes: [
                   GoRoute(
                       path: "fill_order_page",

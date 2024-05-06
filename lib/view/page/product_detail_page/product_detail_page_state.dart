@@ -11,7 +11,6 @@ class ProductDetailPageState with _$ProductDetailPageState {
   const factory ProductDetailPageState({
     @Default(false) bool isLoading,
     @Default([]) List<ShoppingProductForCart> forBadgeList,
-    @Default([]) List<ShoppingProductForCart> currentList,
   }) = _ProductDetailPageState;
 
   factory ProductDetailPageState.fromJson(Map<String, Object?> json) => _$ProductDetailPageStateFromJson(json);

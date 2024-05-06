@@ -139,11 +139,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               width: MediaQuery.of(context).size.width,
               widthHeightRatio: 2.5,
               imageUrl: widget.product.images[22],
-            ),ImageLoadWidget(
+            ),
+            ImageLoadWidget(
               width: MediaQuery.of(context).size.width,
               widthHeightRatio: 2.5,
               imageUrl: widget.product.images[23],
-            ),ImageLoadWidget(
+            ),
+            ImageLoadWidget(
               width: MediaQuery.of(context).size.width,
               widthHeightRatio: 2.5,
               imageUrl: widget.product.images[24],

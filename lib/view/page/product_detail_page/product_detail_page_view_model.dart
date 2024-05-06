@@ -9,17 +9,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProductDetailPageViewModel extends ChangeNotifier {
   ProductDetailPageState _state = ProductDetailPageState();
 
+  ProductDetailPageState get state => _state;
+
   Future<void> getBadgeCount() async {
     _state = state.copyWith(forBadgeList: await getShoppingCartList());
     notifyListeners();
     print(state.forBadgeList);
-
   }
 
-  ProductDetailPageState get state => _state;
   int purchaseCount = 1;
   int cartCount = 1;
-
 
   void plusPurchaseCount() {
     purchaseCount++;
@@ -97,8 +96,8 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     List<ShoppingProductForCart> currentList = await getShoppingCartList();
 
     // 중복 체크
-    var index = currentList.indexWhere(
-            (product) => product.orderId == item.orderId);
+    var index =
+        currentList.indexWhere((product) => product.orderId == item.orderId);
     if (index == -1) {
       currentList.add(item);
     } else {
@@ -106,10 +105,8 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     }
     // 다시 저장
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString =
-    jsonEncode(currentList.map((e) => e.toJson()).toList());
+    String jsonString = jsonEncode(currentList.map((e) => e.toJson()).toList());
     prefs.setString(_key, jsonString);
-
 
     // 스낵바로 표시
     if (context.mounted) {
