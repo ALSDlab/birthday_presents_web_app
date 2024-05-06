@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,9 +13,9 @@ class ShoppingCartViewModel extends ChangeNotifier {
 
   // List<ShoppingProductForCart> cartList = [];
   //
-  // ShoppingCartViewModel() {
-  //   getCartList();
-  // }
+  ShoppingCartViewModel() {
+    getCartList();
+  }
 
   // bool _disposed = false;
   //

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page_widget.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:provider/provider.dart';
@@ -15,15 +13,15 @@ class ShoppingCartPage extends StatefulWidget {
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
   bool isAllChecked = false;
 
-  @override
-  void initState() {
-    Future.microtask(() async {
-      final ShoppingCartViewModel viewModel =
-          context.read<ShoppingCartViewModel>();
-      await viewModel.getCartList();
-    });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Future.microtask(() async {
+  //     final ShoppingCartViewModel viewModel =
+  //         context.read<ShoppingCartViewModel>();
+  //     await viewModel.getCartList();
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

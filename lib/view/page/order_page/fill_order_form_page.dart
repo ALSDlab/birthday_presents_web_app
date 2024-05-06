@@ -127,7 +127,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                         onPressed: () async {
                                                           try {
                                                             viewModel.addressChangeRequest();
-                                                            DataModel model =
+                                                            DataModel? model =
                                                                 await Navigator.of(
                                                                         context)
                                                                     .push(

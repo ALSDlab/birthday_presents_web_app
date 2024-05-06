@@ -6,6 +6,7 @@ import '../domain/order_repository.dart';
 import '../domain/user_repository.dart';
 import '../view/page/order_page/fill_order_form_page_view_model.dart';
 import '../view/page/pay_page/pay_page_view_model.dart';
+import '../view/page/shopping_cart_page/shopping_cart_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -24,5 +25,6 @@ void diSetup() {
     ..registerFactory<PayPageViewModel>(
         () => PayPageViewModel(orderRepository: getIt<OrderRepository>()))
     ..registerFactory<FillOrderFormPageViewModel>(() =>
-        FillOrderFormPageViewModel(userRepository: getIt<UserRepository>()));
+        FillOrderFormPageViewModel(userRepository: getIt<UserRepository>()))
+    ..registerFactory<ShoppingCartViewModel>(() => ShoppingCartViewModel());
 }
