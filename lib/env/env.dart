@@ -28,6 +28,4 @@ abstract class Env {
   // SENS_SERVICE_ID
   @EnviedField()
   static const String sensServiceId = _Env.sensServiceId;
-
-
 }
