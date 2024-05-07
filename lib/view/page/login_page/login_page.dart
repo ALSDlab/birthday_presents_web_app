@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
 
@@ -38,7 +39,9 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      LoginViewModel().initPreferences();
+      final loginViewModel = context.read<LoginPageViewModel>();
+
+      loginViewModel.initPreferences();
     });
     authStateChanges = FirebaseAuth.instance.authStateChanges().listen((user) {
       setState(() {
@@ -52,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    LoginViewModel viewModel = LoginViewModel();
+    final viewModel = context.watch<LoginPageViewModel>();
 
     return Scaffold(
       body: Padding(
@@ -140,7 +143,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextButton(
                             onPressed: () {
-                              context.push('/profile_page/login_page/my_detail_page');
+                              context.push(
+                                  '/profile_page/login_page/my_detail_page');
                             },
                             child: const Text(
                               '회원가입',
@@ -159,9 +163,9 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: const Text('비회원 주문 조회'),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text('비회원 주문 조회'),
                         ),
                         TextField(
                           controller: orderedUserController,
@@ -175,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                               hintText: '주문번호', border: OutlineInputBorder()),
                         ),
                         const Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
                           child: Text(
                             '주문정보를 잊으신 경우 고객센터로 문의바랍니다.',
                             style: TextStyle(color: Colors.grey, fontSize: 10),
@@ -184,9 +188,10 @@ class _LoginPageState extends State<LoginPage> {
                         TextButton(
                           onPressed: () async {
                             final List<OrderModel> orderCheckList =
-                            await viewModel.orderCheckforNoMember(
-                                orderNumberController.text,
-                                orderedUserController.text);
+                                await viewModel.orderCheckforNoMember(
+                                    orderNumberController.text,
+                                    orderedUserController.text,
+                                    context);
                             if (orderCheckList.isNotEmpty && mounted) {
                               GoRouter.of(context).go(
                                   '//shopping_cart_page/fill_order_page/pay_page',

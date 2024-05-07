@@ -1,9 +1,12 @@
-import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'dart:core';
+
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar_view_model.dart';
+import 'package:provider/provider.dart';
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
   String location;
@@ -17,45 +20,82 @@ class ScaffoldWithNavBar extends StatefulWidget {
 }
 
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
-  int _currentIndex = 0;
+  late bool _showCartBadge;
 
-  static List<TabItem> items = [
-    const TabItem(
-        icon: FontAwesomeIcons.houseChimney, title: '홈', key: '/main_page'),
-    const TabItem(
-        icon: FontAwesomeIcons.boxesStacked, title: '상품', key: '/product_page'),
-    const TabItem(
-        icon: FontAwesomeIcons.cartShopping,
-        title: '장바구니',
-        key: '/shopping_cart_page'),
-    const TabItem(
-        icon: FontAwesomeIcons.addressCard,
-        title: '마이페이지',
-        key: '/profile_page'),
-  ];
+  @override
+  void initState() {
+    Future.microtask(() async {
+      final ScaffoldWithNavBarViewModel viewModel =
+      context.read<ScaffoldWithNavBarViewModel>();
+      await viewModel.getBadgeCount();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<ScaffoldWithNavBarViewModel>();
+    final state = viewModel.state;
+    print(state.forBadgeList);
+    _showCartBadge = state.forBadgeList.isNotEmpty;
     return Scaffold(
       body: SafeArea(child: widget.child),
-      bottomNavigationBar: BottomBarDivider(
+      bottomNavigationBar: StylishBottomBar(
+        option: AnimatedBarOptions(
+          iconSize: 30,
+          barAnimation: BarAnimation.fade,
+          iconStyle: IconStyle.Default,
+        ),
+        items: [
+          BottomBarItem(
+            icon: const Icon(BootstrapIcons.house_door),
+            selectedIcon: const Icon(BootstrapIcons.house_door_fill),
+            selectedColor: Colors.teal,
+            unSelectedColor: Colors.grey,
+            title: const Text(
+              '홈',
+              style: TextStyle(fontFamily: 'KoPub'),
+            ),
+          ),
+          BottomBarItem(
+            icon: const Icon(BootstrapIcons.box2),
+            selectedIcon: const Icon(BootstrapIcons.box2_fill),
+            selectedColor: Colors.teal,
+            // unSelectedColor: Colors.purple,
+            // backgroundColor: Colors.orange,
+            title: const Text(
+              '상품',
+              style: TextStyle(fontFamily: 'KoPub'),
+            ),
+          ),
+          BottomBarItem(
+            icon: const Icon(BootstrapIcons.cart_check),
+            selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
+            selectedColor: Colors.teal,
+            title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
+            badge: Text('${state.forBadgeList.length}'),
+            showBadge: _showCartBadge,
+            badgeColor: Colors.purple,
+            badgePadding: const EdgeInsets.only(left: 4, right: 4),
+          ),
+          BottomBarItem(
+              icon: const Icon(BootstrapIcons.person_vcard),
+              selectedIcon: const Icon(BootstrapIcons.person_vcard_fill),
+              selectedColor: Colors.deepPurple,
+              title:
+                  const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),
+        ],
         backgroundColor: Colors.yellowAccent,
-        color: CupertinoColors.systemGrey,
-        colorSelected: Colors.blue,
-        styleDivider: StyleDivider.top,
-        iconSize: 25,
-        titleStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 12),
-        indexSelected: widget.location == '/main_page'
+        currentIndex: widget.location.contains('/main_page')
             ? 0
-            : widget.location == '/product_page'
+            : widget.location.contains('/product_page')
                 ? 1
-                : widget.location == '/shopping_cart_page'
+                : widget.location.contains('/shopping_cart_page')
                     ? 2
                     : 3,
         onTap: (int index) {
           _goOtherTab(context, index);
         },
-        items: items,
       ),
     );
   }
@@ -63,17 +103,23 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   void _goOtherTab(BuildContext context, int index) {
     // if (index == _currentIndex) return;
     GoRouter router = GoRouter.of(context);
-    String? location = items[index].key;
-
-    setState(() {
-      _currentIndex = index;
-    });
+    List<String> locations = [
+      '/main_page',
+      '/product_page',
+      '/shopping_cart_page',
+      '/profile_page'
+    ];
+    String? location = locations[index];
+    //
+    // setState(() {
+    //   _currentIndex = index;
+    // });
     if (index == 3) {
       context.go(FirebaseAuth.instance.currentUser != null
           ? '/profile_page'
           : '/profile_page/login_page');
     } else {
-      router.go(location!);
+      router.go(location);
     }
   }
 }

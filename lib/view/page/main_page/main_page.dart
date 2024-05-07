@@ -4,6 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../pay_page/send_sms_widget.dart';
+import 'image_load_widget.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -41,7 +44,7 @@ class _MainPageState extends State<MainPage> {
         // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
         actions: [
           TextButton(onPressed: (){
-            sendSMS('0410000000', '01032084619', 'SMS테스트입니다.');
+            sendSMS('01058377427', '01032084619', 'SMS테스트입니다.');
           }, child: Text('SMS테스트'))
         ],
       ),

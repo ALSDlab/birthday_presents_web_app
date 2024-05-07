@@ -4,9 +4,9 @@
 ///
 
 
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/agreement_page/agreement_page.dart';
@@ -42,26 +42,26 @@ final router = GoRouter(
         tabs: [
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const FaIcon(FontAwesomeIcons.houseChimney),
+                icon: const Icon(BootstrapIcons.house_door),
                 title: "홈",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const FaIcon(FontAwesomeIcons.boxesStacked),
+                icon: const Icon(BootstrapIcons.box2),
                 title: "상품",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const FaIcon(FontAwesomeIcons.cartShopping),
+                icon: const Icon(BootstrapIcons.cart_check),
                 title: "장바구니",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
                 activeForegroundColor: Colors.black,
-                icon: const FaIcon(FontAwesomeIcons.addressCard),
+                icon: const Icon(BootstrapIcons.person_vcard),
                 title: "마이페이지",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),

@@ -7,6 +7,7 @@ import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar.dart';
+import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar_view_model.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page.dart';
@@ -33,9 +34,12 @@ final router = GoRouter(
     ShellRoute(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) => NoTransitionPage(
-                child: ScaffoldWithNavBar(
-              location: state.matchedLocation,
-              child: child,
+                child: ChangeNotifierProvider(
+              create: (_) => ScaffoldWithNavBarViewModel(),
+              child: ScaffoldWithNavBar(
+                location: state.matchedLocation,
+                child: child,
+              ),
             )),
         routes: [
           GoRoute(
@@ -91,8 +95,8 @@ final router = GoRouter(
                     path: 'login_page',
                     builder: (context, state) {
                       return ChangeNotifierProvider(
-                        create: (_) => LoginViewModel(),
-                        child: LoginPage(),
+                        create: (_) => getIt<LoginPageViewModel>(),
+                        child: const LoginPage(),
                       );
                     },
                     routes: [
@@ -114,12 +118,18 @@ final router = GoRouter(
             path: '/product_detail_page',
             builder: (context, state) {
               final productDetailMap = state.extra! as Map<String, dynamic>;
-              return ChangeNotifierProvider(
-                create: (_) => ProductDetailPageViewModel(),
-                child: ProductDetailPage(
-                  product: productDetailMap['product'],
-                ),
-              );
+              return MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                      create: (_) => ProductDetailPageViewModel(),
+                    ),
+                    ChangeNotifierProvider(
+                      create: (_) => ScaffoldWithNavBarViewModel(),
+                    )
+                  ],
+                  child: ProductDetailPage(
+                    product: productDetailMap['product'],
+                  ));
             },
           ),
         ]),

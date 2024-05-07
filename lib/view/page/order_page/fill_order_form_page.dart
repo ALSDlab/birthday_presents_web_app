@@ -126,7 +126,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                     suffixIcon: ElevatedButton(
                                                         onPressed: () async {
                                                           try {
-                                                            viewModel.addressChangeRequest();
+                                                            viewModel
+                                                                .addressChangeRequest();
                                                             DataModel? model =
                                                                 await Navigator.of(
                                                                         context)
@@ -144,6 +145,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                     model;
                                                               },
                                                             );
+                                                            viewModel
+                                                                .fillTextField();
                                                           } catch (error) {
                                                             logger.info(error);
                                                           }
@@ -463,9 +466,11 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                     viewModel.controllers[0].text;
                                 final ordererPhoneNo =
                                     viewModel.controllers[1].text;
-                                final ordererPostcode = viewModel.controllers[2].text;
+                                final ordererPostcode =
+                                    viewModel.controllers[2].text;
 
-                                final ordererAddress = viewModel.controllers[3].text;
+                                final ordererAddress =
+                                    viewModel.controllers[3].text;
                                 final ordererAddressDetail =
                                     viewModel.controllers[4].text;
                                 await Future.forEach(
