@@ -49,7 +49,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             showBadge: _showCartBadge,
             child: IconButton(
               onPressed: () {
-                GoRouter.of(context).go('/shopping_cart_page');
+                context.go('/shopping_cart_page');
               },
               icon: const FaIcon(FontAwesomeIcons.cartShopping),
             ),

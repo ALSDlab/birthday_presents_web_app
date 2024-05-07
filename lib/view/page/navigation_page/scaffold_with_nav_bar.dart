@@ -43,6 +43,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
         color: CupertinoColors.systemGrey,
         colorSelected: Colors.blue,
         styleDivider: StyleDivider.top,
+        iconSize: 25,
         titleStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 12),
         indexSelected: widget.location == '/main_page'
             ? 0
@@ -60,7 +61,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   }
 
   void _goOtherTab(BuildContext context, int index) {
-    if (index == _currentIndex) return;
+    // if (index == _currentIndex) return;
     GoRouter router = GoRouter.of(context);
     String? location = items[index].key;
 
