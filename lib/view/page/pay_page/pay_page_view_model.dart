@@ -46,7 +46,7 @@ class PayPageViewModel extends ChangeNotifier {
       await fetchMyOrderData(orderNumberForPay);
     } catch (error) {
       // 에러 처리
-      debugPrint('Error init data: $error');
+      logger.info('Error init data: $error');
     }
   }
 
@@ -89,7 +89,7 @@ class PayPageViewModel extends ChangeNotifier {
       });
     } catch (error) {
       // 에러 처리
-      debugPrint('Error saving ordersInfo: $error');
+      logger.info('Error saving ordersInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
       WidgetsBinding.instance.addPostFrameCallback((_) {

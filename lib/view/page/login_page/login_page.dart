@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 
+import '../../../data/model/order_model.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -38,13 +40,12 @@ class _LoginPageState extends State<LoginPage> {
       LoginViewModel().initPreferences();
     });
     authStateChanges = FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user != null) {
-        GoRouter.of(context).go('/main_page', extra: 0);
+      if (user != null && mounted) {
+        GoRouter.of(context).go('/main_page');
         return;
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        viewModel.signIn(idController.text, passwordController.text, context);
+                        viewModel.signIn(idController.text,
+                            passwordController.text, context);
                         GoRouter.of(context).go('/main_page');
                       }
                     },
@@ -135,7 +137,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Expanded(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final List<OrderModel> orderCheckList =
+                                await viewModel.orderCheckforNoMember(
+                                    orderNumberController.text,
+                                    orderedUserController.text);
+                            if (orderCheckList.isNotEmpty && mounted) {
+                              GoRouter.of(context).go(
+                                  '//shopping_cart_page/fill_order_page/pay_page',
+                                  extra: orderCheckList);
+                            }
+                          },
                           child: const Text('주문확인'),
                         ),
                       ),
