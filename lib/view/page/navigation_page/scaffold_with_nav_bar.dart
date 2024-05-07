@@ -39,12 +39,12 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
     return Scaffold(
       body: SafeArea(child: widget.child),
       bottomNavigationBar: BottomBarDivider(
-        backgroundColor: Colors.yellowAccent,
-        color: CupertinoColors.systemGrey,
-        colorSelected: Colors.blue,
+        backgroundColor: Color(0xFFFFF8E7),
+        color: CupertinoColors.black,
+        colorSelected: Color(0xFF019934),
         styleDivider: StyleDivider.top,
         iconSize: 25,
-        titleStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 12),
+        titleStyle: const TextStyle(fontFamily: 'KoPub', fontSize: 11),
         indexSelected: widget.location == '/main_page'
             ? 0
             : widget.location == '/product_page'

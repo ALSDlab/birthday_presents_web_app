@@ -53,11 +53,10 @@ class ShoppingCartViewModel extends ChangeNotifier {
       // 저장된 데이터가 있다면 JSON을 파싱하여 리스트로 변환
       final jsonList = jsonDecode(selectedProducts) as List<dynamic>;
       final cartList =
-          jsonList.map((e) => ShoppingProductForCart.fromJson(e)).toList();
+      jsonList.map((e) => ShoppingProductForCart.fromJson(e)).toList();
       return cartList;
     } else {
       return [];
     }
   }
-<<<<<<< HEAD
 }
