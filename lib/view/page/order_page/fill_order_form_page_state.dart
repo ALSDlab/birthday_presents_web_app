@@ -1,7 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../data/model/user_model.dart';
-
 part 'fill_order_form_page_state.freezed.dart';
 part 'fill_order_form_page_state.g.dart';
 

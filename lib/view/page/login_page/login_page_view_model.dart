@@ -45,23 +45,25 @@ class LoginPageViewModel with ChangeNotifier {
         context.go('/main_page');
       }
     } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            logger.info(e);
-            return AlertDialog(
-              title: const Text('알림'),
-              content: const Text('정보가 없습니다.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('확인'),
-                )
-              ],
-            );
-          });
+      if (context.mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              logger.info(e);
+              return AlertDialog(
+                title: const Text('알림'),
+                content: const Text('정보가 없습니다.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('확인'),
+                  )
+                ],
+              );
+            });
+      }
     }
   }
 
@@ -76,32 +78,15 @@ class LoginPageViewModel with ChangeNotifier {
       String orderNumber, String ordererName, BuildContext context) async {
     try {
       await getMyOrderData(orderNumber);
-      if (state.orderItems.first.orderId != 'notRegistered') {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('알림'),
-                content: const Text('로그인을 해주세요'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('확인'),
-                  )
-                ],
-              );
-            });
-        return [];
-      } else {
-        if (state.orderItems.first.ordererName != ordererName) {
+      List<OrderModel> result = [];
+      if (context.mounted) {
+        if (state.orderItems.first.orderId != 'notRegistered') {
           showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
                   title: const Text('알림'),
-                  content: const Text('주문자명이 맞지 않습니다.'),
+                  content: const Text('로그인을 해주세요'),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -112,29 +97,47 @@ class LoginPageViewModel with ChangeNotifier {
                   ],
                 );
               });
-          return [];
-        } else if (state.orderItems.isEmpty) {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('알림'),
-                  content: const Text('주문정보가 없습니다.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('확인'),
-                    )
-                  ],
-                );
-              });
-          return [];
         } else {
-          return state.orderItems;
+          if (state.orderItems.first.ordererName != ordererName) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('알림'),
+                    content: const Text('주문자명이 맞지 않습니다.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('확인'),
+                      )
+                    ],
+                  );
+                });
+          } else if (state.orderItems.isEmpty) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('알림'),
+                    content: const Text('주문정보가 없습니다.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('확인'),
+                      )
+                    ],
+                  );
+                });
+          } else {
+            result = state.orderItems;
+          }
         }
       }
+      return result;
     } catch (error) {
       // 에러 처리
       logger.info('Error order check: $error');

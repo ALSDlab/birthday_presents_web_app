@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,16 +20,16 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Row(
               children: [
-                Icon(Icons.person),
+                const Icon(Icons.person),
                 Text(FirebaseAuth.instance.currentUser?.displayName ?? '사용자'),
               ],
             ),
             Row(
               children: [
-                Text('주문내역'),
+                const Text('주문내역'),
                 TextButton(
                   onPressed: () {},
-                  child: Text('상세보기'),
+                  child: const Text('상세보기'),
                 ),
               ],
             ),
@@ -39,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 FirebaseAuth.instance.signOut();
                 GoRouter.of(context).go('/main_page');
               },
-              child: Text('로그아웃'),
+              child: const Text('로그아웃'),
             ),
           ],
         ),

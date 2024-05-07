@@ -5,15 +5,22 @@ import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar_s
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/shopping_cart_model.dart';
+import '../../../utils/simple_logger.dart';
 
 class ScaffoldWithNavBarViewModel extends ChangeNotifier {
 
-  ScaffoldWithNavBarState _state = ScaffoldWithNavBarState();
+  ScaffoldWithNavBarViewModel(){
+    getBadgeCount();
+  }
+
+  ScaffoldWithNavBarState _state = const ScaffoldWithNavBarState();
 
   ScaffoldWithNavBarState get state => _state;
 
   Future<void> getBadgeCount() async {
-    _state = state.copyWith(forBadgeList: await getShoppingCartList());
+    final List<ShoppingProductForCart> result = await getShoppingCartList();
+    logger.info(result);
+    _state = state.copyWith(forBadgeList: result);
     notifyListeners();
   }
 

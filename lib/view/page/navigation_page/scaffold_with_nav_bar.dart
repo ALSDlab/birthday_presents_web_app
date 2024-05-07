@@ -22,26 +22,26 @@ class ScaffoldWithNavBar extends StatefulWidget {
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   late bool _showCartBadge;
 
-  @override
-  void initState() {
-    Future.microtask(() async {
-      final ScaffoldWithNavBarViewModel viewModel =
-      context.read<ScaffoldWithNavBarViewModel>();
-      await viewModel.getBadgeCount();
-    });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Future.microtask(() async {
+  //     final ScaffoldWithNavBarViewModel viewModel =
+  //     context.read<ScaffoldWithNavBarViewModel>();
+  //     await viewModel.getBadgeCount();
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ScaffoldWithNavBarViewModel>();
     final state = viewModel.state;
-    print(state.forBadgeList);
     _showCartBadge = state.forBadgeList.isNotEmpty;
     return Scaffold(
       body: SafeArea(child: widget.child),
       bottomNavigationBar: StylishBottomBar(
         option: AnimatedBarOptions(
+          padding: const EdgeInsets.only(top: 8),
           iconSize: 30,
           barAnimation: BarAnimation.fade,
           iconStyle: IconStyle.Default,
@@ -73,7 +73,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
             selectedColor: Colors.teal,
             title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
-            badge: Text('${state.forBadgeList.length}'),
+            badge: Text('${state.forBadgeList.first.count}'),
             showBadge: _showCartBadge,
             badgeColor: Colors.purple,
             badgePadding: const EdgeInsets.only(left: 4, right: 4),

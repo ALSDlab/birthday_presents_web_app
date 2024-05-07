@@ -35,7 +35,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
               activeColor: const Color(0xFF2F362F),
               checkColor: Colors.white,
             ),
-            IconButton(onPressed: () {}, icon: Icon(Icons.cancel_outlined))
+            IconButton(onPressed: () {}, icon: const Icon(Icons.cancel_outlined))
           ],
         ),
         SizedBox(

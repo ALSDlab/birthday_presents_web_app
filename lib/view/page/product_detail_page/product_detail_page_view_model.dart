@@ -6,8 +6,10 @@ import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../utils/simple_logger.dart';
+
 class ProductDetailPageViewModel extends ChangeNotifier {
-  ProductDetailPageState _state = ProductDetailPageState();
+  ProductDetailPageState _state = const ProductDetailPageState();
 
   ProductDetailPageState get state => _state;
 
@@ -133,7 +135,7 @@ class ProductDetailPageViewModel extends ChangeNotifier {
           jsonEncode(currentList.map((e) => e.toJson()).toList());
       prefs.setString(_key, jsonString);
     } catch (e) {
-      print('Error during removal: $e');
+      logger.info('Error during removal: $e');
     }
   }
 }

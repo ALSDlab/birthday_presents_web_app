@@ -29,25 +29,25 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: Text('장바구니'),
+        title: const Text('장바구니'),
         centerTitle: true,
       ),
       body: state.isLoading
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '주문 상품',
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w900, fontSize: 18),
                     ),
                   ),
                 ),
-                Divider(
+                const Divider(
                   color: Color(0xFFcccccc),
                   thickness: 8,
                 ),
@@ -72,7 +72,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     const Text('전체 선택'),
                   ],
                 ),
-                Divider(),
+                const Divider(),
                 Expanded(
                   child: ListView.builder(
                     itemBuilder: (context, index) {

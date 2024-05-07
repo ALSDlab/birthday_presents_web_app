@@ -492,7 +492,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                   );
                                 });
 
-                                if (mounted) {
+                                if (context.mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text('주문생성 완료.'),

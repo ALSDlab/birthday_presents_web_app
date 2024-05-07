@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/model/shopping_cart_model.dart';
 
 class ShoppingCartViewModel extends ChangeNotifier {
-  ShoppingCartState _state = ShoppingCartState();
+  ShoppingCartState _state = const ShoppingCartState();
 
   ShoppingCartState get state => _state;
 
@@ -39,7 +39,6 @@ class ShoppingCartViewModel extends ChangeNotifier {
 
     _state = state.copyWith(isLoading: false);
     notifyListeners();
-    print(state.cartList);
   }
 
   // shared_preferences를 이용하여 장바구니에 담는 기능 구현 (장바구니에서 삭제하는 기능 포함)

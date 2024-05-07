@@ -6,6 +6,8 @@ import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.d
 import 'package:myk_market_app/styles/app_text_colors.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 
+import '../../../utils/simple_logger.dart';
+
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key, required this.isPersonalInfoForDeliverChecked});
 
@@ -115,7 +117,7 @@ class _SignupPageState extends State<SignupPage> {
                                         ),
                                         TextFormField(
                                           controller: addressController,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 12,
                                           ),
                                           decoration: const InputDecoration(
@@ -142,7 +144,7 @@ class _SignupPageState extends State<SignupPage> {
                                                   },
                                                 );
                                               } catch (error) {
-                                                print(error);
+                                                logger.info(error);
                                               }
                                             },
                                             icon: const Icon(Icons.search),
@@ -171,7 +173,7 @@ class _SignupPageState extends State<SignupPage> {
                                         }
                                         return null;
                                       },
-                                      style: TextStyle(fontSize: 12),
+                                      style: const TextStyle(fontSize: 12),
                                       decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
                                       ),
@@ -208,8 +210,8 @@ class _SignupPageState extends State<SignupPage> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('알림'),
-                                content: Text('비밀번호가 서로 다릅니다.'),
+                                title: const Text('알림'),
+                                content: const Text('비밀번호가 서로 다릅니다.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
@@ -229,7 +231,7 @@ class _SignupPageState extends State<SignupPage> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                  content: Text('주소검색을 해주세요.'),
+                                  content: const Text('주소검색을 해주세요.'),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
@@ -260,7 +262,7 @@ class _SignupPageState extends State<SignupPage> {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  content: Text('회원가입이 완료되었습니다. 로그인을 해주세요.'),
+                                  content: const Text('회원가입이 완료되었습니다. 로그인을 해주세요.'),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
