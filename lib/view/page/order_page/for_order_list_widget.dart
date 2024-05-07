@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 
+import '../main_page/image_load_widget.dart';
+
 class ForOrderListWidget extends StatelessWidget {
   const ForOrderListWidget(
       {super.key, required this.orderItem, this.forConfirm = false});
@@ -17,18 +19,15 @@ class ForOrderListWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            height: 80,
-            width: 120,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              image: DecorationImage(
-                fit:BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                orderItem.representativeImage,
-              )),
-            ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: ImageLoadWidget(
+              width: MediaQuery.of(context).size.width * 0.32,
+              widthHeightRatio: 0.65,
+              imageUrl: orderItem.representativeImage,
+                        ),
           ),
+
           const SizedBox(width: 16),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

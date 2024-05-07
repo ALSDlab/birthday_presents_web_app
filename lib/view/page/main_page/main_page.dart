@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
+import 'package:myk_market_app/view/page/pay_page/send_sms_widget.dart';
 import 'package:provider/provider.dart';
+
+import 'image_load_widget.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,19 +13,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  @override
-  void initState() {
-    Future.microtask(() {
-      final StoreViewModel viewModel = context.read<StoreViewModel>();
-      viewModel.loadingHome();
-    });
-
-    super.initState();
-    //   Future.delayed(Duration.zero,() {
-    //     _loadData();
-    //   });
-  }
-
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StoreViewModel>();
@@ -36,47 +24,54 @@ class _MainPageState extends State<MainPage> {
           '민영기 염소탕 회사소개',
           style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
         ),
-      ),
-      body: ListView(
-        children: [
-          viewModel.isLoading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Expanded(
-                  child: Image.network(
-                    viewModel.storeList[0].titleImage,
-                  ),
-                ),
-          Container(
-            child: Text(
-              'BRAND STORY',
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            child: Column(
-              children: [
-                Text(viewModel.storeList[0].introText),
-              ],
-            ),
-          ),
-          Container(
-            child: Text(viewModel.storeList[0].introTextOne),
-          ),
-          Container(
-            child: Expanded(
-              child: Image.network(viewModel.storeList[0].images[1]),
-            ),
-          ),
-          Container(child: Image.network(viewModel.storeList[0].images[3])),
+
+        // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
+        actions: [
+          TextButton(onPressed: (){
+            sendSMS('0410000000', '01032084619', 'SMS테스트입니다.');
+          }, child: Text('SMS테스트'))
         ],
       ),
+      body: viewModel.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(
+              children: [
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 0.6,
+                  imageUrl: viewModel.storeList[0].titleImage,
+                ),
+                const Text(
+                  'BRAND STORY',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  children: [
+                    Text(viewModel.storeList[0].introText),
+                  ],
+                ),
+                Text(viewModel.storeList[0].introTextOne),
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 1.5,
+                  imageUrl: viewModel.storeList[0].images[1],
+                ),
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 1.5,
+                  imageUrl: viewModel.storeList[0].images[3],
+                ),
+                // Image.network(viewModel.storeList[0].images[1]),
+                // Image.network(viewModel.storeList[0].images[3]),
+              ],
+            ),
     );
   }
 }

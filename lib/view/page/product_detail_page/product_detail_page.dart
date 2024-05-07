@@ -1,11 +1,14 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
+import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
+import '../main_page/image_load_widget.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
@@ -20,17 +23,36 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  late bool _showCartBadge;
+
+  @override
+  void initState() {
+    Future.microtask(() async {
+      final ProductDetailPageViewModel viewModel =
+          context.read<ProductDetailPageViewModel>();
+      await viewModel.getBadgeCount();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ProductDetailPageViewModel>();
     final state = viewModel.state;
+    _showCartBadge = state.forBadgeList.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
         actions: [
           badges.Badge(
-            position: badges.BadgePosition.topEnd(top: 10, end: 10),
+            position: badges.BadgePosition.topEnd(top: 0, end: 5),
+            badgeContent: Text("${state.forBadgeList.length}"),
+            showBadge: _showCartBadge,
             child: IconButton(
-                onPressed: () {}, icon: Icon(Icons.shopping_cart_rounded)),
+              onPressed: () {
+                context.go('/shopping_cart_page');
+              },
+              icon: const FaIcon(FontAwesomeIcons.cartShopping),
+            ),
           ),
         ],
         title: const Text(
@@ -47,8 +69,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             const Divider(),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.network(
-                widget.product.representativeImage,
+              child: ImageLoadWidget(
+                width: MediaQuery.of(context).size.width,
+                widthHeightRatio: 0.6,
+                imageUrl: widget.product.representativeImage,
               ),
             ),
             const Divider(),
@@ -111,9 +135,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ],
             ),
             const Divider(),
-            Image.network(widget.product.images[22]),
-            Image.network(widget.product.images[23]),
-            Image.network(widget.product.images[24]),
+            ImageLoadWidget(
+              width: MediaQuery.of(context).size.width,
+              widthHeightRatio: 2.5,
+              imageUrl: widget.product.images[22],
+            ),
+            ImageLoadWidget(
+              width: MediaQuery.of(context).size.width,
+              widthHeightRatio: 2.5,
+              imageUrl: widget.product.images[23],
+            ),
+            ImageLoadWidget(
+              width: MediaQuery.of(context).size.width,
+              widthHeightRatio: 2.5,
+              imageUrl: widget.product.images[24],
+            ),
           ],
         ),
       ),
@@ -214,9 +250,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           backgroundColor:
                                               const Color(0xFF2F362F),
                                         ),
-                                        onPressed: () {
-                                          GoRouter.of(context)
-                                              .go('/shopping_cart_page');
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                          ShoppingProductForCart item =
+                                              ShoppingProductForCart(
+                                                  orderId:
+                                                      widget.product.productId,
+                                                  orderProductName:
+                                                      widget.product.title,
+                                                  price: widget.product.price,
+                                                  representativeImage: widget
+                                                      .product
+                                                      .representativeImage,
+                                                  count: viewModel.cartCount);
+                                          await viewModel.addToShoppingCartList(
+                                              item, context);
+                                          await viewModel.getBadgeCount();
+                                          setState(() {});
                                         },
                                         child: const Text(
                                           '장바구니 담기',
@@ -283,9 +333,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           padding: const EdgeInsets.all(4.0),
                                           child: InkWell(
                                               onTap: () {
-                                                // setState(() {
-                                                //   if (count > 1) count--;
-                                                // });
                                                 setState(() {
                                                   viewModel
                                                       .minusPurchaseCount();
@@ -305,8 +352,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 setState(() {
                                                   viewModel.plusPurchaseCount();
                                                 });
-
-                                                // viewModel.plusCount();
                                               },
                                               child: const Icon(Icons.add)),
                                         ),

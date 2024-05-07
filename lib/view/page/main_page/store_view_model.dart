@@ -4,6 +4,11 @@ import 'package:myk_market_app/data/repository/store_repository_impl.dart';
 import 'package:myk_market_app/view/page/main_page/store_state.dart';
 
 class StoreViewModel extends ChangeNotifier {
+
+  StoreViewModel(){
+    loadingHome();
+  }
+
   StoreRepositoryImpl repository = StoreRepositoryImpl();
   StoreState _state = StoreState();
   List<Store> storeList = [];

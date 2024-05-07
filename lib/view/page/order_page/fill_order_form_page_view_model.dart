@@ -1,36 +1,49 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
+import 'package:myk_market_app/domain/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/user_model.dart';
+import '../../../utils/simple_logger.dart';
 import 'fill_order_form_page_state.dart';
 
 class FillOrderFormPageViewModel extends ChangeNotifier {
-  static final FillOrderFormPageViewModel _instance =
-      FillOrderFormPageViewModel._internal();
+  final UserRepository userRepository;
 
-  factory FillOrderFormPageViewModel() {
-    return _instance;
+  FillOrderFormPageViewModel({
+    required this.userRepository,
+  }) {
+    getUserList();
   }
 
-  FillOrderFormPageViewModel._internal();
+  // static final FillOrderFormPageViewModel _instance =
+  //     FillOrderFormPageViewModel._internal();
+  //
+  // factory FillOrderFormPageViewModel() {
+  //   return _instance;
+  // }
+  //
+  // FillOrderFormPageViewModel._internal();
 
-  final gridLeftArray = ['주문자', '휴대폰번호', '주소', '상세주소'];
+  final gridLeftArray = ['주문자', '휴대폰번호', '주소', '', '상세주소'];
+  List<TextEditingController> controllers = [];
   DataModel? daumPostcodeSearchDataModel;
 
   String _address = '';
   String _zoneCode = '';
-  List<User> _currentUser = [];
+  List<UserModel> _currentUser = [];
+
+  List<UserModel> get currentUser => _currentUser;
+
+  set currentUser(List<UserModel> value) {
+    _currentUser = value;
+  }
 
   String get address => _address;
 
   String get zoneCode => _zoneCode;
-
-  List<User> get currentUser => _currentUser;
 
   FillOrderFormPageState _state = const FillOrderFormPageState();
 
@@ -57,21 +70,60 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  static const String _key = 'userList';
+  static const String _key = '_email';
 
   Future<void> getUserList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? users = prefs.getString(_key);
-
-    if (users != null) {
-      // 저장된 데이터가 있다면 JSON을 파싱하여 리스트로 변환
-
-      final jsonList = jsonDecode(users) as List<dynamic>;
-      _currentUser = jsonList.map((e) => User.fromJson(e)).toList();
-    } else {
-      _currentUser = [];
-    }
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? users = prefs.getString(_key);
+      final userId = users?.replaceAll('@gmail.com', '');
+
+      logger.info(userId);
+      if (userId != null) {
+        _currentUser = await userRepository.getFirebaseUserData(userId);
+      }
+      TextEditingController nameController = TextEditingController();
+      TextEditingController phoneController = TextEditingController();
+      TextEditingController postcodeController = TextEditingController();
+      TextEditingController addressController = TextEditingController();
+      TextEditingController extraAddressController = TextEditingController();
+      nameController.text =
+          (_currentUser.isNotEmpty) ? _currentUser.first.name : '';
+      controllers.add(nameController);
+      phoneController.text =
+          (_currentUser.isNotEmpty) ? _currentUser.first.phone : '';
+      controllers.add(phoneController);
+      postcodeController.text = (_currentUser.isNotEmpty && state.addressChange == false)
+          ? _currentUser.first.postcode
+          : (daumPostcodeSearchDataModel?.zonecode != null)
+              ? daumPostcodeSearchDataModel!.zonecode
+              : zoneCode;
+      controllers.add(postcodeController);
+      addressController.text = (_currentUser.isNotEmpty && state.addressChange == false)
+          ? _currentUser.first.address
+          : (daumPostcodeSearchDataModel?.address != null)
+              ? daumPostcodeSearchDataModel!.address
+              : address;
+      controllers.add(addressController);
+      extraAddressController.text =
+          (_currentUser.isNotEmpty) ? _currentUser.first.addressDetail : '';
+      controllers.add(extraAddressController);
+      notifyListeners();
+    } catch (error) {
+      // 에러 처리
+      debugPrint('Error saving ordersInfo: $error');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
+    }
+  }
+
+  void addressChangeRequest(){
+    _state = state.copyWith(addressChange: true);
   }
 
   Future<bool> saveOrdersInfo(

@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   String name;
   String id;
   String postcode;
@@ -9,7 +9,7 @@ class User {
   int created;
 
 //<editor-fold desc="Data Methods">
-  User({
+  UserModel({
     required this.name,
     required this.id,
     required this.postcode,
@@ -23,7 +23,7 @@ class User {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is User &&
+      (other is UserModel &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           id == other.id &&
@@ -50,7 +50,7 @@ class User {
     return 'User{ name: $name, id: $id, postcode: $postcode, phone: $phone, address: $address, addressDetail: $addressDetail, checked: $checked, created: $created,}';
   }
 
-  User copyWith({
+  UserModel copyWith({
     String? name,
     String? id,
     String? postcode,
@@ -60,7 +60,7 @@ class User {
     bool? checked,
     int? created,
   }) {
-    return User(
+    return UserModel(
       name: name ?? this.name,
       id: id ?? this.id,
       postcode: postcode ?? this.postcode,
@@ -85,8 +85,8 @@ class User {
     };
   }
 
-  factory User.fromJson(Map<String, dynamic> map) {
-    return User(
+  factory UserModel.fromJson(Map<String, dynamic> map) {
+    return UserModel(
       name: map['name'] as String,
       id: map['id'] as String,
       postcode: map['postcode'] as String,
