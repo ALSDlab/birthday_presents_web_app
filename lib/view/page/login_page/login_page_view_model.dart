@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences? prefs;
 
-class LoginViewModel {
+class LoginViewModel with ChangeNotifier {
   Future signIn(String id, String password, BuildContext context) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: '$id@gmail.com', password: password);

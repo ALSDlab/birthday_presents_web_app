@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 
@@ -44,10 +45,8 @@ class _LoginPageState extends State<LoginPage> {
           return;
         }
       });
-
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,107 +62,142 @@ class _LoginPageState extends State<LoginPage> {
               '로그인',
               style: TextStyle(fontSize: 30),
             ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: idController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '필수항목입니다.';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(hintText: '아이디'),
-                        ),
-                        TextFormField(
-                          controller: passwordController,
-                          obscureText: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '필수항목입니다.';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(hintText: '비밀번호'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        viewModel.signIn(idController.text, passwordController.text, context);
-                        GoRouter.of(context).go('/main_page');
-                      }
-                    },
-                    child: const Text('로그인'),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 64.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Expanded(
+              child: ListView(
                 children: [
-                  const Text('비회원 주문 조회'),
-                  Row(
+                  Column(
                     children: [
-                      Expanded(
-                        flex: 2,
+                      Form(
+                        key: _formKey,
                         child: Column(
                           children: [
-                            TextField(
-                              controller: orderedUserController,
-                              decoration:
-                                  const InputDecoration(hintText: '주문자명'),
+                            TextFormField(
+                              controller: idController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '필수항목입니다.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: '아이디',
+                                  border: OutlineInputBorder()),
                             ),
-                            TextField(
-                              controller: orderNumberController,
+                            TextFormField(
+                              controller: passwordController,
                               obscureText: true,
-                              decoration:
-                                  const InputDecoration(hintText: '주문번호'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '필수항목입니다.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: '비밀번호',
+                                  border: OutlineInputBorder()),
                             ),
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text('주문확인'),
+                      SizedBox(
+                        height: 8.h,
+                      ),
+                      TextButton(
+                        style: ButtonStyle(
+                          minimumSize: MaterialStateProperty.all(
+                            Size(double.infinity, 52.h),
+                          ),
+                          shape: const MaterialStatePropertyAll(
+                            BeveledRectangleBorder(),
+                          ),
+                          backgroundColor:
+                              const MaterialStatePropertyAll(Colors.black),
                         ),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            viewModel.signIn(idController.text,
+                                passwordController.text, context);
+                            GoRouter.of(context).go('/main_page');
+                          }
+                        },
+                        child: Text(
+                          '로그인',
+                          style: TextStyle(color: Colors.white, fontSize: 16.h),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              '아이디 / 비밀번호 찾기',
+                              style: TextStyle(
+                                color: Color(0xFF8e8e93),
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              context.push('/profile_page/login_page/my_detail_page');
+                            },
+                            child: const Text(
+                              '회원가입',
+                              style: TextStyle(
+                                color: Color(0xFF8e8e93),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '주문정보를 잊으신 경우 고객센터로 문의바랍니다.',
-                      style: TextStyle(color: Colors.grey, fontSize: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 64.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: const Text('비회원 주문 조회'),
+                        ),
+                        TextField(
+                          controller: orderedUserController,
+                          decoration: const InputDecoration(
+                              hintText: '주문자명', border: OutlineInputBorder()),
+                        ),
+                        TextField(
+                          controller: orderNumberController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                              hintText: '주문번호', border: OutlineInputBorder()),
+                        ),
+                        const Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            '주문정보를 잊으신 경우 고객센터로 문의바랍니다.',
+                            style: TextStyle(color: Colors.grey, fontSize: 10),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.all(
+                              Size(double.infinity, 52.h),
+                            ),
+                            shape: const MaterialStatePropertyAll(
+                              BeveledRectangleBorder(),
+                            ),
+                            backgroundColor:
+                                const MaterialStatePropertyAll(Colors.black),
+                          ),
+                          child: const Text(
+                            '주문확인',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: Text('아이디 / 비밀번호 찾기'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          context.push('/login_page/my_detail_page');
-                        },
-                        child: Text('회원가입'),
-                      ),
-                    ],
                   ),
                 ],
               ),
