@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/agreement_page/agreement_page.dart';
 import 'package:myk_market_app/view/page/login_page/login_page.dart';
+import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar.dart';
@@ -88,7 +89,12 @@ final router = GoRouter(
               routes: [
                 GoRoute(
                     path: 'login_page',
-                    builder: (context, state) => const LoginPage(),
+                    builder: (context, state) {
+                      return ChangeNotifierProvider(
+                        create: (_) => LoginViewModel(),
+                        child: LoginPage(),
+                      );
+                    },
                     routes: [
                       GoRoute(
                           path: 'my_detail_page',

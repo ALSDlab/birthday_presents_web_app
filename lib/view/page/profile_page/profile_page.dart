@@ -14,18 +14,35 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Text(FirebaseAuth.instance.currentUser?.displayName ?? '사용자'),
-          Text('주문내역'),
-          TextButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              GoRouter.of(context).go('/main_page');
-            },
-            child: Text('로그아웃'),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.person),
+                Text(FirebaseAuth.instance.currentUser?.displayName ?? '사용자'),
+              ],
+            ),
+            Row(
+              children: [
+                Text('주문내역'),
+                TextButton(
+                  onPressed: () {},
+                  child: Text('상세보기'),
+                ),
+              ],
+            ),
+            TextButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                GoRouter.of(context).go('/main_page');
+              },
+              child: Text('로그아웃'),
+            ),
+          ],
+        ),
       ),
     );
   }
