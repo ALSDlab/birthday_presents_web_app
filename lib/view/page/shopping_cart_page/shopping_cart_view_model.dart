@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/model/shopping_cart_model.dart';
 
 class ShoppingCartViewModel extends ChangeNotifier {
-  ShoppingCartState _state = ShoppingCartState();
+  ShoppingCartState _state = const ShoppingCartState();
 
   ShoppingCartState get state => _state;
 
@@ -58,5 +58,21 @@ class ShoppingCartViewModel extends ChangeNotifier {
     } else {
       return [];
     }
+  }
+
+  //장바구니 제거하는 기능
+  Future<void> removeFromCartList(ShoppingProductForCart item) async {
+    try {
+      List<ShoppingProductForCart> currentList = await getShoppingCartList();
+      currentList.remove(item);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String jsonString =
+          jsonEncode(currentList.map((e) => e.toJson()).toList());
+      prefs.setString('shoppingCartList', jsonString);
+    } catch (e) {
+      print('Error during removal: $e');
+    }
+    getCartList();
   }
 }

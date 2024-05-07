@@ -7,7 +7,7 @@ import 'package:myk_market_app/view/page/product_detail_page/product_detail_page
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductDetailPageViewModel extends ChangeNotifier {
-  ProductDetailPageState _state = ProductDetailPageState();
+  ProductDetailPageState _state = const ProductDetailPageState();
 
   ProductDetailPageState get state => _state;
 
@@ -135,5 +135,6 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     } catch (e) {
       print('Error during removal: $e');
     }
+    notifyListeners();
   }
 }

@@ -5,10 +5,12 @@ import '../main_page/image_load_widget.dart';
 
 class ShoppingCartPageWidget extends StatefulWidget {
   final ShoppingProductForCart shoppingProductForCart;
+  Function() removeFromCartList;
 
-  const ShoppingCartPageWidget({
+  ShoppingCartPageWidget({
     super.key,
     required this.shoppingProductForCart,
+    required this.removeFromCartList,
   });
 
   @override
@@ -35,7 +37,28 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
               activeColor: const Color(0xFF2F362F),
               checkColor: Colors.white,
             ),
-            IconButton(onPressed: () {}, icon: Icon(Icons.cancel_outlined))
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            content: const Text('상품을 삭제하시겠습니까?'),
+                            actions: [
+                              OutlinedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('아니요')),
+                              OutlinedButton(
+                                  onPressed: () {
+                                    widget.removeFromCartList();
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('예'))
+                            ],
+                          ));
+                },
+                icon: const Icon(Icons.cancel_outlined))
           ],
         ),
         SizedBox(
