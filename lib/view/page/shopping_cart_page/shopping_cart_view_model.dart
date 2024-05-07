@@ -59,4 +59,5 @@ class ShoppingCartViewModel extends ChangeNotifier {
       return [];
     }
   }
+<<<<<<< HEAD
 }
