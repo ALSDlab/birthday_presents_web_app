@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 
+import '../../../data/model/order_model.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -180,7 +182,17 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final List<OrderModel> orderCheckList =
+                            await viewModel.orderCheckforNoMember(
+                                orderNumberController.text,
+                                orderedUserController.text);
+                            if (orderCheckList.isNotEmpty && mounted) {
+                              GoRouter.of(context).go(
+                                  '//shopping_cart_page/fill_order_page/pay_page',
+                                  extra: orderCheckList);
+                            }
+                          },
                           style: ButtonStyle(
                             minimumSize: MaterialStateProperty.all(
                               Size(double.infinity, 52.h),
