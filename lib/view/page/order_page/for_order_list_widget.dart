@@ -4,9 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 
 class ForOrderListWidget extends StatelessWidget {
-  const ForOrderListWidget({super.key, required this.orderItem});
+  const ForOrderListWidget(
+      {super.key, required this.orderItem, this.forConfirm = false});
 
   final OrderModel orderItem;
+  final bool forConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -54,4 +56,40 @@ class ForOrderListWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget payStatusWidget(int statusValue) {
+  String result = '';
+  Color color = Colors.transparent;
+  switch (statusValue) {
+    case -1:
+      result = '결제실패';
+      color = Colors.red;
+      break;
+    case 0:
+      result = '결제전';
+      color = Colors.red;
+      break;
+    case 1:
+      result = '결제완료';
+      color = Colors.blue;
+      break;
+    case 2:
+      result = '결제취소';
+      color = Colors.red;
+      break;
+    case 3:
+      result = '배송중';
+      color = Colors.orange;
+      break;
+    case 4:
+      result = '배송완료';
+      color = Colors.blue;
+      break;
+  }
+
+  return Text(
+    '($result)',
+    style: TextStyle(color: color),
+  );
 }

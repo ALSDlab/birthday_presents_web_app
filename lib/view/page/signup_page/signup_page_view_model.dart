@@ -51,6 +51,7 @@ class SignupViewModel {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: '$id@gmail.com', password: password);
+      await userCredential.user?.updateDisplayName(name);
     } catch (e) {
       return e.toString();
     }

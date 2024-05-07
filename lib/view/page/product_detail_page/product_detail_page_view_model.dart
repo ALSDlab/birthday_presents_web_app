@@ -9,9 +9,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProductDetailPageViewModel extends ChangeNotifier {
   ProductDetailPageState _state = ProductDetailPageState();
 
+  Future<void> getBadgeCount() async {
+    _state = state.copyWith(forBadgeList: await getShoppingCartList());
+    notifyListeners();
+    print(state.forBadgeList);
+
+  }
+
   ProductDetailPageState get state => _state;
   int purchaseCount = 1;
   int cartCount = 1;
+
 
   void plusPurchaseCount() {
     purchaseCount++;
@@ -51,10 +59,8 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     return buffer.toString();
   }
 
-
   // 주문번호 생성하는 매서드 (연월일(YYMMDD) + 모든 영문자 4자리 형식)
   String generateLicensePlate(String currentDate) {
-
     // 4자리의 랜덤한 영문자 생성
     String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     String randomLetters = '';
@@ -68,12 +74,11 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     return licensePlate;
   }
 
-
   // shared_preferences를 이용하여 장바구니에 담는 기능 구현 (장바구니에서 삭제하는 기능 포함)
   static const String _key = 'shoppingCartList';
 
   // 장바구니 불러오는 기능
-  static Future<List<ShoppingProductForCart>> getShoppingCartList() async {
+  Future<List<ShoppingProductForCart>> getShoppingCartList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedProducts = prefs.getString(_key);
 
@@ -93,7 +98,7 @@ class ProductDetailPageViewModel extends ChangeNotifier {
 
     // 중복 체크
     var index = currentList.indexWhere(
-        (product) => product.orderId == item.orderId);
+            (product) => product.orderId == item.orderId);
     if (index == -1) {
       currentList.add(item);
     } else {
@@ -105,6 +110,7 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     jsonEncode(currentList.map((e) => e.toJson()).toList());
     prefs.setString(_key, jsonString);
 
+
     // 스낵바로 표시
     if (context.mounted) {
       cartAddSnackBar(context);
@@ -115,11 +121,10 @@ class ProductDetailPageViewModel extends ChangeNotifier {
   void cartAddSnackBar(BuildContext context) {
     const snackBar = SnackBar(
       content: Text('장바구니에 담겼습니다.', style: TextStyle(fontFamily: 'Jalnan')),
-      duration: Duration(seconds: 1),
+      duration: Duration(seconds: 3),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
 
   // 장바구니에서 제거하는 기능
   Future<void> removeFromCartList(ShoppingProductForCart item) async {
@@ -135,9 +140,4 @@ class ProductDetailPageViewModel extends ChangeNotifier {
       print('Error during removal: $e');
     }
   }
-
-
-
-
-
 }

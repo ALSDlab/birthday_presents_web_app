@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,10 +13,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+
   var idController = TextEditingController();
   var passwordController = TextEditingController();
   var orderNumberController = TextEditingController();
   var orderedUserController = TextEditingController();
+
+  StreamSubscription? authStateChanges;
 
   @override
   void dispose() {
@@ -24,10 +32,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      LoginViewModel().initPreferences();
+    });
+    authStateChanges = FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        GoRouter.of(context).go('/main_page', extra: 0);
+        return;
+      }
+    });
+  }
+
+
+  @override
   Widget build(BuildContext context) {
+    LoginViewModel viewModel = LoginViewModel();
+
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(128.0),
+        padding: const EdgeInsets.all(64.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -39,23 +64,43 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: idController,
-                        decoration: const InputDecoration(hintText: '아이디'),
-                      ),
-                      TextField(
-                        controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(hintText: '비밀번호'),
-                      ),
-                    ],
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: idController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '필수항목입니다.';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(hintText: '아이디'),
+                        ),
+                        TextFormField(
+                          controller: passwordController,
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '필수항목입니다.';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(hintText: '비밀번호'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        viewModel.signIn(idController.text, passwordController.text, context);
+                        GoRouter.of(context).go('/main_page');
+                      }
+                    },
                     child: const Text('로그인'),
                   ),
                 ),
@@ -76,12 +121,14 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             TextField(
                               controller: orderedUserController,
-                              decoration: const InputDecoration(hintText: '주문자명'),
+                              decoration:
+                                  const InputDecoration(hintText: '주문자명'),
                             ),
                             TextField(
                               controller: orderNumberController,
                               obscureText: true,
-                              decoration: const InputDecoration(hintText: '주문번호'),
+                              decoration:
+                                  const InputDecoration(hintText: '주문번호'),
                             ),
                           ],
                         ),
@@ -94,10 +141,27 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  const Text(
-                    '주문정보를 잊으신 경우 고객센터로 문의바랍니다.',
-                    style: TextStyle(color: Colors.grey, fontSize: 10),
-                  )
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '주문정보를 잊으신 경우 고객센터로 문의바랍니다.',
+                      style: TextStyle(color: Colors.grey, fontSize: 10),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {},
+                        child: Text('아이디 / 비밀번호 찾기'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.push('/login_page/my_detail_page');
+                        },
+                        child: Text('회원가입'),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

@@ -4,17 +4,20 @@ import 'package:myk_market_app/domain/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   @override
-  Future<List<User>> getFirebaseUserData() async {
+  Future<List<UserModel>> getFirebaseUserData(String userId) async {
     // Firebase Firestore에서 데이터 읽어오기
-    QuerySnapshot querySnapshot = await _firestore.collection('profile').get();
+    var query = FirebaseFirestore.instance
+        .collection('user')
+        .where('id', isEqualTo: userId);
 
-    // 데이터 파싱
-    List<User> data = [];
-    for (var document in querySnapshot.docs) {
-      data.add(User.fromJson(document.data() as Map<String, dynamic>));
-    }
-    return data;
+    List<UserModel> result = [];
+    await query.get().then((QuerySnapshot querySnapshot) {
+      for (var document in querySnapshot.docs) {
+        result.add(UserModel.fromJson(document.data() as Map<String, dynamic>));
+      }
+    });
+    return result;
   }
-
 }
