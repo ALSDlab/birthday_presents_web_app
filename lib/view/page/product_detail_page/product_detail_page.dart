@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
-import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar_view_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +38,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ProductDetailPageViewModel>();
-    final navBarViewModel = context.watch<ScaffoldWithNavBarViewModel>();
     final state = viewModel.state;
     _showCartBadge = state.forBadgeList.isNotEmpty;
     return Scaffold(
@@ -268,7 +266,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           await viewModel.addToShoppingCartList(
                                               item, context);
                                           await viewModel.getBadgeCount();
-                                          await navBarViewModel.getBadgeCount();
                                           setState(() {});
                                         },
                                         child: const Text(

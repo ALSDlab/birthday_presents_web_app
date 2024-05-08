@@ -7,7 +7,6 @@ import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar.dart';
-import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar_view_model.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page.dart';
@@ -35,7 +34,7 @@ final router = GoRouter(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) => NoTransitionPage(
                 child: ChangeNotifierProvider(
-              create: (_) => ScaffoldWithNavBarViewModel(),
+              create: (_) => getIt<ShoppingCartViewModel>(),
               child: ScaffoldWithNavBar(
                 location: state.matchedLocation,
                 child: child,
@@ -118,15 +117,8 @@ final router = GoRouter(
             path: '/product_detail_page',
             builder: (context, state) {
               final productDetailMap = state.extra! as Map<String, dynamic>;
-              return MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider(
-                      create: (_) => ProductDetailPageViewModel(),
-                    ),
-                    ChangeNotifierProvider(
-                      create: (_) => ScaffoldWithNavBarViewModel(),
-                    )
-                  ],
+              return ChangeNotifierProvider(
+                  create: (_) => ProductDetailPageViewModel(),
                   child: ProductDetailPage(
                     product: productDetailMap['product'],
                   ));

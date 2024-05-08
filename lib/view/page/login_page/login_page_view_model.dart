@@ -152,7 +152,7 @@ class LoginPageViewModel with ChangeNotifier {
     try {
       final myOrder =
           await orderRepository.getFirebaseMyOrders(orderNumberForPay);
-      logger.info(myOrder);
+      // logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
 
       notifyListeners();

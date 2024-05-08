@@ -2,11 +2,13 @@ import 'dart:core';
 
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+
+import '../shopping_cart_page/shopping_cart_view_model.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
   String location;
@@ -20,7 +22,7 @@ class ScaffoldWithNavBar extends StatefulWidget {
 }
 
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
-  late bool _showCartBadge;
+  bool _showCartBadge = false;
 
   // @override
   // void initState() {
@@ -34,9 +36,9 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ScaffoldWithNavBarViewModel>();
-    final state = viewModel.state;
-    _showCartBadge = state.forBadgeList.isNotEmpty;
+    final cartListViewModel = context.watch<ShoppingCartViewModel>();
+    final state = cartListViewModel.state;
+    _showCartBadge = state.cartList.isNotEmpty;
     return Scaffold(
       body: SafeArea(child: widget.child),
       bottomNavigationBar: StylishBottomBar(
@@ -51,7 +53,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             icon: const Icon(BootstrapIcons.house_door),
             selectedIcon: const Icon(BootstrapIcons.house_door_fill),
             selectedColor: Colors.teal,
-            unSelectedColor: Colors.grey,
+            unSelectedColor:  CupertinoColors.black,
             title: const Text(
               '홈',
               style: TextStyle(fontFamily: 'KoPub'),
@@ -60,9 +62,8 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
             icon: const Icon(BootstrapIcons.box2),
             selectedIcon: const Icon(BootstrapIcons.box2_fill),
-            selectedColor: Colors.teal,
-            // unSelectedColor: Colors.purple,
-            // backgroundColor: Colors.orange,
+            selectedColor: const Color(0xFF019934),
+            unSelectedColor:  CupertinoColors.black,
             title: const Text(
               '상품',
               style: TextStyle(fontFamily: 'KoPub'),
@@ -71,21 +72,23 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
             icon: const Icon(BootstrapIcons.cart_check),
             selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
-            selectedColor: Colors.teal,
+            selectedColor: const Color(0xFF019934),
+            unSelectedColor:  CupertinoColors.black,
             title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
-            badge: Text('${state.forBadgeList.first.count}'),
+            badge: _showCartBadge ? Text('${cartListViewModel.state.cartList.first.count}') : null, // 뱃지 조건을 변경된 상태에 따라 설정
             showBadge: _showCartBadge,
-            badgeColor: Colors.purple,
+            badgeColor: const Color(0xFF019934),
             badgePadding: const EdgeInsets.only(left: 4, right: 4),
           ),
           BottomBarItem(
               icon: const Icon(BootstrapIcons.person_vcard),
               selectedIcon: const Icon(BootstrapIcons.person_vcard_fill),
-              selectedColor: Colors.deepPurple,
+              selectedColor: const Color(0xFF019934),
+              unSelectedColor:  CupertinoColors.black,
               title:
-                  const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),
+              const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),
         ],
-        backgroundColor: Colors.yellowAccent,
+        backgroundColor: const Color(0xFFFFF8E7),
         currentIndex: widget.location.contains('/main_page')
             ? 0
             : widget.location.contains('/product_page')
@@ -110,10 +113,6 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       '/profile_page'
     ];
     String? location = locations[index];
-    //
-    // setState(() {
-    //   _currentIndex = index;
-    // });
     if (index == 3) {
       context.go(FirebaseAuth.instance.currentUser != null
           ? '/profile_page'

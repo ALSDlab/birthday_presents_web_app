@@ -73,7 +73,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser;
 
-      logger.info(userId?.email!.replaceAll('@gmail.com', ''));
+      // logger.info(userId?.email!.replaceAll('@gmail.com', ''));
       if (userId != null) {
         _currentUser = await userRepository
             .getFirebaseUserData(userId.email!.replaceAll('@gmail.com', ''));
