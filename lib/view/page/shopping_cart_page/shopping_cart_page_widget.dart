@@ -94,56 +94,49 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: Container(
-                          width: 120,
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.zero),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: InkWell(
-                                    onTap: () {
-                                      viewModel.minusToShoppingCartList(
-                                          widget.shoppingProductForCart,
-                                          context);
-                                      setState(() {});
-                                    },
-                                    child: const Icon(Icons.remove)),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text(
-                                    '${widget.shoppingProductForCart.count}'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: InkWell(
-                                    onTap: () {
-                                      viewModel.addToShoppingCartList(
-                                          widget.shoppingProductForCart,
-                                          context);
-                                      setState(() {});
-                                    },
-                                    child: const Icon(Icons.add)),
-                              ),
-                            ],
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0,bottom: 16.0),
+                    child: Container(
+                      width: 120,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.zero),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: InkWell(
+                                onTap: () {
+                                  viewModel.minusToShoppingCartList(
+                                      widget.shoppingProductForCart, context);
+                                  setState(() {});
+                                },
+                                child: const Icon(Icons.remove)),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child:
+                                Text('${widget.shoppingProductForCart.count}'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: InkWell(
+                                onTap: () {
+                                  viewModel.addToShoppingCartList(
+                                      widget.shoppingProductForCart, context);
+                                  setState(() {});
+                                },
+                                child: const Icon(Icons.add)),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${NumberFormat('###,###,###,###').format(int.parse(widget.shoppingProductForCart.price.replaceAll(',', '')) * widget.shoppingProductForCart.count)}원',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w900, fontSize: 18),
-                      ),
-                    ],
+                    ),
+                  ),
+                  Text(
+                    '${NumberFormat('###,###,###,###').format(int.parse(widget.shoppingProductForCart.price.replaceAll(',', '')) * widget.shoppingProductForCart.count)}원',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w900, fontSize: 18),
                   ),
                 ],
               )

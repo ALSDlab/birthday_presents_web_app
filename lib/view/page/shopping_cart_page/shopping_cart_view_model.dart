@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,26 +12,9 @@ class ShoppingCartViewModel extends ChangeNotifier {
 
   ShoppingCartState get state => _state;
 
-  // List<ShoppingProductForCart> cartList = [];
-  //
   ShoppingCartViewModel() {
     getCartList();
   }
-
-  // bool _disposed = false;
-  //
-  // @override
-  // void dispose() {
-  //   _disposed = true;
-  //   super.dispose();
-  // }
-  //
-  // @override
-  // notifyListeners() {
-  //   if (!_disposed) {
-  //     super.notifyListeners();
-  //   }
-  // }
 
   Future<void> getCartList() async {
     _state = state.copyWith(cartList: await getShoppingCartList());
@@ -99,7 +83,8 @@ class ShoppingCartViewModel extends ChangeNotifier {
   Future<void> removeFromCartList(ShoppingProductForCart item) async {
     try {
       List<ShoppingProductForCart> currentList = await getShoppingCartList();
-      currentList.remove(item);
+      // currentList.remove(item);
+      currentList.removeWhere((element) => element.orderId == item.orderId);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String jsonString =

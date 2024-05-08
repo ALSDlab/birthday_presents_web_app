@@ -86,6 +86,21 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 )
               ],
             ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () {},
+          child: Text(
+            '주문하기',
+            style: TextStyle(color: Colors.white),
+          ),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+              const Color(0xFF2F362F),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
