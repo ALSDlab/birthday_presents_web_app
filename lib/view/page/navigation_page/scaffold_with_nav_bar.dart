@@ -5,9 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
+import '../product_detail_page/product_detail_page_view_model.dart';
 import '../shopping_cart_page/shopping_cart_view_model.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
@@ -22,23 +24,12 @@ class ScaffoldWithNavBar extends StatefulWidget {
 }
 
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
-  bool _showCartBadge = false;
 
-  // @override
-  // void initState() {
-  //   Future.microtask(() async {
-  //     final ScaffoldWithNavBarViewModel viewModel =
-  //     context.read<ScaffoldWithNavBarViewModel>();
-  //     await viewModel.getBadgeCount();
-  //   });
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
-    final cartListViewModel = context.watch<ShoppingCartViewModel>();
-    final state = cartListViewModel.state;
-    _showCartBadge = state.cartList.isNotEmpty;
+    final viewModel = Provider.of<ProductDetailPageViewModel>(context);
+    final state = viewModel.state;
     return Scaffold(
       body: SafeArea(child: widget.child),
       bottomNavigationBar: StylishBottomBar(
@@ -75,9 +66,9 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             selectedColor: const Color(0xFF019934),
             unSelectedColor:  CupertinoColors.black,
             title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
-            badge: _showCartBadge ? Text('${cartListViewModel.state.cartList.first.count}') : null, // 뱃지 조건을 변경된 상태에 따라 설정
-            showBadge: _showCartBadge,
-            badgeColor: const Color(0xFF019934),
+            badge: Text('${state.forBadgeList.length}'),
+            showBadge: state.forBadgeList.isNotEmpty,
+            badgeColor: Colors.red,
             badgePadding: const EdgeInsets.only(left: 4, right: 4),
           ),
           BottomBarItem(

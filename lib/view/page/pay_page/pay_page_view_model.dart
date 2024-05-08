@@ -8,6 +8,7 @@ import 'package:bootpay/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/order_repository.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
@@ -25,6 +26,8 @@ class PayPageViewModel extends ChangeNotifier {
   PayPageState _state = const PayPageState();
 
   PayPageState get state => _state;
+
+  List<int> afterPayStatus = [];
 
   bool _disposed = false;
 
@@ -89,7 +92,37 @@ class PayPageViewModel extends ChangeNotifier {
       });
     } catch (error) {
       // 에러 처리
-      logger.info('Error saving ordersInfo: $error');
+      logger.info('Error post payInfo: $error');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
+    }
+  }
+
+  Future<void> checkPayItems(List<OrderModel> orderItems) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+    try {
+      await Future.forEach(orderItems.asMap().entries, (entry) async {
+        final item = entry.value;
+        var query = FirebaseFirestore.instance
+            .collection('orders')
+            .where('orderId', isEqualTo: item.orderId);
+        await query.get().then((QuerySnapshot querySnapshot) {
+          if (querySnapshot.docs.isNotEmpty) {
+            for (var document in querySnapshot.docs) {
+              afterPayStatus.add(
+                  OrderModel.fromJson(document.data() as Map<String, dynamic>)
+                      .payAndStatus!);
+            }
+          }
+        });
+      });
+    } catch (error) {
+      // 에러 처리
+      logger.info('Error post payInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -123,26 +156,31 @@ class PayPageViewModel extends ChangeNotifier {
         logger.info('------- onError: $data');
         postPaidItems(orderItems, -1);
       },
-      onClose: () {
+      onClose: () async {
         logger.info('------- onClose');
-
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: const Text('주문이 완료되었습니다.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
-        // GoRouter.of(context).go('/shopping_cart_page/fill_order_page/pay_page');
+        await checkPayItems(orderItems);
+        if (context.mounted) {
+          GoRouter.of(context).go('/shopping_cart_page');
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(afterPayStatus.every((e) => e == 1)
+                    ? '결제가 완료되었습니다.'
+                    : '결제가 실패하였습니다. 다시 시도해 주세요'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
+                      context.pop();
+                    },
+                    child: const Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       },
       onIssued: (String data) {
         logger.info('------- onIssued: $data');

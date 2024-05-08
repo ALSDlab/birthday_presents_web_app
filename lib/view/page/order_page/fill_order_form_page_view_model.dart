@@ -6,7 +6,6 @@ import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/user_repository.dart';
 
 import '../../../data/model/user_model.dart';
-import '../../../utils/simple_logger.dart';
 import 'fill_order_form_page_state.dart';
 
 class FillOrderFormPageViewModel extends ChangeNotifier {
@@ -116,10 +115,14 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     extraAddressController.text =
         (_currentUser.isNotEmpty) ? _currentUser.first.addressDetail : '';
     controllers.add(extraAddressController);
+    notifyListeners();
+
   }
 
   void addressChangeRequest() {
     _state = state.copyWith(addressChange: true);
+    notifyListeners();
+
   }
 
   Future<bool> saveOrdersInfo(

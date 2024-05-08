@@ -62,7 +62,7 @@ class _AgreementPageState extends State<AgreementPage> {
                           activeColor: Colors.green,
                           checkColor: Colors.white,
                         ),
-                        const Text('구록원의 모든 약관을 확인하고 전체 동의합니다.'),
+                        const Text('건강담은 민영기 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.'),
                       ],
                     ),
                     Row(
