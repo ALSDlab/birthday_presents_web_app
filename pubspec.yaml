@@ -60,6 +60,7 @@ dependencies:
   bootstrap_icons: ^1.11.3
   persistent_bottom_nav_bar_v2: ^5.2.2
   stylish_bottom_bar: ^1.1.0
+  connectivity_plus: ^6.0.3
 
 
 dev_dependencies:
