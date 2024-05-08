@@ -42,8 +42,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '주문 상품',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900, fontSize: 18),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
                     ),
                   ),
                 ),
@@ -58,12 +58,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                       onChanged: (bool? newValue) {
                         setState(() {
                           isAllChecked = newValue!;
-                          // isTermsNConditionsChecked =
-                          //     newValue;
-                          // isPersonalInfoChecked =
-                          //     newValue;
-                          // isPersonalInfoForDeliverChecked =
-                          //     newValue;
+                          for (var item in state.cartList) {
+                            item.isChecked =
+                                newValue; // isChecked 변수의 값을 반대로 변경
+                          }
                         });
                       },
                       activeColor: const Color(0xFF2F362F),
@@ -78,6 +76,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     itemBuilder: (context, index) {
                       return ShoppingCartPageWidget(
                         shoppingProductForCart: state.cartList[index],
+                        removeFromCartList: () {
+                          viewModel.removeFromCartList(state.cartList[index]);
+                        },
                       );
                     },
                     itemCount: state.cartList.length,

@@ -137,5 +137,6 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     } catch (e) {
       logger.info('Error during removal: $e');
     }
+    notifyListeners();
   }
 }

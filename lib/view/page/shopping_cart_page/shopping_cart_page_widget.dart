@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:intl/intl.dart';
+import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
+import 'package:provider/provider.dart';
 import '../main_page/image_load_widget.dart';
 
 class ShoppingCartPageWidget extends StatefulWidget {
   final ShoppingProductForCart shoppingProductForCart;
+  Function() removeFromCartList;
 
-  const ShoppingCartPageWidget({
+  ShoppingCartPageWidget({
     super.key,
     required this.shoppingProductForCart,
+    required this.removeFromCartList,
   });
 
   @override
@@ -16,26 +20,46 @@ class ShoppingCartPageWidget extends StatefulWidget {
 }
 
 class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
-  bool isItemChecked = false;
-
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<ShoppingCartViewModel>();
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Checkbox(
-              value: isItemChecked,
+              value: widget.shoppingProductForCart.isChecked,
               onChanged: (bool? newValue) {
                 setState(() {
-                  isItemChecked = newValue!;
+                  widget.shoppingProductForCart.isChecked = newValue!;
                 });
               },
               activeColor: const Color(0xFF2F362F),
               checkColor: Colors.white,
             ),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.cancel_outlined))
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            content: const Text('상품을 삭제하시겠습니까?'),
+                            actions: [
+                              OutlinedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('아니요')),
+                              OutlinedButton(
+                                  onPressed: () {
+                                    widget.removeFromCartList();
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('예'))
+                            ],
+                          ));
+                },
+                icon: const Icon(Icons.cancel_outlined))
           ],
         ),
         SizedBox(
@@ -70,10 +94,56 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    '${NumberFormat('###,###,###,###').format(int.parse(widget.shoppingProductForCart.price.replaceAll(',', '')) * widget.shoppingProductForCart.count)}원',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w900, fontSize: 18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Container(
+                          width: 120,
+                          decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.zero),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: InkWell(
+                                    onTap: () {
+                                      viewModel.minusToShoppingCartList(
+                                          widget.shoppingProductForCart,
+                                          context);
+                                      setState(() {});
+                                    },
+                                    child: const Icon(Icons.remove)),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                    '${widget.shoppingProductForCart.count}'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: InkWell(
+                                    onTap: () {
+                                      viewModel.addToShoppingCartList(
+                                          widget.shoppingProductForCart,
+                                          context);
+                                      setState(() {});
+                                    },
+                                    child: const Icon(Icons.add)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${NumberFormat('###,###,###,###').format(int.parse(widget.shoppingProductForCart.price.replaceAll(',', '')) * widget.shoppingProductForCart.count)}원',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w900, fontSize: 18),
+                      ),
+                    ],
                   ),
                 ],
               )
