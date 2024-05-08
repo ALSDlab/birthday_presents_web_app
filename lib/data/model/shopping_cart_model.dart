@@ -4,6 +4,7 @@ class ShoppingProductForCart {
   String price;
   String representativeImage;
   int count;
+  bool? isChecked;
 
 //<editor-fold desc="Data Methods">
   ShoppingProductForCart({
@@ -12,6 +13,7 @@ class ShoppingProductForCart {
     required this.price,
     required this.representativeImage,
     required this.count,
+    this.isChecked,
   });
 
   @override
@@ -23,7 +25,8 @@ class ShoppingProductForCart {
           orderProductName == other.orderProductName &&
           price == other.price &&
           representativeImage == other.representativeImage &&
-          count == other.count);
+          count == other.count &&
+          isChecked == other.isChecked);
 
   @override
   int get hashCode =>
@@ -31,11 +34,12 @@ class ShoppingProductForCart {
       orderProductName.hashCode ^
       price.hashCode ^
       representativeImage.hashCode ^
-      count.hashCode;
+      count.hashCode ^
+      isChecked.hashCode;
 
   @override
   String toString() {
-    return 'ShoppingProductForCart{ orderId: $orderId, orderProductName: $orderProductName, price: $price, representativeImage: $representativeImage, count: $count,}';
+    return 'ShoppingProductForCart{ orderId: $orderId, orderProductName: $orderProductName, price: $price, representativeImage: $representativeImage, count: $count, isChecked: $isChecked,}';
   }
 
   ShoppingProductForCart copyWith({
@@ -44,6 +48,7 @@ class ShoppingProductForCart {
     String? price,
     String? representativeImage,
     int? count,
+    bool? isChecked,
   }) {
     return ShoppingProductForCart(
       orderId: orderId ?? this.orderId,
@@ -51,6 +56,7 @@ class ShoppingProductForCart {
       price: price ?? this.price,
       representativeImage: representativeImage ?? this.representativeImage,
       count: count ?? this.count,
+      isChecked: isChecked ?? this.isChecked,
     );
   }
 
@@ -61,6 +67,7 @@ class ShoppingProductForCart {
       'price': price,
       'representativeImage': representativeImage,
       'count': count,
+      'isChecked': isChecked,
     };
   }
 
@@ -71,6 +78,7 @@ class ShoppingProductForCart {
       price: map['price'] as String,
       representativeImage: map['representativeImage'] as String,
       count: map['count'] as int,
+      isChecked: map['isChecked'] ?? false,
     );
   }
 

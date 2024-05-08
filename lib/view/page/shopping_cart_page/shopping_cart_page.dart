@@ -58,12 +58,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                       onChanged: (bool? newValue) {
                         setState(() {
                           isAllChecked = newValue!;
-                          // isTermsNConditionsChecked =
-                          //     newValue;
-                          // isPersonalInfoChecked =
-                          //     newValue;
-                          // isPersonalInfoForDeliverChecked =
-                          //     newValue;
+                          for (var item in state.cartList) {
+                            item.isChecked =
+                                newValue; // isChecked 변수의 값을 반대로 변경
+                          }
                         });
                       },
                       activeColor: const Color(0xFF2F362F),
@@ -79,9 +77,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                       return ShoppingCartPageWidget(
                         shoppingProductForCart: state.cartList[index],
                         removeFromCartList: () {
-                          setState(() {
-                            viewModel.removeFromCartList(state.cartList[index]);
-                          });
+                          viewModel.removeFromCartList(state.cartList[index]);
                         },
                       );
                     },
