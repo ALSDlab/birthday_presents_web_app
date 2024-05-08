@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:myk_market_app/data/repository/connectivity_observer.dart';
+import 'package:myk_market_app/data/repository/network_connectivity_observer.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -15,11 +19,26 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  //네트워크 통신 확인 코드
+  final ConnectivityObserver _connectivityObserver =
+      NetworkConnectivityObserver();
+
+  //기본 접속 상태 설정
+  var _status = Status.available;
+
+  StreamSubscription<Status>? _subscription;
+
   @override
   void initState() {
     Future.microtask(() {
       final StoreViewModel viewModel = context.read<StoreViewModel>();
       viewModel.loadingHome();
+
+      _subscription = _connectivityObserver.observe().listen((status) {
+        setState(() {
+          _status = status;
+        });
+      });
     });
 
     super.initState();
@@ -27,6 +46,14 @@ class _MainPageState extends State<MainPage> {
     //     _loadData();
     //   });
   }
+
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +64,7 @@ class _MainPageState extends State<MainPage> {
       padding: const EdgeInsets.all(8.0),
       child: Scaffold(
         appBar: AppBar(
+          leading: Text('네트워크 상태 : ${_status.name}'),
           centerTitle: true,
           title: const Text(
             '민영기 염소탕 회사소개',
@@ -45,9 +73,11 @@ class _MainPageState extends State<MainPage> {
 
           // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
           actions: [
-            TextButton(onPressed: (){
-              sendSMS('0410000000', '01032084619', 'SMS테스트입니다.');
-            }, child: Text('SMS테스트'))
+            TextButton(
+                onPressed: () {
+                  sendSMS('0410000000', '01032084619', 'SMS테스트입니다.');
+                },
+                child: Text('SMS테스트'))
           ],
         ),
         body: viewModel.isLoading
@@ -64,12 +94,13 @@ class _MainPageState extends State<MainPage> {
                       imageUrl: viewModel.storeList[0].titleImage,
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   const Text(
-
                     'BRAND STORY',
                     style: TextStyle(
                       fontSize: 16.0,
-
                     ),
                   ),
                   const SizedBox(
@@ -78,23 +109,43 @@ class _MainPageState extends State<MainPage> {
                   Column(
                     children: [
                       Text(viewModel.storeList[0].introText),
+                      Text(viewModel.storeList[0].introTextOne),
+                      Text(viewModel.storeList[0].introTextTwo),
+                      Text(viewModel.storeList[0].introTextThree),
+                      Text(viewModel.storeList[0].introTextFour),
+                      Text(viewModel.storeList[0].introTextFive),
+                      Text(viewModel.storeList[0].introTextSix),
                     ],
                   ),
-                  Text(viewModel.storeList[0].introTextOne),
-                  ImageLoadWidget(
-                    width: MediaQuery.of(context).size.width,
-                    widthHeightRatio: 1.5,
-                    imageUrl: viewModel.storeList[0].images[15],
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: ImageLoadWidget(
+                      width: MediaQuery.of(context).size.width,
+                      widthHeightRatio: 1.5,
+                      imageUrl: viewModel.storeList[0].images[15],
+                    ),
                   ),
-                  ImageLoadWidget(
-                    width: MediaQuery.of(context).size.width,
-                    widthHeightRatio: 1.5,
-                    imageUrl: viewModel.storeList[0].images[17],
+                  const SizedBox(
+                    height: 20,
                   ),
-                  ImageLoadWidget(
-                    width: MediaQuery.of(context).size.width,
-                    widthHeightRatio: 1.5,
-                    imageUrl: viewModel.storeList[0].images[14],
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: ImageLoadWidget(
+                      width: MediaQuery.of(context).size.width,
+                      widthHeightRatio: 1.5,
+                      imageUrl: viewModel.storeList[0].images[17],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: ImageLoadWidget(
+                      width: MediaQuery.of(context).size.width,
+                      widthHeightRatio: 1.5,
+                      imageUrl: viewModel.storeList[0].images[14],
+                    ),
                   ),
                   // Image.network(viewModel.storeList[0].images[1]),
                   // Image.network(viewModel.storeList[0].images[3]),
@@ -104,7 +155,6 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-
 
 // SingleChildScrollView(
 // child: Column(
