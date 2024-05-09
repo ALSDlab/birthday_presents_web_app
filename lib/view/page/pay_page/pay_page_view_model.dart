@@ -141,7 +141,7 @@ class PayPageViewModel extends ChangeNotifier {
     totalAmount = 100; // 테스트용
     Payload payload = getPayload(totalCount, totalAmount);
     if (kIsWeb) {
-      payload.extra?.openType = "iframe";
+      payload.extra!.openType = "iframe";
     }
 
     Bootpay().requestPayment(
@@ -224,9 +224,12 @@ class PayPageViewModel extends ChangeNotifier {
     item1.id = "ITEM_CODE_MYK_GOAT"; // 해당 상품의 고유 키
     item1.price = totalAmount.toDouble(); // 상품의 가격
 
+    List<Item> itemList = [item1];
+
     payload.androidApplicationId =
         Env.androidApplicationId; // android application id
     payload.iosApplicationId = Env.iosApplicationId; // ios application id
+    payload.webApplicationId = Env.webApplicationId; // web application id
 
     payload.pg = '나이스페이';
     // payload.method = '카드';
@@ -260,6 +263,7 @@ class PayPageViewModel extends ChangeNotifier {
     // extra.ageLimit = 20; // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
 
     payload.user = user;
+    payload.items = itemList;
     payload.extra = extra;
     return payload;
   }

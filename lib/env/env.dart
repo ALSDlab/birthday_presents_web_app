@@ -5,13 +5,17 @@ part 'env.g.dart';
 @Envied(path: 'lib/env/.env', useConstantCase: true)
 abstract class Env {
 
-  // ANDROID_APPLICATION_ID
+    // ANDROID_APPLICATION_ID
   @EnviedField()
   static const String androidApplicationId = _Env.androidApplicationId;
 
   // IOS_APPLICATION_ID
   @EnviedField()
   static const String iosApplicationId = _Env.iosApplicationId;
+
+  // WEB_APPLICATION_ID
+  @EnviedField()
+  static const String webApplicationId = _Env.webApplicationId;
 
   // NAVER_CLOUD_ACCESS_KEY_ID
   @EnviedField()

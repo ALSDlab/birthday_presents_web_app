@@ -143,10 +143,11 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                 viewModel
                                                                         .daumPostcodeSearchDataModel =
                                                                     model;
+                                                                viewModel
+                                                                    .fillTextField();
                                                               },
                                                             );
-                                                            viewModel
-                                                                .fillTextField();
+
                                                           } catch (error) {
                                                             logger.info(error);
                                                           }
@@ -209,7 +210,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                             checkColor: Colors.white,
                                           ),
                                           const Text(
-                                              '건강담은 민영기 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.'),
+                                              '건강담은 민영기염소탕 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.'),
                                         ],
                                       ),
                                       Row(

@@ -50,6 +50,11 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
+    nameController.dispose();
+    phoneController.dispose();
+    postcodeController.dispose();
+    addressController.dispose();
+    extraAddressController.dispose();
     super.dispose();
   }
 
@@ -101,16 +106,12 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     postcodeController.text =
         (_currentUser.isNotEmpty && state.addressChange == false)
             ? _currentUser.first.postcode
-            : (daumPostcodeSearchDataModel?.zonecode != null)
-                ? daumPostcodeSearchDataModel!.zonecode
-                : zoneCode;
+            : (daumPostcodeSearchDataModel?.zonecode) ?? zoneCode;
     controllers.add(postcodeController);
     addressController.text =
         (_currentUser.isNotEmpty && state.addressChange == false)
             ? _currentUser.first.address
-            : (daumPostcodeSearchDataModel?.address != null)
-                ? daumPostcodeSearchDataModel!.address
-                : address;
+            : (daumPostcodeSearchDataModel?.address) ?? address;
     controllers.add(addressController);
     extraAddressController.text =
         (_currentUser.isNotEmpty) ? _currentUser.first.addressDetail : '';
