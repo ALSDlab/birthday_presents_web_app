@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:intl/intl.dart';
+import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:provider/provider.dart';
+
 import '../main_page/image_load_widget.dart';
 
 class ShoppingCartPageWidget extends StatefulWidget {
   final ShoppingProductForCart shoppingProductForCart;
-  Function() removeFromCartList;
+  final Future<void> Function(ShoppingProductForCart) removeFromCartList;
+  final bool Function(int) navSetState;
 
-  ShoppingCartPageWidget({
+  const ShoppingCartPageWidget({
     super.key,
     required this.shoppingProductForCart,
     required this.removeFromCartList,
+    required this.navSetState,
   });
 
   @override
@@ -51,9 +54,15 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                                   },
                                   child: const Text('아니요')),
                               OutlinedButton(
-                                  onPressed: () {
-                                    widget.removeFromCartList();
-                                    Navigator.pop(context);
+                                  onPressed: () async {
+                                    await widget.removeFromCartList(
+                                        widget.shoppingProductForCart);
+                                    final newBadgeCount =
+                                        await viewModel.getCartList();
+                                    widget.navSetState(newBadgeCount);
+                                    if (context.mounted) {
+                                      Navigator.pop(context);
+                                    }
                                   },
                                   child: const Text('예'))
                             ],

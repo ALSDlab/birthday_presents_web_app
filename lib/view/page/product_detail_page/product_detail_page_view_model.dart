@@ -13,14 +13,16 @@ class ProductDetailPageViewModel extends ChangeNotifier {
 
   ProductDetailPageState get state => _state;
 
-  ProductDetailPageViewModel(){
+  ProductDetailPageViewModel() {
     getBadgeCount();
-    print(state.forBadgeList);
   }
 
-  Future<void> getBadgeCount() async {
-    _state = state.copyWith(forBadgeList: await getShoppingCartList());
+  Future<int> getBadgeCount() async {
+    final resultList = await getShoppingCartList();
+    _state = state.copyWith(forBadgeList: resultList);
+
     notifyListeners();
+    return resultList.length;
   }
 
   int purchaseCount = 1;

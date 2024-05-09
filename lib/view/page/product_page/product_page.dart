@@ -5,7 +5,9 @@ import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({super.key});
+  const ProductPage({super.key, required this.navSetState});
+
+  final bool Function(int) navSetState;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -90,8 +92,10 @@ class _ProductPageState extends State<ProductPage> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            context.push('/product_detail_page',
-                                extra: {'product': viewModel.products[index]});
+                            context.push('/product_detail_page', extra: {
+                              'product': viewModel.products[index],
+                              'navSetState': widget.navSetState
+                            });
                           },
                           child: ProductImageWidget(
                             product: viewModel.products[index],

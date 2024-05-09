@@ -4,7 +4,9 @@ import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_m
 import 'package:provider/provider.dart';
 
 class ShoppingCartPage extends StatefulWidget {
-  const ShoppingCartPage({super.key});
+  const ShoppingCartPage({super.key, required this.navSetState});
+
+  final bool Function(int) navSetState;
 
   @override
   State<ShoppingCartPage> createState() => _ShoppingCartPageState();
@@ -76,9 +78,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     itemBuilder: (context, index) {
                       return ShoppingCartPageWidget(
                         shoppingProductForCart: state.cartList[index],
-                        removeFromCartList: () {
-                          viewModel.removeFromCartList(state.cartList[index]);
-                        },
+                        removeFromCartList: viewModel.removeFromCartList,
+                        navSetState: widget.navSetState,
                       );
                     },
                     itemCount: state.cartList.length,

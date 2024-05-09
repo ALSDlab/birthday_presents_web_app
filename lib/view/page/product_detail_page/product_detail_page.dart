@@ -14,9 +14,11 @@ class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
     super.key,
     required this.product,
+    required this.navSetState,
   });
 
   final Product product;
+  final bool Function(int) navSetState;
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -25,15 +27,15 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   late bool _showCartBadge;
 
-  @override
-  void initState() {
-    Future.microtask(() async {
-      final ProductDetailPageViewModel viewModel =
-          context.read<ProductDetailPageViewModel>();
-      await viewModel.getBadgeCount();
-    });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Future.microtask(() async {
+  //     final ProductDetailPageViewModel viewModel =
+  //         context.read<ProductDetailPageViewModel>();
+  //     await viewModel.getBadgeCount();
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -265,8 +267,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                   count: viewModel.cartCount);
                                           await viewModel.addToShoppingCartList(
                                               item, context);
-                                          await viewModel.getBadgeCount();
-                                          setState(() {});
+                                          final newBadgeCount =
+                                              await viewModel.getBadgeCount();
+                                          widget.navSetState(newBadgeCount);
+
+                                          // setState(() {});
                                         },
                                         child: const Text(
                                           '장바구니 담기',

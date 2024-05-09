@@ -5,12 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar_view_model.dart';
-import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-
-import '../product_detail_page/product_detail_page_view_model.dart';
-import '../shopping_cart_page/shopping_cart_view_model.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
   String location;
@@ -24,12 +19,17 @@ class ScaffoldWithNavBar extends StatefulWidget {
 }
 
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
+  int badgeCount = 0;
 
+  bool resetNavigation(int newCount) {
+    setState(() {
+      badgeCount = newCount;
+    });
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<ProductDetailPageViewModel>(context);
-    final state = viewModel.state;
     return Scaffold(
       body: SafeArea(child: widget.child),
       bottomNavigationBar: StylishBottomBar(
@@ -44,7 +44,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             icon: const Icon(BootstrapIcons.house_door),
             selectedIcon: const Icon(BootstrapIcons.house_door_fill),
             selectedColor: Colors.teal,
-            unSelectedColor:  CupertinoColors.black,
+            unSelectedColor: CupertinoColors.black,
             title: const Text(
               '홈',
               style: TextStyle(fontFamily: 'KoPub'),
@@ -54,7 +54,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             icon: const Icon(BootstrapIcons.box2),
             selectedIcon: const Icon(BootstrapIcons.box2_fill),
             selectedColor: const Color(0xFF019934),
-            unSelectedColor:  CupertinoColors.black,
+            unSelectedColor: CupertinoColors.black,
             title: const Text(
               '상품',
               style: TextStyle(fontFamily: 'KoPub'),
@@ -64,10 +64,10 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             icon: const Icon(BootstrapIcons.cart_check),
             selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
             selectedColor: const Color(0xFF019934),
-            unSelectedColor:  CupertinoColors.black,
+            unSelectedColor: CupertinoColors.black,
             title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
-            badge: Text('${state.forBadgeList.length}'),
-            showBadge: state.forBadgeList.isNotEmpty,
+            badge: Text('$badgeCount'),
+            showBadge: badgeCount > 0,
             badgeColor: Colors.red,
             badgePadding: const EdgeInsets.only(left: 4, right: 4),
           ),
@@ -75,9 +75,9 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
               icon: const Icon(BootstrapIcons.person_vcard),
               selectedIcon: const Icon(BootstrapIcons.person_vcard_fill),
               selectedColor: const Color(0xFF019934),
-              unSelectedColor:  CupertinoColors.black,
+              unSelectedColor: CupertinoColors.black,
               title:
-              const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),
+                  const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),
         ],
         backgroundColor: const Color(0xFFFFF8E7),
         currentIndex: widget.location.contains('/main_page')
@@ -108,8 +108,10 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       context.go(FirebaseAuth.instance.currentUser != null
           ? '/profile_page'
           : '/profile_page/login_page');
-    } else {
+    } else if (index == 0) {
       router.go(location);
+    } else {
+      router.go(location, extra: {'navSetState': resetNavigation});
     }
   }
 }

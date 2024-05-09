@@ -32,13 +32,15 @@ class ShoppingCartViewModel extends ChangeNotifier {
   //   }
   // }
 
-  Future<void> getCartList() async {
-    _state = state.copyWith(cartList: await getShoppingCartList());
+  Future<int> getCartList() async {
+    final resultList = await getShoppingCartList();
+    _state = state.copyWith(cartList: resultList);
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
     _state = state.copyWith(isLoading: false);
     notifyListeners();
+    return resultList.length;
   }
 
   // shared_preferences를 이용하여 장바구니에 담는 기능 구현 (장바구니에서 삭제하는 기능 포함)

@@ -3,7 +3,6 @@
 /// StatefulShellRoute.indexedStack을 사용하여 상태를 유지하는 중첩 내비게이션이 구현됨.
 ///
 
-
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,7 @@ import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:provider/provider.dart';
 
+import 'data/model/product_model.dart';
 import 'di/get_it.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -91,10 +91,14 @@ final router = GoRouter(
           routes: <RouteBase>[
             GoRoute(
               path: "/product_page",
-              builder: (context, state) => ChangeNotifierProvider(
-                create: (_) => ProductViewModel(),
-                child: const ProductPage(),
-              ),
+              builder: (context, state) {
+                final extra = state.extra! as Map<String, dynamic>;
+                final navSetState = extra['navSetState'] as bool Function(int);
+                return ChangeNotifierProvider(
+                  create: (_) => ProductViewModel(),
+                  child: ProductPage(navSetState: navSetState),
+                );
+              },
             ),
           ],
         ),
@@ -102,12 +106,19 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: <RouteBase>[
             GoRoute(
-              parentNavigatorKey: _rootNavigatorKey,
+                parentNavigatorKey: _rootNavigatorKey,
                 path: "/shopping_cart_page",
-                builder: (context, state) => ChangeNotifierProvider(
-                  create: (_) => getIt<ShoppingCartViewModel>(),
-                  child: const ShoppingCartPage(),
-                ),
+                builder: (context, state) {
+                  final extra = state.extra! as Map<String, dynamic>;
+                  final navSetState =
+                      extra['navSetState'] as bool Function(int);
+                  return ChangeNotifierProvider(
+                    create: (_) => getIt<ShoppingCartViewModel>(),
+                    child: ShoppingCartPage(
+                      navSetState: navSetState,
+                    ),
+                  );
+                },
                 routes: [
                   GoRoute(
                       path: "fill_order_page",
@@ -167,11 +178,14 @@ final router = GoRouter(
     GoRoute(
       path: "/product_detail_page",
       builder: (context, state) {
-        final productDetailMap = state.extra! as Map<String, dynamic>;
+        final extra = state.extra! as Map<String, dynamic>;
+        final productDetailMap = extra['product'] as Product;
+        final navSetState = extra['navSetState'] as bool Function(int);
         return ChangeNotifierProvider(
           create: (_) => ProductDetailPageViewModel(),
           child: ProductDetailPage(
-            product: productDetailMap['product'],
+            product: productDetailMap,
+            navSetState: navSetState,
           ),
         );
       },
