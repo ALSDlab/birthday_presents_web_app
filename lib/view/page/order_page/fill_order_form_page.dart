@@ -143,11 +143,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                 viewModel
                                                                         .daumPostcodeSearchDataModel =
                                                                     model;
-                                                                viewModel
-                                                                    .fillTextField();
                                                               },
                                                             );
-
+                                                            viewModel
+                                                                .fillTextField();
                                                           } catch (error) {
                                                             logger.info(error);
                                                           }

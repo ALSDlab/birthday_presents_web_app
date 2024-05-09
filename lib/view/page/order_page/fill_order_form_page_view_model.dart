@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/user_repository.dart';
+import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 
 import '../../../data/model/user_model.dart';
 import 'fill_order_form_page_state.dart';
@@ -21,25 +22,14 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   List<TextEditingController> controllers = [];
   DataModel? daumPostcodeSearchDataModel;
 
-  String _address = '';
-  String _zoneCode = '';
-  List<UserModel> _currentUser = [];
+
+  List<UserModel> currentUser = [];
 
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController postcodeController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController extraAddressController = TextEditingController();
-
-  List<UserModel> get currentUser => _currentUser;
-
-  set currentUser(List<UserModel> value) {
-    _currentUser = value;
-  }
-
-  String get address => _address;
-
-  String get zoneCode => _zoneCode;
 
   FillOrderFormPageState _state = const FillOrderFormPageState();
 
@@ -65,11 +55,6 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     }
   }
 
-  void setAddress(String newAddress, String newZoneCode) {
-    _address = newAddress;
-    _zoneCode = newZoneCode;
-    notifyListeners();
-  }
 
   Future<void> getUserList() async {
     _state = state.copyWith(isLoading: true);
@@ -79,7 +64,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
 
       // logger.info(userId?.email!.replaceAll('@gmail.com', ''));
       if (userId != null) {
-        _currentUser = await userRepository
+        currentUser = await userRepository
             .getFirebaseUserData(userId.email!.replaceAll('@gmail.com', ''));
       }
       fillTextField();
@@ -97,24 +82,25 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   }
 
   void fillTextField() {
+    SignupViewModel viewModel = SignupViewModel();
     nameController.text =
-        (_currentUser.isNotEmpty) ? _currentUser.first.name : '';
+        (currentUser.isNotEmpty) ? currentUser.first.name : '';
     controllers.add(nameController);
     phoneController.text =
-        (_currentUser.isNotEmpty) ? _currentUser.first.phone : '';
+        (currentUser.isNotEmpty) ? currentUser.first.phone : '';
     controllers.add(phoneController);
     postcodeController.text =
-        (_currentUser.isNotEmpty && state.addressChange == false)
-            ? _currentUser.first.postcode
-            : (daumPostcodeSearchDataModel?.zonecode) ?? zoneCode;
+        (currentUser.isNotEmpty && state.addressChange == false)
+            ? currentUser.first.postcode
+            : (daumPostcodeSearchDataModel?.zonecode) ?? viewModel.zoneCode;
     controllers.add(postcodeController);
     addressController.text =
-        (_currentUser.isNotEmpty && state.addressChange == false)
-            ? _currentUser.first.address
-            : (daumPostcodeSearchDataModel?.address) ?? address;
+    (currentUser.isNotEmpty && state.addressChange == false)
+            ? currentUser.first.address
+            : (daumPostcodeSearchDataModel?.address) ?? viewModel.address;
     controllers.add(addressController);
     extraAddressController.text =
-        (_currentUser.isNotEmpty) ? _currentUser.first.addressDetail : '';
+        (currentUser.isNotEmpty) ? currentUser.first.addressDetail : '';
     controllers.add(extraAddressController);
     notifyListeners();
 
