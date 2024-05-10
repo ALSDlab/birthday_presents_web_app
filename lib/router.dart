@@ -49,7 +49,7 @@ final router = GoRouter(
           GoRoute(
             path: '/product_page',
             builder: (context, state) {
-              final extra = state.extra! as Map<String, dynamic>;
+              final extra = state.extra as Map<String, dynamic>;
               final navSetState = extra['navSetState'] as bool Function(int);
               return ChangeNotifierProvider(
                 create: (_) => ProductViewModel(),
@@ -63,7 +63,7 @@ final router = GoRouter(
               path: '/shopping_cart_page',
               builder: (context, state) {
                 final extra = state.extra! as Map<String, dynamic>;
-                final navSetState = extra['navSetState'] as bool Function(int);
+                final navSetState = extra['navSetState'];
                 return ChangeNotifierProvider(
                   create: (_) => getIt<ShoppingCartViewModel>(),
                   child: ShoppingCartPage(

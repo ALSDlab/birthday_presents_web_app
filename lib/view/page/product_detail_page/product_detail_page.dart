@@ -51,7 +51,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             showBadge: _showCartBadge,
             child: IconButton(
               onPressed: () {
-                context.go('/shopping_cart_page');
+                context.go('/shopping_cart_page',
+                    extra: {'navSetState': widget.navSetState});
               },
               icon: const Icon(BootstrapIcons.cart_check),
             ),

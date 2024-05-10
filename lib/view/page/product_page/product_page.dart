@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key, required this.navSetState});
 
-  final bool Function(int) navSetState;
+  final bool Function(int)? navSetState;
 
   @override
   State<ProductPage> createState() => _ProductPageState();

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page_widget.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:provider/provider.dart';
@@ -73,20 +75,67 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   ],
                 ),
                 const Divider(),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return ShoppingCartPageWidget(
-                        shoppingProductForCart: state.cartList[index],
-                        removeFromCartList: viewModel.removeFromCartList,
-                        navSetState: widget.navSetState,
-                      );
-                    },
-                    itemCount: state.cartList.length,
-                  ),
-                )
+                state.cartList.isEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            Text('장바구니가 비었습니다.'),
+                            OutlinedButton(
+                              onPressed: () {
+                                context.go('/product_page',
+                                    extra: {'navSetState': widget.navSetState});
+                              },
+                              child: Text('상품 담으러 가기'),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return ShoppingCartPageWidget(
+                              shoppingProductForCart: state.cartList[index],
+                              removeFromCartList: viewModel.removeFromCartList,
+                              navSetState: widget.navSetState,
+                            );
+                          },
+                          itemCount: state.cartList.length,
+                        ),
+                      )
               ],
             ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () async {
+            final List<OrderModel> orderItemList =
+                await viewModel.sendCart(ShoppingCartPageWidget.checkedList);
+            if (ShoppingCartPageWidget.checkedList.isEmpty) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('알림'),
+                      content: Text('선택된 상품이 없습니다. 상품을 선택해 주세요'),
+                    );
+                  });
+            } else {
+              GoRouter.of(context).go('/shopping_cart_page/fill_order_page',
+                  extra: orderItemList);
+            }
+          },
+          child: Text(
+            '주문하기',
+            style: TextStyle(color: Colors.white),
+          ),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+              const Color(0xFF2F362F),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

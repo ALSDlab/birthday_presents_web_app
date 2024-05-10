@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,26 +13,9 @@ class ShoppingCartViewModel extends ChangeNotifier {
 
   ShoppingCartState get state => _state;
 
-  // List<ShoppingProductForCart> cartList = [];
-  //
   ShoppingCartViewModel() {
     getCartList();
   }
-
-  // bool _disposed = false;
-  //
-  // @override
-  // void dispose() {
-  //   _disposed = true;
-  //   super.dispose();
-  // }
-  //
-  // @override
-  // notifyListeners() {
-  //   if (!_disposed) {
-  //     super.notifyListeners();
-  //   }
-  // }
 
   Future<int> getCartList() async {
     final resultList = await getShoppingCartList();
@@ -101,7 +86,8 @@ class ShoppingCartViewModel extends ChangeNotifier {
   Future<void> removeFromCartList(ShoppingProductForCart item) async {
     try {
       List<ShoppingProductForCart> currentList = await getShoppingCartList();
-      currentList.remove(item);
+      // currentList.remove(item);
+      currentList.removeWhere((element) => element.orderId == item.orderId);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String jsonString =
@@ -111,5 +97,40 @@ class ShoppingCartViewModel extends ChangeNotifier {
       print('Error during removal: $e');
     }
     getCartList();
+  }
+
+  String generateLicensePlate(String currentDate) {
+    // 4자리의 랜덤한 영문자 생성
+    String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    String randomLetters = '';
+    Random random = Random();
+    for (int i = 0; i < 4; i++) {
+      randomLetters += letters[random.nextInt(26)];
+    }
+
+    // 주문번호 조합
+    String licensePlate = currentDate + randomLetters;
+    return licensePlate;
+  }
+
+  Future<List<OrderModel>> sendCart(List<ShoppingProductForCart> list) async {
+    List<OrderModel> result = [];
+
+    final createdDate =
+        DateTime.now().toString().substring(2, 10).replaceAll('-', '');
+
+    for (int i = 0; i < list.length; i++) {
+      final OrderModel directOrderItem = OrderModel(
+        orderId: generateLicensePlate(createdDate),
+        orderProductName: list[i].orderProductName,
+        representativeImage: list[i].representativeImage,
+        price: list[i].price,
+        count: list[i].count,
+        orderedDate: createdDate,
+        payAndStatus: 0,
+      );
+      result.add(directOrderItem);
+    }
+    return result;
   }
 }
