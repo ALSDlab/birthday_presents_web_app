@@ -44,10 +44,18 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0xFF019934),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back),
+            color: Colors.white,
+          ),
+          backgroundColor: const Color(0xFF2F362F),
           title: const Text(
             '주문서 작성',
-            style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+            style: TextStyle(
+                fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
           ),
           centerTitle: true,
         ),
@@ -75,8 +83,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                             physics: const BouncingScrollPhysics(),
                             itemCount: widget.forOrderItems.length,
                             itemBuilder: (context, index) {
-                              final forOrderItem =
-                                  widget.forOrderItems[index];
+                              final forOrderItem = widget.forOrderItems[index];
                               return ForOrderListWidget(
                                 orderItem: forOrderItem,
                               );
@@ -90,7 +97,9 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                               children: [
                                 Text(
                                   '배송 정보',
-                                  style: TextStyle(fontSize: 18, ),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
                                 ),
                                 Text('* 표시된 항목은 필수 입력해야 합니다.'),
                               ],
@@ -109,14 +118,15 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                             index != 3 ? '*' : '',
-                                            style:
-                                                const TextStyle(color: Colors.red),
+                                            style: const TextStyle(
+                                                color: Colors.red),
                                           ),
                                           Expanded(
                                             child: Text(
@@ -126,66 +136,67 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                       ),
                                       index == 2
                                           ? TextFormField(
-                                        readOnly: true,
-                                        style: const TextStyle(
-                                            fontSize: 15),
-                                        decoration: InputDecoration(
-                                            border:
-                                            const OutlineInputBorder(
-                                              gapPadding: 2
-                                            ),
-                                            suffixIcon: ElevatedButton(
-                                                onPressed: () async {
-                                                  try {
-                                                    viewModel
-                                                        .addressChangeRequest();
-                                                    DataModel? model =
-                                                    await Navigator.of(
-                                                        context)
-                                                        .push(
-                                                      MaterialPageRoute(
-                                                          builder:
-                                                              (context) =>
-                                                          check
-                                                              .pr),
-                                                    );
-                                                    setState(
-                                                          () {
-                                                        viewModel
-                                                            .daumPostcodeSearchDataModel =
-                                                            model;
+                                              readOnly: true,
+                                              style:
+                                                  const TextStyle(fontSize: 15),
+                                              decoration: InputDecoration(
+                                                  border:
+                                                      const OutlineInputBorder(
+                                                          gapPadding: 2),
+                                                  suffixIcon: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try {
+                                                          viewModel
+                                                              .addressChangeRequest();
+                                                          DataModel? model =
+                                                              await Navigator.of(
+                                                                      context)
+                                                                  .push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        check
+                                                                            .pr),
+                                                          );
+                                                          setState(
+                                                            () {
+                                                              viewModel
+                                                                      .daumPostcodeSearchDataModel =
+                                                                  model;
+                                                            },
+                                                          );
+                                                          viewModel
+                                                              .fillTextField();
+                                                        } catch (error) {
+                                                          logger.info(error);
+                                                        }
                                                       },
-                                                    );
-                                                    viewModel
-                                                        .fillTextField();
-                                                  } catch (error) {
-                                                    logger.info(error);
-                                                  }
-                                                },
-                                                child: const Text(
-                                                    '주소검색'))),
-                                        controller: viewModel
-                                            .controllers[index],
-                                      )
+                                                      child:
+                                                          const Text('주소검색'))),
+                                              controller:
+                                                  viewModel.controllers[index],
+                                            )
                                           : TextFormField(
-                                        readOnly:
-                                        (index == 3) ? true : false,
-                                        style: const TextStyle(
-                                            fontSize: 15),
-                                        decoration:
-                                        InputDecoration(
-                                          contentPadding: const EdgeInsets.fromLTRB(10,10,0,10),
-                                          border: OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                              width: 4,
-                                              color: Colors.white,
+                                              readOnly:
+                                                  (index == 3) ? true : false,
+                                              style:
+                                                  const TextStyle(fontSize: 15),
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        10, 10, 0, 10),
+                                                border: OutlineInputBorder(
+                                                  borderSide: const BorderSide(
+                                                    width: 4,
+                                                    color: Colors.white,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              controller:
+                                                  viewModel.controllers[index],
                                             ),
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        controller: viewModel
-                                            .controllers[index],
-                                      ),
                                     ],
                                   ),
                                 );

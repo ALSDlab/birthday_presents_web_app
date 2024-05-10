@@ -19,11 +19,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
   // @override
   // void initState() {
-  //   Future.microtask(() async {
-  //     final ShoppingCartViewModel viewModel =
-  //         context.read<ShoppingCartViewModel>();
-  //     await viewModel.getCartList();
-  //   });
+  //   ShoppingCartPageWidget.checkedList = [];
   //   super.initState();
   // }
 
@@ -34,7 +30,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFFFF8E7),
-        title: const Text('장바구니'),
+        title: const Text(
+          '장바구니',
+          style: TextStyle(
+            fontFamily: 'Jalnan',
+            fontSize: 20,
+          ),
+        ),
         centerTitle: true,
       ),
       body: state.isLoading

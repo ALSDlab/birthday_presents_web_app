@@ -44,7 +44,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     _showCartBadge = state.forBadgeList.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF019934),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white,
+        ),
+        backgroundColor: const Color(0xFF2F362F),
         actions: [
           badges.Badge(
             position: badges.BadgePosition.topEnd(top: 0, end: 5),
@@ -55,13 +62,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 context.go('/shopping_cart_page',
                     extra: {'navSetState': widget.navSetState});
               },
-              icon: const Icon(BootstrapIcons.cart_check),
+              icon: const Icon(
+                BootstrapIcons.cart_check,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
         title: const Text(
           '민영기 염소탕',
-          style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+          style: TextStyle(
+              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -417,7 +428,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               [directOrderItem];
                                           GoRouter.of(context).go(
                                               '/shopping_cart_page/fill_order_page',
-                                              extra: {'orderModelList' : orderItemList});
+                                              extra: {
+                                                'orderModelList': orderItemList
+                                              });
                                           // context.push('/fill_order_page',
                                           //     extra: [directOrderItem]);
                                         },

@@ -24,6 +24,7 @@ class ShoppingCartPageWidget extends StatefulWidget {
 }
 
 class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ShoppingCartViewModel>();

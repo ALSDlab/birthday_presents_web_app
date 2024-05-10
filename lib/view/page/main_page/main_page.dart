@@ -47,13 +47,11 @@ class _MainPageState extends State<MainPage> {
     //   });
   }
 
-
   @override
   void dispose() {
     _subscription?.cancel();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +60,13 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF019934),
+        backgroundColor: const Color(0xFF2F362F),
         leading: Text('네트워크 상태 : ${_status.name}'),
         centerTitle: true,
         title: const Text(
           '민영기 염소탕 회사소개',
-          style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+          style: TextStyle(
+              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
         ),
 
         // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
@@ -87,12 +86,15 @@ class _MainPageState extends State<MainPage> {
               )
             : ListView(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: ImageLoadWidget(
-                      width: MediaQuery.of(context).size.width,
-                      widthHeightRatio: 0.6,
-                      imageUrl: viewModel.storeList[0].titleImage,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: ImageLoadWidget(
+                        width: MediaQuery.of(context).size.width,
+                        widthHeightRatio: 0.6,
+                        imageUrl: viewModel.storeList[0].titleImage,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -118,12 +120,15 @@ class _MainPageState extends State<MainPage> {
                       Text(viewModel.storeList[0].introTextSix),
                     ],
                   ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: ImageLoadWidget(
-                      width: MediaQuery.of(context).size.width,
-                      widthHeightRatio: 1.5,
-                      imageUrl: viewModel.storeList[0].images[15],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: ImageLoadWidget(
+                        width: MediaQuery.of(context).size.width,
+                        widthHeightRatio: 1.5,
+                        imageUrl: viewModel.storeList[0].images[15],
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -156,7 +161,6 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-
 
 // SingleChildScrollView(
 // child: Column(

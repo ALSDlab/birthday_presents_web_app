@@ -43,7 +43,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
             icon: const Icon(BootstrapIcons.house_door),
             selectedIcon: const Icon(BootstrapIcons.house_door_fill),
-            selectedColor: Colors.teal,
+            selectedColor: const Color(0xFF2F362F),
             unSelectedColor: CupertinoColors.black,
             title: const Text(
               '홈',
@@ -53,7 +53,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
             icon: const Icon(BootstrapIcons.box2),
             selectedIcon: const Icon(BootstrapIcons.box2_fill),
-            selectedColor: const Color(0xFF019934),
+            selectedColor: const Color(0xFF2F362F),
             unSelectedColor: CupertinoColors.black,
             title: const Text(
               '상품',
@@ -63,7 +63,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
             icon: const Icon(BootstrapIcons.cart_check),
             selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
-            selectedColor: const Color(0xFF019934),
+            selectedColor: const Color(0xFF2F362F),
             unSelectedColor: CupertinoColors.black,
             title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
             badge: Text('$badgeCount'),
@@ -74,7 +74,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
               icon: const Icon(BootstrapIcons.person_vcard),
               selectedIcon: const Icon(BootstrapIcons.person_vcard_fill),
-              selectedColor: const Color(0xFF019934),
+              selectedColor: const Color(0xFF2F362F),
               unSelectedColor: CupertinoColors.black,
               title:
                   const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),

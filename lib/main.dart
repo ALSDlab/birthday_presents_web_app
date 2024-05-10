@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xFFFFF8E7),
-          fontFamily: 'Kopub', colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF325c6a)).copyWith(background: Colors.white),
+          fontFamily: 'Kopub',
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2F362F))
+              .copyWith(background: Colors.white),
         ),
         routerConfig: router,
       ),
