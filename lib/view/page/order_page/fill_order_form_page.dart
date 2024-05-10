@@ -130,9 +130,13 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                         style: const TextStyle(
                                             fontSize: 15),
                                         decoration: InputDecoration(
-                                            border:
-                                            const OutlineInputBorder(
-                                              gapPadding: 2
+                                            contentPadding: const EdgeInsets.fromLTRB(10,10,0,10),
+                                            border: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                width: 4,
+                                                color: Colors.white,
+                                              ),
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
                                             suffixIcon: ElevatedButton(
                                                 onPressed: () async {
@@ -162,6 +166,11 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                     logger.info(error);
                                                   }
                                                 },
+                                                style: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all(
+                                                    const Color(0xFF2F362F),
+                                                  ),
+                                                ),
                                                 child: const Text(
                                                     '주소검색'))),
                                         controller: viewModel
