@@ -34,7 +34,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       body: SafeArea(child: widget.child),
       bottomNavigationBar: StylishBottomBar(
         option: AnimatedBarOptions(
-          padding: const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 12),
           iconSize: 30,
           barAnimation: BarAnimation.fade,
           iconStyle: IconStyle.Default,

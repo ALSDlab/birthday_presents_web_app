@@ -21,7 +21,6 @@ import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_m
 import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 import 'package:provider/provider.dart';
 
-import 'data/model/product_model.dart';
 import 'di/get_it.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -50,7 +49,7 @@ final router = GoRouter(
             path: '/product_page',
             builder: (context, state) {
               final extra = state.extra! as Map<String, dynamic>;
-              final navSetState = extra['navSetState'] as bool Function(int);
+              final navSetState = extra['navSetState'];
               return ChangeNotifierProvider(
                 create: (_) => ProductViewModel(),
                 child: ProductPage(
@@ -63,7 +62,7 @@ final router = GoRouter(
               path: '/shopping_cart_page',
               builder: (context, state) {
                 final extra = state.extra! as Map<String, dynamic>;
-                final navSetState = extra['navSetState'] as bool Function(int);
+                final navSetState = extra['navSetState'];
                 return ChangeNotifierProvider(
                   create: (_) => getIt<ShoppingCartViewModel>(),
                   child: ShoppingCartPage(
@@ -75,10 +74,11 @@ final router = GoRouter(
                 GoRoute(
                     path: 'fill_order_page',
                     builder: (context, state) {
+                      final extra = state.extra! as Map<String, dynamic>;
                       return ChangeNotifierProvider(
                         create: (_) => getIt<FillOrderFormPageViewModel>(),
                         child: FillOrderFormPage(
-                          forOrderItems: state.extra! as List<OrderModel>,
+                          forOrderItems: extra['orderModelList'],
                         ),
                       );
                     },
@@ -127,8 +127,8 @@ final router = GoRouter(
             path: '/product_detail_page',
             builder: (context, state) {
               final extra = state.extra! as Map<String, dynamic>;
-              final productDetailMap = extra['product'] as Product;
-              final navSetState = extra['navSetState'] as bool Function(int);
+              final productDetailMap = extra['product'];
+              final navSetState = extra['navSetState'];
               return ChangeNotifierProvider(
                   create: (_) => ProductDetailPageViewModel(),
                   child: ProductDetailPage(

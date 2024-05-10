@@ -18,7 +18,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     getUserList();
   }
 
-  final gridLeftArray = ['주문자', '휴대폰번호', '주소', '', '상세주소'];
+  final gridLeftArray = ['주문자명', '휴대폰번호', '주 소', '', '상세주소'];
   List<TextEditingController> controllers = [];
   DataModel? daumPostcodeSearchDataModel;
 
