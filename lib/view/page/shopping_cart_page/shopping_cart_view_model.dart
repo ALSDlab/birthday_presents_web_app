@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
@@ -94,5 +95,40 @@ class ShoppingCartViewModel extends ChangeNotifier {
       print('Error during removal: $e');
     }
     getCartList();
+  }
+
+  String generateLicensePlate(String currentDate) {
+    // 4자리의 랜덤한 영문자 생성
+    String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    String randomLetters = '';
+    Random random = Random();
+    for (int i = 0; i < 4; i++) {
+      randomLetters += letters[random.nextInt(26)];
+    }
+
+    // 주문번호 조합
+    String licensePlate = currentDate + randomLetters;
+    return licensePlate;
+  }
+
+  Future<List<OrderModel>> sendCart(List<ShoppingProductForCart> list) async {
+    List<OrderModel> result = [];
+
+    final createdDate =
+        DateTime.now().toString().substring(2, 10).replaceAll('-', '');
+
+    for (int i = 0; i < list.length; i++) {
+      final OrderModel directOrderItem = OrderModel(
+        orderId: generateLicensePlate(createdDate),
+        orderProductName: list[i].orderProductName,
+        representativeImage: list[i].representativeImage,
+        price: list[i].price,
+        count: list[i].count,
+        orderedDate: createdDate,
+        payAndStatus: 0,
+      );
+      result.add(directOrderItem);
+    }
+    return result;
   }
 }

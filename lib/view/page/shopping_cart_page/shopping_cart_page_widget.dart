@@ -8,6 +8,7 @@ import '../main_page/image_load_widget.dart';
 class ShoppingCartPageWidget extends StatefulWidget {
   final ShoppingProductForCart shoppingProductForCart;
   Function() removeFromCartList;
+  static List<ShoppingProductForCart> checkedList = [];
 
   ShoppingCartPageWidget({
     super.key,
@@ -34,6 +35,14 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                 setState(() {
                   widget.shoppingProductForCart.isChecked = newValue!;
                 });
+                if (widget.shoppingProductForCart.isChecked == true) {
+                  ShoppingCartPageWidget.checkedList
+                      .add(widget.shoppingProductForCart);
+                }
+                else {
+                  ShoppingCartPageWidget.checkedList
+                      .remove(widget.shoppingProductForCart);
+                }
               },
               activeColor: const Color(0xFF2F362F),
               checkColor: Colors.white,
@@ -95,7 +104,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                     height: 10,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 16.0,bottom: 16.0),
+                    padding: const EdgeInsets.only(right: 16.0, bottom: 16.0),
                     child: Container(
                       width: 120,
                       decoration: BoxDecoration(
