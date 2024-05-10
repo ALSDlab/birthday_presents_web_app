@@ -60,27 +60,28 @@ class _MainPageState extends State<MainPage> {
     final viewModel = context.watch<StoreViewModel>();
     final state = viewModel.state;
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Scaffold(
-        appBar: AppBar(
-          leading: Text('네트워크 상태 : ${_status.name}'),
-          centerTitle: true,
-          title: const Text(
-            '민영기 염소탕 회사소개',
-            style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
-          ),
-
-          // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
-          actions: [
-            TextButton(
-                onPressed: () {
-                  sendSMS('0410000000', '01032084619', 'SMS테스트입니다.');
-                },
-                child: Text('SMS테스트'))
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF019934),
+        leading: Text('네트워크 상태 : ${_status.name}'),
+        centerTitle: true,
+        title: const Text(
+          '민영기 염소탕 회사소개',
+          style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
         ),
-        body: viewModel.isLoading
+
+        // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
+        actions: [
+          TextButton(
+              onPressed: () {
+                sendSMS('01058377427', '01032084619', 'SMS테스트입니다.');
+              },
+              child: Text('SMS테스트'))
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: viewModel.isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
               )

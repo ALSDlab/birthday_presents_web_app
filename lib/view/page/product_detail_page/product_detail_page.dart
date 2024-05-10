@@ -44,6 +44,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     _showCartBadge = state.forBadgeList.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF019934),
         actions: [
           badges.Badge(
             position: badges.BadgePosition.topEnd(top: 0, end: 5),
@@ -416,7 +417,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               [directOrderItem];
                                           GoRouter.of(context).go(
                                               '/shopping_cart_page/fill_order_page',
-                                              extra: orderItemList);
+                                              extra: {'orderModelList' : orderItemList});
                                           // context.push('/fill_order_page',
                                           //     extra: [directOrderItem]);
                                         },

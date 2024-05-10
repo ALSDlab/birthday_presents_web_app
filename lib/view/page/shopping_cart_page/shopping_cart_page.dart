@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class ShoppingCartPage extends StatefulWidget {
   const ShoppingCartPage({super.key, required this.navSetState});
 
-  final bool Function(int) navSetState;
+  final bool Function(int)? navSetState;
 
   @override
   State<ShoppingCartPage> createState() => _ShoppingCartPageState();
@@ -33,6 +33,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFFFFF8E7),
         title: const Text('장바구니'),
         centerTitle: true,
       ),
@@ -97,7 +98,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                             return ShoppingCartPageWidget(
                               shoppingProductForCart: state.cartList[index],
                               removeFromCartList: viewModel.removeFromCartList,
-                              navSetState: widget.navSetState,
+                              navSetState: widget.navSetState!,
                             );
                           },
                           itemCount: state.cartList.length,
@@ -122,7 +123,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   });
             } else {
               GoRouter.of(context).go('/shopping_cart_page/fill_order_page',
-                  extra: orderItemList);
+                  extra: {'orderModelList': orderItemList});
             }
           },
           child: Text(

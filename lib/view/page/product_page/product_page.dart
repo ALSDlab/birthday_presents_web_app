@@ -37,6 +37,7 @@ class _ProductPageState extends State<ProductPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF019934),
         title: const Text(
           '민영기 염소탕',
           style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
