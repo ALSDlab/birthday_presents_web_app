@@ -18,7 +18,7 @@ class ProductDetailPage extends StatefulWidget {
   });
 
   final Product product;
-  final bool Function(int) navSetState;
+  final bool Function(int)? navSetState;
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -60,7 +60,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             child: IconButton(
               onPressed: () {
                 context.go('/shopping_cart_page',
-                    extra: {'navSetState': widget.navSetState});
+                    extra: {'navSetState': widget.navSetState!});
               },
               icon: const Icon(
                 BootstrapIcons.cart_check,
@@ -282,7 +282,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               item, context);
                                           final newBadgeCount =
                                               await viewModel.getBadgeCount();
-                                          widget.navSetState(newBadgeCount);
+                                          widget.navSetState!(newBadgeCount);
 
                                           // setState(() {});
                                         },
@@ -426,10 +426,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           );
                                           final List<OrderModel> orderItemList =
                                               [directOrderItem];
-                                          GoRouter.of(context).go(
+                                          Navigator.pop(context);
+                                          context.push(
                                               '/shopping_cart_page/fill_order_page',
                                               extra: {
-                                                'orderModelList': orderItemList
+                                                'orderModelList': orderItemList,
+                                                'navSetState': widget.navSetState
                                               });
                                           // context.push('/fill_order_page',
                                           //     extra: [directOrderItem]);

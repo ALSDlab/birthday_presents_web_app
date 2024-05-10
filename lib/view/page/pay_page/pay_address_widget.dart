@@ -22,7 +22,6 @@ class PayAddressWidget extends StatelessWidget {
               Text('주 문 자 명 :'),
               Text('연   락   처 :'),
               Text('주         소 :'),
-              Text('상 세 주 소 :'),
             ],
           ),
         ),
@@ -34,8 +33,7 @@ class PayAddressWidget extends StatelessWidget {
               Text(orderFirstItem.ordererName!),
               Text(orderFirstItem.ordererPhoneNo!),
               Text(
-                  '우)${orderFirstItem.ordererPostcode}, ${orderFirstItem.ordererAddress!}'),
-              Text(orderFirstItem.ordererAddressDetail!),
+                  '우)${orderFirstItem.ordererPostcode}, ${orderFirstItem.ordererAddress!} ${orderFirstItem.ordererAddressDetail!}'),
             ],
           ),
         )

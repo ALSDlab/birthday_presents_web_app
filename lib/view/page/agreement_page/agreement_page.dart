@@ -101,10 +101,10 @@ class _AgreementPageState extends State<AgreementPage> {
                             ),
                             child: isTermsNConditionsOpened
                                 ? const Text(
-                                    '닫기',
+                                    '닫기 ▲',
                                   )
                                 : const Text(
-                                    '열기',
+                                    '열기 ▼',
                                   ),
                           ),
                         ),
@@ -152,10 +152,10 @@ class _AgreementPageState extends State<AgreementPage> {
                             ),
                             child: isPersonalInfoOpened
                                 ? const Text(
-                                    '닫기',
+                                    '닫기 ▲',
                                   )
                                 : const Text(
-                                    '열기',
+                                    '열기 ▼',
                                   ),
                           ),
                         ),
@@ -204,10 +204,10 @@ class _AgreementPageState extends State<AgreementPage> {
                             ),
                             child: isPersonalInfoForDeliverOpened
                                 ? const Text(
-                                    '닫기',
+                                    '닫기 ▲',
                                   )
                                 : const Text(
-                                    '열기',
+                                    '열기 ▼',
                                   ),
                           ),
                         ),

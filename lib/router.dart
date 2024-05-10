@@ -89,11 +89,12 @@ final router = GoRouter(
                       GoRoute(
                         path: 'pay_page',
                         builder: (context, state) {
+                          final extra = state.extra! as Map<String, dynamic>;
                           return ChangeNotifierProvider(
                             create: (_) => getIt<PayPageViewModel>(),
                             child: PayPage(
                                 forOrderItems:
-                                    state.extra! as List<OrderModel>),
+                                extra['orderModelList']),
                           );
                         },
                       )

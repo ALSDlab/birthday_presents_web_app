@@ -24,8 +24,9 @@ class _PayPageState extends State<PayPage> {
   void initState() {
     Future.microtask(() {
       final payViewModel = context.read<PayPageViewModel>();
-
-      payViewModel.init(widget.forOrderItems.first.orderId);
+      if (widget.forOrderItems.isNotEmpty) {
+        payViewModel.init(widget.forOrderItems.first.orderId);
+      }
     });
     super.initState();
   }
@@ -81,7 +82,8 @@ class _PayPageState extends State<PayPage> {
                               itemBuilder: (context, index) {
                                 final forOrderItem = state.orderItems[index];
                                 return ForOrderListWidget(
-                                  orderItem: forOrderItem, forConfirm: true,
+                                  orderItem: forOrderItem,
+                                  forConfirm: true,
                                 );
                               },
                             ),
