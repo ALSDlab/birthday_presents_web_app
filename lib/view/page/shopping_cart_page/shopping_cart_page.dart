@@ -81,13 +81,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            Text('장바구니가 비었습니다.'),
+                            const Text('장바구니가 비었습니다.'),
                             OutlinedButton(
                               onPressed: () {
                                 context.go('/product_page',
                                     extra: {'navSetState': widget.navSetState});
                               },
-                              child: Text('상품 담으러 가기'),
+                              child: const Text('상품 담으러 가기'),
                             ),
                           ],
                         ),
@@ -116,24 +116,28 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
+                    return const AlertDialog(
                       title: Text('알림'),
                       content: Text('선택된 상품이 없습니다. 상품을 선택해 주세요'),
                     );
                   });
             } else {
-              GoRouter.of(context).go('/shopping_cart_page/fill_order_page',
-                  extra: {'orderModelList': orderItemList});
+              GoRouter.of(context)
+                  .go('/shopping_cart_page/fill_order_page', extra: {
+                'orderModelList': orderItemList,
+                'navSetState': widget.navSetState,
+              });
+              ShoppingCartPageWidget.checkedList = [];
             }
           },
-          child: Text(
-            '주문하기',
-            style: TextStyle(color: Colors.white),
-          ),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(
               const Color(0xFF2F362F),
             ),
+          ),
+          child: const Text(
+            '주문하기',
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),

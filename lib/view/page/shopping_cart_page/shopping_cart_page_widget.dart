@@ -41,8 +41,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                 if (widget.shoppingProductForCart.isChecked == true) {
                   ShoppingCartPageWidget.checkedList
                       .add(widget.shoppingProductForCart);
-                }
-                else {
+                } else {
                   ShoppingCartPageWidget.checkedList
                       .remove(widget.shoppingProductForCart);
                 }
