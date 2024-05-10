@@ -24,6 +24,7 @@ class ShoppingCartPageWidget extends StatefulWidget {
 }
 
 class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ShoppingCartViewModel>();
@@ -41,8 +42,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                 if (widget.shoppingProductForCart.isChecked == true) {
                   ShoppingCartPageWidget.checkedList
                       .add(widget.shoppingProductForCart);
-                }
-                else {
+                } else {
                   ShoppingCartPageWidget.checkedList
                       .remove(widget.shoppingProductForCart);
                 }

@@ -19,11 +19,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
   // @override
   // void initState() {
-  //   Future.microtask(() async {
-  //     final ShoppingCartViewModel viewModel =
-  //         context.read<ShoppingCartViewModel>();
-  //     await viewModel.getCartList();
-  //   });
+  //   ShoppingCartPageWidget.checkedList = [];
   //   super.initState();
   // }
 
@@ -34,7 +30,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFFFF8E7),
-        title: const Text('장바구니'),
+        title: const Text(
+          '장바구니',
+          style: TextStyle(
+            fontFamily: 'Jalnan',
+            fontSize: 20,
+          ),
+        ),
         centerTitle: true,
       ),
       body: state.isLoading
@@ -81,13 +83,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            Text('장바구니가 비었습니다.'),
+                            const Text('장바구니가 비었습니다.'),
                             OutlinedButton(
                               onPressed: () {
                                 context.go('/product_page',
                                     extra: {'navSetState': widget.navSetState});
                               },
-                              child: Text('상품 담으러 가기'),
+                              child: const Text('상품 담으러 가기'),
                             ),
                           ],
                         ),
@@ -116,17 +118,18 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
+                    return const AlertDialog(
                       title: Text('알림'),
                       content: Text('선택된 상품이 없습니다. 상품을 선택해 주세요'),
                     );
                   });
             } else {
-              GoRouter.of(context).go('/shopping_cart_page/fill_order_page',
-                  extra: {
-                    'navSetState': widget.navSetState,
-                    'orderModelList': orderItemList
-                  });
+              GoRouter.of(context)
+                  .go('/shopping_cart_page/fill_order_page', extra: {
+                'orderModelList': orderItemList,
+                'navSetState': widget.navSetState,
+              });
+              ShoppingCartPageWidget.checkedList = [];
             }
           },
           child: Text(

@@ -37,10 +37,11 @@ class _ProductPageState extends State<ProductPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF019934),
+        backgroundColor: const Color(0xFF2F362F),
         title: const Text(
           '민영기 염소탕',
-          style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+          style: TextStyle(
+              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -54,12 +55,14 @@ class _ProductPageState extends State<ProductPage> {
                 onChanged: viewModel.onChanged,
                 controller: filterController,
                 decoration: InputDecoration(
+                  // filled: true,
+                  // fillColor: Colors.white,
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(40),
                     borderSide: const BorderSide(width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(40),
                     borderSide: const BorderSide(width: 2),
                   ),
                   hintText: '찾으시는 상품을 검색하세요',
