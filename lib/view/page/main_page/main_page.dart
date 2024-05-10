@@ -24,20 +24,24 @@ class _MainPageState extends State<MainPage> {
       NetworkConnectivityObserver();
 
   //기본 접속 상태 설정
-  var _status = Status.available;
+  var _status = Status.unavailable;
+
 
   StreamSubscription<Status>? _subscription;
 
   @override
   void initState() {
+    super.initState();
+
     Future.microtask(() {
       final StoreViewModel viewModel = context.read<StoreViewModel>();
       viewModel.loadingHome();
+    });
 
-      _subscription = _connectivityObserver.observe().listen((status) {
-        setState(() {
-          _status = status;
-        });
+    _subscription = _connectivityObserver.observe().listen((status) {
+      print('Status changed : $_status');
+      setState(() {
+        _status = status;
       });
     });
 
