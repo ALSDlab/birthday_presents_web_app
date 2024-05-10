@@ -33,10 +33,13 @@ final router = GoRouter(
     ShellRoute(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) => NoTransitionPage(
-                child: ScaffoldWithNavBar(
-              location: state.matchedLocation,
-              child: child,
-            )),
+                child: ChangeNotifierProvider(
+                  create: (_) => ProductDetailPageViewModel(),
+                  child: ScaffoldWithNavBar(
+                                location: state.matchedLocation,
+                                child: child,
+                              ),
+                )),
         routes: [
           GoRoute(
             path: '/main_page',

@@ -5,7 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+
+import '../product_detail_page/product_detail_page_view_model.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
   String location;
@@ -26,6 +29,15 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       badgeCount = newCount;
     });
     return true;
+  }
+
+  @override
+  void initState() {
+    Future.microtask(() async {
+      final ProductDetailPageViewModel viewModel = context.read<ProductDetailPageViewModel>();
+      badgeCount = await viewModel.getBadgeCount();
+    });
+    super.initState();
   }
 
   @override
