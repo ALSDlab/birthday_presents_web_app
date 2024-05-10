@@ -123,7 +123,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   });
             } else {
               GoRouter.of(context).go('/shopping_cart_page/fill_order_page',
-                  extra: {'orderModelList': orderItemList});
+                  extra: {
+                    'navSetState': widget.navSetState,
+                    'orderModelList': orderItemList
+                  });
             }
           },
           child: Text(
