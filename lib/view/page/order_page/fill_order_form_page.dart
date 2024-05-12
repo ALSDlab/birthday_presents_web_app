@@ -126,7 +126,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: 5,
-                                padding: const EdgeInsets.all(16.0),
+                                padding: const EdgeInsets.all(8.0),
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.all(4.0),

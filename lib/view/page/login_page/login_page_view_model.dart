@@ -80,7 +80,7 @@ class LoginPageViewModel with ChangeNotifier {
       await getMyOrderData(orderNumber);
       List<OrderModel> result = [];
       if (context.mounted) {
-        if (state.orderItems.first.orderId != 'notRegistered') {
+        if (state.orderItems.first.ordererId != 'notRegistered') {
           showDialog(
               context: context,
               builder: (context) {
@@ -137,10 +137,13 @@ class LoginPageViewModel with ChangeNotifier {
           }
         }
       }
+      notifyListeners();
       return result;
     } catch (error) {
       // 에러 처리
       logger.info('Error order check: $error');
+      notifyListeners();
+
       return [];
     }
   }
@@ -152,7 +155,7 @@ class LoginPageViewModel with ChangeNotifier {
     try {
       final myOrder =
           await orderRepository.getFirebaseMyOrders(orderNumberForPay);
-      // logger.info(myOrder);
+      logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
 
       notifyListeners();

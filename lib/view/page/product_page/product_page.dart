@@ -83,7 +83,7 @@ class _ProductPageState extends State<ProductPage> {
             const Divider(),
             // Text( '${state.products.length}'),
             state.isLoading
-                ? const CircularProgressIndicator()
+                ? const Expanded(child: Center(child: CircularProgressIndicator()))
                 : Expanded(
                     child: GridView.builder(
                       gridDelegate:

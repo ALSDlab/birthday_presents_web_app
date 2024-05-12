@@ -23,6 +23,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   //   super.initState();
   // }
 
+  void rebuild() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ShoppingCartViewModel>();
@@ -124,12 +128,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     );
                   });
             } else {
+              ShoppingCartPageWidget.checkedList = [];
+              rebuild();
               GoRouter.of(context)
                   .go('/shopping_cart_page/fill_order_page', extra: {
                 'orderModelList': orderItemList,
                 'navSetState': widget.navSetState,
               });
-              ShoppingCartPageWidget.checkedList = [];
             }
           },
           child: Text(

@@ -194,8 +194,8 @@ class _LoginPageState extends State<LoginPage> {
                                     context);
                             if (orderCheckList.isNotEmpty && context.mounted) {
                               GoRouter.of(context).go(
-                                  '//shopping_cart_page/fill_order_page/pay_page',
-                                  extra: orderCheckList);
+                                  '/shopping_cart_page/fill_order_page/pay_page',
+                                  extra: {'orderModelList':orderCheckList});
                             }
                           },
                           style: ButtonStyle(
