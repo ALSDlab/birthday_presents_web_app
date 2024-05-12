@@ -76,96 +76,103 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Divider(),
-            const Text('상품 상세'),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ImageLoadWidget(
-                width: MediaQuery.of(context).size.width,
-                widthHeightRatio: 0.6,
-                imageUrl: widget.product.representativeImage,
-              ),
-            ),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(widget.product.title),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text('${widget.product.price}원'),
-              ),
-            ),
-            const Divider(),
-            Row(
+      body: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        child: Container(
+          color: const Color(0xFFFFF8E7),
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    '재료',
-                    style: TextStyle(color: Colors.grey),
+                const Divider(),
+                const Text('상품 상세'),
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ImageLoadWidget(
+                    width: MediaQuery.of(context).size.width,
+                    widthHeightRatio: 0.6,
+                    imageUrl: widget.product.representativeImage,
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        widget.product.ingredients,
-                        style: const TextStyle(color: Color(0xFF555555)),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    '배송',
-                    style: TextStyle(color: Colors.grey),
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(widget.product.title),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.product.delivery,
-                    style: const TextStyle(
-                      color: Color(0xFF555555),
-                    ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('${widget.product.price}원'),
                   ),
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        '재료',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            widget.product.ingredients,
+                            style: const TextStyle(color: Color(0xFF555555)),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        '배송',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        widget.product.delivery,
+                        style: const TextStyle(
+                          color: Color(0xFF555555),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 2.5,
+                  imageUrl: widget.product.images[22],
+                ),
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 2.5,
+                  imageUrl: widget.product.images[23],
+                ),
+                ImageLoadWidget(
+                  width: MediaQuery.of(context).size.width,
+                  widthHeightRatio: 2.5,
+                  imageUrl: widget.product.images[24],
                 ),
               ],
             ),
-            const Divider(),
-            ImageLoadWidget(
-              width: MediaQuery.of(context).size.width,
-              widthHeightRatio: 2.5,
-              imageUrl: widget.product.images[22],
-            ),
-            ImageLoadWidget(
-              width: MediaQuery.of(context).size.width,
-              widthHeightRatio: 2.5,
-              imageUrl: widget.product.images[23],
-            ),
-            ImageLoadWidget(
-              width: MediaQuery.of(context).size.width,
-              widthHeightRatio: 2.5,
-              imageUrl: widget.product.images[24],
-            ),
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: Row(
@@ -431,7 +438,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               '/shopping_cart_page/fill_order_page',
                                               extra: {
                                                 'orderModelList': orderItemList,
-                                                'navSetState': widget.navSetState
+                                                'navSetState':
+                                                    widget.navSetState
                                               });
                                           // context.push('/fill_order_page',
                                           //     extra: [directOrderItem]);

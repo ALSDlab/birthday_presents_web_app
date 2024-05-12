@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:myk_market_app/data/repository/connectivity_observer.dart';
 import 'package:myk_market_app/data/repository/network_connectivity_observer.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
@@ -25,7 +23,6 @@ class _MainPageState extends State<MainPage> {
 
   //기본 접속 상태 설정
   var _status = Status.unavailable;
-
 
   StreamSubscription<Status>? _subscription;
 
@@ -82,85 +79,92 @@ class _MainPageState extends State<MainPage> {
               child: Text('SMS테스트'))
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: viewModel.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: ImageLoadWidget(
-                        width: MediaQuery.of(context).size.width,
-                        widthHeightRatio: 0.6,
-                        imageUrl: viewModel.storeList[0].titleImage,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    'BRAND STORY',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Column(
+      body: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        child: Container(
+          color: const Color(0xFFFFF8E7),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: viewModel.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView(
                     children: [
-                      Text(viewModel.storeList[0].introText),
-                      Text(viewModel.storeList[0].introTextOne),
-                      Text(viewModel.storeList[0].introTextTwo),
-                      Text(viewModel.storeList[0].introTextThree),
-                      Text(viewModel.storeList[0].introTextFour),
-                      Text(viewModel.storeList[0].introTextFive),
-                      Text(viewModel.storeList[0].introTextSix),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: ImageLoadWidget(
+                            width: MediaQuery.of(context).size.width,
+                            widthHeightRatio: 0.6,
+                            imageUrl: viewModel.storeList[0].titleImage,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'BRAND STORY',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Column(
+                        children: [
+                          Text(viewModel.storeList[0].introText),
+                          Text(viewModel.storeList[0].introTextOne),
+                          Text(viewModel.storeList[0].introTextTwo),
+                          Text(viewModel.storeList[0].introTextThree),
+                          Text(viewModel.storeList[0].introTextFour),
+                          Text(viewModel.storeList[0].introTextFive),
+                          Text(viewModel.storeList[0].introTextSix),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: ImageLoadWidget(
+                            width: MediaQuery.of(context).size.width,
+                            widthHeightRatio: 1.5,
+                            imageUrl: viewModel.storeList[0].images[15],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: ImageLoadWidget(
+                          width: MediaQuery.of(context).size.width,
+                          widthHeightRatio: 1.5,
+                          imageUrl: viewModel.storeList[0].images[17],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: ImageLoadWidget(
+                          width: MediaQuery.of(context).size.width,
+                          widthHeightRatio: 1.5,
+                          imageUrl: viewModel.storeList[0].images[14],
+                        ),
+                      ),
+                      // Image.network(viewModel.storeList[0].images[1]),
+                      // Image.network(viewModel.storeList[0].images[3]),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: ImageLoadWidget(
-                        width: MediaQuery.of(context).size.width,
-                        widthHeightRatio: 1.5,
-                        imageUrl: viewModel.storeList[0].images[15],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: ImageLoadWidget(
-                      width: MediaQuery.of(context).size.width,
-                      widthHeightRatio: 1.5,
-                      imageUrl: viewModel.storeList[0].images[17],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: ImageLoadWidget(
-                      width: MediaQuery.of(context).size.width,
-                      widthHeightRatio: 1.5,
-                      imageUrl: viewModel.storeList[0].images[14],
-                    ),
-                  ),
-                  // Image.network(viewModel.storeList[0].images[1]),
-                  // Image.network(viewModel.storeList[0].images[3]),
-                ],
-              ),
+          ),
+        ),
       ),
     );
   }

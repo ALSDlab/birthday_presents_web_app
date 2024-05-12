@@ -33,85 +33,92 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFF8E7),
+        backgroundColor: const Color(0xFF2F362F),
         title: const Text(
           '장바구니',
           style: TextStyle(
-            fontFamily: 'Jalnan',
-            fontSize: 20,
-          ),
+              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
         ),
         centerTitle: true,
       ),
-      body: state.isLoading
-          ? const CircularProgressIndicator()
-          : Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '주문 상품',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: Color(0xFFcccccc),
-                  thickness: 8,
-                ),
-                Row(
+      body: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        child: Container(
+          color: const Color(0xFFFFF8E7),
+          child: state.isLoading
+              ? const CircularProgressIndicator()
+              : Column(
                   children: [
-                    Checkbox(
-                      value: isAllChecked,
-                      onChanged: (bool? newValue) {
-                        setState(() {
-                          isAllChecked = newValue!;
-                          for (var item in state.cartList) {
-                            item.isChecked =
-                                newValue; // isChecked 변수의 값을 반대로 변경
-                          }
-                        });
-                      },
-                      activeColor: const Color(0xFF2F362F),
-                      checkColor: Colors.white,
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '주문 상품',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 18),
+                        ),
+                      ),
                     ),
-                    const Text('전체 선택'),
+                    const Divider(
+                      color: Color(0xFFcccccc),
+                      thickness: 8,
+                    ),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: isAllChecked,
+                          onChanged: (bool? newValue) {
+                            setState(() {
+                              isAllChecked = newValue!;
+                              for (var item in state.cartList) {
+                                item.isChecked =
+                                    newValue; // isChecked 변수의 값을 반대로 변경
+                              }
+                            });
+                          },
+                          activeColor: const Color(0xFF2F362F),
+                          checkColor: Colors.white,
+                        ),
+                        const Text('전체 선택'),
+                      ],
+                    ),
+                    const Divider(),
+                    state.cartList.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                const Text('장바구니가 비었습니다.'),
+                                OutlinedButton(
+                                  onPressed: () {
+                                    context.go('/product_page', extra: {
+                                      'navSetState': widget.navSetState
+                                    });
+                                  },
+                                  child: const Text('상품 담으러 가기'),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Expanded(
+                            child: ListView.builder(
+                              itemBuilder: (context, index) {
+                                return ShoppingCartPageWidget(
+                                  shoppingProductForCart: state.cartList[index],
+                                  removeFromCartList:
+                                      viewModel.removeFromCartList,
+                                  navSetState: widget.navSetState,
+                                );
+                              },
+                              itemCount: state.cartList.length,
+                            ),
+                          )
                   ],
                 ),
-                const Divider(),
-                state.cartList.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            const Text('장바구니가 비었습니다.'),
-                            OutlinedButton(
-                              onPressed: () {
-                                context.go('/product_page',
-                                    extra: {'navSetState': widget.navSetState});
-                              },
-                              child: const Text('상품 담으러 가기'),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Expanded(
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            return ShoppingCartPageWidget(
-                              shoppingProductForCart: state.cartList[index],
-                              removeFromCartList: viewModel.removeFromCartList,
-                              navSetState: widget.navSetState,
-                            );
-                          },
-                          itemCount: state.cartList.length,
-                        ),
-                      )
-              ],
-            ),
+        ),
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
