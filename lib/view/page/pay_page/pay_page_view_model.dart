@@ -69,9 +69,8 @@ class PayPageViewModel extends ChangeNotifier {
       debugPrint('Error fetching data: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
+
     }
   }
 
@@ -95,9 +94,8 @@ class PayPageViewModel extends ChangeNotifier {
       logger.info('Error post payInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
+
     }
   }
 
@@ -125,9 +123,8 @@ class PayPageViewModel extends ChangeNotifier {
       logger.info('Error post payInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
+
     }
   }
 

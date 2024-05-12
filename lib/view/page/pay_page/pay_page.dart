@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_address_widget.dart';
@@ -57,6 +58,26 @@ class _PayPageState extends State<PayPage> {
                     child: ListView(
                       physics: const BouncingScrollPhysics(),
                       children: [
+                        Row(
+                          children: [
+                            const Text(
+                              '주문 번호',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  state.orderItems.first.orderId,
+                                  style: const TextStyle(
+                                      color: Color(0xFF019934),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const Divider(),
                         const Text(
                           '배송지 정보',
                           style: TextStyle(fontSize: 18),

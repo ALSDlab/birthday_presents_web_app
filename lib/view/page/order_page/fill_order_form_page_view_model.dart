@@ -75,9 +75,8 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       debugPrint('Error saving ordersInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
+
     }
   }
 
@@ -156,9 +155,8 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       debugPrint('Error saving ordersInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
+
     }
     return true;
   }

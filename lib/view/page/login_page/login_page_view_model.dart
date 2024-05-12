@@ -164,9 +164,7 @@ class LoginPageViewModel with ChangeNotifier {
       logger.info('Error fetching data: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
     }
   }
 }
