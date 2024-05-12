@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextButton(
                             onPressed: () {
                               context.push(
-                                  '/profile_page/login_page/my_detail_page');
+                                  '/profile_page/login_page/agreement_page');
                             },
                             child: const Text(
                               '회원가입',

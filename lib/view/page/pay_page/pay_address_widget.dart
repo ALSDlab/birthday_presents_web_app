@@ -48,7 +48,7 @@ class PayAddressWidget extends StatelessWidget {
                 Text(orderFirstItem.ordererName!),
                 Text(orderFirstItem.ordererPhoneNo!),
                 Text(
-                    '우)${orderFirstItem.ordererPostcode}, ${orderFirstItem.ordererAddress!} ${orderFirstItem.ordererAddressDetail!}'),
+                    '우) ${orderFirstItem.ordererPostcode}, ${orderFirstItem.ordererAddress!} ${orderFirstItem.ordererAddressDetail!}'),
               ],
             ),
           )

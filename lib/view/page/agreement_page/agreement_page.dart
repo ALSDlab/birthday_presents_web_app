@@ -265,7 +265,7 @@ class _AgreementPageState extends State<AgreementPage> {
                           inevitableChecked = true;
                         });
                       } else {
-                        context.push('/profile_page/login_page/my_detail_page/signup_page',
+                        context.push('/profile_page/login_page/agreement_page/signup_page',
                             extra: isPersonalInfoForDeliverChecked);
                       }
                     },

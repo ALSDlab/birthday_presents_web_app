@@ -53,7 +53,6 @@ class _PayPageState extends State<PayPage> {
               padding: const EdgeInsets.all(5.0),
               child: Column(
                 children: [
-
                   Expanded(
                     child: ListView(
                       physics: const BouncingScrollPhysics(),
@@ -106,8 +105,7 @@ class _PayPageState extends State<PayPage> {
                           visible: ((state.orderItems.isNotEmpty) &&
                               (state.orderItems.first.payAndStatus! < 1)),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 16, bottom: 16),
+                            padding: const EdgeInsets.only(top: 16, bottom: 16),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -121,7 +119,7 @@ class _PayPageState extends State<PayPage> {
                                   checkColor: Colors.white,
                                 ),
                                 const Text(
-                                  '(필수) 구매하실 상품의 모든 정보를 확인하였으며,\n 구매진행에 동의합니다.',
+                                  '(필수) 구매하실 상품의 모든 정보를 확인하였으며,\n구매진행에 동의합니다.',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -134,7 +132,10 @@ class _PayPageState extends State<PayPage> {
                   ),
                   Visibility(
                     visible: (finalConfirmDemand == true),
-                    child: const Text('(필수) 청약의사 재확인을 동의하셔야 주문이 진행됩니다.'),
+                    child: const Text(
+                      '(필수) 청약의사 재확인을 동의하셔야 주문이 진행됩니다.',
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -143,9 +144,9 @@ class _PayPageState extends State<PayPage> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            // Navigator.pop(context);
+                            Navigator.pop(context);
                           },
-                          child: const Text('취소'),
+                          child: const Text('이전'),
                         ),
                         TextButton(
                           style: const ButtonStyle(

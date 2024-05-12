@@ -5,6 +5,7 @@ import '../data/repository/user_repository_impl.dart';
 import '../domain/order_repository.dart';
 import '../domain/user_repository.dart';
 import '../view/page/login_page/login_page_view_model.dart';
+import '../view/page/order_history_page/order_history_page_view_model.dart';
 import '../view/page/order_page/fill_order_form_page_view_model.dart';
 import '../view/page/pay_page/pay_page_view_model.dart';
 import '../view/page/shopping_cart_page/shopping_cart_view_model.dart';
@@ -29,5 +30,7 @@ void diSetup() {
         FillOrderFormPageViewModel(userRepository: getIt<UserRepository>()))
     ..registerFactory<ShoppingCartViewModel>(() => ShoppingCartViewModel())
     ..registerFactory<LoginPageViewModel>(
-        () => LoginPageViewModel(orderRepository: getIt<OrderRepository>()));
+        () => LoginPageViewModel(orderRepository: getIt<OrderRepository>()))
+    ..registerFactory<OrderHistoryPageViewModel>(() =>
+        OrderHistoryPageViewModel(orderRepository: getIt<OrderRepository>()));
 }
