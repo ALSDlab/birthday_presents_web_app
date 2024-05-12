@@ -15,7 +15,7 @@ class _PostSearchingPageWebState extends State<PostSearchingPageWeb> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('주소용 페이지'),
+        title: const Text('주소 검색'),
       ),
       body: Row(
         children: [

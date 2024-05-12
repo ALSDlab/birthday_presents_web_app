@@ -13,6 +13,7 @@ class OrderHistoryPage extends StatelessWidget {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
         title: const Text(
           '주문 내역',

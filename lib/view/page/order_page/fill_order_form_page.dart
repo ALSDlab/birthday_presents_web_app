@@ -1,7 +1,8 @@
-import 'package:async_button_builder/async_button_builder.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
@@ -9,6 +10,7 @@ import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.d
 import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
+import '../../../styles/app_text_colors.dart';
 import '../../../utils/simple_logger.dart';
 import '../agreement_page/agreement_texts.dart';
 import 'for_order_list_widget.dart';
@@ -42,6 +44,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -58,7 +61,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
         centerTitle: true,
       ),
       body: ClipRRect(
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Container(
           color: const Color(0xFFFFF8E7),
           child: (state.isLoading)
@@ -85,7 +89,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                               physics: const BouncingScrollPhysics(),
                               itemCount: widget.forOrderItems.length,
                               itemBuilder: (context, index) {
-                                final forOrderItem = widget.forOrderItems[index];
+                                final forOrderItem =
+                                    widget.forOrderItems[index];
                                 return ForOrderListWidget(
                                   orderItem: forOrderItem,
                                 );
@@ -95,7 +100,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                             const Padding(
                               padding: EdgeInsets.only(top: 8, left: 8),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     '배송 정보',
@@ -127,7 +133,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                 child: Form(
                                   key: _formKey,
                                   child: ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: 5,
                                     padding: const EdgeInsets.all(8.0),
@@ -138,22 +145,25 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                           children: [
                                             (index == 3)
                                                 ? const SizedBox(
-                                                    height: 1,
+                                                    height: 0.5,
                                                   )
                                                 : Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       const Text(
-                                                        '*',
+                                                        '* ',
                                                         style: TextStyle(
                                                             color: Colors.red),
                                                       ),
                                                       Expanded(
                                                         child: Text(viewModel
-                                                            .gridLeftArray[index]),
+                                                                .gridLeftArray[
+                                                            index]),
                                                       ),
                                                     ],
                                                   ),
@@ -167,79 +177,86 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                             const EdgeInsets
                                                                 .fromLTRB(
                                                                 10, 10, 0, 10),
-                                                        border: OutlineInputBorder(
+                                                        border:
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               const BorderSide(
-                                                            width: 2,
+                                                            width: 0.1,
                                                             color: Colors.white,
                                                           ),
                                                           borderRadius:
-                                                              BorderRadius.circular(
-                                                                  10),
+                                                              BorderRadius
+                                                                  .circular(10),
                                                         ),
-                                                        suffixIcon: ElevatedButton(
-                                                            onPressed: () async {
-                                                              try {
-                                                                viewModel
-                                                                    .addressChangeRequest();
-                                                                DataModel? model =
-                                                                    await Navigator.of(
-                                                                            context)
-                                                                        .push(
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              check
-                                                                                  .pr),
-                                                                );
-                                                                setState(
-                                                                  () {
+                                                        suffixIcon:
+                                                            ElevatedButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  try {
                                                                     viewModel
-                                                                            .daumPostcodeSearchDataModel =
-                                                                        model;
-                                                                  },
-                                                                );
-                                                                viewModel
-                                                                    .fillTextField();
-                                                              } catch (error) {
-                                                                logger.info(error);
-                                                              }
-                                                            },
-                                                            style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .all(
-                                                                const Color(
-                                                                    0xFF2F362F),
-                                                              ),
-                                                            ),
-                                                            child: const Text(
-                                                              '주소검색',
-                                                              style: TextStyle(
-                                                                  color:
-                                                                      Colors.white),
-                                                            ))),
+                                                                        .addressChangeRequest();
+                                                                    DataModel?
+                                                                        model =
+                                                                        await Navigator.of(context)
+                                                                            .push(
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              check.pr),
+                                                                    );
+                                                                    setState(
+                                                                      () {
+                                                                        viewModel.daumPostcodeSearchDataModel =
+                                                                            model;
+                                                                      },
+                                                                    );
+                                                                    viewModel
+                                                                        .fillTextField();
+                                                                  } catch (error) {
+                                                                    logger.info(
+                                                                        error);
+                                                                  }
+                                                                },
+                                                                style: ButtonStyle(
+                                                                    minimumSize: MaterialStateProperty.all(
+                                                                        Size(100.w, 40.h)),
+                                                                    //테두리 모양 조절
+                                                                    shape: MaterialStateProperty.all(
+                                                                        RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                            BorderRadius.circular(23))),
+                                                                    backgroundColor:
+                                                                    MaterialStateProperty.all(AppColors.icon)),
+                                                                child:
+                                                                    const Text(
+                                                                  '주소검색',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                ))),
                                                     controller: viewModel
                                                         .controllers[index],
                                                   )
                                                 : TextFormField(
-                                                    readOnly:
-                                                        (index == 3) ? true : false,
+                                                    readOnly: (index == 3)
+                                                        ? true
+                                                        : false,
                                                     style: const TextStyle(
                                                         fontSize: 15),
                                                     decoration: InputDecoration(
                                                       contentPadding:
-                                                          const EdgeInsets.fromLTRB(
+                                                          const EdgeInsets
+                                                              .fromLTRB(
                                                               10, 10, 0, 10),
-                                                      border: OutlineInputBorder(
+                                                      border:
+                                                          OutlineInputBorder(
                                                         borderSide:
                                                             const BorderSide(
-                                                          width: 4,
+                                                          width: 0.1,
                                                           color: Colors.white,
                                                         ),
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                       ),
                                                     ),
                                                     controller: viewModel
@@ -254,7 +271,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                               ),
                             ),
                             Visibility(
-                                visible: FirebaseAuth.instance.currentUser == null,
+                                visible:
+                                    FirebaseAuth.instance.currentUser == null,
                                 child: Column(
                                   children: [
                                     const Divider(),
@@ -263,7 +281,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.only(top: 8, left: 8),
+                                          padding:
+                                              EdgeInsets.only(top: 8, left: 8),
                                           child: Text(
                                             '약관 동의',
                                             style: TextStyle(fontSize: 18),
@@ -272,16 +291,18 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                       ],
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(top: 8, bottom: 8),
+                                      padding: const EdgeInsets.only(
+                                          top: 8, bottom: 8),
                                       child: Container(
                                         margin: const EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.circular(20.0),
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.3),
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
                                               spreadRadius: 2,
                                               blurRadius: 3,
                                               offset: const Offset(0, 3),
@@ -313,21 +334,26 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                   },
                                                   activeColor: Colors.green,
                                                   checkColor: Colors.white,
+                                                ), const Expanded(
+                                                  child: Text(
+                                                      '건강담은 민영기염소탕 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.'),
                                                 ),
-                                                const Text(
-                                                    '건강담은 민영기염소탕 흑염소진액의 모든\n약관을 확인하고 전체 동의합니다.'),
                                               ],
                                             ),
+                                            const Divider(indent: 50,endIndent: 50,),
+
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Row(
                                                   children: [
                                                     Checkbox(
                                                       value:
                                                           isTermsNConditionsChecked,
-                                                      onChanged: (bool? newValue) {
+                                                      onChanged:
+                                                          (bool? newValue) {
                                                         setState(() {
                                                           isTermsNConditionsChecked =
                                                               newValue!;
@@ -350,26 +376,28 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                     height: 40,
                                                     width: 100,
                                                     alignment: Alignment.center,
-                                                    decoration: const BoxDecoration(
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.all(
                                                         Radius.circular(10),
                                                       ),
                                                     ),
-                                                    child: isTermsNConditionsOpened
-                                                        ? const Text(
-                                                            '닫기 ▲',
-                                                          )
-                                                        : const Text(
-                                                            '열기 ▼',
-                                                          ),
+                                                    child:
+                                                        isTermsNConditionsOpened
+                                                            ? const Text(
+                                                                '닫기 ▲',
+                                                              )
+                                                            : const Text(
+                                                                '열기 ▼',
+                                                              ),
                                                   ),
                                                 ),
                                               ],
                                             ),
                                             AnimatedSize(
-                                              duration:
-                                                  const Duration(milliseconds: 500),
+                                              duration: const Duration(
+                                                  milliseconds: 500),
                                               child: SizedBox(
                                                 height: isTermsNConditionsOpened
                                                     ? null
@@ -379,13 +407,16 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Row(
                                                   children: [
                                                     Checkbox(
-                                                      value: isPersonalInfoChecked,
-                                                      onChanged: (bool? newValue) {
+                                                      value:
+                                                          isPersonalInfoChecked,
+                                                      onChanged:
+                                                          (bool? newValue) {
                                                         setState(() {
                                                           isPersonalInfoChecked =
                                                               newValue!;
@@ -394,7 +425,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                       activeColor: Colors.green,
                                                       checkColor: Colors.white,
                                                     ),
-                                                    const Text('(필수) 개인정보 수집 및 이용'),
+                                                    const Text(
+                                                        '(필수) 개인정보 수집 및 이용'),
                                                   ],
                                                 ),
                                                 InkWell(
@@ -408,7 +440,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                     height: 40,
                                                     width: 100,
                                                     alignment: Alignment.center,
-                                                    decoration: const BoxDecoration(
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.all(
                                                         Radius.circular(10),
@@ -426,8 +459,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                               ],
                                             ),
                                             AnimatedSize(
-                                              duration:
-                                                  const Duration(milliseconds: 500),
+                                              duration: const Duration(
+                                                  milliseconds: 500),
                                               child: SizedBox(
                                                 height: isPersonalInfoOpened
                                                     ? null
@@ -437,14 +470,16 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Row(
                                                   children: [
                                                     Checkbox(
                                                       value:
                                                           isPersonalInfoForDeliverChecked,
-                                                      onChanged: (bool? newValue) {
+                                                      onChanged:
+                                                          (bool? newValue) {
                                                         setState(() {
                                                           isPersonalInfoForDeliverChecked =
                                                               newValue!;
@@ -453,7 +488,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                       activeColor: Colors.green,
                                                       checkColor: Colors.white,
                                                     ),
-                                                    const Text('(선택) 개인정보 수집 및 이용'),
+                                                    const Text(
+                                                        '(선택) 개인정보 수집 및 이용'),
                                                   ],
                                                 ),
                                                 InkWell(
@@ -467,7 +503,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                     height: 40,
                                                     width: 100,
                                                     alignment: Alignment.center,
-                                                    decoration: const BoxDecoration(
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.all(
                                                         Radius.circular(10),
@@ -486,8 +523,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                               ],
                                             ),
                                             AnimatedSize(
-                                              duration:
-                                                  const Duration(milliseconds: 500),
+                                              duration: const Duration(
+                                                  milliseconds: 500),
                                               child: SizedBox(
                                                 height:
                                                     isPersonalInfoForDeliverOpened
@@ -535,150 +572,116 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.zero)),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('취소'),
-                                ),
+                            ElevatedButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              style: ButtonStyle(
+                                  minimumSize: MaterialStateProperty.all(
+                                      Size(100.w, 40.h)),
+                                  //테두리 모양 조절
+                                  shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          side: const BorderSide(
+                                              width: 0.5, color: Colors.black),
+                                          borderRadius:
+                                              BorderRadius.circular(23))),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color(0xFFFFF8E7))),
+                              child: const Text(
+                                '취소',
+                                style: TextStyle(color: Colors.black),
                               ),
                             ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: AsyncButtonBuilder(
-                                  loadingWidget: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      height: 16.0,
-                                      width: 16.0,
-                                      child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                  successWidget: const Padding(
-                                    padding: EdgeInsets.all(4.0),
-                                    child: Icon(
-                                      Icons.check,
-                                      color: Colors.purpleAccent,
-                                    ),
-                                  ),
-                                  onPressed: () async {
-                                    if ((viewModel.currentUser.isEmpty) &&
-                                        (isTermsNConditionsChecked == false ||
-                                            isPersonalInfoChecked == false)) {
-                                      setState(() {
-                                        inevitableChecked = true;
-                                      });
-                                    } else if (viewModel.controllers[0].text ==
-                                            '' ||
-                                        viewModel.controllers[1].text == '' ||
-                                        viewModel.controllers[2].text == '') {
-                                      setState(() {
-                                        moreDataNeed = true;
-                                      });
-                                    } else {
-                                      final orderedDate = DateTime.now()
-                                          .toString()
-                                          .substring(2, 10)
-                                          .replaceAll('-', '');
-                                      final ordererId =
-                                          viewModel.currentUser.isEmpty
-                                              ? 'notRegistered'
-                                              : viewModel.currentUser.first.id;
-                                      final personalInfoForDeliverChecked =
-                                          viewModel.currentUser.isEmpty
-                                              ? isPersonalInfoForDeliverChecked
-                                              : viewModel.currentUser.first.checked;
-                                      final ordererName =
-                                          viewModel.controllers[0].text;
-                                      final ordererPhoneNo =
-                                          viewModel.controllers[1].text;
-                                      final ordererPostcode =
-                                          viewModel.controllers[2].text;
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if ((viewModel.currentUser.isEmpty) &&
+                                    (isTermsNConditionsChecked == false ||
+                                        isPersonalInfoChecked == false)) {
+                                  setState(() {
+                                    inevitableChecked = true;
+                                  });
+                                } else if (viewModel.controllers[0].text == '' ||
+                                    viewModel.controllers[1].text == '' ||
+                                    viewModel.controllers[2].text == '') {
+                                  setState(() {
+                                    moreDataNeed = true;
+                                  });
+                                } else {
+                                  final orderedDate = DateTime.now()
+                                      .toString()
+                                      .substring(2, 10)
+                                      .replaceAll('-', '');
+                                  final ordererId = viewModel.currentUser.isEmpty
+                                      ? 'notRegistered'
+                                      : viewModel.currentUser.first.id;
+                                  final personalInfoForDeliverChecked =
+                                      viewModel.currentUser.isEmpty
+                                          ? isPersonalInfoForDeliverChecked
+                                          : viewModel.currentUser.first.checked;
+                                  final ordererName =
+                                      viewModel.controllers[0].text;
+                                  final ordererPhoneNo =
+                                      viewModel.controllers[1].text;
+                                  final ordererPostcode =
+                                      viewModel.controllers[2].text;
 
-                                      final ordererAddress =
-                                          viewModel.controllers[3].text;
-                                      final ordererAddressDetail =
-                                          viewModel.controllers[4].text;
-                                      await Future.forEach(
-                                          widget.forOrderItems.asMap().entries,
-                                          (entry) async {
-                                        final index = entry.key;
-                                        final item = entry.value;
-                                        await viewModel.saveOrdersInfo(
-                                          item,
-                                          index.toString(),
-                                          orderedDate,
-                                          personalInfoForDeliverChecked,
-                                          ordererId,
-                                          ordererName,
-                                          ordererPhoneNo,
-                                          ordererAddress,
-                                          ordererAddressDetail,
-                                          ordererPostcode,
-                                        );
-                                      });
-
-                                      if (context.mounted) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('주문생성 완료.'),
-                                            duration: Duration(seconds: 3),
-                                          ),
-                                        );
-                                        GoRouter.of(context).push(
-                                            '/shopping_cart_page/fill_order_page/pay_page',
-                                            extra: {'orderModelList':widget.forOrderItems});
-                                      }
-                                    }
-                                  },
-                                  loadingSwitchInCurve: Curves.bounceInOut,
-                                  loadingTransitionBuilder: (child, animation) {
-                                    return SlideTransition(
-                                      position: Tween<Offset>(
-                                        begin: const Offset(0, 1.0),
-                                        end: const Offset(0, 0),
-                                      ).animate(animation),
-                                      child: child,
+                                  final ordererAddress =
+                                      viewModel.controllers[3].text;
+                                  final ordererAddressDetail =
+                                      viewModel.controllers[4].text;
+                                  await Future.forEach(
+                                      widget.forOrderItems.asMap().entries,
+                                      (entry) async {
+                                    final index = entry.key;
+                                    final item = entry.value;
+                                    await viewModel.saveOrdersInfo(
+                                      item,
+                                      index.toString(),
+                                      orderedDate,
+                                      personalInfoForDeliverChecked,
+                                      ordererId,
+                                      ordererName,
+                                      ordererPhoneNo,
+                                      ordererAddress,
+                                      ordererAddressDetail,
+                                      ordererPostcode,
                                     );
-                                  },
-                                  builder: (context, child, callback, state) {
-                                    return Material(
-                                      color: state.maybeWhen(
-                                        success: () => Colors.purple[100],
-                                        orElse: () => const Color(0xFF2F362F),
-                                      ),
-                                      // This prevents the loading indicator showing below the
-                                      // button
-                                      clipBehavior: Clip.hardEdge,
-                                      child: InkWell(
-                                        onTap: callback,
-                                        child: child,
+                                  });
+
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('주문생성 완료.'),
+                                        duration: Duration(seconds: 3),
                                       ),
                                     );
-                                  },
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16.0,
-                                      vertical: 10.0,
-                                    ),
-                                    child: Text(
-                                      '다음',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
+                                    GoRouter.of(context).push(
+                                        '/shopping_cart_page/fill_order_page/pay_page',
+                                        extra: {
+                                          'orderModelList': widget.forOrderItems
+                                        });
+                                  }
+                                }
+                              },
+                              style: ButtonStyle(
+                                  minimumSize: MaterialStateProperty.all(
+                                      Size(100.w, 40.h)),
+                                  //테두리 모양 조절
+                                  shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(23))),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(AppColors.icon)),
+                              child: const Text(
+                                '다음',
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                           ],

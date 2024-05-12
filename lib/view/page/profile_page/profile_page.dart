@@ -13,6 +13,16 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xFF2F362F),
+        title: const Text(
+          '마이페이지',
+          style: TextStyle(
+              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
       body: ClipRRect(
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(32), topRight: Radius.circular(32)),

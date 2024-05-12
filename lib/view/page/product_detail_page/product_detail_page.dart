@@ -175,297 +175,300 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ),
         ),
       ),
-      bottomNavigationBar: Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero)),
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return StatefulBuilder(builder:
-                            (BuildContext context, StateSetter setState) {
-                          return SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Text(widget.product.title),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, bottom: 32),
-                                  child: Text('${widget.product.price}원'),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 4, right: 8, bottom: 8),
-                                  child: Container(
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(),
-                                        borderRadius: BorderRadius.zero),
+      bottomNavigationBar: Container(
+        color: const Color(0xFFFFF8E7),
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero)),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Text(widget.product.title),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16, bottom: 32),
+                                    child: Text('${widget.product.price}원'),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16, top: 4, right: 8, bottom: 8),
+                                    child: Container(
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(),
+                                          borderRadius: BorderRadius.zero),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    viewModel.minusCartCount();
+                                                  });
+                                                },
+                                                child: const Icon(Icons.remove)),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Text('${viewModel.cartCount}'),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    viewModel.plusCartCount();
+                                                  });
+                                                },
+                                                child: const Icon(Icons.add)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(''),
+                                  const Divider(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16, top: 16, right: 16, bottom: 4),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  viewModel.minusCartCount();
-                                                });
-                                              },
-                                              child: const Icon(Icons.remove)),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Text('${viewModel.cartCount}'),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  viewModel.plusCartCount();
-                                                });
-                                              },
-                                              child: const Icon(Icons.add)),
-                                        ),
+                                        Text('수량 ${viewModel.cartCount}개'),
+                                        Text(
+                                            '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
                                       ],
                                     ),
                                   ),
-                                ),
-                                const Text(''),
-                                const Divider(),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 16, right: 16, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  const Divider(),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text('수량 ${viewModel.cartCount}개'),
-                                      Text(
-                                          '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
-                                    ],
-                                  ),
-                                ),
-                                const Divider(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.zero),
-                                          backgroundColor:
-                                              const Color(0xFF2F362F),
-                                        ),
-                                        onPressed: () async {
-                                          Navigator.pop(context);
-                                          ShoppingProductForCart item =
-                                              ShoppingProductForCart(
-                                                  orderId:
-                                                      widget.product.productId,
-                                                  orderProductName:
-                                                      widget.product.title,
-                                                  price: widget.product.price,
-                                                  representativeImage: widget
-                                                      .product
-                                                      .representativeImage,
-                                                  count: viewModel.cartCount);
-                                          await viewModel.addToShoppingCartList(
-                                              item, context);
-                                          final newBadgeCount =
-                                              await viewModel.getBadgeCount();
-                                          widget.navSetState!(newBadgeCount);
+                                      Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.zero),
+                                            backgroundColor:
+                                                const Color(0xFF2F362F),
+                                          ),
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            ShoppingProductForCart item =
+                                                ShoppingProductForCart(
+                                                    orderId:
+                                                        widget.product.productId,
+                                                    orderProductName:
+                                                        widget.product.title,
+                                                    price: widget.product.price,
+                                                    representativeImage: widget
+                                                        .product
+                                                        .representativeImage,
+                                                    count: viewModel.cartCount);
+                                            await viewModel.addToShoppingCartList(
+                                                item, context);
+                                            final newBadgeCount =
+                                                await viewModel.getBadgeCount();
+                                            widget.navSetState!(newBadgeCount);
 
-                                          // setState(() {});
-                                        },
-                                        child: const Text(
-                                          '장바구니 담기',
-                                          style: TextStyle(color: Colors.white),
+                                            // setState(() {});
+                                          },
+                                          child: const Text(
+                                            '장바구니 담기',
+                                            style: TextStyle(color: Colors.white),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
                         });
-                      });
-                },
-                child: const Text(
-                  '장바구니',
-                  style: TextStyle(color: Colors.black),
+                  },
+                  child: const Text(
+                    '장바구니',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero),
-                    backgroundColor: const Color(0xFF2F362F)),
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return StatefulBuilder(builder:
-                            (BuildContext context, StateSetter setState) {
-                          return SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Text(widget.product.title),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, bottom: 32),
-                                  child: Text('${widget.product.price}원'),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 4, right: 8, bottom: 8),
-                                  child: Container(
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(),
-                                        borderRadius: BorderRadius.zero),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero),
+                      backgroundColor: const Color(0xFF2F362F)),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Text(widget.product.title),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16, bottom: 32),
+                                    child: Text('${widget.product.price}원'),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16, top: 4, right: 8, bottom: 8),
+                                    child: Container(
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(),
+                                          borderRadius: BorderRadius.zero),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    viewModel
+                                                        .minusPurchaseCount();
+                                                  });
+                                                },
+                                                child: const Icon(Icons.remove)),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Text(
+                                                '${viewModel.purchaseCount}'),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    viewModel.plusPurchaseCount();
+                                                  });
+                                                },
+                                                child: const Icon(Icons.add)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(''),
+                                  const Divider(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16, top: 16, right: 16, bottom: 4),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  viewModel
-                                                      .minusPurchaseCount();
-                                                });
-                                              },
-                                              child: const Icon(Icons.remove)),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Text(
-                                              '${viewModel.purchaseCount}'),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  viewModel.plusPurchaseCount();
-                                                });
-                                              },
-                                              child: const Icon(Icons.add)),
-                                        ),
+                                        Text('수량 ${viewModel.purchaseCount}개'),
+                                        Text(
+                                            '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
                                       ],
                                     ),
                                   ),
-                                ),
-                                const Text(''),
-                                const Divider(),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, top: 16, right: 16, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  const Divider(),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text('수량 ${viewModel.purchaseCount}개'),
-                                      Text(
-                                          '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
-                                    ],
-                                  ),
-                                ),
-                                const Divider(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.zero),
-                                          backgroundColor:
-                                              const Color(0xFF2F362F),
-                                        ),
-                                        onPressed: () {
-                                          final createdDate = DateTime.now()
-                                              .toString()
-                                              .substring(2, 10)
-                                              .replaceAll('-', '');
-                                          final OrderModel directOrderItem =
-                                              OrderModel(
-                                            orderId:
-                                                viewModel.generateLicensePlate(
-                                                    createdDate),
-                                            orderProductName:
-                                                widget.product.title,
-                                            representativeImage: widget
-                                                .product.representativeImage,
-                                            price: widget.product.price,
-                                            count: viewModel.purchaseCount,
-                                            orderedDate: createdDate,
-                                            payAndStatus: 0,
-                                          );
-                                          final List<OrderModel> orderItemList =
-                                              [directOrderItem];
-                                          Navigator.pop(context);
-                                          context.push(
-                                              '/shopping_cart_page/fill_order_page',
-                                              extra: {
-                                                'orderModelList': orderItemList,
-                                                'navSetState':
-                                                    widget.navSetState
-                                              });
-                                          // context.push('/fill_order_page',
-                                          //     extra: [directOrderItem]);
-                                        },
-                                        child: const Text(
-                                          '구매하기',
-                                          style: TextStyle(color: Colors.white),
+                                      Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.zero),
+                                            backgroundColor:
+                                                const Color(0xFF2F362F),
+                                          ),
+                                          onPressed: () {
+                                            final createdDate = DateTime.now()
+                                                .toString()
+                                                .substring(2, 10)
+                                                .replaceAll('-', '');
+                                            final OrderModel directOrderItem =
+                                                OrderModel(
+                                              orderId:
+                                                  viewModel.generateLicensePlate(
+                                                      createdDate),
+                                              orderProductName:
+                                                  widget.product.title,
+                                              representativeImage: widget
+                                                  .product.representativeImage,
+                                              price: widget.product.price,
+                                              count: viewModel.purchaseCount,
+                                              orderedDate: createdDate,
+                                              payAndStatus: 0,
+                                            );
+                                            final List<OrderModel> orderItemList =
+                                                [directOrderItem];
+                                            Navigator.pop(context);
+                                            context.push(
+                                                '/shopping_cart_page/fill_order_page',
+                                                extra: {
+                                                  'orderModelList': orderItemList,
+                                                  'navSetState':
+                                                      widget.navSetState
+                                                });
+                                            // context.push('/fill_order_page',
+                                            //     extra: [directOrderItem]);
+                                          },
+                                          child: const Text(
+                                            '구매하기',
+                                            style: TextStyle(color: Colors.white),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
                         });
-                      });
-                },
-                child: const Text(
-                  '바로구매',
-                  style: TextStyle(color: Colors.white),
+                  },
+                  child: const Text(
+                    '바로구매',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

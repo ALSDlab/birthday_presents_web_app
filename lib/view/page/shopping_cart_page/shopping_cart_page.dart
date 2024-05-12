@@ -33,6 +33,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
         title: const Text(
           '장바구니',
@@ -119,38 +120,41 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ElevatedButton(
-          onPressed: () async {
-            final List<OrderModel> orderItemList =
-                await viewModel.sendCart(ShoppingCartPageWidget.checkedList);
-            if (ShoppingCartPageWidget.checkedList.isEmpty) {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const AlertDialog(
-                      title: Text('알림'),
-                      content: Text('선택된 상품이 없습니다. 상품을 선택해 주세요'),
-                    );
-                  });
-            } else {
-              ShoppingCartPageWidget.checkedList = [];
-              rebuild();
-              GoRouter.of(context)
-                  .go('/shopping_cart_page/fill_order_page', extra: {
-                'orderModelList': orderItemList,
-                'navSetState': widget.navSetState,
-              });
-            }
-          },
-          child: Text(
-            '주문하기',
-            style: TextStyle(color: Colors.white),
-          ),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-              const Color(0xFF2F362F),
+      bottomNavigationBar: Container(
+        color: const Color(0xFFFFF8E7),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: () async {
+              final List<OrderModel> orderItemList =
+                  await viewModel.sendCart(ShoppingCartPageWidget.checkedList);
+              if (ShoppingCartPageWidget.checkedList.isEmpty) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const AlertDialog(
+                        title: Text('알림'),
+                        content: Text('선택된 상품이 없습니다. 상품을 선택해 주세요'),
+                      );
+                    });
+              } else {
+                ShoppingCartPageWidget.checkedList = [];
+                rebuild();
+                GoRouter.of(context)
+                    .go('/shopping_cart_page/fill_order_page', extra: {
+                  'orderModelList': orderItemList,
+                  'navSetState': widget.navSetState,
+                });
+              }
+            },
+            child: Text(
+              '주문하기',
+              style: TextStyle(color: Colors.white),
+            ),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                const Color(0xFF2F362F),
+              ),
             ),
           ),
         ),
