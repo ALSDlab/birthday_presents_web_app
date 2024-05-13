@@ -136,56 +136,64 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                       ),
                                       index == 2
                                           ? TextFormField(
-                                        readOnly: true,
-                                        style: const TextStyle(
-                                            fontSize: 15),
-                                        decoration: InputDecoration(
-                                            contentPadding: const EdgeInsets.fromLTRB(10,10,0,10),
-                                            border: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                width: 4,
-                                                color: Colors.white,
-                                              ),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            suffixIcon: ElevatedButton(
-                                                onPressed: () async {
-                                                  try {
-                                                    viewModel
-                                                        .addressChangeRequest();
-                                                    DataModel? model =
-                                                    await Navigator.of(
-                                                        context)
-                                                        .push(
-                                                      MaterialPageRoute(
-                                                          builder:
-                                                              (context) =>
-                                                          check
-                                                              .pr),
-                                                    );
-                                                    setState(
-                                                          () {
-                                                        viewModel
-                                                            .daumPostcodeSearchDataModel =
-                                                            model;
-                                                      },
-                                                    );
-                                                    viewModel
-                                                        .fillTextField();
-                                                  } catch (error) {
-                                                    logger.info(error);
-                                                  }
-                                                },
-                                                style: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all(
-                                                    const Color(0xFF2F362F),
+                                              readOnly: true,
+                                              style:
+                                                  const TextStyle(fontSize: 15),
+                                              decoration: InputDecoration(
+                                                  contentPadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          10, 10, 0, 10),
+                                                  border: OutlineInputBorder(
+                                                    borderSide:
+                                                        const BorderSide(
+                                                      width: 4,
+                                                      color: Colors.white,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
-                                                ),
-                                                child: const Text(
-                                                    '주소검색'))),
-                                        controller: viewModel
-                                            .controllers[index],
-                                      )
+                                                  suffixIcon: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try {
+                                                          viewModel
+                                                              .addressChangeRequest();
+                                                          DataModel? model =
+                                                              await Navigator.of(
+                                                                      context)
+                                                                  .push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        check
+                                                                            .pr),
+                                                          );
+                                                          setState(
+                                                            () {
+                                                              viewModel
+                                                                      .daumPostcodeSearchDataModel =
+                                                                  model;
+                                                            },
+                                                          );
+                                                          viewModel
+                                                              .fillTextField();
+                                                        } catch (error) {
+                                                          logger.info(error);
+                                                        }
+                                                      },
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(
+                                                          const Color(
+                                                              0xFF2F362F),
+                                                        ),
+                                                      ),
+                                                      child:
+                                                          const Text('주소검색'))),
+                                              controller:
+                                                  viewModel.controllers[index],
+                                            )
                                           : TextFormField(
                                               readOnly:
                                                   (index == 3) ? true : false,

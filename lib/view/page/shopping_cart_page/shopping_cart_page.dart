@@ -69,6 +69,11 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                             item.isChecked =
                                 newValue; // isChecked 변수의 값을 반대로 변경
                           }
+                          ShoppingCartPageWidget.checkedList.addAll(state
+                              .cartList
+                              .where((model) => model.isChecked == true));
+                          ShoppingCartPageWidget.checkedList
+                              .removeWhere((model) => model.isChecked == false);
                         });
                       },
                       activeColor: const Color(0xFF2F362F),
