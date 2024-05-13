@@ -45,7 +45,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   get_it: ^7.7.0
-  http: ^1.2.1
+  http: ^0.13.5
   daum_postcode_search: ^0.0.2
   kpostal_web: ^0.0.2
   firebase_auth: ^4.19.4
@@ -53,17 +53,13 @@ dependencies:
   intl: ^0.18.1
   cached_network_image: ^3.3.1
   badges: ^3.1.2
-#  bootpay: ^4.9.6
-  bootpay:
-    git:
-      url: https://github.com/ALSDlab/bootpay_flutter.git
+  bootpay: ^4.9.6
   simple_logger: ^1.9.0+3
   crypto: ^3.0.3
   bootstrap_icons: ^1.11.3
   persistent_bottom_nav_bar_v2: ^5.2.2
   stylish_bottom_bar: ^1.1.0
   connectivity_plus: ^6.0.3
-  gif: ^2.3.0
 
 
 dev_dependencies:

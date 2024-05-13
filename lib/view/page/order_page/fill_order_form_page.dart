@@ -658,7 +658,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('주문생성 완료.'),
-                                        duration: Duration(seconds: 3),
+                                        duration: Duration(seconds: 2),
                                       ),
                                     );
                                     GoRouter.of(context).push(

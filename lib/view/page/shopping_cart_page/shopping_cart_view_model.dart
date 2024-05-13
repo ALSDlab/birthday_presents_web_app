@@ -153,9 +153,11 @@ class ShoppingCartViewModel extends ChangeNotifier {
     final createdDate =
         DateTime.now().toString().substring(2, 10).replaceAll('-', '');
 
+    final String newOrderId = generateLicensePlate(createdDate);
+
     for (int i = 0; i < list.length; i++) {
       final OrderModel directOrderItem = OrderModel(
-        orderId: generateLicensePlate(createdDate),
+        orderId: newOrderId,
         orderProductName: list[i].orderProductName,
         representativeImage: list[i].representativeImage,
         price: list[i].price,
