@@ -105,6 +105,7 @@ class _PayPageState extends State<PayPage> {
                                 padding:
                                     const EdgeInsets.only(top: 8, bottom: 8),
                                 child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: state.orderItems.length,
                                   itemBuilder: (context, index) {
@@ -139,7 +140,7 @@ class _PayPageState extends State<PayPage> {
                                     (state.orderItems.first.payAndStatus! < 1)),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 16, bottom: 16),
+                                      top: 13, bottom: 16, right: 13),
                                   child: Row(
                                     children: [
                                       Checkbox(
