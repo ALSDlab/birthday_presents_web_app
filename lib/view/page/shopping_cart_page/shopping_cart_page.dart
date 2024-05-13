@@ -25,10 +25,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   //   super.initState();
   // }
 
-  void rebuild() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ShoppingCartViewModel>();
