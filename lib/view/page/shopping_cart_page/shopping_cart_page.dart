@@ -5,6 +5,8 @@ import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page_w
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/gif_progress_bar.dart';
+
 class ShoppingCartPage extends StatefulWidget {
   const ShoppingCartPage({super.key, required this.navSetState});
 
@@ -48,7 +50,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         child: Container(
           color: const Color(0xFFFFF8E7),
           child: state.isLoading
-              ? const CircularProgressIndicator()
+              ? const GifProgressBar()
               : Column(
                   children: [
                     const Padding(

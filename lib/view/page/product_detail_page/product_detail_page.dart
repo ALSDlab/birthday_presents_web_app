@@ -8,7 +8,7 @@ import 'package:myk_market_app/view/page/product_detail_page/product_detail_page
 import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
-import '../main_page/image_load_widget.dart';
+import '../../../utils/image_load_widget.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({

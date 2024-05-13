@@ -4,7 +4,7 @@ import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../main_page/image_load_widget.dart';
+import '../../../utils/image_load_widget.dart';
 
 class ShoppingCartPageWidget extends StatefulWidget {
   final ShoppingProductForCart shoppingProductForCart;

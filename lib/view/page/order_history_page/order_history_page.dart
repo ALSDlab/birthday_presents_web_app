@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/gif_progress_bar.dart';
 import 'order_history_list_widget.dart';
 import 'order_history_page_view_model.dart';
 
@@ -29,7 +30,7 @@ class OrderHistoryPage extends StatelessWidget {
           color: const Color(0xFFFFF8E7),
           child: (state.isLoading)
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: GifProgressBar(),
                 )
               : (state.orderHistoryList.isEmpty)
                   ? const Center(

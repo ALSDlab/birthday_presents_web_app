@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 
-import '../main_page/image_load_widget.dart';
+import '../../../utils/image_load_widget.dart';
 
 class ForOrderListWidget extends StatelessWidget {
   const ForOrderListWidget(

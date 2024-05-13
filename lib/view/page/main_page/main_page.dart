@@ -6,8 +6,9 @@ import 'package:myk_market_app/data/repository/network_connectivity_observer.dar
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/gif_progress_bar.dart';
 import '../pay_page/send_sms_widget.dart';
-import 'image_load_widget.dart';
+import '../../../utils/image_load_widget.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -88,7 +89,7 @@ class _MainPageState extends State<MainPage> {
             padding: const EdgeInsets.all(8.0),
             child: viewModel.isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: GifProgressBar(),
                   )
                 : ListView(
                     children: [
@@ -175,7 +176,7 @@ class _MainPageState extends State<MainPage> {
 // children: [
 // if (viewModel.isLoading)
 // Center(
-// child: CircularProgressIndicator(),
+// child: GifProgressBar(),
 // )
 // else if (viewModel.storeList.isNotEmpty)
 // Expanded(

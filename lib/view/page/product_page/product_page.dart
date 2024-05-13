@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/utils/gif_progress_bar.dart';
 import 'package:myk_market_app/view/page/product_page/product_image_widget.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
@@ -88,9 +89,8 @@ class _ProductPageState extends State<ProductPage> {
                 const Text('상품 목록'),
                 const Divider(),
                 // Text( '${state.products.length}'),
-                state.isLoading
-                    ? const Expanded(
-                        child: Center(child: CircularProgressIndicator()))
+                (state.isLoading)
+                    ? const Expanded(child: Center(child: GifProgressBar()))
                     : Expanded(
                         child: GridView.builder(
                           gridDelegate:

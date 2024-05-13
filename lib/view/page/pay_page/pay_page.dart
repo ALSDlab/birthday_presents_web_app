@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_address_widget.dart';
@@ -6,6 +5,7 @@ import 'package:myk_market_app/view/page/pay_page/pay_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../styles/app_text_colors.dart';
+import '../../../utils/gif_progress_bar.dart';
 import '../order_page/for_order_list_widget.dart';
 
 class PayPage extends StatefulWidget {
@@ -54,7 +54,7 @@ class _PayPageState extends State<PayPage> {
           color: const Color(0xFFFFF8E7),
           child: (state.isLoading)
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: GifProgressBar(),
                 )
               : Padding(
                   padding: const EdgeInsets.all(5.0),
@@ -102,12 +102,14 @@ class _PayPageState extends State<PayPage> {
                                 style: TextStyle(fontSize: 18),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                                padding:
+                                    const EdgeInsets.only(top: 8, bottom: 8),
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: state.orderItems.length,
                                   itemBuilder: (context, index) {
-                                    final forOrderItem = state.orderItems[index];
+                                    final forOrderItem =
+                                        state.orderItems[index];
                                     return ForOrderListWidget(
                                       orderItem: forOrderItem,
                                       forConfirm: true,
@@ -136,8 +138,8 @@ class _PayPageState extends State<PayPage> {
                                 visible: ((state.orderItems.isNotEmpty) &&
                                     (state.orderItems.first.payAndStatus! < 1)),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 16, bottom: 16),
+                                  padding: const EdgeInsets.only(
+                                      top: 16, bottom: 16),
                                   child: Row(
                                     children: [
                                       Checkbox(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 
-import '../main_page/image_load_widget.dart';
+import '../../../utils/image_load_widget.dart';
 
 class ProductImageWidget extends StatelessWidget {
   final Product product;

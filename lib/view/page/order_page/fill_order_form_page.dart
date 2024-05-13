@@ -1,6 +1,5 @@
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
 import '../../../styles/app_text_colors.dart';
+import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/simple_logger.dart';
 import '../agreement_page/agreement_texts.dart';
 import 'for_order_list_widget.dart';
@@ -67,7 +67,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
           color: const Color(0xFFFFF8E7),
           child: (state.isLoading)
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: GifProgressBar(),
                 )
               : Padding(
                   padding: const EdgeInsets.all(5.0),
@@ -188,51 +188,46 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                               BorderRadius
                                                                   .circular(10),
                                                         ),
-                                                        suffixIcon:
-                                                            ElevatedButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  try {
-                                                                    viewModel
-                                                                        .addressChangeRequest();
-                                                                    DataModel?
-                                                                        model =
-                                                                        await Navigator.of(context)
-                                                                            .push(
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) =>
+                                                        suffixIcon: ElevatedButton(
+                                                            onPressed: () async {
+                                                              try {
+                                                                viewModel
+                                                                    .addressChangeRequest();
+                                                                DataModel?
+                                                                    model =
+                                                                    await Navigator.of(
+                                                                            context)
+                                                                        .push(
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
                                                                               check.pr),
-                                                                    );
-                                                                    setState(
-                                                                      () {
-                                                                        viewModel.daumPostcodeSearchDataModel =
-                                                                            model;
-                                                                      },
-                                                                    );
+                                                                );
+                                                                setState(
+                                                                  () {
                                                                     viewModel
-                                                                        .fillTextField();
-                                                                  } catch (error) {
-                                                                    logger.info(
-                                                                        error);
-                                                                  }
-                                                                },
-                                                                style: ButtonStyle(
-                                                                    minimumSize: MaterialStateProperty.all(
-                                                                        Size(100.w, 40.h)),
-                                                                    //테두리 모양 조절
-                                                                    shape: MaterialStateProperty.all(
-                                                                        RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                            BorderRadius.circular(23))),
-                                                                    backgroundColor:
-                                                                    MaterialStateProperty.all(AppColors.icon)),
-                                                                child:
-                                                                    const Text(
-                                                                  '주소검색',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ))),
+                                                                            .daumPostcodeSearchDataModel =
+                                                                        model;
+                                                                  },
+                                                                );
+                                                                viewModel
+                                                                    .fillTextField();
+                                                              } catch (error) {
+                                                                logger.info(
+                                                                    error);
+                                                              }
+                                                            },
+                                                            style: ButtonStyle(
+                                                                minimumSize: MaterialStateProperty.all(Size(100.w, 40.h)),
+                                                                //테두리 모양 조절
+                                                                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(23))),
+                                                                backgroundColor: MaterialStateProperty.all(AppColors.icon)),
+                                                            child: const Text(
+                                                              '주소검색',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ))),
                                                     controller: viewModel
                                                         .controllers[index],
                                                   )
@@ -334,14 +329,17 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                   },
                                                   activeColor: Colors.green,
                                                   checkColor: Colors.white,
-                                                ), const Expanded(
+                                                ),
+                                                const Expanded(
                                                   child: Text(
                                                       '건강담은 민영기염소탕 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.'),
                                                 ),
                                               ],
                                             ),
-                                            const Divider(indent: 50,endIndent: 50,),
-
+                                            const Divider(
+                                              indent: 50,
+                                              endIndent: 50,
+                                            ),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -606,7 +604,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                   setState(() {
                                     inevitableChecked = true;
                                   });
-                                } else if (viewModel.controllers[0].text == '' ||
+                                } else if (viewModel.controllers[0].text ==
+                                        '' ||
                                     viewModel.controllers[1].text == '' ||
                                     viewModel.controllers[2].text == '') {
                                   setState(() {
@@ -617,9 +616,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                       .toString()
                                       .substring(2, 10)
                                       .replaceAll('-', '');
-                                  final ordererId = viewModel.currentUser.isEmpty
-                                      ? 'notRegistered'
-                                      : viewModel.currentUser.first.id;
+                                  final ordererId =
+                                      viewModel.currentUser.isEmpty
+                                          ? 'notRegistered'
+                                          : viewModel.currentUser.first.id;
                                   final personalInfoForDeliverChecked =
                                       viewModel.currentUser.isEmpty
                                           ? isPersonalInfoForDeliverChecked
@@ -677,8 +677,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                       RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(23))),
-                                  backgroundColor:
-                                      MaterialStateProperty.all(AppColors.icon)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      AppColors.icon)),
                               child: const Text(
                                 '다음',
                                 style: TextStyle(color: Colors.white),
