@@ -70,7 +70,6 @@ class PayPageViewModel extends ChangeNotifier {
     } finally {
       _state = state.copyWith(isLoading: false);
       notifyListeners();
-
     }
   }
 
@@ -95,7 +94,6 @@ class PayPageViewModel extends ChangeNotifier {
     } finally {
       _state = state.copyWith(isLoading: false);
       notifyListeners();
-
     }
   }
 
@@ -124,7 +122,6 @@ class PayPageViewModel extends ChangeNotifier {
     } finally {
       _state = state.copyWith(isLoading: false);
       notifyListeners();
-
     }
   }
 
@@ -157,7 +154,7 @@ class PayPageViewModel extends ChangeNotifier {
         logger.info('------- onClose');
         await checkPayItems(orderItems);
         if (context.mounted) {
-          GoRouter.of(context).go('/shopping_cart_page');
+          Navigator.of(context).popUntil((route) => route.isFirst);
           showDialog(
             context: context,
             builder: (context) {
