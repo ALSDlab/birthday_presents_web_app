@@ -76,6 +76,11 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                     newValue; // isChecked 변수의 값을 반대로 변경
                               }
                             });
+                            ShoppingCartPageWidget.checkedList.addAll(state
+                                .cartList
+                                .where((model) => model.isChecked == true));
+                            ShoppingCartPageWidget.checkedList.removeWhere(
+                                (model) => model.isChecked == false);
                           },
                           activeColor: const Color(0xFF2F362F),
                           checkColor: Colors.white,
@@ -137,7 +142,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     });
               } else {
                 ShoppingCartPageWidget.checkedList = [];
-                rebuild();
                 GoRouter.of(context)
                     .go('/shopping_cart_page/fill_order_page', extra: {
                   'orderModelList': orderItemList,
