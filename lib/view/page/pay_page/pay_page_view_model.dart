@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/order_repository.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
+import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 
 import '../../../env/env.dart';
 import '../../../utils/simple_logger.dart';
@@ -156,20 +157,36 @@ class PayPageViewModel extends ChangeNotifier {
           showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(
-                content: Text(afterPayStatus.every((e) => e == 1)
-                    ? '결제가 완료되었습니다.'
-                    : '결제가 실패하였습니다. 다시 시도해 주세요'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
-                      context.pop();
-                    },
-                    child: const Text('확인'),
-                  ),
-                ],
-              );
+              return OneAnswerDialog(
+                  onTap: () {
+                    Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
+                    context.pop();
+                  },
+                  imagePath: afterPayStatus.every((e) => e == 1)
+                      ? 'assets/gifs/success.gif'
+                      : 'assets/gifs/fail.gif',
+                  title: afterPayStatus.every((e) => e == 1)
+                      ? '결제가 완료되었습니다.'
+                      : '결제가 실패하였습니다.',
+                  subtitle: afterPayStatus.every((e) => e == 1)
+                      ? '주문해 주셔서 감사합니다.'
+                      : '다시 시도해 주세요',
+                  firstButton: '확인');
+
+              //   AlertDialog(
+              //   content: Text(afterPayStatus.every((e) => e == 1)
+              //       ? '결제가 완료되었습니다.'
+              //       : '결제가 실패하였습니다. 다시 시도해 주세요'),
+              //   actions: [
+              //     TextButton(
+              //       onPressed: () {
+              //         Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
+              //         context.pop();
+              //       },
+              //       child: const Text('확인'),
+              //     ),
+              //   ],
+              // );
             },
           );
         }

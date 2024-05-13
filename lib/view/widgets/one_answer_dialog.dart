@@ -1,4 +1,4 @@
-//버튼 1개 다이얼로그 : 비밀번호 찾기, 회원가입 실패, 로그인 실패, 그룹관리변경/추가
+//버튼 1개 다이얼로그 : 결제완료/실패
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +6,7 @@ import '../../../styles/app_text_style.dart';
 
 class OneAnswerDialog extends StatelessWidget {
   final Function() onTap;
+  final String imagePath;
   final String title;
   final String subtitle;
   final String firstButton;
@@ -15,7 +16,7 @@ class OneAnswerDialog extends StatelessWidget {
         required this.onTap,
         required this.title,
         required this.subtitle,
-        required this.firstButton});
+        required this.firstButton, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -25,31 +26,33 @@ class OneAnswerDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.r),
           color: Colors.white,
         ),
-        width: 270.w,
+        width: 300.w,
+        height: 300.h,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'assets/images/dialog_cookie.gif',
-              width: 70.w,
-              height: 70.h,
+              imagePath,
+              width: 100.w,
+              height: 100.h,
             ),
+            SizedBox(height: 12.h),
             Text(
               title,
               style: AppTextStyle.body18R(),
             ),
-            SizedBox(height: 6.h),
+            SizedBox(height: 24.h),
             Text(
               subtitle,
-              style: AppTextStyle.body12R(),
+              style: AppTextStyle.body14R(),
               textAlign: TextAlign.center,
               overflow: TextOverflow.visible,
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 32.h),
             SizedBox(
-              width: 75.w,
-              height: 28.h,
+              width: 100.w,
+              height: 32.h,
               child: ElevatedButton(
                   onPressed: onTap,
                   style: ElevatedButton.styleFrom(
