@@ -574,7 +574,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                context.pop();
+                                context.pop(true);
                               },
                               style: ButtonStyle(
                                   minimumSize: MaterialStateProperty.all(

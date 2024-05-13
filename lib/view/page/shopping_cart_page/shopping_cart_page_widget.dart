@@ -28,6 +28,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ShoppingCartViewModel>();
+    final state = viewModel.state;
     return Column(
       children: [
         Row(
@@ -37,15 +38,16 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
               value: widget.shoppingProductForCart.isChecked,
               onChanged: (bool? newValue) {
                 setState(() {
-                  widget.shoppingProductForCart.isChecked = newValue!;
+                  // widget.shoppingProductForCart.isChecked = newValue!;
+                  viewModel.editShoppingCartList(state.cartList, widget.shoppingProductForCart, 'payOrNot', newValue);
                 });
-                if (widget.shoppingProductForCart.isChecked == true) {
-                  ShoppingCartPageWidget.checkedList
-                      .add(widget.shoppingProductForCart);
-                } else {
-                  ShoppingCartPageWidget.checkedList
-                      .remove(widget.shoppingProductForCart);
-                }
+                // if (widget.shoppingProductForCart.isChecked == true) {
+                //   ShoppingCartPageWidget.checkedList
+                //       .add(widget.shoppingProductForCart);
+                // } else {
+                //   ShoppingCartPageWidget.checkedList
+                //       .remove(widget.shoppingProductForCart);
+                // }
               },
               activeColor: const Color(0xFF2F362F),
               checkColor: Colors.white,
@@ -126,8 +128,9 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                             padding: const EdgeInsets.all(4.0),
                             child: InkWell(
                                 onTap: () {
-                                  viewModel.minusToShoppingCartList(
-                                      widget.shoppingProductForCart, context);
+                                  // viewModel.minusToShoppingCartList(
+                                  //     widget.shoppingProductForCart, context);
+                                  viewModel.editShoppingCartList(state.cartList, widget.shoppingProductForCart, 'minus', null);
                                   setState(() {});
                                 },
                                 child: const Icon(Icons.remove)),
@@ -141,8 +144,9 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                             padding: const EdgeInsets.all(4.0),
                             child: InkWell(
                                 onTap: () {
-                                  viewModel.addToShoppingCartList(
-                                      widget.shoppingProductForCart, context);
+                                  // viewModel.addToShoppingCartList(
+                                  //     widget.shoppingProductForCart, context);
+                                  viewModel.editShoppingCartList(state.cartList, widget.shoppingProductForCart, 'plus', null);
                                   setState(() {});
                                 },
                                 child: const Icon(Icons.add)),

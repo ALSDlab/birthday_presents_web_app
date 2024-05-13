@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
+import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page_widget.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:provider/provider.dart';
@@ -72,15 +73,17 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                             setState(() {
                               isAllChecked = newValue!;
                               for (var item in state.cartList) {
-                                item.isChecked =
-                                    newValue; // isChecked 변수의 값을 반대로 변경
+                                // item.isChecked =
+                                //     newValue; // isChecked 변수의 값을 반대로 변경
+                                viewModel.editShoppingCartList(
+                                    state.cartList, item, 'payOrNot', newValue);
                               }
                             });
-                            ShoppingCartPageWidget.checkedList.addAll(state
-                                .cartList
-                                .where((model) => model.isChecked == true));
-                            ShoppingCartPageWidget.checkedList.removeWhere(
-                                (model) => model.isChecked == false);
+                            // ShoppingCartPageWidget.checkedList.addAll(state
+                            //     .cartList
+                            //     .where((model) => model.isChecked == true));
+                            // ShoppingCartPageWidget.checkedList.removeWhere(
+                            //     (model) => model.isChecked == false);
                           },
                           activeColor: const Color(0xFF2F362F),
                           checkColor: Colors.white,
@@ -129,9 +132,14 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
             onPressed: () async {
-              final List<OrderModel> orderItemList =
-                  await viewModel.sendCart(ShoppingCartPageWidget.checkedList);
-              if (ShoppingCartPageWidget.checkedList.isEmpty) {
+              final List<ShoppingProductForCart> reloadedList =
+                  await viewModel.updateCartList(state.cartList);
+              final List<OrderModel> orderItemList = await viewModel.sendCart(
+                  reloadedList.where((e) => e.isChecked == true).toList());
+              if (reloadedList
+                  .where((e) => e.isChecked == true)
+                  .toList()
+                  .isEmpty) {
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -141,7 +149,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                       );
                     });
               } else {
-                ShoppingCartPageWidget.checkedList = [];
+                // ShoppingCartPageWidget.checkedList = [];
                 GoRouter.of(context)
                     .go('/shopping_cart_page/fill_order_page', extra: {
                   'orderModelList': orderItemList,
