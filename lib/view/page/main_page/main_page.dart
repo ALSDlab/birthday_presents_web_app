@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myk_market_app/data/repository/connectivity_observer.dart';
 import 'package:myk_market_app/data/repository/network_connectivity_observer.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
@@ -108,6 +109,7 @@ class _MainPageState extends State<MainPage> {
                         height: 20,
                       ),
                       const Text(
+                        textAlign: TextAlign.center,
                         'BRAND STORY',
                         style: TextStyle(
                           fontSize: 16.0,
@@ -118,13 +120,13 @@ class _MainPageState extends State<MainPage> {
                       ),
                       Column(
                         children: [
-                          Text(viewModel.storeList[0].introText),
-                          Text(viewModel.storeList[0].introTextOne),
-                          Text(viewModel.storeList[0].introTextTwo),
-                          Text(viewModel.storeList[0].introTextThree),
-                          Text(viewModel.storeList[0].introTextFour),
-                          Text(viewModel.storeList[0].introTextFive),
-                          Text(viewModel.storeList[0].introTextSix),
+                          Text(viewModel.storeList[0].introText, style: TextStyle(fontSize: 16.w),),
+                          Text(viewModel.storeList[0].introTextOne, style: TextStyle(fontSize: 11.w),),
+                          Text(viewModel.storeList[0].introTextTwo, style: TextStyle(fontSize: 11.w),),
+                          Text(viewModel.storeList[0].introTextThree, style: TextStyle(fontSize: 11.w),),
+                          Text(viewModel.storeList[0].introTextFour, style: TextStyle(fontSize: 11.w),),
+                          Text(viewModel.storeList[0].introTextFive, style: TextStyle(fontSize: 11.w),),
+                          Text(viewModel.storeList[0].introTextSix, style: TextStyle(fontSize: 11.w),),
                         ],
                       ),
                       Padding(
