@@ -105,29 +105,53 @@ class _MainPageState extends State<MainPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: 20.h,
                       ),
-                      const Text(
+                      Text(
+                        style: TextStyle(
+                          fontSize: 13.w,
+                        ),
                         textAlign: TextAlign.center,
                         'BRAND STORY',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                        ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: 20.h,
                       ),
                       Column(
                         children: [
-                          Text(viewModel.storeList[0].introText, style: TextStyle(fontSize: 16.w),),
-                          Text(viewModel.storeList[0].introTextOne, style: TextStyle(fontSize: 11.w),),
-                          Text(viewModel.storeList[0].introTextTwo, style: TextStyle(fontSize: 11.w),),
-                          Text(viewModel.storeList[0].introTextThree, style: TextStyle(fontSize: 11.w),),
-                          Text(viewModel.storeList[0].introTextFour, style: TextStyle(fontSize: 11.w),),
-                          Text(viewModel.storeList[0].introTextFive, style: TextStyle(fontSize: 11.w),),
-                          Text(viewModel.storeList[0].introTextSix, style: TextStyle(fontSize: 11.w),),
+                          Text(
+                            viewModel.storeList[0].introText,
+                            style: TextStyle(fontSize: 16.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextOne,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextTwo,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextThree,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextFour,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextFive,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextSix,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
                         ],
+                      ),
+                      const SizedBox(
+                        height: 20.0,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
