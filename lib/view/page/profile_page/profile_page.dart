@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -29,16 +30,19 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Container(
           color: const Color(0xFFFFF8E7),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(32.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     const Icon(Icons.person),
                     Text(FirebaseAuth.instance.currentUser?.displayName ??
-                        '사용자'),
+                        '사용자', style: TextStyle(fontSize: 20),),
                   ],
+                ),
+                SizedBox(
+                  height: 32.h,
                 ),
                 Row(
                   children: [
@@ -48,9 +52,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         GoRouter.of(context)
                             .push('/profile_page/order_history_page');
                       },
-                      child: const Text('상세보기'),
+                      child: const Text(' > 상세보기'),
                     ),
                   ],
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('회원정보 수정'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -58,6 +66,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     GoRouter.of(context).go('/main_page');
                   },
                   child: const Text('로그아웃'),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('회원탈퇴'),
                 ),
               ],
             ),

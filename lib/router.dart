@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/agreement_page/agreement_page.dart';
+import 'package:myk_market_app/view/page/change_password_page/change_password_page.dart';
 import 'package:myk_market_app/view/page/login_page/login_page.dart';
 import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
@@ -127,6 +128,10 @@ final router = GoRouter(
                               ),
                             ),
                           ]),
+                      GoRoute(
+                        path: 'change_password_page',
+                        builder: (context, state) => ChangePasswordPage(),
+                      )
                     ]),
                 GoRoute(
                     path: 'order_history_page',
@@ -134,6 +139,7 @@ final router = GoRouter(
                           create: (_) => getIt<OrderHistoryPageViewModel>(),
                           child: const OrderHistoryPage(),
                         )),
+
               ]),
           GoRoute(
             path: '/product_detail_page',
