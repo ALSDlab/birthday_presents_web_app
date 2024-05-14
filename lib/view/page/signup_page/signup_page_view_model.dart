@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../utils/simple_logger.dart';
+
 class SignupViewModel {
   static final SignupViewModel _instance = SignupViewModel._internal();
 
@@ -80,7 +82,7 @@ class SignupViewModel {
         userArray.add(userId);
       }
     } catch (e) {
-      print('에러: $e');
+      logger.info('에러: $e');
       return false;
     }
   }

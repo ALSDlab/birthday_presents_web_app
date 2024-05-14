@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:myk_market_app/utils/gif_progress_bar.dart';
 
 class ImageLoadWidget extends StatelessWidget {
-  ImageLoadWidget({
+  const ImageLoadWidget({
     super.key,
     required this.imageUrl,
     required this.width,
@@ -27,8 +28,9 @@ class ImageLoadWidget extends StatelessWidget {
           ),
         ),
       ),
-      progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-        child: CircularProgressIndicator(value: downloadProgress.progress),
+      progressIndicatorBuilder: (context, url, downloadProgress) =>
+          const Center(
+        child: GifProgressBar(),
       ),
       errorWidget: (context, url, error) => const Icon(Icons.error),
     );

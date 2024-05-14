@@ -26,7 +26,10 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          fontFamily: 'Kopub', colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF325c6a)).copyWith(background: Colors.white),
+          scaffoldBackgroundColor: const Color(0xFF2F362F),
+          fontFamily: 'Kopub',
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2F362F))
+              .copyWith(background: Colors.white),
         ),
         routerConfig: router,
       ),

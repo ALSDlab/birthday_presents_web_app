@@ -3,10 +3,9 @@
 /// StatefulShellRoute.indexedStack을 사용하여 상태를 유지하는 중첩 내비게이션이 구현됨.
 ///
 
-
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/agreement_page/agreement_page.dart';
@@ -28,6 +27,7 @@ import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:provider/provider.dart';
 
+import 'data/model/product_model.dart';
 import 'di/get_it.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -42,26 +42,26 @@ final router = GoRouter(
         tabs: [
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const FaIcon(FontAwesomeIcons.houseChimney),
+                icon: const Icon(BootstrapIcons.house_door),
                 title: "홈",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const FaIcon(FontAwesomeIcons.boxesStacked),
+                icon: const Icon(BootstrapIcons.box2),
                 title: "상품",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
-                icon: const FaIcon(FontAwesomeIcons.cartShopping),
+                icon: const Icon(BootstrapIcons.cart_check),
                 title: "장바구니",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
                 activeForegroundColor: Colors.black,
-                icon: const FaIcon(FontAwesomeIcons.addressCard),
+                icon: const Icon(BootstrapIcons.person_vcard),
                 title: "마이페이지",
                 textStyle: const TextStyle(fontFamily: 'Jalnan', fontSize: 11)),
           ),
@@ -91,10 +91,14 @@ final router = GoRouter(
           routes: <RouteBase>[
             GoRoute(
               path: "/product_page",
-              builder: (context, state) => ChangeNotifierProvider(
-                create: (_) => ProductViewModel(),
-                child: const ProductPage(),
-              ),
+              builder: (context, state) {
+                final extra = state.extra! as Map<String, dynamic>;
+                final navSetState = extra['navSetState'] as bool Function(int);
+                return ChangeNotifierProvider(
+                  create: (_) => ProductViewModel(),
+                  child: ProductPage(navSetState: navSetState),
+                );
+              },
             ),
           ],
         ),
@@ -102,12 +106,19 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: <RouteBase>[
             GoRoute(
-              parentNavigatorKey: _rootNavigatorKey,
+                parentNavigatorKey: _rootNavigatorKey,
                 path: "/shopping_cart_page",
-                builder: (context, state) => ChangeNotifierProvider(
-                  create: (_) => getIt<ShoppingCartViewModel>(),
-                  child: const ShoppingCartPage(),
-                ),
+                builder: (context, state) {
+                  final extra = state.extra! as Map<String, dynamic>;
+                  final navSetState =
+                      extra['navSetState'] as bool Function(int);
+                  return ChangeNotifierProvider(
+                    create: (_) => getIt<ShoppingCartViewModel>(),
+                    child: ShoppingCartPage(
+                      navSetState: navSetState,
+                    ),
+                  );
+                },
                 routes: [
                   GoRoute(
                       path: "fill_order_page",
@@ -148,7 +159,7 @@ final router = GoRouter(
                     builder: (context, state) => const LoginPage(),
                     routes: [
                         GoRoute(
-                            path: "my_detail_page",
+                            path: "agreement_page",
                             builder: (context, state) => const AgreementPage(),
                             routes: [
                               GoRoute(
@@ -167,11 +178,14 @@ final router = GoRouter(
     GoRoute(
       path: "/product_detail_page",
       builder: (context, state) {
-        final productDetailMap = state.extra! as Map<String, dynamic>;
+        final extra = state.extra! as Map<String, dynamic>;
+        final productDetailMap = extra['product'] as Product;
+        final navSetState = extra['navSetState'] as bool Function(int);
         return ChangeNotifierProvider(
           create: (_) => ProductDetailPageViewModel(),
           child: ProductDetailPage(
-            product: productDetailMap['product'],
+            product: productDetailMap,
+            navSetState: navSetState,
           ),
         );
       },

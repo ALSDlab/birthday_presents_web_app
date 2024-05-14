@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 
-import '../main_page/image_load_widget.dart';
+import '../../../utils/image_load_widget.dart';
 
 class ForOrderListWidget extends StatelessWidget {
   const ForOrderListWidget(
@@ -14,44 +14,66 @@ class ForOrderListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: ImageLoadWidget(
-              width: MediaQuery.of(context).size.width * 0.32,
-              widthHeightRatio: 0.65,
-              imageUrl: orderItem.representativeImage,
-                        ),
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(3),
+        child:Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: ImageLoadWidget(
+                width: MediaQuery.of(context).size.width * 0.32,
+                widthHeightRatio: 0.65,
+                imageUrl: orderItem.representativeImage,
+                          ),
+            ),
 
-          const SizedBox(width: 16),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                orderItem.orderProductName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                '주문수량: ${orderItem.count}',
-                style: const TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                '${NumberFormat('###,###,###,###').format(int.parse(orderItem.price.replaceAll(',', '')) * orderItem.count)}원',
-                style:
-                    const TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-              ),
-            ],
-          )
-        ],
+            const SizedBox(width: 16),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  orderItem.orderProductName,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                Text(
+                  '주문수량: ${orderItem.count}',
+                  style: const TextStyle(color: Colors.grey),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${NumberFormat('###,###,###,###').format(int.parse(orderItem.price.replaceAll(',', '')) * orderItem.count)} 원',
+                      style:
+                          const TextStyle(color: Color(0xFF019934), fontWeight: FontWeight.w900, fontSize: 16),
+                    ),
+                    payStatusWidget(orderItem.payAndStatus!),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -88,7 +110,7 @@ Widget payStatusWidget(int statusValue) {
   }
 
   return Text(
-    '($result)',
+    ' ($result)',
     style: TextStyle(color: color),
   );
 }

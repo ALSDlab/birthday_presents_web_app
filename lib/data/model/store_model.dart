@@ -1,4 +1,3 @@
-
 class Store {
   String introText = '';
   String introTextOne = '';
@@ -8,6 +7,7 @@ class Store {
   String introTextFive = '';
   String introTextSix = '';
   String introTextSeven = '';
+
   String titleImage = '';
 
   List<String> images = [];
