@@ -46,6 +46,40 @@ class ShoppingCartViewModel extends ChangeNotifier {
     }
   }
 
+  // 장바구니 수량 편집 메서드
+  void editShoppingCartList(List<ShoppingProductForCart> originalList,
+      ShoppingProductForCart item, String doWhat, bool? value) {
+    // 중복 체크
+    var index =
+        originalList.indexWhere((product) => product.orderId == item.orderId);
+
+    switch (doWhat) {
+      case 'plus':
+        originalList[index].count++;
+        break;
+      case 'minus':
+        if (originalList[index].count > 1) originalList[index].count--;
+        break;
+      case 'payOrNot':
+        originalList[index].isChecked = value;
+        break;
+    }
+  }
+
+  // 리스트 update
+
+  Future<List<ShoppingProductForCart>> updateCartList(
+      List<ShoppingProductForCart> updatedList) async {
+    // 저장하기
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonString = jsonEncode(updatedList.map((e) => e.toJson()).toList());
+    prefs.setString('shoppingCartList', jsonString);
+
+    // 다시 불러오기
+    List<ShoppingProductForCart> reloadList = await getShoppingCartList();
+    return reloadList;
+  }
+
   //장바구니에 수량 + 적용시키는 기능
   Future<void> addToShoppingCartList(
       ShoppingProductForCart item, BuildContext context) async {
@@ -119,9 +153,11 @@ class ShoppingCartViewModel extends ChangeNotifier {
     final createdDate =
         DateTime.now().toString().substring(2, 10).replaceAll('-', '');
 
+    final String newOrderId = generateLicensePlate(createdDate);
+
     for (int i = 0; i < list.length; i++) {
       final OrderModel directOrderItem = OrderModel(
-        orderId: generateLicensePlate(createdDate),
+        orderId: newOrderId,
         orderProductName: list[i].orderProductName,
         representativeImage: list[i].representativeImage,
         price: list[i].price,

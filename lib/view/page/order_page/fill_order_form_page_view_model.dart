@@ -75,19 +75,18 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       debugPrint('Error saving ordersInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
+
     }
   }
 
   void fillTextField() {
     SignupViewModel viewModel = SignupViewModel();
     nameController.text =
-        (currentUser.isNotEmpty) ? currentUser.first.name : '';
+        ((currentUser.isNotEmpty) ? currentUser.first.name : (nameController.text));
     controllers.add(nameController);
     phoneController.text =
-        (currentUser.isNotEmpty) ? currentUser.first.phone : '';
+        (currentUser.isNotEmpty) ? currentUser.first.phone : (phoneController.text);
     controllers.add(phoneController);
     postcodeController.text =
         (currentUser.isNotEmpty && state.addressChange == false)
@@ -100,7 +99,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
             : (daumPostcodeSearchDataModel?.address) ?? viewModel.address;
     controllers.add(addressController);
     extraAddressController.text =
-        (currentUser.isNotEmpty) ? currentUser.first.addressDetail : '';
+        (currentUser.isNotEmpty) ? currentUser.first.addressDetail : (extraAddressController.text);
     controllers.add(extraAddressController);
     notifyListeners();
 
@@ -156,9 +155,8 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       debugPrint('Error saving ordersInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
+
     }
     return true;
   }

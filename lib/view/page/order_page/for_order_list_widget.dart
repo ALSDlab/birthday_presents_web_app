@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 
-import '../main_page/image_load_widget.dart';
+import '../../../utils/image_load_widget.dart';
 
 class ForOrderListWidget extends StatelessWidget {
   const ForOrderListWidget(
@@ -59,10 +59,16 @@ class ForOrderListWidget extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  '${NumberFormat('###,###,###,###').format(int.parse(orderItem.price.replaceAll(',', '')) * orderItem.count)} 원',
-                  style:
-                      const TextStyle(color: Color(0xFF019934), fontWeight: FontWeight.w900, fontSize: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${NumberFormat('###,###,###,###').format(int.parse(orderItem.price.replaceAll(',', '')) * orderItem.count)} 원',
+                      style:
+                          const TextStyle(color: Color(0xFF019934), fontWeight: FontWeight.w900, fontSize: 16),
+                    ),
+                    payStatusWidget(orderItem.payAndStatus!),
+                  ],
                 ),
               ],
             )
@@ -104,7 +110,7 @@ Widget payStatusWidget(int statusValue) {
   }
 
   return Text(
-    '($result)',
+    ' ($result)',
     style: TextStyle(color: color),
   );
 }
