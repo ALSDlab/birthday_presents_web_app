@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -81,7 +80,11 @@ class OrderHistoryListWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              Text('${orderItem.first.orderedDate}')
+              Text(
+                DateFormat('yy년 M월 dd일').format(
+                    DateTime.parse('20${orderItem.first.orderedDate!}')),
+                style: const TextStyle(color: Colors.grey),
+              ),
             ],
           ),
         ),
