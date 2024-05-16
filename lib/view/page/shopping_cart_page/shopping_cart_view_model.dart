@@ -158,6 +158,7 @@ class ShoppingCartViewModel extends ChangeNotifier {
     for (int i = 0; i < list.length; i++) {
       final OrderModel directOrderItem = OrderModel(
         orderId: newOrderId,
+        productId: list[i].productId,
         orderProductName: list[i].orderProductName,
         representativeImage: list[i].representativeImage,
         price: list[i].price,

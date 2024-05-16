@@ -6,6 +6,7 @@ import 'package:myk_market_app/data/repository/connectivity_observer.dart';
 import 'package:myk_market_app/data/repository/network_connectivity_observer.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/image_load_widget.dart';
@@ -59,6 +60,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+
     final viewModel = context.watch<StoreViewModel>();
     final state = viewModel.state;
 

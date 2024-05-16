@@ -105,7 +105,7 @@ class ProductDetailPageViewModel extends ChangeNotifier {
 
     // 중복 체크
     var index =
-        currentList.indexWhere((product) => product.orderId == item.orderId);
+        currentList.indexWhere((product) => product.productId == item.productId);
     if (index == -1) {
       currentList.add(item);
     } else {

@@ -299,9 +299,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           ),
                                           onPressed: () async {
                                             Navigator.pop(context);
+                                            final createdDate = DateTime.now()
+                                                .toString()
+                                                .substring(2, 10)
+                                                .replaceAll('-', '');
                                             ShoppingProductForCart item =
                                                 ShoppingProductForCart(
-                                                    orderId: widget
+                                                    orderId: viewModel
+                                                        .generateLicensePlate(
+                                                        createdDate),
+                                                    productId: widget
                                                         .product.productId,
                                                     orderProductName:
                                                         widget.product.title,
@@ -464,6 +471,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               orderId: viewModel
                                                   .generateLicensePlate(
                                                       createdDate),
+                                              productId: widget.product.productId,
                                               orderProductName:
                                                   widget.product.title,
                                               representativeImage: widget

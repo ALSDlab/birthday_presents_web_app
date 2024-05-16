@@ -83,10 +83,10 @@ class PayPageViewModel extends ChangeNotifier {
         final item = entry.value;
         await FirebaseFirestore.instance
             .collection('orders')
-            .doc(item.orderId + index.toString())
+            .doc(item.orderId + item.productId)
             .update({
           'payAndStatus': payStatus,
-          'paymentDate': DateTime.now().toString().substring(0, 10)
+          'paymentDate': DateTime.now().toString().substring(0, 21)
         });
       });
     } catch (error) {

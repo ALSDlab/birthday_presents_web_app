@@ -9,6 +9,7 @@ part 'order_model.g.dart';
 abstract class OrderModel with _$OrderModel {
   const factory OrderModel({
     @JsonKey(name: 'orderId') required String orderId,
+    @JsonKey(name: 'productId') required String productId,
     @JsonKey(name: 'orderProductName') required String orderProductName,
     @JsonKey(name: 'representativeImage') required String representativeImage,
     @JsonKey(name: 'price') required String price,
@@ -26,6 +27,7 @@ abstract class OrderModel with _$OrderModel {
     int? payAndStatus, // -1: 결제실패, 0: 결제전, 1: 결제완료, 2: 결제취소, 3: 배송중, 4: 배송완료
     @JsonKey(name: 'payAmount') int? payAmount,
     @JsonKey(name: 'paymentDate') String? paymentDate,
+    @JsonKey(name: 'deletedDate') String? deletedDate,
   }) = _OrderModel;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) =>
