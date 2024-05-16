@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myk_market_app/view/page/change_password_page/change_password_page_view_model.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -11,7 +12,7 @@ class ChangePasswordPage extends StatefulWidget {
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final _currentPasswordController = TextEditingController();
-  final _newPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -19,6 +20,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = ChangePasswordViewModel();
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -68,7 +71,22 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      String id = await viewModel.findDocumentId(
+                          _nameController.text, _phoneController.text);
+                      if (mounted) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text('id는 $id 입니다.'),
+                            );
+                          },
+                        );
+                      }
+                    }
+                  },
                   child: Text('찾기'),
                 ),
                 SizedBox(
@@ -77,16 +95,32 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 Text('비밀번호 변경'),
                 Form(
                   key: _formKey2,
-                  child: TextFormField(
-                    controller: _currentPasswordController,
-                    decoration: InputDecoration(hintText: '현재 비밀번호'),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '필수항목입니다.';
-                      }
-                      return null;
-                    },
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _currentPasswordController,
+                        decoration: InputDecoration(hintText: '현재 비밀번호'),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '필수항목입니다.';
+                          }
+                          return null;
+                        },
+                      ),
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                            hintText: '비밀번호 재설정 안내를 받을 이메일을 입력해주세요.'),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '필수항목입니다.';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 TextButton(
