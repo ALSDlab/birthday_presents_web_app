@@ -38,13 +38,14 @@ class _MainPageState extends State<MainPage> {
     });
 
     _subscription = _connectivityObserver.observe().listen((status) {
-      print('Status changed : $_status');
+
       setState(() {
         _status = status;
+        print('Status changed : $_status');
       });
     });
 
-    super.initState();
+    //super.initState();
     //   Future.delayed(Duration.zero,() {
     //     _loadData();
     //   });
@@ -130,28 +131,53 @@ class _MainPageState extends State<MainPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: 20.h,
                       ),
-                      const Text(
-                        'BRAND STORY',
+                      Text(
                         style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 13.w,
                         ),
+                        textAlign: TextAlign.center,
+                        'BRAND STORY',
                       ),
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: 20.h,
                       ),
                       Column(
                         children: [
-                          Text(viewModel.storeList[0].introText),
-                          Text(viewModel.storeList[0].introTextOne),
-                          Text(viewModel.storeList[0].introTextTwo),
-                          Text(viewModel.storeList[0].introTextThree),
-                          Text(viewModel.storeList[0].introTextFour),
-                          Text(viewModel.storeList[0].introTextFive),
-                          Text(viewModel.storeList[0].introTextSix),
+                          Text(
+                            viewModel.storeList[0].introText,
+                            style: TextStyle(fontSize: 16.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextOne,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextTwo,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextThree,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextFour,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextFive,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextSix,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
                         ],
+                      ),
+                      const SizedBox(
+                        height: 20.0,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
