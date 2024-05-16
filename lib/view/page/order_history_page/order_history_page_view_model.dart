@@ -19,6 +19,8 @@ class OrderHistoryPageViewModel extends ChangeNotifier {
 
   OrderHistoryPageState get state => _state;
 
+  List<List<OrderModel>> newSortedList = [];
+
   bool _disposed = false;
 
   @override
@@ -63,7 +65,17 @@ class OrderHistoryPageViewModel extends ChangeNotifier {
       }
       myTotalOrders.add(List.from(myOrderByOrderNo));
 
-      _state = state.copyWith(orderHistoryList: myTotalOrders);
+      // 주문일자 순으로 정렬 (역순도 가능)
+      _state = state.copyWith(isAscending: !state.isAscending);
+      final List<List<OrderModel>> newSortedList = myTotalOrders
+        ..sort((a, b) => a.first.orderedDate!.compareTo(b.first.orderedDate!));
+
+      if (!state.isAscending) {
+        _state =
+            state.copyWith(orderHistoryList: newSortedList.reversed.toList());
+      } else {
+        _state = state.copyWith(orderHistoryList: newSortedList);
+      }
       notifyListeners();
     } catch (error) {
       // 에러 처리

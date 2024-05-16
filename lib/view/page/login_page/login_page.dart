@@ -148,7 +148,9 @@ class _LoginPageState extends State<LoginPage> {
                           Row(
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.push('/profile_page/login_page/change_password_page');
+                                },
                                 child: const Text(
                                   '아이디 / 비밀번호 찾기',
                                   style: TextStyle(

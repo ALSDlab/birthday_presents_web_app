@@ -5,11 +5,11 @@ import 'app_text_colors.dart';
 
 class AppTextStyle {
   static const _regular =
-      TextStyle(fontFamily: 'Jalnan', fontWeight: FontWeight.w400);
+      TextStyle(fontFamily: 'KoPub', fontWeight: FontWeight.w400);
   static const _medium =
-      TextStyle(fontFamily: 'Jalnan', fontWeight: FontWeight.w500);
+      TextStyle(fontFamily: 'KoPub', fontWeight: FontWeight.w500);
   static const _bold =
-      TextStyle(fontFamily: 'Jalnan', fontWeight: FontWeight.w700);
+      TextStyle(fontFamily: 'KoPub', fontWeight: FontWeight.w700);
 
   // header
   static TextStyle header40({Color color = AppColors.mainText}) =>

@@ -8,8 +8,8 @@ import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/gif_progress_bar.dart';
-import '../pay_page/send_sms_widget.dart';
 import '../../../utils/image_load_widget.dart';
+import '../pay_page/send_sms_widget.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -66,10 +66,35 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: const Color(0xFF2F362F),
         leading: Text('네트워크 상태 : ${_status.name}'),
         centerTitle: true,
-        title: const Text(
-          '민영기 염소탕 회사소개',
-          style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              border: Border.all(width: 1, color: const Color(0xFFFFF8E7)),
+            ),
+              child: Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/myk_market_logo.png'),
+                          fit: BoxFit.cover)),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            const Text(
+              '민영기 염소탕',
+              style: TextStyle(
+                  fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
+            ),
+          ],
         ),
 
         // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
@@ -78,7 +103,7 @@ class _MainPageState extends State<MainPage> {
               onPressed: () {
                 sendSMS('01058377427', '01032084619', 'SMS테스트입니다.');
               },
-              child: Text('SMS테스트'))
+              child: const Text('SMS테스트'))
         ],
       ),
       body: ClipRRect(
