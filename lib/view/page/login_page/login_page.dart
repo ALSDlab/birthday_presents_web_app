@@ -128,16 +128,17 @@ class _LoginPageState extends State<LoginPage> {
                                 Size(double.infinity, 52.h),
                               ),
                               shape: const MaterialStatePropertyAll(
-                                BeveledRectangleBorder(),
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10))),
                               ),
                               backgroundColor:
                                   const MaterialStatePropertyAll(Colors.black),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                viewModel.signIn(idController.text,
+                                await viewModel.signIn(idController.text,
                                     passwordController.text, context);
-                                GoRouter.of(context).go('/main_page');
                               }
                             },
                             child: Text(
@@ -220,7 +221,9 @@ class _LoginPageState extends State<LoginPage> {
                                   Size(double.infinity, 52.h),
                                 ),
                                 shape: const MaterialStatePropertyAll(
-                                  BeveledRectangleBorder(),
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
                                 ),
                                 backgroundColor:
                                     const MaterialStatePropertyAll(Colors.black),

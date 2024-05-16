@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/change_password_page/change_password_page_view_model.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -11,7 +12,6 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  final _currentPasswordController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _nameController = TextEditingController();
@@ -19,12 +19,19 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _phoneController.dispose();
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final viewModel = ChangePasswordViewModel();
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
         title: const Text(
           '마이페이지',
@@ -75,16 +82,27 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     if (_formKey.currentState!.validate()) {
                       String id = await viewModel.findDocumentId(
                           _nameController.text, _phoneController.text);
-                      if (mounted) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              content: Text('id는 $id 입니다.'),
-                            );
-                          },
-                        );
-                      }
+
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: id != ''
+                                ? Text('id는 $id 입니다.')
+                                : Text(
+                                    '입력하신 정보로 아이디를 찾을 수 없습니다. \n다시 시도해주시거나 회원가입을 해주세요.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  context.go('/profile_page/login_page');
+                                },
+                                child: const Text('확인'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                   child: Text('찾기'),
@@ -95,37 +113,55 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 Text('비밀번호 변경'),
                 Form(
                   key: _formKey2,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _currentPasswordController,
-                        decoration: InputDecoration(hintText: '현재 비밀번호'),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '필수항목입니다.';
-                          }
-                          return null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                            hintText: '비밀번호 재설정 안내를 받을 이메일을 입력해주세요.'),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '필수항목입니다.';
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                        hintText: '비밀번호 재설정 안내를 받을 이메일을 입력해주세요.'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '필수항목입니다.';
+                      }
+                      final RegExp emailRegExp = RegExp(
+                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+                      if (!emailRegExp.hasMatch(value)) {
+                        return '유효한 이메일 주소를 입력하세요.';
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 TextButton(
                   child: Text('변경하기'),
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (_formKey2.currentState!.validate()) {
+                      try {
+                        await FirebaseAuth.instance
+                            .sendPasswordResetEmail(email: _emailController.text);
+                      } catch (e) {
+                        print(e);
+                      }
+
+                      if (context.mounted) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text('비밀번호 재설정 메일을 보냈습니다. \n메일을 확인해주세요. '),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    context.go('/profile_page/login_page');
+                                  },
+                                  child: const Text('확인'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    }
+                  },
                 ),
               ],
             ),
