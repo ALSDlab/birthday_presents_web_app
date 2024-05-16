@@ -13,6 +13,7 @@ class OrderHistoryPageState with _$OrderHistoryPageState {
   const factory OrderHistoryPageState({
     @Default([]) List<List<OrderModel>> orderHistoryList,
     @Default(false) bool isLoading,
+    @Default(true) bool isAscending,
 
   }) = _OrderHistoryPageState;
 

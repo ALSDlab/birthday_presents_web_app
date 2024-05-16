@@ -1,3 +1,4 @@
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,11 @@ class OrderHistoryPage extends StatelessWidget {
               fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: (){
+            viewModel.getMyOrderData();
+          }, icon: const Icon(BootstrapIcons.arrow_down_up), color: Colors.white,)
+        ],
       ),
       body: ClipRRect(
         borderRadius: const BorderRadius.only(
