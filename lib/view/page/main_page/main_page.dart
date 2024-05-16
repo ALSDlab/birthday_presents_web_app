@@ -38,13 +38,14 @@ class _MainPageState extends State<MainPage> {
     });
 
     _subscription = _connectivityObserver.observe().listen((status) {
-      print('Status changed : $_status');
+
       setState(() {
         _status = status;
+        print('Status changed : $_status');
       });
     });
 
-    super.initState();
+    //super.initState();
     //   Future.delayed(Duration.zero,() {
     //     _loadData();
     //   });
