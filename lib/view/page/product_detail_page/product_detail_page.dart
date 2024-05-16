@@ -105,7 +105,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(widget.product.title),
+                        child: Text(
+                          widget.product.title,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 16),
+                        ),
                       ),
                     ),
                     Padding(
@@ -168,25 +172,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         return ImageLoadWidget(
                             imageUrl: widget.product.images[index],
                             width: MediaQuery.of(context).size.width,
-                            widthHeightRatio: 2.5);
+                            widthHeightRatio: 2.3);
                       },
                       itemCount: widget.product.images.length,
                     )
-                    // ImageLoadWidget(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   widthHeightRatio: 2.5,
-                    //   imageUrl: widget.product.images[0],
-                    // ),
-                    // ImageLoadWidget(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   widthHeightRatio: 2.5,
-                    //   imageUrl: widget.product.images[1],
-                    // ),
-                    // ImageLoadWidget(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   widthHeightRatio: 2.5,
-                    //   imageUrl: widget.product.images[2],
-                    // ),
                   ],
                 ),
               ),
@@ -218,7 +207,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(16),
-                                    child: Text(widget.product.title),
+                                    child: Text(
+                                      widget.product.title,
+                                      style: const TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w900),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -281,7 +275,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       children: [
                                         Text('수량 ${viewModel.cartCount}개'),
                                         Text(
-                                            '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
+                                          '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 17),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -364,7 +362,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(16),
-                                    child: Text(widget.product.title),
+                                    child: Text(
+                                      widget.product.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 17),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -429,7 +432,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       children: [
                                         Text('수량 ${viewModel.purchaseCount}개'),
                                         Text(
-                                            '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
+                                          '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원',
+                                          style: const TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800),
+                                        )
                                       ],
                                     ),
                                   ),
