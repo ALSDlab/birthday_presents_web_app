@@ -5,7 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+
+import '../product_detail_page/product_detail_page_view_model.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
   String location;
@@ -29,9 +32,18 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   }
 
   @override
+  void initState() {
+    Future.microtask(() async {
+      final ProductDetailPageViewModel viewModel = context.read<ProductDetailPageViewModel>();
+      badgeCount = await viewModel.getBadgeCount();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: widget.child),
+      body: widget.child,
       bottomNavigationBar: StylishBottomBar(
         option: AnimatedBarOptions(
           padding: const EdgeInsets.only(top: 12),
@@ -43,7 +55,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
             icon: const Icon(BootstrapIcons.house_door),
             selectedIcon: const Icon(BootstrapIcons.house_door_fill),
-            selectedColor: Colors.teal,
+            selectedColor: const Color(0xFF2F362F),
             unSelectedColor: CupertinoColors.black,
             title: const Text(
               '홈',
@@ -53,7 +65,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
             icon: const Icon(BootstrapIcons.box2),
             selectedIcon: const Icon(BootstrapIcons.box2_fill),
-            selectedColor: const Color(0xFF019934),
+            selectedColor: const Color(0xFF2F362F),
             unSelectedColor: CupertinoColors.black,
             title: const Text(
               '상품',
@@ -63,7 +75,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
             icon: const Icon(BootstrapIcons.cart_check),
             selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
-            selectedColor: const Color(0xFF019934),
+            selectedColor: const Color(0xFF2F362F),
             unSelectedColor: CupertinoColors.black,
             title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
             badge: Text('$badgeCount'),
@@ -74,7 +86,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           BottomBarItem(
               icon: const Icon(BootstrapIcons.person_vcard),
               selectedIcon: const Icon(BootstrapIcons.person_vcard_fill),
-              selectedColor: const Color(0xFF019934),
+              selectedColor: const Color(0xFF2F362F),
               unSelectedColor: CupertinoColors.black,
               title:
                   const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),

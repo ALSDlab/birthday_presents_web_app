@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/order_repository.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
+import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 
 import '../../../env/env.dart';
 import '../../../utils/simple_logger.dart';
@@ -59,7 +60,7 @@ class PayPageViewModel extends ChangeNotifier {
 
     try {
       final myOrder =
-          await orderRepository.getFirebaseMyOrders(orderNumberForPay);
+          await orderRepository.getFirebaseOrdersByOrderNo(orderNumberForPay);
       logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
 
@@ -69,9 +70,7 @@ class PayPageViewModel extends ChangeNotifier {
       debugPrint('Error fetching data: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
     }
   }
 
@@ -95,9 +94,7 @@ class PayPageViewModel extends ChangeNotifier {
       logger.info('Error post payInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
     }
   }
 
@@ -125,21 +122,17 @@ class PayPageViewModel extends ChangeNotifier {
       logger.info('Error post payInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
     }
   }
 
   void bootpayPayment(BuildContext context, List<OrderModel> orderItems) {
-    int totalCount = _state.orderItems.length;
     int totalAmount = 0;
-    // for (var e in orderItems) {
-    //   totalCount += e.count;
-    //   totalAmount += e.payAmount!;
-    // }
-    totalAmount = 100; // 테스트용
-    Payload payload = getPayload(totalCount, totalAmount);
+    for (var e in orderItems) {
+      totalAmount += e.payAmount!;
+    }
+    // totalAmount = 100; // 테스트용
+    Payload payload = getPayload(totalAmount);
     if (kIsWeb) {
       payload.extra!.openType = "iframe";
     }
@@ -160,24 +153,40 @@ class PayPageViewModel extends ChangeNotifier {
         logger.info('------- onClose');
         await checkPayItems(orderItems);
         if (context.mounted) {
-          GoRouter.of(context).go('/shopping_cart_page');
+          Navigator.of(context).popUntil((route) => route.isFirst);
           showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(
-                content: Text(afterPayStatus.every((e) => e == 1)
-                    ? '결제가 완료되었습니다.'
-                    : '결제가 실패하였습니다. 다시 시도해 주세요'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
-                      context.pop();
-                    },
-                    child: const Text('확인'),
-                  ),
-                ],
-              );
+              return OneAnswerDialog(
+                  onTap: () {
+                    Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
+                    context.pop();
+                  },
+                  imagePath: afterPayStatus.every((e) => e == 1)
+                      ? 'assets/gifs/success.gif'
+                      : 'assets/gifs/fail.gif',
+                  title: afterPayStatus.every((e) => e == 1)
+                      ? '결제가 완료되었습니다.'
+                      : '결제가 실패하였습니다.',
+                  subtitle: afterPayStatus.every((e) => e == 1)
+                      ? '주문해 주셔서 감사합니다.'
+                      : '다시 시도해 주세요',
+                  firstButton: '확인');
+
+              //   AlertDialog(
+              //   content: Text(afterPayStatus.every((e) => e == 1)
+              //       ? '결제가 완료되었습니다.'
+              //       : '결제가 실패하였습니다. 다시 시도해 주세요'),
+              //   actions: [
+              //     TextButton(
+              //       onPressed: () {
+              //         Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
+              //         context.pop();
+              //       },
+              //       child: const Text('확인'),
+              //     ),
+              //   ],
+              // );
             },
           );
         }
@@ -214,13 +223,13 @@ class PayPageViewModel extends ChangeNotifier {
     );
   }
 
-  Payload getPayload(int totalCount, int totalAmount) {
+  Payload getPayload(int totalAmount) {
     Payload payload = Payload();
     Item item1 = Item();
     item1.name = (_state.orderItems.length > 1)
         ? '${_state.orderItems.first.orderProductName} 외 ${_state.orderItems.length - 1}건 (주문번호: ${_state.orderItems.first.orderId})'
         : '${_state.orderItems.first.orderProductName} (주문번호: ${_state.orderItems.first.orderId})'; // 주문정보에 담길 상품명
-    item1.qty = totalCount; // 해당 상품의 주문 수량
+    item1.qty = 1; // 해당 상품의 주문 수량
     item1.id = "ITEM_CODE_MYK_GOAT"; // 해당 상품의 고유 키
     item1.price = totalAmount.toDouble(); // 상품의 가격
 

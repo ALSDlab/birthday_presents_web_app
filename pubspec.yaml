@@ -45,7 +45,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   get_it: ^7.7.0
-  http: ^0.13.6
+  http: ^0.13.5
   daum_postcode_search: ^0.0.2
   kpostal_web: ^0.0.2
   firebase_auth: ^4.19.4
@@ -53,7 +53,6 @@ dependencies:
   intl: ^0.18.1
   cached_network_image: ^3.3.1
   badges: ^3.1.2
-  async_button_builder: ^3.0.0+1
   bootpay: ^4.9.6
   simple_logger: ^1.9.0+3
   crypto: ^3.0.3
@@ -61,7 +60,6 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^5.2.2
   stylish_bottom_bar: ^1.1.0
   connectivity_plus: ^6.0.3
-  bloc: ^8.1.4
 
 
 dev_dependencies:
@@ -89,9 +87,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/gifs/
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

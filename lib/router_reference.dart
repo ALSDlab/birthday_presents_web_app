@@ -159,7 +159,7 @@ final router = GoRouter(
                     builder: (context, state) => const LoginPage(),
                     routes: [
                         GoRoute(
-                            path: "my_detail_page",
+                            path: "agreement_page",
                             builder: (context, state) => const AgreementPage(),
                             routes: [
                               GoRoute(

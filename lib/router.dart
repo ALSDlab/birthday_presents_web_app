@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/agreement_page/agreement_page.dart';
 import 'package:myk_market_app/view/page/login_page/login_page.dart';
 import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar.dart';
+import 'package:myk_market_app/view/page/order_history_page/order_history_page.dart';
+import 'package:myk_market_app/view/page/order_history_page/order_history_page_view_model.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page.dart';
@@ -33,9 +34,12 @@ final router = GoRouter(
     ShellRoute(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) => NoTransitionPage(
-                child: ScaffoldWithNavBar(
-              location: state.matchedLocation,
-              child: child,
+                child: ChangeNotifierProvider(
+              create: (_) => ProductDetailPageViewModel(),
+              child: ScaffoldWithNavBar(
+                location: state.matchedLocation,
+                child: child,
+              ),
             )),
         routes: [
           GoRoute(
@@ -86,11 +90,11 @@ final router = GoRouter(
                       GoRoute(
                         path: 'pay_page',
                         builder: (context, state) {
+                          final extra = state.extra! as Map<String, dynamic>;
                           return ChangeNotifierProvider(
                             create: (_) => getIt<PayPageViewModel>(),
-                            child: PayPage(
-                                forOrderItems:
-                                    state.extra! as List<OrderModel>),
+                            child:
+                                PayPage(forOrderItems: extra['orderModelList']),
                           );
                         },
                       )
@@ -98,7 +102,9 @@ final router = GoRouter(
               ]),
           GoRoute(
               path: '/profile_page',
-              builder: (context, state) => const ProfilePage(),
+              builder: (context, state) => ChangeNotifierProvider(
+                  create: (_) => getIt<OrderHistoryPageViewModel>(),
+                  child: const ProfilePage()),
               routes: [
                 GoRoute(
                     path: 'login_page',
@@ -110,7 +116,7 @@ final router = GoRouter(
                     },
                     routes: [
                       GoRoute(
-                          path: 'my_detail_page',
+                          path: 'agreement_page',
                           builder: (context, state) => const AgreementPage(),
                           routes: [
                             GoRoute(
@@ -122,6 +128,12 @@ final router = GoRouter(
                             ),
                           ]),
                     ]),
+                GoRoute(
+                    path: 'order_history_page',
+                    builder: (context, state) => ChangeNotifierProvider(
+                          create: (_) => getIt<OrderHistoryPageViewModel>(),
+                          child: const OrderHistoryPage(),
+                        )),
               ]),
           GoRoute(
             path: '/product_detail_page',
