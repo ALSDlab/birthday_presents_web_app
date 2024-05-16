@@ -157,15 +157,19 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 });
               }
             },
-            child: Text(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2F362F),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+            child: const Text(
               '주문하기',
               style: TextStyle(color: Colors.white),
             ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                const Color(0xFF2F362F),
-              ),
-            ),
+            // style: ButtonStyle(
+            //   backgroundColor: MaterialStateProperty.all(
+            //     const Color(0xFF2F362F),
+            //   ),
+            // ),
           ),
         ),
       ),
