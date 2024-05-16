@@ -1,5 +1,6 @@
 class ShoppingProductForCart {
   String orderId;
+  String productId;
   String orderProductName;
   String price;
   String representativeImage;
@@ -9,6 +10,7 @@ class ShoppingProductForCart {
 //<editor-fold desc="Data Methods">
   ShoppingProductForCart({
     required this.orderId,
+    required this.productId,
     required this.orderProductName,
     required this.price,
     required this.representativeImage,
@@ -22,6 +24,7 @@ class ShoppingProductForCart {
       (other is ShoppingProductForCart &&
           runtimeType == other.runtimeType &&
           orderId == other.orderId &&
+          productId == other.productId &&
           orderProductName == other.orderProductName &&
           price == other.price &&
           representativeImage == other.representativeImage &&
@@ -31,6 +34,7 @@ class ShoppingProductForCart {
   @override
   int get hashCode =>
       orderId.hashCode ^
+      productId.hashCode ^
       orderProductName.hashCode ^
       price.hashCode ^
       representativeImage.hashCode ^
@@ -39,11 +43,12 @@ class ShoppingProductForCart {
 
   @override
   String toString() {
-    return 'ShoppingProductForCart{ orderId: $orderId, orderProductName: $orderProductName, price: $price, representativeImage: $representativeImage, count: $count, isChecked: $isChecked,}';
+    return 'ShoppingProductForCart{ orderId: $orderId, productId: $productId, orderProductName: $orderProductName, price: $price, representativeImage: $representativeImage, count: $count, isChecked: $isChecked,}';
   }
 
   ShoppingProductForCart copyWith({
     String? orderId,
+    String? productId,
     String? orderProductName,
     String? price,
     String? representativeImage,
@@ -52,6 +57,7 @@ class ShoppingProductForCart {
   }) {
     return ShoppingProductForCart(
       orderId: orderId ?? this.orderId,
+      productId: productId ?? this.productId,
       orderProductName: orderProductName ?? this.orderProductName,
       price: price ?? this.price,
       representativeImage: representativeImage ?? this.representativeImage,
@@ -63,6 +69,7 @@ class ShoppingProductForCart {
   Map<String, dynamic> toJson() {
     return {
       'orderId': orderId,
+      'productId': productId,
       'orderProductName': orderProductName,
       'price': price,
       'representativeImage': representativeImage,
@@ -74,6 +81,7 @@ class ShoppingProductForCart {
   factory ShoppingProductForCart.fromJson(Map<String, dynamic> map) {
     return ShoppingProductForCart(
       orderId: map['orderId'] as String,
+      productId: map['productId'] as String,
       orderProductName: map['orderProductName'] as String,
       price: map['price'] as String,
       representativeImage: map['representativeImage'] as String,

@@ -237,13 +237,13 @@ class _AgreementPageState extends State<AgreementPage> {
                 Visibility(
                   visible: (inevitableChecked == true &&
                       isTermsNConditionsChecked == false),
-                  child: const Text('(필수) 이용약관 을 체크해주세요.'),
+                  child: const Text('(필수) 이용약관 을 체크해주세요.',style: TextStyle(color: Colors.red),),
                 ),
                 Visibility(
                   visible: (inevitableChecked == true &&
                       isTermsNConditionsChecked == true &&
                       isPersonalInfoChecked == false),
-                  child: const Text('(필수) 개인정보 수집 및 이용 을 체크해주세요.'),
+                  child: const Text('(필수) 개인정보 수집 및 이용 을 체크해주세요.',style: TextStyle(color: Colors.red)),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
