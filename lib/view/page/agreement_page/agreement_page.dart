@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../styles/app_text_colors.dart';
 import 'agreement_texts.dart';
 
 class AgreementPage extends StatefulWidget {
@@ -32,7 +29,7 @@ class _AgreementPageState extends State<AgreementPage> {
         title: const Text(
           '회원가입',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -69,13 +66,19 @@ class _AgreementPageState extends State<AgreementPage> {
                                 isPersonalInfoForDeliverChecked = newValue;
                               });
                             },
-                            activeColor: Colors.green,
+                            activeColor: const Color(0xFF2F362F),
                             checkColor: Colors.white,
                           ),
-                          const Expanded(child: Text('건강담은 민영기염소탕 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.', maxLines: 2)),
+                          const Expanded(
+                              child: Text(
+                                  '건강담은 민영기염소탕 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.',
+                                  maxLines: 2)),
                         ],
                       ),
-                      const Divider(indent: 50,endIndent: 50,),
+                      const Divider(
+                        indent: 50,
+                        endIndent: 50,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -88,7 +91,7 @@ class _AgreementPageState extends State<AgreementPage> {
                                     isTermsNConditionsChecked = newValue!;
                                   });
                                 },
-                                activeColor: Colors.green,
+                                activeColor: const Color(0xFF2F362F),
                                 checkColor: Colors.white,
                               ),
                               const Text('(필수) 이용약관'),
@@ -140,7 +143,7 @@ class _AgreementPageState extends State<AgreementPage> {
                                     isPersonalInfoChecked = newValue!;
                                   });
                                 },
-                                activeColor: Colors.green,
+                                activeColor: const Color(0xFF2F362F),
                                 checkColor: Colors.white,
                               ),
                               const Text('(필수) 개인정보 수집 및 이용'),
@@ -191,7 +194,7 @@ class _AgreementPageState extends State<AgreementPage> {
                                     isPersonalInfoForDeliverChecked = newValue!;
                                   });
                                 },
-                                activeColor: Colors.green,
+                                activeColor: const Color(0xFF2F362F),
                                 checkColor: Colors.white,
                               ),
                               const Text('(선택) 개인정보 수집 및 이용'),
@@ -237,60 +240,68 @@ class _AgreementPageState extends State<AgreementPage> {
                 Visibility(
                   visible: (inevitableChecked == true &&
                       isTermsNConditionsChecked == false),
-                  child: const Text('(필수) 이용약관 을 체크해주세요.'),
+                  child: const Text(
+                    '(필수) 이용약관 을 체크해주세요.',
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
                 Visibility(
                   visible: (inevitableChecked == true &&
                       isTermsNConditionsChecked == true &&
                       isPersonalInfoChecked == false),
-                  child: const Text('(필수) 개인정보 수집 및 이용 을 체크해주세요.'),
+                  child: const Text('(필수) 개인정보 수집 및 이용 을 체크해주세요.',
+                      style: TextStyle(color: Colors.red)),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        context.pop();
-                      },
-                      style: ButtonStyle(
-                          minimumSize:
-                              MaterialStateProperty.all(Size(100.w, 40.h)),
-                          //테두리 모양 조절
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(side: const BorderSide(width: 0.5,color: Colors.black),
-                              borderRadius: BorderRadius.circular(23))),
-                          backgroundColor:
-                              MaterialStateProperty.all(const Color(0xFFFFF8E7))),
-                      child: const Text(
-                        '이전',
-                        style: TextStyle(color: Colors.black),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                          onPressed: () {
+                            context.pop();
+                          },
+                          child: const Text(
+                            '이전',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (isTermsNConditionsChecked == false ||
-                            isPersonalInfoChecked == false) {
-                          setState(() {
-                            inevitableChecked = true;
-                          });
-                        } else {
-                          context.push('/profile_page/login_page/agreement_page/signup_page',
-                              extra: isPersonalInfoForDeliverChecked);
-                        }
-                      },
-                      style: ButtonStyle(
-                          minimumSize:
-                              MaterialStateProperty.all(Size(100.w, 40.h)),
-                          //테두리 모양 조절
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(23))),
-                          backgroundColor:
-                              MaterialStateProperty.all(AppColors.icon)),
-                      child: const Text(
-                        '다음',
-                        style: TextStyle(color: Colors.white),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                              // shape: const RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.zero),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              backgroundColor: const Color(0xFF2F362F)),
+                          onPressed: () {
+                            if (isTermsNConditionsChecked == false ||
+                                isPersonalInfoChecked == false) {
+                              setState(() {
+                                inevitableChecked = true;
+                              });
+                            } else {
+                              context.push(
+                                  '/profile_page/login_page/agreement_page/signup_page',
+                                  extra: isPersonalInfoForDeliverChecked);
+                            }
+                          },
+                          child: const Text(
+                            '다음',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ),
                     ),
                   ],

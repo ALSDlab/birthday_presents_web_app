@@ -72,7 +72,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         title: const Text(
           '민영기 염소탕',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -105,7 +105,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(widget.product.title),
+                        child: Text(
+                          widget.product.title,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 16),
+                        ),
                       ),
                     ),
                     Padding(
@@ -168,25 +172,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         return ImageLoadWidget(
                             imageUrl: widget.product.images[index],
                             width: MediaQuery.of(context).size.width,
-                            widthHeightRatio: 2.5);
+                            widthHeightRatio: 2.3);
                       },
                       itemCount: widget.product.images.length,
                     )
-                    // ImageLoadWidget(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   widthHeightRatio: 2.5,
-                    //   imageUrl: widget.product.images[0],
-                    // ),
-                    // ImageLoadWidget(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   widthHeightRatio: 2.5,
-                    //   imageUrl: widget.product.images[1],
-                    // ),
-                    // ImageLoadWidget(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   widthHeightRatio: 2.5,
-                    //   imageUrl: widget.product.images[2],
-                    // ),
                   ],
                 ),
               ),
@@ -203,8 +192,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 padding: const EdgeInsets.all(4.0),
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero)),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
                   onPressed: () {
                     showModalBottomSheet(
                         context: context,
@@ -218,7 +208,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(16),
-                                    child: Text(widget.product.title),
+                                    child: Text(
+                                      widget.product.title,
+                                      style: const TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w900),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -281,7 +276,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       children: [
                                         Text('수량 ${viewModel.cartCount}개'),
                                         Text(
-                                            '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
+                                          '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 17),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -294,16 +293,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: const RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.zero),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
                                             backgroundColor:
                                                 const Color(0xFF2F362F),
                                           ),
                                           onPressed: () async {
                                             Navigator.pop(context);
+                                            final createdDate = DateTime.now()
+                                                .toString()
+                                                .substring(2, 10)
+                                                .replaceAll('-', '');
                                             ShoppingProductForCart item =
                                                 ShoppingProductForCart(
-                                                    orderId: widget
+                                                    orderId: viewModel
+                                                        .generateLicensePlate(
+                                                        createdDate),
+                                                    productId: widget
                                                         .product.productId,
                                                     orderProductName:
                                                         widget.product.title,
@@ -348,8 +354,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 padding: const EdgeInsets.all(4.0),
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
+                      // shape: const RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.zero),
                       shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       backgroundColor: const Color(0xFF2F362F)),
                   onPressed: () {
                     showModalBottomSheet(
@@ -364,7 +372,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(16),
-                                    child: Text(widget.product.title),
+                                    child: Text(
+                                      widget.product.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 17),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -429,7 +442,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       children: [
                                         Text('수량 ${viewModel.purchaseCount}개'),
                                         Text(
-                                            '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원')
+                                          '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원',
+                                          style: const TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -442,8 +459,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: const RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.zero),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
                                             backgroundColor:
                                                 const Color(0xFF2F362F),
                                           ),
@@ -457,6 +474,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               orderId: viewModel
                                                   .generateLicensePlate(
                                                       createdDate),
+                                              productId: widget.product.productId,
                                               orderProductName:
                                                   widget.product.title,
                                               representativeImage: widget

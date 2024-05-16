@@ -10,7 +10,7 @@ class StoreViewModel extends ChangeNotifier {
   }
 
   StoreRepositoryImpl repository = StoreRepositoryImpl();
-  StoreState _state = StoreState();
+  final StoreState _state = StoreState();
   List<Store> storeList = [];
 
   StoreState get state => _state;

@@ -37,7 +37,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         title: const Text(
           '장바구니',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -93,22 +93,25 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     ),
                     const Divider(),
                     state.cartList.isEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                const Text('장바구니가 비었습니다.'),
-                                OutlinedButton(
-                                  onPressed: () {
-                                    context.go('/product_page', extra: {
-                                      'navSetState': widget.navSetState
-                                    });
-                                  },
-                                  child: const Text('상품 담으러 가기'),
-                                ),
-                              ],
+                        ? Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text('장바구니가 비었습니다.'),
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      context.go('/product_page', extra: {
+                                        'navSetState': widget.navSetState
+                                      });
+                                    },
+                                    child: const Text('상품 담으러 가기'),
+                                  ),
+                                ],
+                              ),
                             ),
-                          )
+                        )
                         : Expanded(
                             child: ListView.builder(
                               itemBuilder: (context, index) {
@@ -157,15 +160,19 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 });
               }
             },
-            child: Text(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2F362F),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+            child: const Text(
               '주문하기',
               style: TextStyle(color: Colors.white),
             ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                const Color(0xFF2F362F),
-              ),
-            ),
+            // style: ButtonStyle(
+            //   backgroundColor: MaterialStateProperty.all(
+            //     const Color(0xFF2F362F),
+            //   ),
+            // ),
           ),
         ),
       ),

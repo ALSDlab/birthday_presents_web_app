@@ -20,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text(
           '마이페이지',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),

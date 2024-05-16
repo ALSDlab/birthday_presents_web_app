@@ -63,7 +63,7 @@ class _SignupPageState extends State<SignupPage> {
         title: const Text(
           '회원가입',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -287,7 +287,8 @@ class _SignupPageState extends State<SignupPage> {
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
-                                          context.go('/login_page');
+                                          context
+                                              .go('/profile_page/login_page');
                                         },
                                         child: const Text('확인'),
                                       ),

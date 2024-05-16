@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
+import 'order_history_page_view_model.dart';
 
 class OrderHistoryListWidget extends StatelessWidget {
   const OrderHistoryListWidget({super.key, required this.orderItem});
@@ -11,6 +13,8 @@ class OrderHistoryListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<OrderHistoryPageViewModel>();
+    final state = viewModel.state;
     return GestureDetector(
       onTap: () async {
         // String currentUser = FirebaseAuth
@@ -80,10 +84,17 @@ class OrderHistoryListWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                DateFormat('yy년 M월 dd일').format(
-                    DateTime.parse('20${orderItem.first.orderedDate!}')),
-                style: const TextStyle(color: Colors.grey),
+              Column(
+                children: [
+                  Text(
+                    DateFormat('yy년 M월 dd일').format(
+                        DateTime.parse('20${orderItem.first.orderedDate!}')),
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                  TextButton(onPressed: () async {
+                    await viewModel.postDeleted(orderItem);
+                  }, child: Text('삭제하기'))
+                ],
               ),
             ],
           ),

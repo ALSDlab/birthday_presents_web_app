@@ -129,10 +129,11 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     try {
       await FirebaseFirestore.instance
           .collection('orders')
-          .doc(item.orderId + index)
+          .doc(item.orderId + item.productId)
           .set(
         {
           'orderId': item.orderId,
+          'productId': item.productId,
           'orderProductName': item.orderProductName,
           'representativeImage': item.representativeImage,
           'price': item.price,
@@ -147,7 +148,8 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
           'ordererPostcode': ordererPostcode,
           'payAndStatus': 0,
           'payAmount': int.parse(item.price.replaceAll(',', '')) * item.count,
-          'paymentDate': ''
+          'paymentDate': '',
+          'deletedDate': '',
         },
       );
     } catch (error) {

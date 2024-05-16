@@ -29,7 +29,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         title: const Text(
           '마이페이지',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),

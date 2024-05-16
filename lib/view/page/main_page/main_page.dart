@@ -6,6 +6,7 @@ import 'package:myk_market_app/data/repository/connectivity_observer.dart';
 import 'package:myk_market_app/data/repository/network_connectivity_observer.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/image_load_widget.dart';
@@ -38,13 +39,14 @@ class _MainPageState extends State<MainPage> {
     });
 
     _subscription = _connectivityObserver.observe().listen((status) {
-      print('Status changed : $_status');
+
       setState(() {
         _status = status;
+        print('Status changed : $_status');
       });
     });
 
-    super.initState();
+    //super.initState();
     //   Future.delayed(Duration.zero,() {
     //     _loadData();
     //   });
@@ -58,6 +60,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+
     final viewModel = context.watch<StoreViewModel>();
     final state = viewModel.state;
 
@@ -71,8 +74,9 @@ class _MainPageState extends State<MainPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(decoration: BoxDecoration(
+              color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(5)),
-              border: Border.all(width: 1, color: const Color(0xFFFFF8E7)),
+              border: Border.all(width: 1, color: Colors.white,),
             ),
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
@@ -80,6 +84,7 @@ class _MainPageState extends State<MainPage> {
                   width: 30,
                   height: 30,
                   decoration: const BoxDecoration(
+                    color: Colors.white,
                       image: DecorationImage(
                           image: AssetImage('assets/images/myk_market_logo.png'),
                           fit: BoxFit.cover)),
@@ -130,28 +135,53 @@ class _MainPageState extends State<MainPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: 20.h,
                       ),
-                      const Text(
-                        'BRAND STORY',
+                      Text(
                         style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 13.w,
                         ),
+                        textAlign: TextAlign.center,
+                        'BRAND STORY',
                       ),
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: 20.h,
                       ),
                       Column(
                         children: [
-                          Text(viewModel.storeList[0].introText),
-                          Text(viewModel.storeList[0].introTextOne),
-                          Text(viewModel.storeList[0].introTextTwo),
-                          Text(viewModel.storeList[0].introTextThree),
-                          Text(viewModel.storeList[0].introTextFour),
-                          Text(viewModel.storeList[0].introTextFive),
-                          Text(viewModel.storeList[0].introTextSix),
+                          Text(
+                            viewModel.storeList[0].introText,
+                            style: TextStyle(fontSize: 16.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextOne,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextTwo,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextThree,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextFour,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextFive,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
+                          Text(
+                            viewModel.storeList[0].introTextSix,
+                            style: TextStyle(fontSize: 11.w),
+                          ),
                         ],
+                      ),
+                      const SizedBox(
+                        height: 20.0,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
