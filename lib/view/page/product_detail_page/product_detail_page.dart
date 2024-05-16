@@ -192,8 +192,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 padding: const EdgeInsets.all(4.0),
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero)),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
                   onPressed: () {
                     showModalBottomSheet(
                         context: context,
@@ -292,8 +293,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: const RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.zero),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
                                             backgroundColor:
                                                 const Color(0xFF2F362F),
                                           ),
@@ -346,8 +347,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 padding: const EdgeInsets.all(4.0),
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
+                      // shape: const RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.zero),
                       shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       backgroundColor: const Color(0xFF2F362F)),
                   onPressed: () {
                     showModalBottomSheet(
@@ -449,8 +452,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: const RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.zero),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
                                             backgroundColor:
                                                 const Color(0xFF2F362F),
                                           ),
