@@ -74,8 +74,9 @@ class _MainPageState extends State<MainPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(decoration: BoxDecoration(
+              color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(5)),
-              border: Border.all(width: 1, color: const Color(0xFFFFF8E7)),
+              border: Border.all(width: 1, color: Colors.white,),
             ),
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
@@ -83,6 +84,7 @@ class _MainPageState extends State<MainPage> {
                   width: 30,
                   height: 30,
                   decoration: const BoxDecoration(
+                    color: Colors.white,
                       image: DecorationImage(
                           image: AssetImage('assets/images/myk_market_logo.png'),
                           fit: BoxFit.cover)),

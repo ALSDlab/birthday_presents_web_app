@@ -20,7 +20,7 @@ class OrderHistoryPage extends StatelessWidget {
         title: const Text(
           '주문 내역',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
         actions: [

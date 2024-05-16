@@ -63,7 +63,7 @@ class _SignupPageState extends State<SignupPage> {
         title: const Text(
           '회원가입',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),

@@ -1,7 +1,6 @@
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
@@ -9,7 +8,6 @@ import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.d
 import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
-import '../../../styles/app_text_colors.dart';
 import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/simple_logger.dart';
 import '../agreement_page/agreement_texts.dart';
@@ -56,7 +54,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
         title: const Text(
           '주문서 작성',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -140,7 +138,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                     padding: const EdgeInsets.all(8.0),
                                     itemBuilder: (context, index) {
                                       return Padding(
-                                        padding: (index == 2) ? const EdgeInsets.fromLTRB(4, 4, 4, 0) : const EdgeInsets.all(4.0),
+                                        padding: (index == 2)
+                                            ? const EdgeInsets.fromLTRB(
+                                                4, 4, 4, 0)
+                                            : const EdgeInsets.all(4.0),
                                         child: Column(
                                           children: [
                                             (index == 3)
@@ -155,94 +156,123 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                         CrossAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Text((index != 4)
-                                                        ? '* ' : '  ' ,
+                                                      Text(
+                                                        (index != 4)
+                                                            ? '* '
+                                                            : '  ',
                                                         style: const TextStyle(
                                                             color: Colors.red),
                                                       ),
                                                       Expanded(
-                                                        child: Text(viewModel
-                                                                .gridLeftArray[
-                                                            index], style: const TextStyle(fontWeight: FontWeight.w500 ,fontSize: 15),),
+                                                        child: Text(
+                                                          viewModel
+                                                                  .gridLeftArray[
+                                                              index],
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 15),
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
                                             index == 2
                                                 ? Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(right: 16.0),
-                                                      child: ElevatedButton(
-                                                          onPressed: () async {
-                                                            try {
-                                                              viewModel
-                                                                  .addressChangeRequest();
-                                                              DataModel?
-                                                              model =
-                                                              await Navigator.of(
-                                                                  context)
-                                                                  .push(
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                    check.pr),
-                                                              );
-                                                              setState(
-                                                                    () {
-                                                                  viewModel
-                                                                      .daumPostcodeSearchDataModel =
-                                                                      model;
-                                                                },
-                                                              );
-                                                              viewModel
-                                                                  .fillTextField();
-                                                            } catch (error) {
-                                                              logger.info(
-                                                                  error);
-                                                            }
-                                                          },
-                                                          style: ButtonStyle(
-                                                              minimumSize: MaterialStateProperty.all(Size(100.w, 40.h)),
-                                                              //테두리 모양 조절
-                                                              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(23))),
-                                                              backgroundColor: MaterialStateProperty.all(AppColors.icon)),
-                                                          child: const Text(
-                                                            '주소검색',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 16.0),
+                                                          child: OutlinedButton(
+                                                            style: OutlinedButton
+                                                                .styleFrom(
+                                                                    // shape: const RoundedRectangleBorder(
+                                                                    //     borderRadius: BorderRadius.zero),
+                                                                    shape: const RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                10))),
+                                                                    backgroundColor:
+                                                                        const Color(
+                                                                            0xFF2F362F)),
+                                                            onPressed:
+                                                                () async {
+                                                              try {
+                                                                viewModel
+                                                                    .addressChangeRequest();
+                                                                DataModel?
+                                                                    model =
+                                                                    await Navigator.of(
+                                                                            context)
+                                                                        .push(
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              check.pr),
+                                                                );
+                                                                setState(
+                                                                  () {
+                                                                    viewModel
+                                                                            .daumPostcodeSearchDataModel =
+                                                                        model;
+                                                                  },
+                                                                );
+                                                                viewModel
+                                                                    .fillTextField();
+                                                              } catch (error) {
+                                                                logger.info(
+                                                                    error);
+                                                              }
+                                                            },
+                                                            child: const Text(
+                                                              '주소검색',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
                                                           )),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: TextFormField(
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: TextFormField(
                                                           readOnly: true,
-                                                          style: const TextStyle(
-                                                              fontSize: 15),
-                                                          decoration: InputDecoration(
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                      .fromLTRB(
-                                                                      10, 10, 0, 10),
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                  width: 0.1,
-                                                                  color: Colors.white,
-                                                                ),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(10),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 15),
+                                                          decoration:
+                                                              InputDecoration(
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                    .fromLTRB(
+                                                                    10,
+                                                                    5,
+                                                                    0,
+                                                                    5),
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                width: 0.1,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
-                                                             ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                          ),
                                                           controller: viewModel
-                                                              .controllers[index],
+                                                                  .controllers[
+                                                              index],
                                                         ),
-                                                    ),
-                                                  ],
-                                                )
+                                                      ),
+                                                    ],
+                                                  )
                                                 : TextFormField(
                                                     readOnly: (index == 3)
                                                         ? true
@@ -253,7 +283,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                       contentPadding:
                                                           const EdgeInsets
                                                               .fromLTRB(
-                                                              10, 10, 0, 10),
+                                                              10, 5, 0, 5),
                                                       border:
                                                           OutlineInputBorder(
                                                         borderSide:
@@ -339,7 +369,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           newValue;
                                                     });
                                                   },
-                                                  activeColor: Colors.green,
+                                                  activeColor:
+                                                      const Color(0xFF2F362F),
                                                   checkColor: Colors.white,
                                                 ),
                                                 const Expanded(
@@ -369,7 +400,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                               newValue!;
                                                         });
                                                       },
-                                                      activeColor: Colors.green,
+                                                      activeColor: const Color(
+                                                          0xFF2F362F),
                                                       checkColor: Colors.white,
                                                     ),
                                                     const Text('(필수) 이용약관'),
@@ -432,7 +464,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                               newValue!;
                                                         });
                                                       },
-                                                      activeColor: Colors.green,
+                                                      activeColor: const Color(
+                                                          0xFF2F362F),
                                                       checkColor: Colors.white,
                                                     ),
                                                     const Text(
@@ -495,7 +528,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                               newValue!;
                                                         });
                                                       },
-                                                      activeColor: Colors.green,
+                                                      activeColor: const Color(
+                                                          0xFF2F362F),
                                                       checkColor: Colors.white,
                                                     ),
                                                     const Text(
@@ -584,116 +618,116 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                context.pop(true);
-                              },
-                              style: ButtonStyle(
-                                  minimumSize: MaterialStateProperty.all(
-                                      Size(100.w, 40.h)),
-                                  //테두리 모양 조절
-                                  shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                          side: const BorderSide(
-                                              width: 0.5, color: Colors.black),
-                                          borderRadius:
-                                              BorderRadius.circular(23))),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      const Color(0xFFFFF8E7))),
-                              child: const Text(
-                                '취소',
-                                style: TextStyle(color: Colors.black),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                  ),
+                                  onPressed: () {
+                                    context.pop(true);
+                                  },
+                                  child: const Text(
+                                    '취소',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            ElevatedButton(
-                              onPressed: () async {
-                                if ((viewModel.currentUser.isEmpty) &&
-                                    (isTermsNConditionsChecked == false ||
-                                        isPersonalInfoChecked == false)) {
-                                  setState(() {
-                                    inevitableChecked = true;
-                                  });
-                                } else if (viewModel.controllers[0].text ==
-                                        '' ||
-                                    viewModel.controllers[1].text == '' ||
-                                    viewModel.controllers[2].text == '') {
-                                  setState(() {
-                                    moreDataNeed = true;
-                                  });
-                                } else {
-                                  final orderedDate = DateTime.now()
-                                      .toString()
-                                      .substring(2, 10)
-                                      .replaceAll('-', '');
-                                  final ordererId =
-                                      viewModel.currentUser.isEmpty
-                                          ? 'notRegistered'
-                                          : viewModel.currentUser.first.id;
-                                  final personalInfoForDeliverChecked =
-                                      viewModel.currentUser.isEmpty
-                                          ? isPersonalInfoForDeliverChecked
-                                          : viewModel.currentUser.first.checked;
-                                  final ordererName =
-                                      viewModel.controllers[0].text;
-                                  final ordererPhoneNo =
-                                      viewModel.controllers[1].text;
-                                  final ordererPostcode =
-                                      viewModel.controllers[2].text;
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                      // shape: const RoundedRectangleBorder(
+                                      //     borderRadius: BorderRadius.zero),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      backgroundColor: const Color(0xFF2F362F)),
+                                  onPressed: () async {
+                                    if ((viewModel.currentUser.isEmpty) &&
+                                        (isTermsNConditionsChecked == false ||
+                                            isPersonalInfoChecked == false)) {
+                                      setState(() {
+                                        inevitableChecked = true;
+                                      });
+                                    } else if (viewModel.controllers[0].text ==
+                                            '' ||
+                                        viewModel.controllers[1].text == '' ||
+                                        viewModel.controllers[2].text == '') {
+                                      setState(() {
+                                        moreDataNeed = true;
+                                      });
+                                    } else {
+                                      final orderedDate = DateTime.now()
+                                          .toString()
+                                          .substring(2, 10)
+                                          .replaceAll('-', '');
+                                      final ordererId =
+                                          viewModel.currentUser.isEmpty
+                                              ? 'notRegistered'
+                                              : viewModel.currentUser.first.id;
+                                      final personalInfoForDeliverChecked =
+                                          viewModel.currentUser.isEmpty
+                                              ? isPersonalInfoForDeliverChecked
+                                              : viewModel
+                                                  .currentUser.first.checked;
+                                      final ordererName =
+                                          viewModel.controllers[0].text;
+                                      final ordererPhoneNo =
+                                          viewModel.controllers[1].text;
+                                      final ordererPostcode =
+                                          viewModel.controllers[2].text;
 
-                                  final ordererAddress =
-                                      viewModel.controllers[3].text;
-                                  final ordererAddressDetail =
-                                      viewModel.controllers[4].text;
-                                  await Future.forEach(
-                                      widget.forOrderItems.asMap().entries,
-                                      (entry) async {
-                                    final index = entry.key;
-                                    final item = entry.value;
-                                    await viewModel.saveOrdersInfo(
-                                      item,
-                                      index.toString(),
-                                      orderedDate,
-                                      personalInfoForDeliverChecked,
-                                      ordererId,
-                                      ordererName,
-                                      ordererPhoneNo,
-                                      ordererAddress,
-                                      ordererAddressDetail,
-                                      ordererPostcode,
-                                    );
-                                  });
+                                      final ordererAddress =
+                                          viewModel.controllers[3].text;
+                                      final ordererAddressDetail =
+                                          viewModel.controllers[4].text;
+                                      await Future.forEach(
+                                          widget.forOrderItems.asMap().entries,
+                                          (entry) async {
+                                        final index = entry.key;
+                                        final item = entry.value;
+                                        await viewModel.saveOrdersInfo(
+                                          item,
+                                          index.toString(),
+                                          orderedDate,
+                                          personalInfoForDeliverChecked,
+                                          ordererId,
+                                          ordererName,
+                                          ordererPhoneNo,
+                                          ordererAddress,
+                                          ordererAddressDetail,
+                                          ordererPostcode,
+                                        );
+                                      });
 
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('주문생성 완료.'),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
-                                    GoRouter.of(context).push(
-                                        '/shopping_cart_page/fill_order_page/pay_page',
-                                        extra: {
-                                          'orderModelList': widget.forOrderItems
-                                        });
-                                  }
-                                }
-                              },
-                              style: ButtonStyle(
-                                  minimumSize: MaterialStateProperty.all(
-                                      Size(100.w, 40.h)),
-                                  //테두리 모양 조절
-                                  shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(23))),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      AppColors.icon)),
-                              child: const Text(
-                                '다음',
-                                style: TextStyle(color: Colors.white),
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text('주문생성 완료.'),
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                        GoRouter.of(context).push(
+                                            '/shopping_cart_page/fill_order_page/pay_page',
+                                            extra: {
+                                              'orderModelList':
+                                                  widget.forOrderItems
+                                            });
+                                      }
+                                    }
+                                  },
+                                  child: const Text(
+                                    '다음',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
                               ),
                             ),
                           ],

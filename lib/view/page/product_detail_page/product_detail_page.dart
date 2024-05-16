@@ -72,7 +72,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         title: const Text(
           '민영기 염소탕',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),

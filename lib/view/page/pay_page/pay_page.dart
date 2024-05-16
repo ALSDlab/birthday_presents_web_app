@@ -43,7 +43,7 @@ class _PayPageState extends State<PayPage> {
         title: const Text(
           '주문 확인',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -180,28 +180,55 @@ class _PayPageState extends State<PayPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('이전'),
+                            Expanded(child: Container()),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    '이전',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                              ),
                             ),
-                            TextButton(
-                              style: const ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      AppColors.mainButton)),
-                              onPressed: () {
-                                if (finalConfirmNeed == false) {
-                                  setState(() {
-                                    finalConfirmDemand = true;
-                                  });
-                                } else {
-                                  viewModel.bootpayPayment(
-                                      context, state.orderItems);
-                                }
-                              },
-                              child: const Text('결제'),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                      // shape: const RoundedRectangleBorder(
+                                      //     borderRadius: BorderRadius.zero),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      backgroundColor: const Color(0xFF2F362F)),
+                                  onPressed: () {
+                                    if (finalConfirmNeed == false) {
+                                      setState(() {
+                                        finalConfirmDemand = true;
+                                      });
+                                    } else {
+                                      viewModel.bootpayPayment(
+                                          context, state.orderItems);
+                                    }
+                                  },
+                                  child: const Text(
+                                    '결제',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
                             ),
+                            Expanded(child: Container())
                           ],
                         ),
                       )
