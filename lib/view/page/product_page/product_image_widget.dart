@@ -23,7 +23,10 @@ class ProductImageWidget extends StatelessWidget {
             imageUrl: product.representativeImage,
           ),
         ),
-        Text(product.title),
+        Text(
+          product.title,
+          style: const TextStyle(fontWeight: FontWeight.w900),
+        ),
         Text('${product.price}원')
       ],
     );
