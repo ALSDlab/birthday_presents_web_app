@@ -161,7 +161,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             }
             _goOtherTab(context, index);
           }
-        },
+g        },
       ),
     );
   }
