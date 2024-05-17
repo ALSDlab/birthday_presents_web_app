@@ -96,8 +96,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: ImageLoadWidget(
                         width: MediaQuery.of(context).size.width,
-                        widthHeightRatio: 0.6,
+                        height: MediaQuery.of(context).size.width*0.6,
                         imageUrl: widget.product.representativeImage,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     const Divider(),
@@ -172,7 +173,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         return ImageLoadWidget(
                             imageUrl: widget.product.images[index],
                             width: MediaQuery.of(context).size.width,
-                            widthHeightRatio: 2.3);
+                          fit: BoxFit.scaleDown,);
                       },
                       itemCount: widget.product.images.length,
                     )
