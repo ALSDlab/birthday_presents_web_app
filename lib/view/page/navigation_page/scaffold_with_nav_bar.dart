@@ -96,7 +96,30 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.child,
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Color(0xFF2F362F),
+                  BlendMode.dstATop,
+                ),
+                image: AssetImage(
+                  'assets/images/background.png',
+                ),
+              ),
+            ),
+          ),
+          Container(
+            color: Colors.white.withOpacity(0.8),
+          ),
+          widget.child,
+        ],
+      ),
       bottomNavigationBar: StylishBottomBar(
         option: AnimatedBarOptions(
           padding: const EdgeInsets.only(top: 12),
@@ -161,6 +184,8 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             }
             _goOtherTab(context, index);
           }
+            _goOtherTab(context, index);
+
         },
       ),
     );

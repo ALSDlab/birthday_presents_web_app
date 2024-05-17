@@ -21,7 +21,9 @@ class ImageLoadWidget extends StatefulWidget {
 }
 
 class _ImageLoadWidgetState extends State<ImageLoadWidget> {
-  double? _calculatedHeight;
+  double? _aspectRatio;
+  ImageStream? _imageStream;
+  ImageStreamListener? _imageStreamListener;
 
   @override
   void initState() {
@@ -31,27 +33,33 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
 
   void _fetchImageSize() {
     final image = Image.network(widget.imageUrl);
-    final ImageStream stream = image.image.resolve(const ImageConfiguration());
-    stream.addListener(
-      ImageStreamListener((ImageInfo info, bool synchronousCall) {
-        final double aspectRatio = info.image.width / info.image.height;
+    _imageStream = image.image.resolve(const ImageConfiguration());
+    _imageStreamListener = ImageStreamListener((ImageInfo info, bool synchronousCall) {
+      if (mounted) {
         setState(() {
-          _calculatedHeight = widget.width / aspectRatio;
+          _aspectRatio = info.image.height / info.image.width;
         });
-      }),
-    );
+      }
+    });
+
+    _imageStream?.addListener(_imageStreamListener!);
+  }
+
+  @override
+  void dispose() {
+    _imageStream?.removeListener(_imageStreamListener!);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    double? height = widget.height ?? _calculatedHeight;
-    return _calculatedHeight == null
-        ? const Center(
-            child: GifProgressBar(),
+    return _aspectRatio == null
+        ? Center(
+            child: Container(),
           )
         : CachedNetworkImage(
       width: widget.width,
-      height: height,
+      height: widget.height ?? widget.width * _aspectRatio!,
           imageUrl: widget.imageUrl,
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(

@@ -218,6 +218,7 @@ class PayPageViewModel extends ChangeNotifier {
         logger.info(paidResultData);
         if (paidResultData == 'done') {
           postPaidItems(orderItems, 1); // 결제완료되면 서버로 pay status 변경
+          //TODO : 장바구니 비우기 적용(결제 한것만)
         }
       },
     );

@@ -49,7 +49,7 @@ class _PayPageState extends State<PayPage> {
       ),
       body: Center(
         child: SizedBox(
-          width: (MediaQuery.of(context).size.width >= 900) ? 900 : MediaQuery.of(context).size.width,
+          width: (MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width,
           child: ClipRRect(
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(32), topRight: Radius.circular(32)),
