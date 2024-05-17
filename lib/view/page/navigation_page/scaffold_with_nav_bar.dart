@@ -27,16 +27,15 @@ class ScaffoldWithNavBar extends StatefulWidget {
 
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   int badgeCount = 0;
+
   //네트워크 통신 확인 코드
   final ConnectivityObserver _connectivityObserver =
-  NetworkConnectivityObserver();
+      NetworkConnectivityObserver();
 
   //기본 접속 상태 설정
   var _status = Status.unavailable;
 
   StreamSubscription<Status>? _subscription;
-
-
 
   bool resetNavigation(int newCount) {
     setState(() {
@@ -48,18 +47,23 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   @override
   void initState() {
     Future.microtask(() async {
-      final ProductDetailPageViewModel viewModel = context.read<ProductDetailPageViewModel>();
+      final ProductDetailPageViewModel viewModel =
+          context.read<ProductDetailPageViewModel>();
       badgeCount = await viewModel.getBadgeCount();
-    });
 
-    _subscription = _connectivityObserver.observe().listen((status) {
-      setState(() {
-        _status = status;
-        //print('Status changed : $_status');
-        //인터넷 연결 확인 체크 코드
-        if (_status == Status.unavailable) {
-          showConnectionErrorDialog();
-        }
+      _subscription = _connectivityObserver.observe().listen((status) {
+        setState(() {
+          _status = status;
+          //print('Status changed : $_status');
+          //인터넷 연결 확인 체크 코드
+          if (_status == Status.unavailable) {
+            showConnectionErrorDialog();
+          } else {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          }
+        });
       });
     });
 
@@ -149,7 +153,14 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                     ? 2
                     : 3,
         onTap: (int index) {
-          _goOtherTab(context, index);
+          if (_status == Status.unavailable) {
+            showConnectionErrorDialog();
+          } else {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+            _goOtherTab(context, index);
+          }
         },
       ),
     );
