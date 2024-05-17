@@ -42,7 +42,10 @@ class _MainPageState extends State<MainPage> {
 
       setState(() {
         _status = status;
-        print('Status changed : $_status');
+        //print('Status changed : $_status');
+        if(_status == Status.available) {
+
+        }
       });
     });
 
