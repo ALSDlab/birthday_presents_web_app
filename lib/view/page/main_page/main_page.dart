@@ -151,8 +151,8 @@ class _MainPageState extends State<MainPage> {
                           borderRadius: BorderRadius.circular(20.0),
                           child: ImageLoadWidget(
                             width: MediaQuery.of(context).size.width,
-                            widthHeightRatio: 0.6,
                             imageUrl: viewModel.storeList[0].titleImage,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -210,8 +210,8 @@ class _MainPageState extends State<MainPage> {
                           borderRadius: BorderRadius.circular(20.0),
                           child: ImageLoadWidget(
                             width: MediaQuery.of(context).size.width,
-                            widthHeightRatio: 1.5,
-                            imageUrl: viewModel.storeList[0].images[19],
+                            imageUrl: viewModel.storeList[0].images[15],
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -222,8 +222,8 @@ class _MainPageState extends State<MainPage> {
                         borderRadius: BorderRadius.circular(20.0),
                         child: ImageLoadWidget(
                           width: MediaQuery.of(context).size.width,
-                          widthHeightRatio: 1.5,
-                          imageUrl: viewModel.storeList[0].images[31],
+                          imageUrl: viewModel.storeList[0].images[17],
+                          fit: BoxFit.cover,
                         ),
                       ),
                       const SizedBox(
@@ -233,22 +233,12 @@ class _MainPageState extends State<MainPage> {
                         borderRadius: BorderRadius.circular(20.0),
                         child: ImageLoadWidget(
                           width: MediaQuery.of(context).size.width,
-                          widthHeightRatio: 1.5,
-                          imageUrl: viewModel.storeList[0].images[26],
+                          imageUrl: viewModel.storeList[0].images[14],
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: ImageLoadWidget(
-                          width: MediaQuery.of(context).size.width,
-                          widthHeightRatio: 1.5,
-                          imageUrl: viewModel.storeList[0].images[43],
-                        ),
-                      ),
-
+                      // Image.network(viewModel.storeList[0].images[1]),
+                      // Image.network(viewModel.storeList[0].images[3]),
                     ],
                   ),
           ),
