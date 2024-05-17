@@ -83,7 +83,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
           ],
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: (MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -92,8 +92,8 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: ImageLoadWidget(
-                    width: MediaQuery.of(context).size.width * 0.32,
-                    height: MediaQuery.of(context).size.width * 0.3,
+                    width: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.32,
+                    height: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.3,
                     imageUrl: widget.shoppingProductForCart.representativeImage,
                     fit: BoxFit.cover,
                   ),

@@ -76,111 +76,126 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
         centerTitle: true,
       ),
-      body: ClipRRect(
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
-        child: Container(
-          color: const Color(0xFFFFF8E7),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  children: [
-                    const Divider(),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Text('상품 상세'),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ImageLoadWidget(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width*0.6,
-                        imageUrl: widget.product.representativeImage,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          widget.product.title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('${widget.product.price}원'),
-                      ),
-                    ),
-                    const Divider(),
-                    Row(
+      body: Center(
+        child: SizedBox(
+          width: (MediaQuery.of(context).size.width >= 1200)
+              ? 1200
+              : MediaQuery.of(context).size.width,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+            child: Container(
+              color: const Color(0xFFFFF8E7),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView(
                       children: [
+                        const Divider(),
                         const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            '재료',
-                            style: TextStyle(color: Colors.grey),
+                          padding: EdgeInsets.only(left: 16.0),
+                          child: Text('상품 상세'),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ImageLoadWidget(
+                            width: (MediaQuery.of(context).size.width >= 1200)
+                                ? 1200
+                                : MediaQuery.of(context).size.width,
+                            height: ((MediaQuery.of(context).size.width >= 1200)
+                                    ? 1200
+                                    : MediaQuery.of(context).size.width) *
+                                0.58,
+                            imageUrl: widget.product.representativeImage,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                widget.product.ingredients,
-                                style:
-                                    const TextStyle(color: Color(0xFF555555)),
-                              ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              widget.product.title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w900, fontSize: 16),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            '배송',
-                            style: TextStyle(color: Colors.grey),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            widget.product.delivery,
-                            style: const TextStyle(
-                              color: Color(0xFF555555),
-                            ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('${widget.product.price}원'),
                           ),
                         ),
+                        const Divider(),
+                        Row(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                '재료',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Text(
+                                    widget.product.ingredients,
+                                    style: const TextStyle(
+                                        color: Color(0xFF555555)),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                '배송',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                widget.product.delivery,
+                                style: const TextStyle(
+                                  color: Color(0xFF555555),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return ImageLoadWidget(
+                              width: (MediaQuery.of(context).size.width >= 1200)
+                                  ? 1200
+                                  : MediaQuery.of(context).size.width,
+                              imageUrl: widget.product.images[index],
+                              fit: BoxFit.cover,
+                            );
+                          },
+                          itemCount: widget.product.images.length,
+                        )
                       ],
                     ),
-                    const Divider(),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return ImageLoadWidget(
-                            imageUrl: widget.product.images[index],
-                            width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.scaleDown,);
-                      },
-                      itemCount: widget.product.images.length,
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -203,7 +218,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           return StatefulBuilder(builder:
                               (BuildContext context, StateSetter setState) {
                             return SizedBox(
-                              width: MediaQuery.of(context).size.width,
+                              width: (MediaQuery.of(context).size.width >= 1200)
+                                  ? 1200
+                                  : MediaQuery.of(context).size.width,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -309,7 +326,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 ShoppingProductForCart(
                                                     orderId: viewModel
                                                         .generateLicensePlate(
-                                                        createdDate),
+                                                            createdDate),
                                                     productId: widget
                                                         .product.productId,
                                                     orderProductName:
@@ -367,7 +384,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           return StatefulBuilder(builder:
                               (BuildContext context, StateSetter setState) {
                             return SizedBox(
-                              width: MediaQuery.of(context).size.width,
+                              width: (MediaQuery.of(context).size.width >= 1200)
+                                  ? 1200
+                                  : MediaQuery.of(context).size.width,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -475,7 +494,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               orderId: viewModel
                                                   .generateLicensePlate(
                                                       createdDate),
-                                              productId: widget.product.productId,
+                                              productId:
+                                                  widget.product.productId,
                                               orderProductName:
                                                   widget.product.title,
                                               representativeImage: widget

@@ -30,7 +30,7 @@ class PayAddressWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.25,
+            width: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.25,
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -41,7 +41,7 @@ class PayAddressWidget extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.6,
+            width: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.6,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
