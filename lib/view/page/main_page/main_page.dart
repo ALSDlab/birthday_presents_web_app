@@ -211,7 +211,7 @@ class _MainPageState extends State<MainPage> {
                           child: ImageLoadWidget(
                             width: MediaQuery.of(context).size.width,
                             widthHeightRatio: 1.5,
-                            imageUrl: viewModel.storeList[0].images[15],
+                            imageUrl: viewModel.storeList[0].images[19],
                           ),
                         ),
                       ),
@@ -223,7 +223,7 @@ class _MainPageState extends State<MainPage> {
                         child: ImageLoadWidget(
                           width: MediaQuery.of(context).size.width,
                           widthHeightRatio: 1.5,
-                          imageUrl: viewModel.storeList[0].images[17],
+                          imageUrl: viewModel.storeList[0].images[31],
                         ),
                       ),
                       const SizedBox(
@@ -234,11 +234,21 @@ class _MainPageState extends State<MainPage> {
                         child: ImageLoadWidget(
                           width: MediaQuery.of(context).size.width,
                           widthHeightRatio: 1.5,
-                          imageUrl: viewModel.storeList[0].images[14],
+                          imageUrl: viewModel.storeList[0].images[26],
                         ),
                       ),
-                      // Image.network(viewModel.storeList[0].images[1]),
-                      // Image.network(viewModel.storeList[0].images[3]),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: ImageLoadWidget(
+                          width: MediaQuery.of(context).size.width,
+                          widthHeightRatio: 1.5,
+                          imageUrl: viewModel.storeList[0].images[43],
+                        ),
+                      ),
+
                     ],
                   ),
           ),
