@@ -348,7 +348,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   style: OutlinedButton.styleFrom(
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.zero),
-                      backgroundColor: const Color(0xFF2F362F)),
+                      backgroundColor: const Color(0xFF188bc2)),
+                  //0xFF188bc2 돈쓰는버튼 0xFF008080 로그인버튼
                   onPressed: () {
                     showModalBottomSheet(
                         context: context,
@@ -452,7 +453,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 borderRadius:
                                                     BorderRadius.zero),
                                             backgroundColor:
-                                                const Color(0xFF2F362F),
+                                                const Color(0xFF188bc2),
                                           ),
                                           onPressed: () {
                                             final createdDate = DateTime.now()

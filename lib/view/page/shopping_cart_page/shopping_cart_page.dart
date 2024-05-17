@@ -163,7 +163,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             ),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
-                const Color(0xFF2F362F),
+                const Color(0xFF188bc2),
               ),
             ),
           ),

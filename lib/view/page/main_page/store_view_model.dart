@@ -19,6 +19,8 @@ class StoreViewModel extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+
+
   Future<void> loadingHome() async {
     _isLoading = true;
     notifyListeners();
