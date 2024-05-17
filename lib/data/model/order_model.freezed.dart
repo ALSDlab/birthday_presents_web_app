@@ -22,6 +22,8 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) {
 mixin _$OrderModel {
   @JsonKey(name: 'orderId')
   String get orderId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'productId')
+  String get productId => throw _privateConstructorUsedError;
   @JsonKey(name: 'orderProductName')
   String get orderProductName => throw _privateConstructorUsedError;
   @JsonKey(name: 'representativeImage')
@@ -53,6 +55,8 @@ mixin _$OrderModel {
   int? get payAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'paymentDate')
   String? get paymentDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deletedDate')
+  String? get deletedDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -68,6 +72,7 @@ abstract class $OrderModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'orderId') String orderId,
+      @JsonKey(name: 'productId') String productId,
       @JsonKey(name: 'orderProductName') String orderProductName,
       @JsonKey(name: 'representativeImage') String representativeImage,
       @JsonKey(name: 'price') String price,
@@ -83,7 +88,8 @@ abstract class $OrderModelCopyWith<$Res> {
       @JsonKey(name: 'ordererPostcode') String? ordererPostcode,
       @JsonKey(name: 'payAndStatus') int? payAndStatus,
       @JsonKey(name: 'payAmount') int? payAmount,
-      @JsonKey(name: 'paymentDate') String? paymentDate});
+      @JsonKey(name: 'paymentDate') String? paymentDate,
+      @JsonKey(name: 'deletedDate') String? deletedDate});
 }
 
 /// @nodoc
@@ -100,6 +106,7 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
   @override
   $Res call({
     Object? orderId = null,
+    Object? productId = null,
     Object? orderProductName = null,
     Object? representativeImage = null,
     Object? price = null,
@@ -115,11 +122,16 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
     Object? payAndStatus = freezed,
     Object? payAmount = freezed,
     Object? paymentDate = freezed,
+    Object? deletedDate = freezed,
   }) {
     return _then(_value.copyWith(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
+              as String,
+      productId: null == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
               as String,
       orderProductName: null == orderProductName
           ? _value.orderProductName
@@ -180,6 +192,10 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
       paymentDate: freezed == paymentDate
           ? _value.paymentDate
           : paymentDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deletedDate: freezed == deletedDate
+          ? _value.deletedDate
+          : deletedDate // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -195,6 +211,7 @@ abstract class _$$OrderModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'orderId') String orderId,
+      @JsonKey(name: 'productId') String productId,
       @JsonKey(name: 'orderProductName') String orderProductName,
       @JsonKey(name: 'representativeImage') String representativeImage,
       @JsonKey(name: 'price') String price,
@@ -210,7 +227,8 @@ abstract class _$$OrderModelImplCopyWith<$Res>
       @JsonKey(name: 'ordererPostcode') String? ordererPostcode,
       @JsonKey(name: 'payAndStatus') int? payAndStatus,
       @JsonKey(name: 'payAmount') int? payAmount,
-      @JsonKey(name: 'paymentDate') String? paymentDate});
+      @JsonKey(name: 'paymentDate') String? paymentDate,
+      @JsonKey(name: 'deletedDate') String? deletedDate});
 }
 
 /// @nodoc
@@ -225,6 +243,7 @@ class __$$OrderModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? orderId = null,
+    Object? productId = null,
     Object? orderProductName = null,
     Object? representativeImage = null,
     Object? price = null,
@@ -240,11 +259,16 @@ class __$$OrderModelImplCopyWithImpl<$Res>
     Object? payAndStatus = freezed,
     Object? payAmount = freezed,
     Object? paymentDate = freezed,
+    Object? deletedDate = freezed,
   }) {
     return _then(_$OrderModelImpl(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
+              as String,
+      productId: null == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
               as String,
       orderProductName: null == orderProductName
           ? _value.orderProductName
@@ -306,6 +330,10 @@ class __$$OrderModelImplCopyWithImpl<$Res>
           ? _value.paymentDate
           : paymentDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      deletedDate: freezed == deletedDate
+          ? _value.deletedDate
+          : deletedDate // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -315,6 +343,7 @@ class __$$OrderModelImplCopyWithImpl<$Res>
 class _$OrderModelImpl implements _OrderModel {
   const _$OrderModelImpl(
       {@JsonKey(name: 'orderId') required this.orderId,
+      @JsonKey(name: 'productId') required this.productId,
       @JsonKey(name: 'orderProductName') required this.orderProductName,
       @JsonKey(name: 'representativeImage') required this.representativeImage,
       @JsonKey(name: 'price') required this.price,
@@ -330,7 +359,8 @@ class _$OrderModelImpl implements _OrderModel {
       @JsonKey(name: 'ordererPostcode') this.ordererPostcode,
       @JsonKey(name: 'payAndStatus') this.payAndStatus,
       @JsonKey(name: 'payAmount') this.payAmount,
-      @JsonKey(name: 'paymentDate') this.paymentDate});
+      @JsonKey(name: 'paymentDate') this.paymentDate,
+      @JsonKey(name: 'deletedDate') this.deletedDate});
 
   factory _$OrderModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderModelImplFromJson(json);
@@ -338,6 +368,9 @@ class _$OrderModelImpl implements _OrderModel {
   @override
   @JsonKey(name: 'orderId')
   final String orderId;
+  @override
+  @JsonKey(name: 'productId')
+  final String productId;
   @override
   @JsonKey(name: 'orderProductName')
   final String orderProductName;
@@ -384,10 +417,13 @@ class _$OrderModelImpl implements _OrderModel {
   @override
   @JsonKey(name: 'paymentDate')
   final String? paymentDate;
+  @override
+  @JsonKey(name: 'deletedDate')
+  final String? deletedDate;
 
   @override
   String toString() {
-    return 'OrderModel(orderId: $orderId, orderProductName: $orderProductName, representativeImage: $representativeImage, price: $price, count: $count, orderedDate: $orderedDate, personalInfoForDeliverChecked: $personalInfoForDeliverChecked, ordererId: $ordererId, ordererName: $ordererName, ordererPhoneNo: $ordererPhoneNo, ordererAddress: $ordererAddress, ordererAddressDetail: $ordererAddressDetail, ordererPostcode: $ordererPostcode, payAndStatus: $payAndStatus, payAmount: $payAmount, paymentDate: $paymentDate)';
+    return 'OrderModel(orderId: $orderId, productId: $productId, orderProductName: $orderProductName, representativeImage: $representativeImage, price: $price, count: $count, orderedDate: $orderedDate, personalInfoForDeliverChecked: $personalInfoForDeliverChecked, ordererId: $ordererId, ordererName: $ordererName, ordererPhoneNo: $ordererPhoneNo, ordererAddress: $ordererAddress, ordererAddressDetail: $ordererAddressDetail, ordererPostcode: $ordererPostcode, payAndStatus: $payAndStatus, payAmount: $payAmount, paymentDate: $paymentDate, deletedDate: $deletedDate)';
   }
 
   @override
@@ -396,6 +432,8 @@ class _$OrderModelImpl implements _OrderModel {
         (other.runtimeType == runtimeType &&
             other is _$OrderModelImpl &&
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
+            (identical(other.productId, productId) ||
+                other.productId == productId) &&
             (identical(other.orderProductName, orderProductName) ||
                 other.orderProductName == orderProductName) &&
             (identical(other.representativeImage, representativeImage) ||
@@ -425,7 +463,9 @@ class _$OrderModelImpl implements _OrderModel {
             (identical(other.payAmount, payAmount) ||
                 other.payAmount == payAmount) &&
             (identical(other.paymentDate, paymentDate) ||
-                other.paymentDate == paymentDate));
+                other.paymentDate == paymentDate) &&
+            (identical(other.deletedDate, deletedDate) ||
+                other.deletedDate == deletedDate));
   }
 
   @JsonKey(ignore: true)
@@ -433,6 +473,7 @@ class _$OrderModelImpl implements _OrderModel {
   int get hashCode => Object.hash(
       runtimeType,
       orderId,
+      productId,
       orderProductName,
       representativeImage,
       price,
@@ -447,7 +488,8 @@ class _$OrderModelImpl implements _OrderModel {
       ordererPostcode,
       payAndStatus,
       payAmount,
-      paymentDate);
+      paymentDate,
+      deletedDate);
 
   @JsonKey(ignore: true)
   @override
@@ -466,6 +508,7 @@ class _$OrderModelImpl implements _OrderModel {
 abstract class _OrderModel implements OrderModel {
   const factory _OrderModel(
       {@JsonKey(name: 'orderId') required final String orderId,
+      @JsonKey(name: 'productId') required final String productId,
       @JsonKey(name: 'orderProductName') required final String orderProductName,
       @JsonKey(name: 'representativeImage')
       required final String representativeImage,
@@ -482,8 +525,9 @@ abstract class _OrderModel implements OrderModel {
       @JsonKey(name: 'ordererPostcode') final String? ordererPostcode,
       @JsonKey(name: 'payAndStatus') final int? payAndStatus,
       @JsonKey(name: 'payAmount') final int? payAmount,
-      @JsonKey(name: 'paymentDate')
-      final String? paymentDate}) = _$OrderModelImpl;
+      @JsonKey(name: 'paymentDate') final String? paymentDate,
+      @JsonKey(name: 'deletedDate')
+      final String? deletedDate}) = _$OrderModelImpl;
 
   factory _OrderModel.fromJson(Map<String, dynamic> json) =
       _$OrderModelImpl.fromJson;
@@ -491,6 +535,9 @@ abstract class _OrderModel implements OrderModel {
   @override
   @JsonKey(name: 'orderId')
   String get orderId;
+  @override
+  @JsonKey(name: 'productId')
+  String get productId;
   @override
   @JsonKey(name: 'orderProductName')
   String get orderProductName;
@@ -536,6 +583,9 @@ abstract class _OrderModel implements OrderModel {
   @override
   @JsonKey(name: 'paymentDate')
   String? get paymentDate;
+  @override
+  @JsonKey(name: 'deletedDate')
+  String? get deletedDate;
   @override
   @JsonKey(ignore: true)
   _$$OrderModelImplCopyWith<_$OrderModelImpl> get copyWith =>

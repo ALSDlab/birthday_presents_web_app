@@ -24,7 +24,6 @@ class ShoppingCartPageWidget extends StatefulWidget {
 }
 
 class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
-
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ShoppingCartViewModel>();
@@ -39,7 +38,8 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
               onChanged: (bool? newValue) {
                 setState(() {
                   // widget.shoppingProductForCart.isChecked = newValue!;
-                  viewModel.editShoppingCartList(state.cartList, widget.shoppingProductForCart, 'payOrNot', newValue);
+                  viewModel.editShoppingCartList(state.cartList,
+                      widget.shoppingProductForCart, 'payOrNot', newValue);
                 });
                 // if (widget.shoppingProductForCart.isChecked == true) {
                 //   ShoppingCartPageWidget.checkedList
@@ -92,10 +92,11 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: ImageLoadWidget(
-                      width: MediaQuery.of(context).size.width * 0.32,
-                      widthHeightRatio: 0.65,
-                      imageUrl:
-                          widget.shoppingProductForCart.representativeImage),
+                    width: MediaQuery.of(context).size.width * 0.32,
+                    height: MediaQuery.of(context).size.width * 0.3,
+                    imageUrl: widget.shoppingProductForCart.representativeImage,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -130,7 +131,11 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                                 onTap: () {
                                   // viewModel.minusToShoppingCartList(
                                   //     widget.shoppingProductForCart, context);
-                                  viewModel.editShoppingCartList(state.cartList, widget.shoppingProductForCart, 'minus', null);
+                                  viewModel.editShoppingCartList(
+                                      state.cartList,
+                                      widget.shoppingProductForCart,
+                                      'minus',
+                                      null);
                                   setState(() {});
                                 },
                                 child: const Icon(Icons.remove)),
@@ -146,7 +151,11 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                                 onTap: () {
                                   // viewModel.addToShoppingCartList(
                                   //     widget.shoppingProductForCart, context);
-                                  viewModel.editShoppingCartList(state.cartList, widget.shoppingProductForCart, 'plus', null);
+                                  viewModel.editShoppingCartList(
+                                      state.cartList,
+                                      widget.shoppingProductForCart,
+                                      'plus',
+                                      null);
                                   setState(() {});
                                 },
                                 child: const Icon(Icons.add)),

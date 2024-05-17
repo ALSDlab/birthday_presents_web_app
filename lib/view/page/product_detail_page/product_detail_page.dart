@@ -72,7 +72,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         title: const Text(
           '민영기 염소탕',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -96,8 +96,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: ImageLoadWidget(
                         width: MediaQuery.of(context).size.width,
-                        widthHeightRatio: 0.6,
+                        height: MediaQuery.of(context).size.width*0.6,
                         imageUrl: widget.product.representativeImage,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     const Divider(),
@@ -172,7 +173,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         return ImageLoadWidget(
                             imageUrl: widget.product.images[index],
                             width: MediaQuery.of(context).size.width,
-                            widthHeightRatio: 2.3);
+                          fit: BoxFit.scaleDown,);
                       },
                       itemCount: widget.product.images.length,
                     )
@@ -300,9 +301,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           ),
                                           onPressed: () async {
                                             Navigator.pop(context);
+                                            final createdDate = DateTime.now()
+                                                .toString()
+                                                .substring(2, 10)
+                                                .replaceAll('-', '');
                                             ShoppingProductForCart item =
                                                 ShoppingProductForCart(
-                                                    orderId: widget
+                                                    orderId: viewModel
+                                                        .generateLicensePlate(
+                                                        createdDate),
+                                                    productId: widget
                                                         .product.productId,
                                                     orderProductName:
                                                         widget.product.title,
@@ -467,6 +475,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               orderId: viewModel
                                                   .generateLicensePlate(
                                                       createdDate),
+                                              productId: widget.product.productId,
                                               orderProductName:
                                                   widget.product.title,
                                               representativeImage: widget

@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/repository/connectivity_observer.dart';
 import 'package:myk_market_app/data/repository/network_connectivity_observer.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
+import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/image_load_widget.dart';
@@ -20,13 +23,13 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   //네트워크 통신 확인 코드
-  final ConnectivityObserver _connectivityObserver =
-      NetworkConnectivityObserver();
-
-  //기본 접속 상태 설정
-  var _status = Status.unavailable;
-
-  StreamSubscription<Status>? _subscription;
+  // final ConnectivityObserver _connectivityObserver =
+  //     NetworkConnectivityObserver();
+  //
+  // //기본 접속 상태 설정
+  // var _status = Status.unavailable;
+  //
+  // StreamSubscription<Status>? _subscription;
 
   @override
   void initState() {
@@ -37,25 +40,40 @@ class _MainPageState extends State<MainPage> {
       viewModel.loadingHome();
     });
 
-    _subscription = _connectivityObserver.observe().listen((status) {
-
-      setState(() {
-        _status = status;
-        print('Status changed : $_status');
-      });
-    });
-
-    //super.initState();
-    //   Future.delayed(Duration.zero,() {
-    //     _loadData();
+    // _subscription = _connectivityObserver.observe().listen((status) {
+    //   setState(() {
+    //     _status = status;
+    //     //print('Status changed : $_status');
+    //     //인터넷 연결 확인 체크 코드
+    //     if (_status == Status.unavailable) {
+    //       showConnectionErrorDialog();
+    //     }
     //   });
+    // });
   }
 
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
+  // //인터넷 연결 확인 체크 위젯
+  // void showConnectionErrorDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return OneAnswerDialog(
+  //           onTap: () {
+  //             Navigator.pop(context);
+  //           },
+  //           title: '신호없음',
+  //           subtitle: '인터넷 연결을 확인해주세요',
+  //           firstButton: '확인',
+  //           imagePath: 'assets/gifs/internetLost.gif');
+  //     },
+  //   );
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   _subscription?.cancel();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,24 +83,31 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F362F),
-        leading: Text('네트워크 상태 : ${_status.name}'),
+        //leading: Text('네트워크 상태 : ${_status.name}'),
         centerTitle: true,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
-              border: Border.all(width: 1, color: const Color(0xFFFFF8E7)),
-            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                border: Border.all(
+                  width: 1,
+                  color: Colors.white,
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: Container(
                   width: 30,
                   height: 30,
                   decoration: const BoxDecoration(
+                      color: Colors.white,
                       image: DecorationImage(
-                          image: AssetImage('assets/images/myk_market_logo.png'),
+                          image:
+                              AssetImage('assets/images/myk_market_logo.png'),
                           fit: BoxFit.cover)),
                 ),
               ),
@@ -101,8 +126,8 @@ class _MainPageState extends State<MainPage> {
         // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
         actions: [
           TextButton(
-              onPressed: () {
-                sendSMS('01058377427', '01032084619', 'SMS테스트입니다.');
+              onPressed: () async {
+                sendSMS('01058377427', '01027645102', 'SMS테스트입니다.');
               },
               child: const Text('SMS테스트'))
         ],
@@ -126,12 +151,12 @@ class _MainPageState extends State<MainPage> {
                           borderRadius: BorderRadius.circular(20.0),
                           child: ImageLoadWidget(
                             width: MediaQuery.of(context).size.width,
-                            widthHeightRatio: 0.6,
                             imageUrl: viewModel.storeList[0].titleImage,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                       SizedBox(
+                      SizedBox(
                         height: 20.h,
                       ),
                       Text(
@@ -141,7 +166,7 @@ class _MainPageState extends State<MainPage> {
                         textAlign: TextAlign.center,
                         'BRAND STORY',
                       ),
-                       SizedBox(
+                      SizedBox(
                         height: 20.h,
                       ),
                       Column(
@@ -185,8 +210,8 @@ class _MainPageState extends State<MainPage> {
                           borderRadius: BorderRadius.circular(20.0),
                           child: ImageLoadWidget(
                             width: MediaQuery.of(context).size.width,
-                            widthHeightRatio: 1.5,
                             imageUrl: viewModel.storeList[0].images[15],
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -197,8 +222,8 @@ class _MainPageState extends State<MainPage> {
                         borderRadius: BorderRadius.circular(20.0),
                         child: ImageLoadWidget(
                           width: MediaQuery.of(context).size.width,
-                          widthHeightRatio: 1.5,
                           imageUrl: viewModel.storeList[0].images[17],
+                          fit: BoxFit.cover,
                         ),
                       ),
                       const SizedBox(
@@ -208,8 +233,8 @@ class _MainPageState extends State<MainPage> {
                         borderRadius: BorderRadius.circular(20.0),
                         child: ImageLoadWidget(
                           width: MediaQuery.of(context).size.width,
-                          widthHeightRatio: 1.5,
                           imageUrl: viewModel.storeList[0].images[14],
+                          fit: BoxFit.cover,
                         ),
                       ),
                       // Image.network(viewModel.storeList[0].images[1]),

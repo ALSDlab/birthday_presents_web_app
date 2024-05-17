@@ -10,7 +10,7 @@ class StoreViewModel extends ChangeNotifier {
   }
 
   StoreRepositoryImpl repository = StoreRepositoryImpl();
-  StoreState _state = StoreState();
+  final StoreState _state = StoreState();
   List<Store> storeList = [];
 
   StoreState get state => _state;
@@ -18,6 +18,8 @@ class StoreViewModel extends ChangeNotifier {
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
+
+
 
   Future<void> loadingHome() async {
     _isLoading = true;

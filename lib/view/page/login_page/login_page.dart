@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
         title: const Text(
           '마이페이지',
           style: TextStyle(
-              fontFamily: 'Jalnan', fontSize: 20, color: Colors.white),
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -128,16 +128,17 @@ class _LoginPageState extends State<LoginPage> {
                                 Size(double.infinity, 52.h),
                               ),
                               shape: const MaterialStatePropertyAll(
-                                BeveledRectangleBorder(),
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10))),
                               ),
                               backgroundColor:
-                                  const MaterialStatePropertyAll(Colors.black),
+                                  const MaterialStatePropertyAll(Color(0xFF008080)),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                viewModel.signIn(idController.text,
+                                await viewModel.signIn(idController.text,
                                     passwordController.text, context);
-                                GoRouter.of(context).go('/main_page');
                               }
                             },
                             child: Text(
@@ -220,7 +221,9 @@ class _LoginPageState extends State<LoginPage> {
                                   Size(double.infinity, 52.h),
                                 ),
                                 shape: const MaterialStatePropertyAll(
-                                  BeveledRectangleBorder(),
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
                                 ),
                                 backgroundColor:
                                     const MaterialStatePropertyAll(Colors.black),

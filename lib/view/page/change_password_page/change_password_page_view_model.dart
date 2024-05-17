@@ -4,17 +4,17 @@ class ChangePasswordViewModel {
   Future<String> findDocumentId(String name, String phoneNumber) async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      CollectionReference collectionRef =
-      firestore.collection('user');
+      CollectionReference collectionRef = firestore.collection('user');
       QuerySnapshot querySnapshot = await collectionRef
           .where('name', isEqualTo: name)
           .where('phone', isEqualTo: phoneNumber)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.first.id;
+        DocumentSnapshot document = await firestore.doc('user/${querySnapshot.docs.first.id}').get();
+        return document.get('id');
       }
-      return 'id가 존재하지 않습니다.';
+      return '';
     } catch (error) {
       print('오류 발생: $error');
       return '';

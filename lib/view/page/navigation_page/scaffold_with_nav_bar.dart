@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 
 import 'package:bootstrap_icons/bootstrap_icons.dart';
@@ -8,6 +9,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
+import '../../../data/repository/connectivity_observer.dart';
+import '../../../data/repository/network_connectivity_observer.dart';
+import '../../widgets/one_answer_dialog.dart';
 import '../product_detail_page/product_detail_page_view_model.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
@@ -24,6 +28,15 @@ class ScaffoldWithNavBar extends StatefulWidget {
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   int badgeCount = 0;
 
+  //네트워크 통신 확인 코드
+  final ConnectivityObserver _connectivityObserver =
+      NetworkConnectivityObserver();
+
+  //기본 접속 상태 설정
+  var _status = Status.unavailable;
+
+  StreamSubscription<Status>? _subscription;
+
   bool resetNavigation(int newCount) {
     setState(() {
       badgeCount = newCount;
@@ -34,10 +47,50 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   @override
   void initState() {
     Future.microtask(() async {
-      final ProductDetailPageViewModel viewModel = context.read<ProductDetailPageViewModel>();
+      final ProductDetailPageViewModel viewModel =
+          context.read<ProductDetailPageViewModel>();
       badgeCount = await viewModel.getBadgeCount();
+
+      _subscription = _connectivityObserver.observe().listen((status) {
+        setState(() {
+          _status = status;
+          //print('Status changed : $_status');
+          //인터넷 연결 확인 체크 코드
+          if (_status == Status.unavailable) {
+            showConnectionErrorDialog();
+          } else {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          }
+        });
+      });
     });
+
     super.initState();
+  }
+
+  //인터넷 연결 확인 체크 위젯
+  void showConnectionErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return OneAnswerDialog(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            title: '신호없음',
+            subtitle: '인터넷 연결을 확인해주세요',
+            firstButton: '확인',
+            imagePath: 'assets/gifs/internetLost.gif');
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -100,7 +153,14 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                     ? 2
                     : 3,
         onTap: (int index) {
-          _goOtherTab(context, index);
+          if (_status == Status.unavailable) {
+            showConnectionErrorDialog();
+          } else {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+            _goOtherTab(context, index);
+          }
         },
       ),
     );
