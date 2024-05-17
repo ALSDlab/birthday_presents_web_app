@@ -59,6 +59,8 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
         //인터넷 연결 확인 체크 코드
         if (_status == Status.unavailable) {
           showConnectionErrorDialog();
+        } else {
+          context.pop();
         }
       });
     });
@@ -149,7 +151,11 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                     ? 2
                     : 3,
         onTap: (int index) {
-          _goOtherTab(context, index);
+          if (_status == Status.unavailable) {
+            showConnectionErrorDialog();
+          } else {
+            _goOtherTab(context, index);
+          }
         },
       ),
     );
