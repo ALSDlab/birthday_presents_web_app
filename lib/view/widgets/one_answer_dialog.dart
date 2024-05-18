@@ -8,15 +8,14 @@ class OneAnswerDialog extends StatelessWidget {
   final Function() onTap;
   final String imagePath;
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final String firstButton;
 
-  const OneAnswerDialog(
+  OneAnswerDialog(
       {super.key,
         required this.onTap,
         required this.title,
-        required this.subtitle,
-        required this.firstButton, required this.imagePath});
+        required this.firstButton, required this.imagePath, this.subtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -34,31 +33,40 @@ class OneAnswerDialog extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              width: 100,
-              height: 100,
+              width: 150,
+              height: 150,
             ),
             SizedBox(height: 10),
             Text(
               title,
               style: TextStyle(fontSize: 16)
             ),
-            SizedBox(height: 15),
-            Text(
-              subtitle,
-              style: TextStyle(fontSize: 14),
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.visible,
+            Visibility(
+                visible: (subtitle !=  null),
+                child: SizedBox(height: 10)),
+            Visibility(
+              visible: (subtitle != null),
+              child: Text(
+                subtitle ?? '',
+                style: TextStyle(fontSize: 12),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.visible,
+              ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 25),
             SizedBox(
               width: 100,
               height: 32,
               child: ElevatedButton(
                   onPressed: onTap,
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8BC6CC)),
+                  style: OutlinedButton.styleFrom(
+                    // shape: const RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.zero),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      backgroundColor: const Color(0xFF2F362F)),
                   child: Text(firstButton,
-                      style: TextStyle(fontSize: 14))),
+                      style: TextStyle(fontSize: 14, color: Colors.white))),
             ),
             SizedBox(height: 10),
           ],

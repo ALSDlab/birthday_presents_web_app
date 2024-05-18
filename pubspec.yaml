@@ -60,9 +60,8 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^5.2.2
   stylish_bottom_bar: ^1.1.0
   connectivity_plus: ^6.0.3
-  image: ^4.1.7
-  desktop_window: ^0.4.0
   vitality: ^3.0.0
+  cross_connectivity: ^3.0.3
 
 
 dev_dependencies:
