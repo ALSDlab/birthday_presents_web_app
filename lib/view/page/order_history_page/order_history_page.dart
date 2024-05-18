@@ -17,6 +17,7 @@ class OrderHistoryPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         title: const Text(
           '주문 내역',
           style: TextStyle(

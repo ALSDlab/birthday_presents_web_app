@@ -45,15 +45,6 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  void init(String orderNumberForPay) async {
-    try {
-      await fetchMyOrderData(orderNumberForPay);
-    } catch (error) {
-      // 에러 처리
-      logger.info('Error init data: $error');
-    }
-  }
-
   Future<void> fetchMyOrderData(String orderNumberForPay) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();

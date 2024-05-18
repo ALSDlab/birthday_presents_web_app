@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/view/page/navigation_page/back_image.dart';
 import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
@@ -54,7 +55,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       _subscription = _connectivityObserver.observe().listen((status) {
         setState(() {
           _status = status;
-          //print('Status changed : $_status');
+          print('Status changed : $_status');
           //인터넷 연결 확인 체크 코드
           if (_status == Status.unavailable) {
             showConnectionErrorDialog();
@@ -66,7 +67,6 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
         });
       });
     });
-
     super.initState();
   }
 
@@ -98,6 +98,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
     return Scaffold(
       body: Stack(
         children: [
+          // BackImage(),
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -115,79 +116,87 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             ),
           ),
           Container(
-            color: Colors.white.withOpacity(0.8),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF2F362F),
+                  const Color(0xFF2F362F).withOpacity(0.8),
+                ],
+              ),
+            ),
           ),
           widget.child,
         ],
       ),
       bottomNavigationBar: StylishBottomBar(
-        option: AnimatedBarOptions(
-          padding: const EdgeInsets.only(top: 12),
-          iconSize: 30,
-          barAnimation: BarAnimation.fade,
-          iconStyle: IconStyle.Default,
-        ),
-        items: [
-          BottomBarItem(
-            icon: const Icon(BootstrapIcons.house_door),
-            selectedIcon: const Icon(BootstrapIcons.house_door_fill),
-            selectedColor: const Color(0xFF2F362F),
-            unSelectedColor: CupertinoColors.black,
-            title: const Text(
-              '홈',
-              style: TextStyle(fontFamily: 'KoPub'),
+              option: AnimatedBarOptions(
+                padding: const EdgeInsets.only(top: 12),
+                iconSize: 30,
+                barAnimation: BarAnimation.fade,
+                iconStyle: IconStyle.Default,
+              ),
+              items: [
+                BottomBarItem(
+                  icon: const Icon(BootstrapIcons.house_door),
+                  selectedIcon: const Icon(BootstrapIcons.house_door_fill),
+                  selectedColor: const Color(0xFF2F362F),
+                  unSelectedColor: CupertinoColors.black,
+                  title: const Text(
+                    '홈',
+                    style: TextStyle(fontFamily: 'KoPub'),
+                  ),
+                ),
+                BottomBarItem(
+                  icon: const Icon(BootstrapIcons.box2),
+                  selectedIcon: const Icon(BootstrapIcons.box2_fill),
+                  selectedColor: const Color(0xFF2F362F),
+                  unSelectedColor: CupertinoColors.black,
+                  title: const Text(
+                    '상품',
+                    style: TextStyle(fontFamily: 'KoPub'),
+                  ),
+                ),
+                BottomBarItem(
+                  icon: const Icon(BootstrapIcons.cart_check),
+                  selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
+                  selectedColor: const Color(0xFF2F362F),
+                  unSelectedColor: CupertinoColors.black,
+                  title:
+                      const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
+                  badge: Text('$badgeCount'),
+                  showBadge: badgeCount > 0,
+                  badgeColor: Colors.red,
+                  badgePadding: const EdgeInsets.only(left: 4, right: 4),
+                ),
+                BottomBarItem(
+                    icon: const Icon(BootstrapIcons.person_vcard),
+                    selectedIcon: const Icon(BootstrapIcons.person_vcard_fill),
+                    selectedColor: const Color(0xFF2F362F),
+                    unSelectedColor: CupertinoColors.black,
+                    title: const Text('마이페이지',
+                        style: TextStyle(fontFamily: 'KoPub'))),
+              ],
+              backgroundColor: const Color(0xFFFFF8E7),
+              currentIndex: widget.location.contains('/main_page')
+                  ? 0
+                  : widget.location.contains('/product_page')
+                      ? 1
+                      : widget.location.contains('/shopping_cart_page')
+                          ? 2
+                          : 3,
+              onTap: (int index) {
+                if (_status == Status.unavailable) {
+                  showConnectionErrorDialog();
+                } else {
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  }
+                  _goOtherTab(context, index);
+                }
+              },
             ),
-          ),
-          BottomBarItem(
-            icon: const Icon(BootstrapIcons.box2),
-            selectedIcon: const Icon(BootstrapIcons.box2_fill),
-            selectedColor: const Color(0xFF2F362F),
-            unSelectedColor: CupertinoColors.black,
-            title: const Text(
-              '상품',
-              style: TextStyle(fontFamily: 'KoPub'),
-            ),
-          ),
-          BottomBarItem(
-            icon: const Icon(BootstrapIcons.cart_check),
-            selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
-            selectedColor: const Color(0xFF2F362F),
-            unSelectedColor: CupertinoColors.black,
-            title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
-            badge: Text('$badgeCount'),
-            showBadge: badgeCount > 0,
-            badgeColor: Colors.red,
-            badgePadding: const EdgeInsets.only(left: 4, right: 4),
-          ),
-          BottomBarItem(
-              icon: const Icon(BootstrapIcons.person_vcard),
-              selectedIcon: const Icon(BootstrapIcons.person_vcard_fill),
-              selectedColor: const Color(0xFF2F362F),
-              unSelectedColor: CupertinoColors.black,
-              title:
-                  const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),
-        ],
-        backgroundColor: const Color(0xFFFFF8E7),
-        currentIndex: widget.location.contains('/main_page')
-            ? 0
-            : widget.location.contains('/product_page')
-                ? 1
-                : widget.location.contains('/shopping_cart_page')
-                    ? 2
-                    : 3,
-        onTap: (int index) {
-          if (_status == Status.unavailable) {
-            showConnectionErrorDialog();
-          } else {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
-            _goOtherTab(context, index);
-          }
-            _goOtherTab(context, index);
-
-        },
-      ),
     );
   }
 

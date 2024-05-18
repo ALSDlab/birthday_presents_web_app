@@ -24,6 +24,7 @@ class _AgreementPageState extends State<AgreementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
         title: const Text(

@@ -52,6 +52,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           color: Colors.white,
         ),
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         actions: [
           badges.Badge(
             position: badges.BadgePosition.topEnd(top: 0, end: 5),

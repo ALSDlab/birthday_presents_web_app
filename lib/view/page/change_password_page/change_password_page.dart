@@ -33,6 +33,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         title: const Text(
           '마이페이지',
           style: TextStyle(

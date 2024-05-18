@@ -78,6 +78,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         //leading: Text('네트워크 상태 : ${_status.name}'),
         centerTitle: true,
         title: Row(

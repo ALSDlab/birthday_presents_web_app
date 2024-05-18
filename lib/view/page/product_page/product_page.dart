@@ -40,6 +40,7 @@ class _ProductPageState extends State<ProductPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         title: const Text(
           '민영기 염소탕',
           style: TextStyle(

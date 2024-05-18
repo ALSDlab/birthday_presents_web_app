@@ -51,6 +51,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
           color: Colors.white,
         ),
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         title: const Text(
           '주문서 작성',
           style: TextStyle(

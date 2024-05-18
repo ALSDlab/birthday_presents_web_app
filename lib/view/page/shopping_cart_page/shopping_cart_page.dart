@@ -34,6 +34,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         title: const Text(
           '장바구니',
           style: TextStyle(

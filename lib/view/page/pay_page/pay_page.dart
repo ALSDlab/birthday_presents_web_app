@@ -26,7 +26,7 @@ class _PayPageState extends State<PayPage> {
     Future.microtask(() {
       final payViewModel = context.read<PayPageViewModel>();
       if (widget.forOrderItems.isNotEmpty) {
-        payViewModel.init(widget.forOrderItems.first.orderId);
+        payViewModel.fetchMyOrderData(widget.forOrderItems.first.orderId);
       }
     });
     super.initState();
@@ -40,6 +40,7 @@ class _PayPageState extends State<PayPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         title: const Text(
           '주문 확인',
           style: TextStyle(

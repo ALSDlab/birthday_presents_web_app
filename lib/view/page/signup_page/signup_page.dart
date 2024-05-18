@@ -60,6 +60,7 @@ class _SignupPageState extends State<SignupPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
         title: const Text(
           '회원가입',
           style: TextStyle(
@@ -233,7 +234,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           TextButton(
                             style: const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
+                              backgroundColor: WidgetStatePropertyAll(
                                   AppColors.mainButton),
                             ),
                             onPressed: () {
