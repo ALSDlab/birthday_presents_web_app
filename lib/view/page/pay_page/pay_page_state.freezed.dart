@@ -21,6 +21,7 @@ PayPageState _$PayPageStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PayPageState {
   List<OrderModel> get orderItems => throw _privateConstructorUsedError;
+  bool get showSnackbarPadding => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +36,8 @@ abstract class $PayPageStateCopyWith<$Res> {
           PayPageState value, $Res Function(PayPageState) then) =
       _$PayPageStateCopyWithImpl<$Res, PayPageState>;
   @useResult
-  $Res call({List<OrderModel> orderItems, bool isLoading});
+  $Res call(
+      {List<OrderModel> orderItems, bool showSnackbarPadding, bool isLoading});
 }
 
 /// @nodoc
@@ -52,6 +54,7 @@ class _$PayPageStateCopyWithImpl<$Res, $Val extends PayPageState>
   @override
   $Res call({
     Object? orderItems = null,
+    Object? showSnackbarPadding = null,
     Object? isLoading = null,
   }) {
     return _then(_value.copyWith(
@@ -59,6 +62,10 @@ class _$PayPageStateCopyWithImpl<$Res, $Val extends PayPageState>
           ? _value.orderItems
           : orderItems // ignore: cast_nullable_to_non_nullable
               as List<OrderModel>,
+      showSnackbarPadding: null == showSnackbarPadding
+          ? _value.showSnackbarPadding
+          : showSnackbarPadding // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -75,7 +82,8 @@ abstract class _$$PayPageStateImplCopyWith<$Res>
       __$$PayPageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<OrderModel> orderItems, bool isLoading});
+  $Res call(
+      {List<OrderModel> orderItems, bool showSnackbarPadding, bool isLoading});
 }
 
 /// @nodoc
@@ -90,6 +98,7 @@ class __$$PayPageStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? orderItems = null,
+    Object? showSnackbarPadding = null,
     Object? isLoading = null,
   }) {
     return _then(_$PayPageStateImpl(
@@ -97,6 +106,10 @@ class __$$PayPageStateImplCopyWithImpl<$Res>
           ? _value._orderItems
           : orderItems // ignore: cast_nullable_to_non_nullable
               as List<OrderModel>,
+      showSnackbarPadding: null == showSnackbarPadding
+          ? _value.showSnackbarPadding
+          : showSnackbarPadding // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -109,7 +122,9 @@ class __$$PayPageStateImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PayPageStateImpl implements _PayPageState {
   const _$PayPageStateImpl(
-      {final List<OrderModel> orderItems = const [], this.isLoading = false})
+      {final List<OrderModel> orderItems = const [],
+      this.showSnackbarPadding = false,
+      this.isLoading = false})
       : _orderItems = orderItems;
 
   factory _$PayPageStateImpl.fromJson(Map<String, dynamic> json) =>
@@ -126,11 +141,14 @@ class _$PayPageStateImpl implements _PayPageState {
 
   @override
   @JsonKey()
+  final bool showSnackbarPadding;
+  @override
+  @JsonKey()
   final bool isLoading;
 
   @override
   String toString() {
-    return 'PayPageState(orderItems: $orderItems, isLoading: $isLoading)';
+    return 'PayPageState(orderItems: $orderItems, showSnackbarPadding: $showSnackbarPadding, isLoading: $isLoading)';
   }
 
   @override
@@ -140,6 +158,8 @@ class _$PayPageStateImpl implements _PayPageState {
             other is _$PayPageStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._orderItems, _orderItems) &&
+            (identical(other.showSnackbarPadding, showSnackbarPadding) ||
+                other.showSnackbarPadding == showSnackbarPadding) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading));
   }
@@ -147,7 +167,10 @@ class _$PayPageStateImpl implements _PayPageState {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_orderItems), isLoading);
+      runtimeType,
+      const DeepCollectionEquality().hash(_orderItems),
+      showSnackbarPadding,
+      isLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -166,6 +189,7 @@ class _$PayPageStateImpl implements _PayPageState {
 abstract class _PayPageState implements PayPageState {
   const factory _PayPageState(
       {final List<OrderModel> orderItems,
+      final bool showSnackbarPadding,
       final bool isLoading}) = _$PayPageStateImpl;
 
   factory _PayPageState.fromJson(Map<String, dynamic> json) =
@@ -173,6 +197,8 @@ abstract class _PayPageState implements PayPageState {
 
   @override
   List<OrderModel> get orderItems;
+  @override
+  bool get showSnackbarPadding;
   @override
   bool get isLoading;
   @override

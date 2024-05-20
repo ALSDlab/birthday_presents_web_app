@@ -743,13 +743,6 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                           });
 
                                           if (context.mounted) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text('주문생성 완료.'),
-                                                duration: Duration(seconds: 2),
-                                              ),
-                                            );
                                             GoRouter.of(context).push(
                                                 '/shopping_cart_page/fill_order_page/pay_page',
                                                 extra: {

@@ -34,7 +34,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       NetworkConnectivityObserver();
 
   //기본 접속 상태 설정
-  var _status = Status.unavailable;
+  var _status = Status.available;
 
   StreamSubscription<Status>? _subscription;
 

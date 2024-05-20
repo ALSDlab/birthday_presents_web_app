@@ -21,15 +21,16 @@ class _PayPageState extends State<PayPage> {
   bool finalConfirmNeed = false;
   bool finalConfirmDemand = false;
 
+
   @override
   void initState() {
+    super.initState();
     Future.microtask(() {
       final payViewModel = context.read<PayPageViewModel>();
       if (widget.forOrderItems.isNotEmpty) {
-        payViewModel.fetchMyOrderData(widget.forOrderItems.first.orderId);
+        payViewModel.fetchMyOrderData(context, widget.forOrderItems.first.orderId);
       }
     });
-    super.initState();
   }
 
   @override
@@ -61,12 +62,12 @@ class _PayPageState extends State<PayPage> {
                       child: GifProgressBar(),
                     )
                   : Padding(
-                      padding: const EdgeInsets.all(5.0),
+                padding: EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0, bottom: state.showSnackbarPadding ? MediaQuery.of(context).padding.bottom + 48.0 : 0), // Snackbar 높이만큼 padding 추가
                       child: Column(
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 8, left: 8),
+                              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                               child: ListView(
                                 physics: const BouncingScrollPhysics(),
                                 children: [

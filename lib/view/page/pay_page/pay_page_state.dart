@@ -7,6 +7,7 @@ part 'pay_page_state.freezed.dart';part 'pay_page_state.g.dart';
 class PayPageState with _$PayPageState {
   const factory PayPageState({
     @Default([]) List<OrderModel> orderItems,
+    @Default(false) bool showSnackbarPadding,
     @Default(false) bool isLoading,
   }) = _PayPageState;
 

@@ -45,7 +45,8 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchMyOrderData(String orderNumberForPay) async {
+  Future<void> fetchMyOrderData(
+      BuildContext context, String orderNumberForPay) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
@@ -54,6 +55,7 @@ class PayPageViewModel extends ChangeNotifier {
           await orderRepository.getFirebaseOrdersByOrderNo(orderNumberForPay);
       logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
+      showSnackbar(context);
 
       notifyListeners();
     } catch (error) {
@@ -87,6 +89,26 @@ class PayPageViewModel extends ChangeNotifier {
       _state = state.copyWith(isLoading: false);
       notifyListeners();
     }
+  }
+
+  void showSnackbar(BuildContext context) {
+    _state = state.copyWith(showSnackbarPadding: true);
+    notifyListeners();
+
+    final snackBar = SnackBar(
+      content: const Text('주문생성 완료.'),
+      duration: const Duration(seconds: 2),
+      onVisible: () {
+        // snackbar가 사라질 때 패딩을 제거합니다.
+        Future.delayed(const Duration(milliseconds: 2500), () {
+          _state = state.copyWith(showSnackbarPadding: false);
+          notifyListeners();
+        });
+      },
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
   }
 
   Future<void> checkPayItems(List<OrderModel> orderItems) async {

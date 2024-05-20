@@ -10,11 +10,16 @@ class NetworkConnectivityObserver implements ConnectivityObserver {
       print('Connetivity changed : $event');
       var connectivityResult = event.first; //첫번째 요소만 가져옴
 
-      return connectivityResult == ConnectivityResult.ethernet ||
-              connectivityResult == ConnectivityResult.mobile ||
-              connectivityResult == ConnectivityResult.wifi
-          ? Status.available
-          : Status.unavailable;
+      switch (connectivityResult) {
+        case ConnectivityResult.wifi:
+          return Status.available;
+        case ConnectivityResult.mobile:
+          return Status.available;
+        case ConnectivityResult.none:
+          return Status.unavailable;
+        default:
+          return Status.available;
+      }
     });
   }
 }
