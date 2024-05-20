@@ -279,7 +279,7 @@ class PayPageViewModel extends ChangeNotifier {
     // user.email = _state.userAccountModel!.email;
 
     Extra extra = Extra(); // 결제 옵션
-    extra.cardQuota = '3'; // 5만원 이상 결제 시 할부 가능 범위 옵션
+    extra.cardQuota = '1,2,3'; // 5만원 이상 결제 시 할부 가능 범위 옵션
     // extra.openType = 'popup';
 
     // extra.carrier = "SKT,KT,LGT"; //본인인증 시 고정할 통신사명
