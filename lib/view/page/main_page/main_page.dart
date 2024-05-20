@@ -217,7 +217,7 @@ class _MainPageState extends State<MainPage> {
                                     (MediaQuery.of(context).size.width >= 1200)
                                         ? 1200
                                         : MediaQuery.of(context).size.width,
-                                imageUrl: viewModel.storeList[0].images[15],
+                                imageUrl: viewModel.storeList[0].images[19],
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -225,27 +225,49 @@ class _MainPageState extends State<MainPage> {
                           const SizedBox(
                             height: 20,
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: ImageLoadWidget(
-                              width: (MediaQuery.of(context).size.width >= 1200)
-                                  ? 1200
-                                  : MediaQuery.of(context).size.width,
-                              imageUrl: viewModel.storeList[0].images[17],
-                              fit: BoxFit.cover,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: ImageLoadWidget(
+                                width: (MediaQuery.of(context).size.width >= 1200)
+                                    ? 1200
+                                    : MediaQuery.of(context).size.width,
+                                imageUrl: viewModel.storeList[0].images[43],
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: ImageLoadWidget(
-                              width: (MediaQuery.of(context).size.width >= 1200)
-                                  ? 1200
-                                  : MediaQuery.of(context).size.width,
-                              imageUrl: viewModel.storeList[0].images[14],
-                              fit: BoxFit.cover,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: ImageLoadWidget(
+                                width: (MediaQuery.of(context).size.width >= 1200)
+                                    ? 1200
+                                    : MediaQuery.of(context).size.width,
+                                imageUrl: viewModel.storeList[0].images[30],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: ImageLoadWidget(
+                                width: (MediaQuery.of(context).size.width >= 1200)
+                                    ? 1200
+                                    : MediaQuery.of(context).size.width,
+                                imageUrl: viewModel.storeList[0].images[14],
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                           // Image.network(viewModel.storeList[0].images[1]),
