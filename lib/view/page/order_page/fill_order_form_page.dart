@@ -647,6 +647,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                Expanded(child: Container()),
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -759,6 +760,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                     ),
                                   ),
                                 ),
+                                Expanded(child: Container()),
                               ],
                             ),
                           )

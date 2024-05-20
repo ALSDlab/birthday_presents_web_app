@@ -93,7 +93,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                   borderRadius: BorderRadius.circular(10),
                   child: ImageLoadWidget(
                     width: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.32,
-                    height: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.3,
+                    height: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.25,
                     imageUrl: widget.shoppingProductForCart.representativeImage,
                     fit: BoxFit.cover,
                   ),

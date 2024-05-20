@@ -100,7 +100,7 @@ class PayPageViewModel extends ChangeNotifier {
       duration: const Duration(seconds: 2),
       onVisible: () {
         // snackbar가 사라질 때 패딩을 제거합니다.
-        Future.delayed(const Duration(milliseconds: 2500), () {
+        Future.delayed(const Duration(milliseconds: 2200), () {
           _state = state.copyWith(showSnackbarPadding: false);
           notifyListeners();
         });

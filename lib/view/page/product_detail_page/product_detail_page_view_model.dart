@@ -124,12 +124,28 @@ class ProductDetailPageViewModel extends ChangeNotifier {
 
   // 스낵바 구현 매서드
   void cartAddSnackBar(BuildContext context) {
-    const snackBar = SnackBar(
-      content: Text('장바구니에 담겼습니다.', style: TextStyle(fontFamily: 'Jalnan')),
-      duration: Duration(seconds: 3),
+
+    _state = state.copyWith(showSnackbarPadding: true);
+    notifyListeners();
+
+    final snackBar = SnackBar(
+      content: const Text('장바구니에 담겼습니다.', style: TextStyle(fontFamily: 'Jalnan')),
+      duration: const Duration(seconds: 2),
+      onVisible: () {
+        // snackbar가 사라질 때 패딩을 제거합니다.
+        Future.delayed(const Duration(milliseconds: 2200), () {
+          _state = state.copyWith(showSnackbarPadding: false);
+          notifyListeners();
+        });
+      },
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+
+
+
+
+
 
   // 장바구니에서 제거하는 기능
   Future<void> removeFromCartList(ShoppingProductForCart item) async {

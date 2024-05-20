@@ -10,6 +10,7 @@ part 'product_detail_page_state.g.dart';
 class ProductDetailPageState with _$ProductDetailPageState {
   const factory ProductDetailPageState({
     @Default(false) bool isLoading,
+    @Default(false) bool showSnackbarPadding,
     @Default([]) List<ShoppingProductForCart> forBadgeList,
   }) = _ProductDetailPageState;
 

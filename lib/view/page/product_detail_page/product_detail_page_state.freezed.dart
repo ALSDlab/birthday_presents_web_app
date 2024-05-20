@@ -22,6 +22,7 @@ ProductDetailPageState _$ProductDetailPageStateFromJson(
 /// @nodoc
 mixin _$ProductDetailPageState {
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get showSnackbarPadding => throw _privateConstructorUsedError;
   List<ShoppingProductForCart> get forBadgeList =>
       throw _privateConstructorUsedError;
 
@@ -37,7 +38,10 @@ abstract class $ProductDetailPageStateCopyWith<$Res> {
           $Res Function(ProductDetailPageState) then) =
       _$ProductDetailPageStateCopyWithImpl<$Res, ProductDetailPageState>;
   @useResult
-  $Res call({bool isLoading, List<ShoppingProductForCart> forBadgeList});
+  $Res call(
+      {bool isLoading,
+      bool showSnackbarPadding,
+      List<ShoppingProductForCart> forBadgeList});
 }
 
 /// @nodoc
@@ -55,12 +59,17 @@ class _$ProductDetailPageStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? isLoading = null,
+    Object? showSnackbarPadding = null,
     Object? forBadgeList = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showSnackbarPadding: null == showSnackbarPadding
+          ? _value.showSnackbarPadding
+          : showSnackbarPadding // ignore: cast_nullable_to_non_nullable
               as bool,
       forBadgeList: null == forBadgeList
           ? _value.forBadgeList
@@ -79,7 +88,10 @@ abstract class _$$ProductDetailPageStateImplCopyWith<$Res>
       __$$ProductDetailPageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, List<ShoppingProductForCart> forBadgeList});
+  $Res call(
+      {bool isLoading,
+      bool showSnackbarPadding,
+      List<ShoppingProductForCart> forBadgeList});
 }
 
 /// @nodoc
@@ -96,12 +108,17 @@ class __$$ProductDetailPageStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? showSnackbarPadding = null,
     Object? forBadgeList = null,
   }) {
     return _then(_$ProductDetailPageStateImpl(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showSnackbarPadding: null == showSnackbarPadding
+          ? _value.showSnackbarPadding
+          : showSnackbarPadding // ignore: cast_nullable_to_non_nullable
               as bool,
       forBadgeList: null == forBadgeList
           ? _value._forBadgeList
@@ -118,6 +135,7 @@ class _$ProductDetailPageStateImpl
     implements _ProductDetailPageState {
   const _$ProductDetailPageStateImpl(
       {this.isLoading = false,
+      this.showSnackbarPadding = false,
       final List<ShoppingProductForCart> forBadgeList = const []})
       : _forBadgeList = forBadgeList;
 
@@ -127,6 +145,9 @@ class _$ProductDetailPageStateImpl
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final bool showSnackbarPadding;
   final List<ShoppingProductForCart> _forBadgeList;
   @override
   @JsonKey()
@@ -138,7 +159,7 @@ class _$ProductDetailPageStateImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductDetailPageState(isLoading: $isLoading, forBadgeList: $forBadgeList)';
+    return 'ProductDetailPageState(isLoading: $isLoading, showSnackbarPadding: $showSnackbarPadding, forBadgeList: $forBadgeList)';
   }
 
   @override
@@ -147,6 +168,7 @@ class _$ProductDetailPageStateImpl
     properties
       ..add(DiagnosticsProperty('type', 'ProductDetailPageState'))
       ..add(DiagnosticsProperty('isLoading', isLoading))
+      ..add(DiagnosticsProperty('showSnackbarPadding', showSnackbarPadding))
       ..add(DiagnosticsProperty('forBadgeList', forBadgeList));
   }
 
@@ -157,13 +179,15 @@ class _$ProductDetailPageStateImpl
             other is _$ProductDetailPageStateImpl &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.showSnackbarPadding, showSnackbarPadding) ||
+                other.showSnackbarPadding == showSnackbarPadding) &&
             const DeepCollectionEquality()
                 .equals(other._forBadgeList, _forBadgeList));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading,
+  int get hashCode => Object.hash(runtimeType, isLoading, showSnackbarPadding,
       const DeepCollectionEquality().hash(_forBadgeList));
 
   @JsonKey(ignore: true)
@@ -184,6 +208,7 @@ class _$ProductDetailPageStateImpl
 abstract class _ProductDetailPageState implements ProductDetailPageState {
   const factory _ProductDetailPageState(
           {final bool isLoading,
+          final bool showSnackbarPadding,
           final List<ShoppingProductForCart> forBadgeList}) =
       _$ProductDetailPageStateImpl;
 
@@ -192,6 +217,8 @@ abstract class _ProductDetailPageState implements ProductDetailPageState {
 
   @override
   bool get isLoading;
+  @override
+  bool get showSnackbarPadding;
   @override
   List<ShoppingProductForCart> get forBadgeList;
   @override

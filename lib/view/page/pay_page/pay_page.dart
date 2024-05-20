@@ -62,7 +62,13 @@ class _PayPageState extends State<PayPage> {
                       child: GifProgressBar(),
                     )
                   : Padding(
-                padding: EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0, bottom: state.showSnackbarPadding ? MediaQuery.of(context).padding.bottom + 48.0 : 0), // Snackbar 높이만큼 padding 추가
+                      padding: EdgeInsets.only(
+                          top: 5.0,
+                          left: 5.0,
+                          right: 5.0,
+                          bottom: state.showSnackbarPadding
+                              ? MediaQuery.of(context).padding.bottom + 48.0
+                              : 0), // Snackbar 높이만큼 padding 추가
                       child: Column(
                         children: [
                           Expanded(
