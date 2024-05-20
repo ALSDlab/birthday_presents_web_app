@@ -218,34 +218,43 @@ class _MainPageState extends State<MainPage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: ImageLoadWidget(
-                          width: MediaQuery.of(context).size.width,
-                          widthHeightRatio: 1.5,
-                          imageUrl: viewModel.storeList[0].images[31],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: ImageLoadWidget(
+                            width: MediaQuery.of(context).size.width,
+                            widthHeightRatio: 1.5,
+                            imageUrl: viewModel.storeList[0].images[31],
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: ImageLoadWidget(
-                          width: MediaQuery.of(context).size.width,
-                          widthHeightRatio: 1.5,
-                          imageUrl: viewModel.storeList[0].images[26],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: ImageLoadWidget(
+                            width: MediaQuery.of(context).size.width,
+                            widthHeightRatio: 1.5,
+                            imageUrl: viewModel.storeList[0].images[26],
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: ImageLoadWidget(
-                          width: MediaQuery.of(context).size.width,
-                          widthHeightRatio: 1.5,
-                          imageUrl: viewModel.storeList[0].images[43],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: ImageLoadWidget(
+                            width: MediaQuery.of(context).size.width,
+                            widthHeightRatio: 1.5,
+                            imageUrl: viewModel.storeList[0].images[43],
+                          ),
                         ),
                       ),
 
