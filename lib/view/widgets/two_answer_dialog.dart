@@ -92,7 +92,7 @@ class TwoAnswerDialog extends StatelessWidget {
                           backgroundColor: Colors.grey.shade200),
                       child: Text(secondButton,
                           style: const TextStyle(
-                              fontSize: 14, color: Colors.white))),
+                              fontSize: 14, color: Colors.black))),
                 ),
               ],
             ),
