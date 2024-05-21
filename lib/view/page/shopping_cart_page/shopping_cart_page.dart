@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
@@ -110,7 +111,17 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           const Text('장바구니가 비었습니다.'),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
                                           OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                              shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                            ),
                                             onPressed: () {
                                               context.go('/product_page', extra: {
                                                 'navSetState': widget.navSetState
