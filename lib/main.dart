@@ -20,18 +20,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(360, 900),
-      minTextAdapt: true,
-      builder: (context, child) => MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.transparent,
-          fontFamily: 'Kopub',
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2F362F))
-              .copyWith(surface: Colors.white),
+    return PopScope(
+      canPop: false,
+      child: ScreenUtilInit(
+        designSize: const Size(360, 900),
+        minTextAdapt: true,
+        builder: (context, child) => MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.transparent,
+            fontFamily: 'Kopub',
+            colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2F362F))
+                .copyWith(surface: Colors.white),
+          ),
+          routerConfig: router,
         ),
-        routerConfig: router,
       ),
     );
   }
