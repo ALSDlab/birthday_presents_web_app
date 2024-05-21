@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
@@ -58,8 +57,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 child: state.isLoading
                     ? const Center(child: GifProgressBar())
                     : Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
                           children: [
                             const Align(
                               alignment: Alignment.centerLeft,
@@ -108,7 +107,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           const Text('장바구니가 비었습니다.'),
                                           SizedBox(
@@ -116,25 +116,32 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                           ),
                                           OutlinedButton(
                                             style: OutlinedButton.styleFrom(
-                                              shape: const RoundedRectangleBorder(
+                                              shape:
+                                                  const RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(
                                                   Radius.circular(10),
                                                 ),
                                               ),
                                             ),
                                             onPressed: () {
-                                              context.go('/product_page', extra: {
-                                                'navSetState': widget.navSetState
-                                              });
+                                              context.go('/product_page',
+                                                  extra: {
+                                                    'navSetState':
+                                                        widget.navSetState
+                                                  });
                                             },
-                                            child: const Text('상품 담으러 가기'),
+                                            child: const Text(
+                                              '상품 담으러 가기',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
                                   )
                                 : Expanded(
-                                  child: Padding(
+                                    child: Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: Column(
                                         children: [
@@ -144,9 +151,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                 return ShoppingCartPageWidget(
                                                   shoppingProductForCart:
                                                       state.cartList[index],
-                                                  removeFromCartList:
-                                                      viewModel.removeFromCartList,
-                                                  navSetState: widget.navSetState,
+                                                  removeFromCartList: viewModel
+                                                      .removeFromCartList,
+                                                  navSetState:
+                                                      widget.navSetState,
                                                 );
                                               },
                                               itemCount: state.cartList.length,
@@ -165,7 +173,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                           reloadedList =
                                                           await viewModel
                                                               .updateCartList(
-                                                                  state.cartList);
+                                                                  state
+                                                                      .cartList);
                                                       final List<OrderModel>
                                                           orderItemList =
                                                           await viewModel.sendCart(
@@ -176,14 +185,16 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                   .toList());
                                                       if (reloadedList
                                                           .where((e) =>
-                                                              e.isChecked == true)
+                                                              e.isChecked ==
+                                                              true)
                                                           .toList()
                                                           .isEmpty) {
                                                         showDialog(
                                                             context: context,
                                                             builder: (context) {
                                                               return const AlertDialog(
-                                                                title: Text('알림'),
+                                                                title:
+                                                                    Text('알림'),
                                                                 content: Text(
                                                                     '선택된 상품이 없습니다. 상품을 선택해 주세요'),
                                                               );
@@ -195,21 +206,20 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                             extra: {
                                                               'orderModelList':
                                                                   orderItemList,
-                                                              'navSetState':
-                                                                  widget.navSetState,
+                                                              'navSetState': widget
+                                                                  .navSetState,
                                                             });
                                                       }
                                                     },
                                                     style: ElevatedButton.styleFrom(
                                                         backgroundColor:
-                                                            const Color(0xFF2F362F),
-                                                        shape:
-                                                            const RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.all(
-                                                                        Radius
-                                                                            .circular(
-                                                                                10)))),
+                                                            const Color(
+                                                                0xFF2F362F),
+                                                        shape: const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        10)))),
                                                     child: const Text(
                                                       '주문하기',
                                                       style: TextStyle(
@@ -229,10 +239,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                         ],
                                       ),
                                     ),
-                                )
+                                  )
                           ],
                         ),
-                    ),
+                      ),
               ),
             ),
           ),
