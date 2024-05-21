@@ -108,6 +108,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         const Text('장바구니가 비었습니다.'),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
                                         OutlinedButton(
                                           onPressed: () {
                                             context.go('/product_page', extra: {
