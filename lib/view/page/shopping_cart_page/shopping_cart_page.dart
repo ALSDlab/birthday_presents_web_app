@@ -112,6 +112,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                           height: 15,
                                         ),
                                         OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                          ),
                                           onPressed: () {
                                             context.go('/product_page', extra: {
                                               'navSetState': widget.navSetState

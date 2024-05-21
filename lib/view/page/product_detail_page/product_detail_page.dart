@@ -1,6 +1,8 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:bootstrap_icons/bootstrap_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
@@ -418,8 +420,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       });
                                 },
                                 child: const Text(
+                                  textAlign: TextAlign.center,
                                   '장바구니',
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 11,
+                                  ),
                                 ),
                               ),
                             ),
@@ -645,8 +651,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       });
                                 },
                                 child: const Text(
+
+                                  textAlign: TextAlign.center,
                                   '바로구매',
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(color: Colors.white, fontSize: 11),
                                 ),
                               ),
                             ),
