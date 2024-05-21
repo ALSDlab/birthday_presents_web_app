@@ -14,11 +14,12 @@ class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
     super.key,
     required this.product,
-    required this.navSetState,
+    required this.navSetState, required this.hideNavBar,
   });
 
   final Product product;
-  final bool Function(int)? navSetState;
+  final bool Function(int) navSetState;
+  final bool Function(bool) hideNavBar;
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -63,7 +64,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: IconButton(
                 onPressed: () {
                   context.go('/shopping_cart_page',
-                      extra: {'navSetState': widget.navSetState!});
+                      extra: {'navSetState': widget.navSetState, 'hideNavBar' : widget.hideNavBar});
                 },
                 icon: const Icon(
                   BootstrapIcons.cart_check,
@@ -398,11 +399,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                             final newBadgeCount =
                                                                 await viewModel
                                                                     .getBadgeCount();
-                                                            widget.navSetState!(
+                                                            widget.navSetState(
                                                                 newBadgeCount);
-
-                                                            // setState(() {});
-                                                          },
+                                                            },
                                                           child: const Text(
                                                             '장바구니 담기',
                                                             style: TextStyle(
@@ -625,7 +624,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                       orderItemList,
                                                                   'navSetState':
                                                                       widget
-                                                                          .navSetState
+                                                                          .navSetState,
+                                                                  'hideNavBar': widget.hideNavBar
                                                                 });
                                                             // context.push('/fill_order_page',
                                                             //     extra: [directOrderItem]);
