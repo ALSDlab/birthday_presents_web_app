@@ -1,4 +1,5 @@
 //당근 아이콘이 있는 버튼 2개 다이얼로그: 상품 삭제 버튼에서만 사용
+//myk_market에서 아직 미사용
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

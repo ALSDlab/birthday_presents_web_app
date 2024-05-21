@@ -175,7 +175,6 @@ class PayPageViewModel extends ChangeNotifier {
                   onTap: () {
                     Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
                     context.pop();
-
                   },
                   imagePath: afterPayStatus.every((e) => e == 1)
                       ? 'assets/gifs/success.gif'
@@ -233,6 +232,7 @@ class PayPageViewModel extends ChangeNotifier {
         logger.info(paidResultData);
         if (paidResultData == 'done') {
           postPaidItems(orderItems, 1); // 결제완료되면 서버로 pay status 변경
+          //TODO : 장바구니 비우기 적용(결제 한것만)
           List<ShoppingProductForCart> currentList =
               await getShoppingCartList();
           List<String> orderIds =
@@ -242,9 +242,6 @@ class PayPageViewModel extends ChangeNotifier {
           String jsonString =
               jsonEncode(currentList.map((e) => e.toJson()).toList());
           prefs.setString('shoppingCartList', jsonString);
-
-          //TODO: 장바구니 페이지 재빌드 메서드를 여기에 넣으면 될듯
-          //TODO: bottomNavBar도 재빌드해야 함
         }
       },
     );

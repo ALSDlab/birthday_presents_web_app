@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
+import 'package:myk_market_app/view/widgets/two_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/image_load_widget.dart';
@@ -56,34 +57,34 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                 onPressed: () {
                   showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                            content: const Text('상품을 삭제하시겠습니까?'),
-                            actions: [
-                              OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('아니요')),
-                              OutlinedButton(
-                                  onPressed: () async {
-                                    await widget.removeFromCartList(
-                                        widget.shoppingProductForCart);
-                                    final newBadgeCount =
-                                        await viewModel.getCartList();
-                                    widget.navSetState(newBadgeCount);
-                                    if (context.mounted) {
-                                      Navigator.pop(context);
-                                    }
-                                  },
-                                  child: const Text('예'))
-                            ],
+                      builder: (context) => TwoAnswerDialog(
+                            title: '상품을 삭제하시겠습니까?',
+                            firstButton: '아니요',
+                            secondButton: '예',
+                            imagePath: 'assets/gifs/fail.gif',
+                            //TODO: 선택아이콘으로 이미지 바꾸기
+                            onFirstTap: () {
+                              Navigator.pop(context);
+                            },
+                            onSecondTap: () async {
+                              await widget.removeFromCartList(
+                                  widget.shoppingProductForCart);
+                              final newBadgeCount =
+                                  await viewModel.getCartList();
+                              widget.navSetState(newBadgeCount);
+                              if (context.mounted) {
+                                Navigator.pop(context);
+                              }
+                            },
                           ));
                 },
                 icon: const Icon(Icons.cancel_outlined))
           ],
         ),
         SizedBox(
-          width: (MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width,
+          width: (MediaQuery.of(context).size.width >= 1200)
+              ? 1200
+              : MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -92,8 +93,14 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: ImageLoadWidget(
-                    width: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.32,
-                    height: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.25,
+                    width: ((MediaQuery.of(context).size.width >= 1200)
+                            ? 1200
+                            : MediaQuery.of(context).size.width) *
+                        0.32,
+                    height: ((MediaQuery.of(context).size.width >= 1200)
+                            ? 1200
+                            : MediaQuery.of(context).size.width) *
+                        0.25,
                     imageUrl: widget.shoppingProductForCart.representativeImage,
                     fit: BoxFit.cover,
                   ),
