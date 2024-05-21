@@ -10,9 +10,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
+import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/domain/order_repository.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../env/env.dart';
 import '../../../utils/simple_logger.dart';
@@ -108,7 +110,6 @@ class PayPageViewModel extends ChangeNotifier {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
   }
 
   Future<void> checkPayItems(List<OrderModel> orderItems) async {
@@ -225,13 +226,22 @@ class PayPageViewModel extends ChangeNotifier {
         // checkQtyFromServer(data);
         return true;
       },
-      onDone: (String data) {
+      onDone: (String data) async {
         logger.info('------- onDone: $data');
         String paidResultData = jsonDecode(data)['event'];
         logger.info(paidResultData);
         if (paidResultData == 'done') {
           postPaidItems(orderItems, 1); // 결제완료되면 서버로 pay status 변경
           //TODO : 장바구니 비우기 적용(결제 한것만)
+          List<ShoppingProductForCart> currentList =
+              await getShoppingCartList();
+          List<String> orderIds =
+              orderItems.map((e) => e.orderId).toSet().toList();
+          currentList.removeWhere((e) => orderIds.contains(e.orderId));
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String jsonString =
+              jsonEncode(currentList.map((e) => e.toJson()).toList());
+          prefs.setString('shoppingCartList', jsonString);
         }
       },
     );
@@ -289,5 +299,20 @@ class PayPageViewModel extends ChangeNotifier {
     payload.items = itemList;
     payload.extra = extra;
     return payload;
+  }
+
+  Future<List<ShoppingProductForCart>> getShoppingCartList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? selectedProducts = prefs.getString('shoppingCartList');
+
+    if (selectedProducts != null) {
+      // 저장된 데이터가 있다면 JSON을 파싱하여 리스트로 변환
+      final jsonList = jsonDecode(selectedProducts) as List<dynamic>;
+      final cartList =
+          jsonList.map((e) => ShoppingProductForCart.fromJson(e)).toList();
+      return cartList;
+    } else {
+      return [];
+    }
   }
 }
