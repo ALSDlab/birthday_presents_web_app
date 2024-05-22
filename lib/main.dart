@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myk_market_app/di/get_it.dart';
 import 'package:myk_market_app/router.dart';
+import 'package:myk_market_app/url_strategy_mobile.dart'
+if (dart.library.html) 'package:myk_market_app/url_strategy_web.dart';
 
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  configureUrlStrategy();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
