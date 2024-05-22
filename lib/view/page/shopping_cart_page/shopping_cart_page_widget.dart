@@ -61,7 +61,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                             title: '상품을 삭제하시겠습니까?',
                             firstButton: '아니요',
                             secondButton: '예',
-                            imagePath: 'assets/gifs/fail.gif',
+                            imagePath: 'assets/gifs/shopping_cart.gif',
                             //TODO: 선택아이콘으로 이미지 바꾸기
                             onFirstTap: () {
                               Navigator.pop(context);
