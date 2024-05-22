@@ -14,7 +14,8 @@ class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
     super.key,
     required this.product,
-    required this.navSetState, required this.hideNavBar,
+    required this.navSetState,
+    required this.hideNavBar,
   });
 
   final Product product;
@@ -63,8 +64,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               showBadge: _showCartBadge,
               child: IconButton(
                 onPressed: () {
-                  context.go('/shopping_cart_page',
-                      extra: {'navSetState': widget.navSetState, 'hideNavBar' : widget.hideNavBar});
+                  context.go('/shopping_cart_page', extra: {
+                    'navSetState': widget.navSetState,
+                    'hideNavBar': widget.hideNavBar
+                  });
                 },
                 icon: const Icon(
                   BootstrapIcons.cart_check,
@@ -112,14 +115,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ImageLoadWidget(
-                                width: (MediaQuery.of(context).size.width >= 1200)
-                                    ? 1200
-                                    : MediaQuery.of(context).size.width,
-                                height:
-                                    ((MediaQuery.of(context).size.width >= 1200)
-                                            ? 1200
-                                            : MediaQuery.of(context).size.width) *
-                                        0.58,
+                                width:
+                                    (MediaQuery.of(context).size.width >= 1200)
+                                        ? 1200
+                                        : MediaQuery.of(context).size.width,
+                                height: ((MediaQuery.of(context).size.width >=
+                                            1200)
+                                        ? 1200
+                                        : MediaQuery.of(context).size.width) *
+                                    0.58,
                                 imageUrl: widget.product.representativeImage,
                                 fit: BoxFit.cover,
                               ),
@@ -132,7 +136,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 child: Text(
                                   widget.product.title,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w900, fontSize: 16),
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 16),
                                 ),
                               ),
                             ),
@@ -194,10 +199,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return ImageLoadWidget(
-                                  width:
-                                      (MediaQuery.of(context).size.width >= 1200)
-                                          ? 1200
-                                          : MediaQuery.of(context).size.width,
+                                  width: (MediaQuery.of(context).size.width >=
+                                          1200)
+                                      ? 1200
+                                      : MediaQuery.of(context).size.width,
                                   imageUrl: widget.product.images[index],
                                   fit: BoxFit.cover,
                                 );
@@ -243,7 +248,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.all(16),
+                                                        const EdgeInsets.all(
+                                                            16),
                                                     child: Text(
                                                       widget.product.title,
                                                       style: const TextStyle(
@@ -255,7 +261,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 16, bottom: 32),
+                                                            left: 16,
+                                                            bottom: 32),
                                                     child: Text(
                                                         '${widget.product.price}원'),
                                                   ),
@@ -271,7 +278,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                       decoration: BoxDecoration(
                                                           border: Border.all(),
                                                           borderRadius:
-                                                              BorderRadius.zero),
+                                                              BorderRadius
+                                                                  .zero),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -335,10 +343,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                             '수량 ${viewModel.cartCount}개'),
                                                         Text(
                                                           '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원',
-                                                          style: const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight.w800,
-                                                              fontSize: 17),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  fontSize: 17),
                                                         )
                                                       ],
                                                     ),
@@ -350,8 +360,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                16.0),
+                                                            const EdgeInsets
+                                                                .all(16.0),
                                                         child: OutlinedButton(
                                                           style: OutlinedButton
                                                               .styleFrom(
@@ -373,7 +383,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                     .substring(
                                                                         2, 10)
                                                                     .replaceAll(
-                                                                        '-', '');
+                                                                        '-',
+                                                                        '');
                                                             ShoppingProductForCart item = ShoppingProductForCart(
                                                                 orderId: viewModel
                                                                     .generateLicensePlate(
@@ -388,7 +399,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                     .product
                                                                     .price,
                                                                 representativeImage:
-                                                                    widget.product
+                                                                    widget
+                                                                        .product
                                                                         .representativeImage,
                                                                 count: viewModel
                                                                     .cartCount);
@@ -401,12 +413,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                     .getBadgeCount();
                                                             widget.navSetState(
                                                                 newBadgeCount);
-                                                            },
+                                                          },
                                                           child: const Text(
                                                             '장바구니 담기',
                                                             style: TextStyle(
-                                                                color:
-                                                                    Colors.white),
+                                                                color: Colors
+                                                                    .white),
                                                           ),
                                                         ),
                                                       ),
@@ -426,6 +438,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       fontSize: 11,
                                     ),
                                   ),
+                                ),
                               ),
                             ),
                             Expanded(
@@ -461,7 +474,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.all(16),
+                                                        const EdgeInsets.all(
+                                                            16),
                                                     child: Text(
                                                       widget.product.title,
                                                       style: const TextStyle(
@@ -473,7 +487,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 16, bottom: 32),
+                                                            left: 16,
+                                                            bottom: 32),
                                                     child: Text(
                                                         '${widget.product.price}원'),
                                                   ),
@@ -489,7 +504,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                       decoration: BoxDecoration(
                                                           border: Border.all(),
                                                           borderRadius:
-                                                              BorderRadius.zero),
+                                                              BorderRadius
+                                                                  .zero),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -569,8 +585,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                16.0),
+                                                            const EdgeInsets
+                                                                .all(16.0),
                                                         child: OutlinedButton(
                                                           style: OutlinedButton
                                                               .styleFrom(
@@ -590,7 +606,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                     .substring(
                                                                         2, 10)
                                                                     .replaceAll(
-                                                                        '-', '');
+                                                                        '-',
+                                                                        '');
                                                             final OrderModel
                                                                 directOrderItem =
                                                                 OrderModel(
@@ -607,15 +624,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                   widget.product
                                                                       .representativeImage,
                                                               price: widget
-                                                                  .product.price,
+                                                                  .product
+                                                                  .price,
                                                               count: viewModel
                                                                   .purchaseCount,
                                                               orderedDate:
                                                                   createdDate,
                                                               payAndStatus: 0,
                                                             );
-                                                            final List<OrderModel>
-                                                                orderItemList = [
+                                                            final List<
+                                                                    OrderModel>
+                                                                orderItemList =
+                                                                [
                                                               directOrderItem
                                                             ];
                                                             Navigator.pop(
@@ -628,7 +648,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                   'navSetState':
                                                                       widget
                                                                           .navSetState,
-                                                                  'hideNavBar': widget.hideNavBar
+                                                                  'hideNavBar':
+                                                                      widget
+                                                                          .hideNavBar
                                                                 });
                                                             // context.push('/fill_order_page',
                                                             //     extra: [directOrderItem]);
@@ -636,8 +658,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                           child: const Text(
                                                             '구매하기',
                                                             style: TextStyle(
-                                                                color:
-                                                                    Colors.white),
+                                                                color: Colors
+                                                                    .white),
                                                           ),
                                                         ),
                                                       ),
@@ -652,7 +674,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   child: const Text(
                                     textAlign: TextAlign.center,
                                     '바로구매',
-                                    style: TextStyle(color: Colors.white, fontSize: 11),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 11),
                                   ),
                                 ),
                               ),
