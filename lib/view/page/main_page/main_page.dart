@@ -284,7 +284,7 @@ class _MainPageState extends State<MainPage> {
                                 softWrap: true,//긴 텍스트 줄 바꿈
                                 style: TextStyle(
                                   letterSpacing: 1.1,
-                                  height: 1.4,
+                                  height: 1.3,
                                   fontFamily: 'Kopub',
                                   color: Colors.grey
                                 ),
