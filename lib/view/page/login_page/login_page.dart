@@ -58,80 +58,182 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<LoginPageViewModel>();
 
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFF2F362F),
-          scrolledUnderElevation: 0,
-          title: const Text(
-            '마이페이지',
-            style: TextStyle(
-                fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
-          ),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
+        title: const Text(
+          '마이페이지',
+          style: TextStyle(
+              fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
         ),
-        body: Center(
-          child: SizedBox(
-            width: (MediaQuery.of(context).size.width >= 1200)
-                ? 1200
-                : MediaQuery.of(context).size.width,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(32), topRight: Radius.circular(32)),
-              child: Container(
-                color: const Color(0xFFFFF8E7),
-                child: Padding(
-                  padding: const EdgeInsets.all(64.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        '로그인',
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: ListView(
-                          children: [
-                            Column(
+        centerTitle: true,
+      ),
+      body: Center(
+        child: SizedBox(
+          width: (MediaQuery.of(context).size.width >= 1200)
+              ? 1200
+              : MediaQuery.of(context).size.width,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+            child: Container(
+              color: const Color(0xFFFFF8E7),
+              child: Padding(
+                padding: const EdgeInsets.all(64.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '로그인',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          Column(
+                            children: [
+                              Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: idController,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return '필수항목입니다.';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: const InputDecoration(
+                                          hintText: '아이디',
+                                          border: OutlineInputBorder()),
+                                    ),
+                                    TextFormField(
+                                      controller: passwordController,
+                                      obscureText: true,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return '필수항목입니다.';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: const InputDecoration(
+                                          hintText: '비밀번호',
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              TextButton(
+                                style: ButtonStyle(
+                                  minimumSize: MaterialStateProperty.all(
+                                    Size(double.infinity, 52.h),
+                                  ),
+                                  shape: const MaterialStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                  ),
+                                  backgroundColor:
+                                      const MaterialStatePropertyAll(
+                                          Color(0xFF008080)),
+                                ),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    await viewModel.signIn(idController.text,
+                                        passwordController.text, context);
+                                  }
+                                },
+                                child: Text(
+                                  '로그인',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16.h),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      context.push(
+                                          '/profile_page/login_page/change_password_page');
+                                    },
+                                    child: const Text(
+                                      '아이디 / 비밀번호 찾기',
+                                      style: TextStyle(
+                                        color: Color(0xFF8e8e93),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      context.push(
+                                          '/profile_page/login_page/agreement_page');
+                                    },
+                                    child: const Text(
+                                      '회원가입',
+                                      style: TextStyle(
+                                        color: Color(0xFF8e8e93),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 64.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: [
-                                      TextFormField(
-                                        controller: idController,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return '필수항목입니다.';
-                                          }
-                                          return null;
-                                        },
-                                        decoration: const InputDecoration(
-                                            hintText: '아이디',
-                                            border: OutlineInputBorder()),
-                                      ),
-                                      TextFormField(
-                                        controller: passwordController,
-                                        obscureText: true,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return '필수항목입니다.';
-                                          }
-                                          return null;
-                                        },
-                                        decoration: const InputDecoration(
-                                            hintText: '비밀번호',
-                                            border: OutlineInputBorder()),
-                                      ),
-                                    ],
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Text('비회원 주문 조회'),
+                                ),
+                                TextField(
+                                  controller: orderedUserController,
+                                  decoration: const InputDecoration(
+                                      hintText: '주문자명',
+                                      border: OutlineInputBorder()),
+                                ),
+                                TextField(
+                                  controller: orderNumberController,
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                      hintText: '주문번호',
+                                      border: OutlineInputBorder()),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Text(
+                                    '주문정보를 잊으신 경우 고객센터로 문의바랍니다.',
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 10),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 8.h,
-                                ),
                                 TextButton(
+                                  onPressed: () async {
+                                    final List<OrderModel> orderCheckList =
+                                        await viewModel.orderCheckforNoMember(
+                                            orderNumberController.text,
+                                            orderedUserController.text,
+                                            context);
+                                    if (orderCheckList.isNotEmpty &&
+                                        context.mounted) {
+                                      GoRouter.of(context).go(
+                                          '/shopping_cart_page/fill_order_page/pay_page',
+                                          extra: {
+                                            'orderModelList': orderCheckList,
+                                            'hideNavBar': widget.hideNavBar
+                                          });
+                                      widget.hideNavBar(true);
+                                    }
+                                  },
                                   style: ButtonStyle(
                                     minimumSize: MaterialStateProperty.all(
                                       Size(double.infinity, 52.h),
@@ -143,126 +245,21 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     backgroundColor:
                                         const MaterialStatePropertyAll(
-                                            Color(0xFF008080)),
+                                            Colors.black),
                                   ),
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      await viewModel.signIn(idController.text,
-                                          passwordController.text, context);
-                                    }
-                                  },
-                                  child: Text(
-                                    '로그인',
+                                  child: const Text(
+                                    '주문확인',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 16.h),
+                                        color: Colors.white, fontSize: 16),
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        context.push(
-                                            '/profile_page/login_page/change_password_page');
-                                      },
-                                      child: const Text(
-                                        '아이디 / 비밀번호 찾기',
-                                        style: TextStyle(
-                                          color: Color(0xFF8e8e93),
-                                        ),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        context.push(
-                                            '/profile_page/login_page/agreement_page');
-                                      },
-                                      child: const Text(
-                                        '회원가입',
-                                        style: TextStyle(
-                                          color: Color(0xFF8e8e93),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 64.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                                    child: Text('비회원 주문 조회'),
-                                  ),
-                                  TextField(
-                                    controller: orderedUserController,
-                                    decoration: const InputDecoration(
-                                        hintText: '주문자명',
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  TextField(
-                                    controller: orderNumberController,
-                                    obscureText: true,
-                                    decoration: const InputDecoration(
-                                        hintText: '주문번호',
-                                        border: OutlineInputBorder()),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                                    child: Text(
-                                      '주문정보를 잊으신 경우 고객센터로 문의바랍니다.',
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 10),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      final List<OrderModel> orderCheckList =
-                                          await viewModel.orderCheckforNoMember(
-                                              orderNumberController.text,
-                                              orderedUserController.text,
-                                              context);
-                                      if (orderCheckList.isNotEmpty &&
-                                          context.mounted) {
-                                        GoRouter.of(context).go(
-                                            '/shopping_cart_page/fill_order_page/pay_page',
-                                            extra: {
-                                              'orderModelList': orderCheckList,
-                                              'hideNavBar': widget.hideNavBar
-                                            });
-                                        widget.hideNavBar(true);
-                                      }
-                                    },
-                                    style: ButtonStyle(
-                                      minimumSize: MaterialStateProperty.all(
-                                        Size(double.infinity, 52.h),
-                                      ),
-                                      shape: const MaterialStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10))),
-                                      ),
-                                      backgroundColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.black),
-                                    ),
-                                    child: const Text(
-                                      '주문확인',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 16),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

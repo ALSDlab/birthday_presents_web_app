@@ -75,227 +75,205 @@ class _MainPageState extends State<MainPage> {
     final viewModel = context.watch<StoreViewModel>();
     final state = viewModel.state;
 
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF2F362F),
-          scrolledUnderElevation: 0,
-          //leading: Text('네트워크 상태 : ${_status.name}'),
-          centerTitle: true,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF2F362F),
+        scrolledUnderElevation: 0,
+        //leading: Text('네트워크 상태 : ${_status.name}'),
+        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                border: Border.all(
+                  width: 1,
                   color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  border: Border.all(
-                    width: 1,
-                    color: Colors.white,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        image: DecorationImage(
-                            image:
-                                AssetImage('assets/images/myk_market_logo.png'),
-                            fit: BoxFit.cover)),
-                  ),
                 ),
               ),
-              const SizedBox(
-                width: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      image: DecorationImage(
+                          image:
+                              AssetImage('assets/images/myk_market_logo.png'),
+                          fit: BoxFit.cover)),
+                ),
               ),
-              const Text(
-                '민영기 염소탕',
-                style: TextStyle(
-                    fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
-              ),
-            ],
-          ),
-
-          // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
-          actions: [
-            TextButton(
-                onPressed: () async {
-                  sendSMS('01058377427', '01027645102', 'SMS테스트입니다.');
-                },
-                child: const Text('SMS테스트'))
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            const Text(
+              '민영기 염소탕',
+              style: TextStyle(
+                  fontFamily: 'Jalnan', fontSize: 27, color: Colors.white),
+            ),
           ],
         ),
-        body: Center(
-          child: SizedBox(
-            width: (MediaQuery.of(context).size.width >= 1200)
-                ? 1200
-                : MediaQuery.of(context).size.width,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(32), topRight: Radius.circular(32)),
-              child: Container(
-                color: const Color(0xFFFFF8E7),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: viewModel.isLoading
-                      ? const Center(
-                          child: GifProgressBar(),
-                        )
-                      : ListView(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: ImageLoadWidget(
-                                  width: (MediaQuery.of(context).size.width >=
-                                          1200)
-                                      ? 1200
-                                      : MediaQuery.of(context).size.width,
-                                  imageUrl: viewModel.storeList[0].titleImage,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Text(
-                              style: TextStyle(
-                                fontSize: 13.w,
-                              ),
-                              textAlign: TextAlign.center,
-                              'BRAND STORY',
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  viewModel.storeList[0].introText,
-                                  style: TextStyle(fontSize: 16.w),
-                                ),
-                                Text(
-                                  viewModel.storeList[0].introTextOne,
-                                  style: TextStyle(fontSize: 11.w),
-                                ),
-                                Text(
-                                  viewModel.storeList[0].introTextTwo,
-                                  style: TextStyle(fontSize: 11.w),
-                                ),
-                                Text(
-                                  viewModel.storeList[0].introTextThree,
-                                  style: TextStyle(fontSize: 11.w),
-                                ),
-                                Text(
-                                  viewModel.storeList[0].introTextFour,
-                                  style: TextStyle(fontSize: 11.w),
-                                ),
-                                Text(
-                                  viewModel.storeList[0].introTextFive,
-                                  style: TextStyle(fontSize: 11.w),
-                                ),
-                                Text(
-                                  viewModel.storeList[0].introTextSix,
-                                  style: TextStyle(fontSize: 11.w),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: ImageLoadWidget(
-                                  width: (MediaQuery.of(context).size.width >=
-                                          1200)
-                                      ? 1200
-                                      : MediaQuery.of(context).size.width,
-                                  imageUrl: viewModel.storeList[0].images[19],
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: ImageLoadWidget(
-                                  width: (MediaQuery.of(context).size.width >=
-                                          1200)
-                                      ? 1200
-                                      : MediaQuery.of(context).size.width,
-                                  imageUrl: viewModel.storeList[0].images[43],
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: ImageLoadWidget(
-                                  width: (MediaQuery.of(context).size.width >=
-                                          1200)
-                                      ? 1200
-                                      : MediaQuery.of(context).size.width,
-                                  imageUrl: viewModel.storeList[0].images[30],
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: ImageLoadWidget(
-                                  width: (MediaQuery.of(context).size.width >=
-                                          1200)
-                                      ? 1200
-                                      : MediaQuery.of(context).size.width,
-                                  imageUrl: viewModel.storeList[0].images[14],
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            // Image.network(viewModel.storeList[0].images[1]),
-                            // Image.network(viewModel.storeList[0].images[3]),
-                            const Divider(),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                softWrap: true,//긴 텍스트 줄 바꿈
-                                style: TextStyle(
-                                  letterSpacing: 1.1,
-                                  height: 1.3,
-                                  fontFamily: 'Kopub',
-                                  color: Colors.grey
-                                ),
-                                '상호: 민영기염소탕 | 대표: 민영기 | 주소: 충남 아산시 둔포면 중앙공원로 33번길 3-11 | 사업자번호: 186-62-00277 | 통신판매업신고: 2023-충남아산-1498 | 고객상담실: 010-5837-7427 | e-메일: envy1012@naver.com',
-                              ),
-                            ),
 
-                            const Divider(),
-                          ],
-                        ),
-                ),
+        // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
+        actions: [
+          TextButton(
+              onPressed: () async {
+                sendSMS('01058377427', '01027645102', 'SMS테스트입니다.');
+              },
+              child: const Text('SMS테스트'))
+        ],
+      ),
+      body: Center(
+        child: SizedBox(
+          width: (MediaQuery.of(context).size.width >= 1200)
+              ? 1200
+              : MediaQuery.of(context).size.width,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+            child: Container(
+              color: const Color(0xFFFFF8E7),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: viewModel.isLoading
+                    ? const Center(
+                        child: GifProgressBar(),
+                      )
+                    : ListView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: ImageLoadWidget(
+                                width:
+                                    (MediaQuery.of(context).size.width >= 1200)
+                                        ? 1200
+                                        : MediaQuery.of(context).size.width,
+                                imageUrl: viewModel.storeList[0].titleImage,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Text(
+                            style: TextStyle(
+                              fontSize: 13.w,
+                            ),
+                            textAlign: TextAlign.center,
+                            'BRAND STORY',
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                viewModel.storeList[0].introText,
+                                style: TextStyle(fontSize: 16.w),
+                              ),
+                              Text(
+                                viewModel.storeList[0].introTextOne,
+                                style: TextStyle(fontSize: 11.w),
+                              ),
+                              Text(
+                                viewModel.storeList[0].introTextTwo,
+                                style: TextStyle(fontSize: 11.w),
+                              ),
+                              Text(
+                                viewModel.storeList[0].introTextThree,
+                                style: TextStyle(fontSize: 11.w),
+                              ),
+                              Text(
+                                viewModel.storeList[0].introTextFour,
+                                style: TextStyle(fontSize: 11.w),
+                              ),
+                              Text(
+                                viewModel.storeList[0].introTextFive,
+                                style: TextStyle(fontSize: 11.w),
+                              ),
+                              Text(
+                                viewModel.storeList[0].introTextSix,
+                                style: TextStyle(fontSize: 11.w),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: ImageLoadWidget(
+                                width:
+                                    (MediaQuery.of(context).size.width >= 1200)
+                                        ? 1200
+                                        : MediaQuery.of(context).size.width,
+                                imageUrl: viewModel.storeList[0].images[19],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: ImageLoadWidget(
+                                width: (MediaQuery.of(context).size.width >= 1200)
+                                    ? 1200
+                                    : MediaQuery.of(context).size.width,
+                                imageUrl: viewModel.storeList[0].images[43],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: ImageLoadWidget(
+                                width: (MediaQuery.of(context).size.width >= 1200)
+                                    ? 1200
+                                    : MediaQuery.of(context).size.width,
+                                imageUrl: viewModel.storeList[0].images[30],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: ImageLoadWidget(
+                                width: (MediaQuery.of(context).size.width >= 1200)
+                                    ? 1200
+                                    : MediaQuery.of(context).size.width,
+                                imageUrl: viewModel.storeList[0].images[14],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          // Image.network(viewModel.storeList[0].images[1]),
+                          // Image.network(viewModel.storeList[0].images[3]),
+                        ],
+                      ),
               ),
             ),
           ),
