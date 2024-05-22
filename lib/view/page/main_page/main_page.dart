@@ -153,10 +153,10 @@ class _MainPageState extends State<MainPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: ImageLoadWidget(
-                                  width:
-                                      (MediaQuery.of(context).size.width >= 1200)
-                                          ? 1200
-                                          : MediaQuery.of(context).size.width,
+                                  width: (MediaQuery.of(context).size.width >=
+                                          1200)
+                                      ? 1200
+                                      : MediaQuery.of(context).size.width,
                                   imageUrl: viewModel.storeList[0].titleImage,
                                   fit: BoxFit.cover,
                                 ),
@@ -215,10 +215,10 @@ class _MainPageState extends State<MainPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: ImageLoadWidget(
-                                  width:
-                                      (MediaQuery.of(context).size.width >= 1200)
-                                          ? 1200
-                                          : MediaQuery.of(context).size.width,
+                                  width: (MediaQuery.of(context).size.width >=
+                                          1200)
+                                      ? 1200
+                                      : MediaQuery.of(context).size.width,
                                   imageUrl: viewModel.storeList[0].images[19],
                                   fit: BoxFit.cover,
                                 ),
@@ -232,7 +232,8 @@ class _MainPageState extends State<MainPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: ImageLoadWidget(
-                                  width: (MediaQuery.of(context).size.width >= 1200)
+                                  width: (MediaQuery.of(context).size.width >=
+                                          1200)
                                       ? 1200
                                       : MediaQuery.of(context).size.width,
                                   imageUrl: viewModel.storeList[0].images[43],
@@ -248,7 +249,8 @@ class _MainPageState extends State<MainPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: ImageLoadWidget(
-                                  width: (MediaQuery.of(context).size.width >= 1200)
+                                  width: (MediaQuery.of(context).size.width >=
+                                          1200)
                                       ? 1200
                                       : MediaQuery.of(context).size.width,
                                   imageUrl: viewModel.storeList[0].images[30],
@@ -264,7 +266,8 @@ class _MainPageState extends State<MainPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: ImageLoadWidget(
-                                  width: (MediaQuery.of(context).size.width >= 1200)
+                                  width: (MediaQuery.of(context).size.width >=
+                                          1200)
                                       ? 1200
                                       : MediaQuery.of(context).size.width,
                                   imageUrl: viewModel.storeList[0].images[14],
@@ -274,6 +277,22 @@ class _MainPageState extends State<MainPage> {
                             ),
                             // Image.network(viewModel.storeList[0].images[1]),
                             // Image.network(viewModel.storeList[0].images[3]),
+                            const Divider(),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                softWrap: true,//긴 텍스트 줄 바꿈
+                                style: TextStyle(
+                                  letterSpacing: 1.1,
+                                  height: 1.4,
+                                  fontFamily: 'Kopub',
+                                  color: Colors.grey
+                                ),
+                                '상호: 민영기염소탕 | 대표: 민영기 | 주소: 충남 아산시 둔포면 중앙공원로 33번길 3-11 | 사업자번호: 186-62-00277 | 통신판매업신고: 2023-충남아산-1498 | 고객상담실: 010-5837-7427 | e-메일: envy1012@naver.com',
+                              ),
+                            ),
+
+                            const Divider(),
                           ],
                         ),
                 ),
