@@ -4,14 +4,17 @@ import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page_widget.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
+import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/gif_progress_bar.dart';
 
 class ShoppingCartPage extends StatefulWidget {
-  const ShoppingCartPage({super.key, required this.navSetState});
+  const ShoppingCartPage(
+      {super.key, required this.navSetState, required this.hideNavBar});
 
   final bool Function(int) navSetState;
+  final bool Function(bool) hideNavBar;
 
   @override
   State<ShoppingCartPage> createState() => _ShoppingCartPageState();
@@ -57,8 +60,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 child: state.isLoading
                     ? const Center(child: GifProgressBar())
                     : Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
                           children: [
                             const Align(
                               alignment: Alignment.centerLeft,
@@ -124,11 +127,12 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                               ),
                                             ),
                                             onPressed: () {
-                                              context.go('/product_page',
-                                                  extra: {
-                                                    'navSetState':
-                                                        widget.navSetState
-                                                  });
+                                              context
+                                                  .go('/product_page', extra: {
+                                                'navSetState':
+                                                    widget.navSetState,
+                                                'hideNavBar': widget.hideNavBar
+                                              });
                                             },
                                             child: const Text(
                                               '상품 담으러 가기',
@@ -192,12 +196,19 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                         showDialog(
                                                             context: context,
                                                             builder: (context) {
-                                                              return const AlertDialog(
-                                                                title:
-                                                                    Text('알림'),
-                                                                content: Text(
-                                                                    '선택된 상품이 없습니다. 상품을 선택해 주세요'),
-                                                              );
+                                                              return OneAnswerDialog(
+                                                                  onTap: () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  title:
+                                                                      '선택된 상품이 없습니다.',
+                                                                  subtitle:
+                                                                      '상품을 선택해 주세요',
+                                                                  firstButton:
+                                                                      '확인',
+                                                                  imagePath:
+                                                                      'assets/gifs/fail.gif');
                                                             });
                                                       } else {
                                                         // ShoppingCartPageWidget.checkedList = [];
@@ -208,6 +219,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                   orderItemList,
                                                               'navSetState': widget
                                                                   .navSetState,
+                                                              'hideNavBar':
+                                                                  widget
+                                                                      .hideNavBar
                                                             });
                                                       }
                                                     },

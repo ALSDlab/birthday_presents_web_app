@@ -14,9 +14,11 @@ import '../agreement_page/agreement_texts.dart';
 import 'for_order_list_widget.dart';
 
 class FillOrderFormPage extends StatefulWidget {
-  const FillOrderFormPage({super.key, required this.forOrderItems});
+  const FillOrderFormPage(
+      {super.key, required this.forOrderItems, required this.hideNavBar});
 
   final List<OrderModel> forOrderItems;
+  final bool Function(bool) hideNavBar;
 
   @override
   State<FillOrderFormPage> createState() => _FillOrderFormPageState();
@@ -120,13 +122,14 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 8, bottom: 8),
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8),
                                     child: Container(
                                       margin: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20.0),
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.grey.withOpacity(0.3),
@@ -169,10 +172,9 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                               (index != 4)
                                                                   ? '* '
                                                                   : '  ',
-                                                              style:
-                                                                  const TextStyle(
-                                                                      color: Colors
-                                                                          .red),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .red),
                                                             ),
                                                             Expanded(
                                                               child: Text(
@@ -183,7 +185,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500,
-                                                                    fontSize: 15),
+                                                                    fontSize:
+                                                                        15),
                                                               ),
                                                             ),
                                                           ],
@@ -202,15 +205,11 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                             16.0),
                                                                 child:
                                                                     OutlinedButton(
-                                                                  style: OutlinedButton
-                                                                      .styleFrom(
-                                                                          // shape: const RoundedRectangleBorder(
-                                                                          //     borderRadius: BorderRadius.zero),
-                                                                          shape: const RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.all(Radius.circular(
-                                                                                  10))),
-                                                                          backgroundColor:
-                                                                              const Color(0xFF2F362F)),
+                                                                  style: OutlinedButton.styleFrom(
+                                                                      // shape: const RoundedRectangleBorder(
+                                                                      //     borderRadius: BorderRadius.zero),
+                                                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                                                                      backgroundColor: const Color(0xFF2F362F)),
                                                                   onPressed:
                                                                       () async {
                                                                     try {
@@ -267,19 +266,20 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                       OutlineInputBorder(
                                                                     borderSide:
                                                                         const BorderSide(
-                                                                      width: 0.1,
+                                                                      width:
+                                                                          0.1,
                                                                       color: Colors
                                                                           .white,
                                                                     ),
                                                                     borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                10),
+                                                                        BorderRadius.circular(
+                                                                            10),
                                                                   ),
                                                                 ),
-                                                                controller: viewModel
-                                                                        .controllers[
-                                                                    index],
+                                                                controller:
+                                                                    viewModel
+                                                                            .controllers[
+                                                                        index],
                                                               ),
                                                             ),
                                                           ],
@@ -288,21 +288,25 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           readOnly: (index == 3)
                                                               ? true
                                                               : false,
-                                                          style: const TextStyle(
-                                                              fontSize: 15),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 15),
                                                           decoration:
                                                               InputDecoration(
                                                             contentPadding:
                                                                 const EdgeInsets
                                                                     .fromLTRB(
-                                                                    10, 5, 0, 5),
+                                                                    10,
+                                                                    5,
+                                                                    0,
+                                                                    5),
                                                             border:
                                                                 OutlineInputBorder(
                                                               borderSide:
                                                                   const BorderSide(
                                                                 width: 0.1,
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                               borderRadius:
                                                                   BorderRadius
@@ -311,7 +315,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                             ),
                                                           ),
                                                           controller: viewModel
-                                                              .controllers[index],
+                                                                  .controllers[
+                                                              index],
                                                         ),
                                                 ],
                                               ),
@@ -337,7 +342,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                     top: 8, left: 8),
                                                 child: Text(
                                                   '약관 동의',
-                                                  style: TextStyle(fontSize: 18),
+                                                  style:
+                                                      TextStyle(fontSize: 18),
                                                 ),
                                               ),
                                             ],
@@ -386,9 +392,11 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                 newValue;
                                                           });
                                                         },
-                                                        activeColor: const Color(
-                                                            0xFF2F362F),
-                                                        checkColor: Colors.white,
+                                                        activeColor:
+                                                            const Color(
+                                                                0xFF2F362F),
+                                                        checkColor:
+                                                            Colors.white,
                                                       ),
                                                       const Expanded(
                                                         child: Text(
@@ -410,8 +418,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           Checkbox(
                                                             value:
                                                                 isTermsNConditionsChecked,
-                                                            onChanged:
-                                                                (bool? newValue) {
+                                                            onChanged: (bool?
+                                                                newValue) {
                                                               setState(() {
                                                                 isTermsNConditionsChecked =
                                                                     newValue!;
@@ -423,7 +431,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                             checkColor:
                                                                 Colors.white,
                                                           ),
-                                                          const Text('(필수) 이용약관'),
+                                                          const Text(
+                                                              '(필수) 이용약관'),
                                                         ],
                                                       ),
                                                       InkWell(
@@ -441,8 +450,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           decoration:
                                                               const BoxDecoration(
                                                             borderRadius:
-                                                                BorderRadius.all(
-                                                              Radius.circular(10),
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  10),
                                                             ),
                                                           ),
                                                           child:
@@ -465,8 +476,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           isTermsNConditionsOpened
                                                               ? null
                                                               : 0.0,
-                                                      child:
-                                                          Text(agreementTexts[0]),
+                                                      child: Text(
+                                                          agreementTexts[0]),
                                                     ),
                                                   ),
                                                   Row(
@@ -479,8 +490,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           Checkbox(
                                                             value:
                                                                 isPersonalInfoChecked,
-                                                            onChanged:
-                                                                (bool? newValue) {
+                                                            onChanged: (bool?
+                                                                newValue) {
                                                               setState(() {
                                                                 isPersonalInfoChecked =
                                                                     newValue!;
@@ -511,8 +522,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           decoration:
                                                               const BoxDecoration(
                                                             borderRadius:
-                                                                BorderRadius.all(
-                                                              Radius.circular(10),
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  10),
                                                             ),
                                                           ),
                                                           child:
@@ -531,11 +544,12 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                     duration: const Duration(
                                                         milliseconds: 500),
                                                     child: SizedBox(
-                                                      height: isPersonalInfoOpened
-                                                          ? null
-                                                          : 0.0,
-                                                      child:
-                                                          Text(agreementTexts[1]),
+                                                      height:
+                                                          isPersonalInfoOpened
+                                                              ? null
+                                                              : 0.0,
+                                                      child: Text(
+                                                          agreementTexts[1]),
                                                     ),
                                                   ),
                                                   Row(
@@ -548,8 +562,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           Checkbox(
                                                             value:
                                                                 isPersonalInfoForDeliverChecked,
-                                                            onChanged:
-                                                                (bool? newValue) {
+                                                            onChanged: (bool?
+                                                                newValue) {
                                                               setState(() {
                                                                 isPersonalInfoForDeliverChecked =
                                                                     newValue!;
@@ -580,8 +594,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           decoration:
                                                               const BoxDecoration(
                                                             borderRadius:
-                                                                BorderRadius.all(
-                                                              Radius.circular(10),
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  10),
                                                             ),
                                                           ),
                                                           child:
@@ -604,8 +620,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           isPersonalInfoForDeliverOpened
                                                               ? null
                                                               : 0.0,
-                                                      child:
-                                                          Text(agreementTexts[2]),
+                                                      child: Text(
+                                                          agreementTexts[2]),
                                                     ),
                                                   ),
                                                 ],
@@ -705,15 +721,16 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                 .toString()
                                                 .substring(2, 10)
                                                 .replaceAll('-', '');
-                                            final ordererId = viewModel
-                                                    .currentUser.isEmpty
-                                                ? 'notRegistered'
-                                                : viewModel.currentUser.first.id;
+                                            final ordererId =
+                                                viewModel.currentUser.isEmpty
+                                                    ? 'notRegistered'
+                                                    : viewModel
+                                                        .currentUser.first.id;
                                             final personalInfoForDeliverChecked =
                                                 viewModel.currentUser.isEmpty
                                                     ? isPersonalInfoForDeliverChecked
-                                                    : viewModel.currentUser.first
-                                                        .checked;
+                                                    : viewModel.currentUser
+                                                        .first.checked;
                                             final ordererName =
                                                 viewModel.controllers[0].text;
                                             final ordererPhoneNo =
@@ -750,8 +767,12 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                   '/shopping_cart_page/fill_order_page/pay_page',
                                                   extra: {
                                                     'orderModelList':
-                                                        widget.forOrderItems
+                                                        widget.forOrderItems,
+                                                    'hideNavBar':
+                                                        widget.hideNavBar,
+                                                    'newOrderCreated': true
                                                   });
+                                              widget.hideNavBar(true);
                                             }
                                           }
                                         },

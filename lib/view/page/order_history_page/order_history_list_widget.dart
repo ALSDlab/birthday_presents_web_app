@@ -7,9 +7,11 @@ import '../../../data/model/order_model.dart';
 import 'order_history_page_view_model.dart';
 
 class OrderHistoryListWidget extends StatelessWidget {
-  const OrderHistoryListWidget({super.key, required this.orderItem});
+  const OrderHistoryListWidget(
+      {super.key, required this.orderItem, required this.hideNavBar});
 
   final List<OrderModel> orderItem;
+  final bool Function(bool) hideNavBar;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,8 @@ class OrderHistoryListWidget extends StatelessWidget {
         if (context.mounted) {
           GoRouter.of(context).push(
               '/shopping_cart_page/fill_order_page/pay_page',
-              extra: {'orderModelList': orderItem});
+              extra: {'orderModelList': orderItem, 'hideNavBar': hideNavBar});
+          hideNavBar(true);
         }
       },
       child: Container(
@@ -91,9 +94,11 @@ class OrderHistoryListWidget extends StatelessWidget {
                         DateTime.parse('20${orderItem.first.orderedDate!}')),
                     style: const TextStyle(color: Colors.grey),
                   ),
-                  TextButton(onPressed: () async {
-                    await viewModel.postDeleted(orderItem);
-                  }, child: Text('삭제하기'))
+                  TextButton(
+                      onPressed: () async {
+                        await viewModel.postDeleted(orderItem);
+                      },
+                      child: Text('삭제하기'))
                 ],
               ),
             ],

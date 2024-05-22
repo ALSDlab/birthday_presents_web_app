@@ -47,17 +47,15 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchMyOrderData(
-      BuildContext context, String orderNumberForPay) async {
+  Future<void> fetchMyOrderData(String orderNumberForPay) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
     try {
       final myOrder =
           await orderRepository.getFirebaseOrdersByOrderNo(orderNumberForPay);
-      logger.info(myOrder);
+      // logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
-      showSnackbar(context);
 
       notifyListeners();
     } catch (error) {
@@ -69,7 +67,7 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  void postPaidItems(List<OrderModel> orderItems, int payStatus) async {
+  void postPaidItems(BuildContext context, List<OrderModel> orderItems, int payStatus) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
     try {
@@ -98,7 +96,7 @@ class PayPageViewModel extends ChangeNotifier {
     notifyListeners();
 
     final snackBar = SnackBar(
-      content: const Text('주문생성 완료.'),
+      content: const Text('주문생성 완료'),
       duration: const Duration(seconds: 2),
       onVisible: () {
         // snackbar가 사라질 때 패딩을 제거합니다.
@@ -140,12 +138,11 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  void bootpayPayment(BuildContext context, List<OrderModel> orderItems) {
+  void bootpayPayment(BuildContext context, List<OrderModel> orderItems, bool Function(bool) hideNavBar) {
     int totalAmount = 0;
     for (var e in orderItems) {
       totalAmount += e.payAmount!;
     }
-    // totalAmount = 100; // 테스트용
     Payload payload = getPayload(totalAmount);
     if (kIsWeb) {
       payload.extra!.openType = "iframe";
@@ -161,7 +158,7 @@ class PayPageViewModel extends ChangeNotifier {
       },
       onError: (String data) {
         logger.info('------- onError: $data');
-        postPaidItems(orderItems, -1);
+        postPaidItems(context, orderItems, -1);
       },
       onClose: () async {
         logger.info('------- onClose');
@@ -186,23 +183,9 @@ class PayPageViewModel extends ChangeNotifier {
                       ? '주문해 주셔서 감사합니다.'
                       : '다시 시도해 주세요',
                   firstButton: '확인');
-
-              //   AlertDialog(
-              //   content: Text(afterPayStatus.every((e) => e == 1)
-              //       ? '결제가 완료되었습니다.'
-              //       : '결제가 실패하였습니다. 다시 시도해 주세요'),
-              //   actions: [
-              //     TextButton(
-              //       onPressed: () {
-              //         Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
-              //         context.pop();
-              //       },
-              //       child: const Text('확인'),
-              //     ),
-              //   ],
-              // );
             },
           );
+          hideNavBar(false);
         }
       },
       onIssued: (String data) {
@@ -231,7 +214,7 @@ class PayPageViewModel extends ChangeNotifier {
         String paidResultData = jsonDecode(data)['event'];
         logger.info(paidResultData);
         if (paidResultData == 'done') {
-          postPaidItems(orderItems, 1); // 결제완료되면 서버로 pay status 변경
+          postPaidItems(context, orderItems, 1); // 결제완료되면 서버로 pay status 변경
           //TODO : 장바구니 비우기 적용(결제 한것만)
           List<ShoppingProductForCart> currentList =
               await getShoppingCartList();

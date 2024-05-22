@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 import '../../../data/model/order_model.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({super.key, required this.hideNavBar});
+  final bool Function(bool) hideNavBar;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -229,8 +230,10 @@ class _LoginPageState extends State<LoginPage> {
                                         GoRouter.of(context).go(
                                             '/shopping_cart_page/fill_order_page/pay_page',
                                             extra: {
-                                              'orderModelList': orderCheckList
+                                              'orderModelList': orderCheckList,
+                                              'hideNavBar': widget.hideNavBar
                                             });
+                                        widget.hideNavBar(true);
                                       }
                                     },
                                     style: ButtonStyle(

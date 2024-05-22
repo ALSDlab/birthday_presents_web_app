@@ -55,11 +55,11 @@ final router = GoRouter(
             builder: (context, state) {
               final extra = state.extra! as Map<String, dynamic>;
               final navSetState = extra['navSetState'];
+              final hideNavBar = extra['hideNavBar'];
               return ChangeNotifierProvider(
                 create: (_) => ProductViewModel(),
                 child: ProductPage(
-                  navSetState: navSetState,
-                ),
+                    navSetState: navSetState, hideNavBar: hideNavBar),
               );
             },
           ),
@@ -68,11 +68,11 @@ final router = GoRouter(
               builder: (context, state) {
                 final extra = state.extra! as Map<String, dynamic>;
                 final navSetState = extra['navSetState'];
+                final hideNavBar = extra['hideNavBar'];
                 return ChangeNotifierProvider(
                   create: (_) => getIt<ShoppingCartViewModel>(),
                   child: ShoppingCartPage(
-                    navSetState: navSetState,
-                  ),
+                      navSetState: navSetState, hideNavBar: hideNavBar),
                 );
               },
               routes: [
@@ -80,11 +80,12 @@ final router = GoRouter(
                     path: 'fill_order_page',
                     builder: (context, state) {
                       final extra = state.extra! as Map<String, dynamic>;
+                      final hideNavBar = extra['hideNavBar'];
                       return ChangeNotifierProvider(
                         create: (_) => getIt<FillOrderFormPageViewModel>(),
                         child: FillOrderFormPage(
-                          forOrderItems: extra['orderModelList'],
-                        ),
+                            forOrderItems: extra['orderModelList'],
+                            hideNavBar: hideNavBar),
                       );
                     },
                     routes: [
@@ -92,10 +93,14 @@ final router = GoRouter(
                         path: 'pay_page',
                         builder: (context, state) {
                           final extra = state.extra! as Map<String, dynamic>;
+                          final hideNavBar = extra['hideNavBar'];
+                          final newOrderCreated = extra['newOrderCreated'];
                           return ChangeNotifierProvider(
                             create: (_) => getIt<PayPageViewModel>(),
-                            child:
-                                PayPage(forOrderItems: extra['orderModelList']),
+                            child: PayPage(
+                                forOrderItems: extra['orderModelList'],
+                                hideNavBar: hideNavBar,
+                                newOrderCreated: newOrderCreated),
                           );
                         },
                       )
@@ -103,16 +108,22 @@ final router = GoRouter(
               ]),
           GoRoute(
               path: '/profile_page',
-              builder: (context, state) => ChangeNotifierProvider(
-                  create: (_) => getIt<OrderHistoryPageViewModel>(),
-                  child: const ProfilePage()),
+              builder: (context, state) {
+                final extra = state.extra! as Map<String, dynamic>;
+                final hideNavBar = extra['hideNavBar'];
+                return ChangeNotifierProvider(
+                    create: (_) => getIt<OrderHistoryPageViewModel>(),
+                    child: ProfilePage(hideNavBar: hideNavBar));
+              },
               routes: [
                 GoRoute(
                     path: 'login_page',
                     builder: (context, state) {
+                      final extra = state.extra! as Map<String, dynamic>;
+                      final hideNavBar = extra['hideNavBar'];
                       return ChangeNotifierProvider(
                         create: (_) => getIt<LoginPageViewModel>(),
-                        child: const LoginPage(),
+                        child: LoginPage(hideNavBar: hideNavBar),
                       );
                     },
                     routes: [
@@ -135,11 +146,14 @@ final router = GoRouter(
                     ]),
                 GoRoute(
                     path: 'order_history_page',
-                    builder: (context, state) => ChangeNotifierProvider(
-                          create: (_) => getIt<OrderHistoryPageViewModel>(),
-                          child: const OrderHistoryPage(),
-                        )),
-
+                    builder: (context, state) {
+                      final extra = state.extra! as Map<String, dynamic>;
+                      final hideNavBar = extra['hideNavBar'];
+                      return ChangeNotifierProvider(
+                        create: (_) => getIt<OrderHistoryPageViewModel>(),
+                        child: OrderHistoryPage(hideNavBar: hideNavBar),
+                      );
+                    }),
               ]),
           GoRoute(
             path: '/product_detail_page',
@@ -147,12 +161,13 @@ final router = GoRouter(
               final extra = state.extra! as Map<String, dynamic>;
               final productDetailMap = extra['product'];
               final navSetState = extra['navSetState'];
+              final hideNavBar = extra['hideNavBar'];
               return ChangeNotifierProvider(
                   create: (_) => ProductDetailPageViewModel(),
                   child: ProductDetailPage(
-                    product: productDetailMap,
-                    navSetState: navSetState,
-                  ));
+                      product: productDetailMap,
+                      navSetState: navSetState,
+                      hideNavBar: hideNavBar));
             },
           ),
         ]),

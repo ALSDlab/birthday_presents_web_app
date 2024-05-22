@@ -28,6 +28,7 @@ class ScaffoldWithNavBar extends StatefulWidget {
 
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   int badgeCount = 0;
+  bool isHideNavBar = false;
 
   //네트워크 통신 확인 코드
   final ConnectivityObserver _connectivityObserver =
@@ -41,6 +42,13 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   bool resetNavigation(int newCount) {
     setState(() {
       badgeCount = newCount;
+    });
+    return true;
+  }
+
+  bool hideNavBar(bool newValue) {
+    setState(() {
+      isHideNavBar = newValue;
     });
     return true;
   }
@@ -132,72 +140,76 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             widget.child,
           ],
         ),
-        bottomNavigationBar: StylishBottomBar(
-          option: AnimatedBarOptions(
-            padding: const EdgeInsets.only(top: 12),
-            iconSize: 30,
-            barAnimation: BarAnimation.fade,
-            iconStyle: IconStyle.Default,
-          ),
-          items: [
-            BottomBarItem(
-              icon: const Icon(BootstrapIcons.house_door),
-              selectedIcon: const Icon(BootstrapIcons.house_door_fill),
-              selectedColor: const Color(0xFF2F362F),
-              unSelectedColor: CupertinoColors.black,
-              title: const Text(
-                '홈',
-                style: TextStyle(fontFamily: 'KoPub'),
+        bottomNavigationBar: (isHideNavBar)
+            ? null
+            : StylishBottomBar(
+                option: AnimatedBarOptions(
+                  padding: const EdgeInsets.only(top: 12),
+                  iconSize: 30,
+                  barAnimation: BarAnimation.fade,
+                  iconStyle: IconStyle.Default,
+                ),
+                items: [
+                  BottomBarItem(
+                    icon: const Icon(BootstrapIcons.house_door),
+                    selectedIcon: const Icon(BootstrapIcons.house_door_fill),
+                    selectedColor: const Color(0xFF2F362F),
+                    unSelectedColor: CupertinoColors.black,
+                    title: const Text(
+                      '홈',
+                      style: TextStyle(fontFamily: 'KoPub'),
+                    ),
+                  ),
+                  BottomBarItem(
+                    icon: const Icon(BootstrapIcons.box2),
+                    selectedIcon: const Icon(BootstrapIcons.box2_fill),
+                    selectedColor: const Color(0xFF2F362F),
+                    unSelectedColor: CupertinoColors.black,
+                    title: const Text(
+                      '상품',
+                      style: TextStyle(fontFamily: 'KoPub'),
+                    ),
+                  ),
+                  BottomBarItem(
+                    icon: const Icon(BootstrapIcons.cart_check),
+                    selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
+                    selectedColor: const Color(0xFF2F362F),
+                    unSelectedColor: CupertinoColors.black,
+                    title: const Text('장바구니',
+                        style: TextStyle(fontFamily: 'KoPub')),
+                    badge: Text('$badgeCount'),
+                    showBadge: badgeCount > 0,
+                    badgeColor: Colors.red,
+                    badgePadding: const EdgeInsets.only(left: 4, right: 4),
+                  ),
+                  BottomBarItem(
+                      icon: const Icon(BootstrapIcons.person_vcard),
+                      selectedIcon:
+                          const Icon(BootstrapIcons.person_vcard_fill),
+                      selectedColor: const Color(0xFF2F362F),
+                      unSelectedColor: CupertinoColors.black,
+                      title: const Text('마이페이지',
+                          style: TextStyle(fontFamily: 'KoPub'))),
+                ],
+                backgroundColor: const Color(0xFFFFF8E7),
+                currentIndex: widget.location.contains('/main_page')
+                    ? 0
+                    : widget.location.contains('/product_page')
+                        ? 1
+                        : widget.location.contains('/shopping_cart_page')
+                            ? 2
+                            : 3,
+                onTap: (int index) {
+                  if (_status == Status.unavailable) {
+                    showConnectionErrorDialog();
+                  } else {
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+                    _goOtherTab(context, index);
+                  }
+                },
               ),
-            ),
-            BottomBarItem(
-              icon: const Icon(BootstrapIcons.box2),
-              selectedIcon: const Icon(BootstrapIcons.box2_fill),
-              selectedColor: const Color(0xFF2F362F),
-              unSelectedColor: CupertinoColors.black,
-              title: const Text(
-                '상품',
-                style: TextStyle(fontFamily: 'KoPub'),
-              ),
-            ),
-            BottomBarItem(
-              icon: const Icon(BootstrapIcons.cart_check),
-              selectedIcon: const Icon(BootstrapIcons.cart_check_fill),
-              selectedColor: const Color(0xFF2F362F),
-              unSelectedColor: CupertinoColors.black,
-              title: const Text('장바구니', style: TextStyle(fontFamily: 'KoPub')),
-              badge: Text('$badgeCount'),
-              showBadge: badgeCount > 0,
-              badgeColor: Colors.red,
-              badgePadding: const EdgeInsets.only(left: 4, right: 4),
-            ),
-            BottomBarItem(
-                icon: const Icon(BootstrapIcons.person_vcard),
-                selectedIcon: const Icon(BootstrapIcons.person_vcard_fill),
-                selectedColor: const Color(0xFF2F362F),
-                unSelectedColor: CupertinoColors.black,
-                title:
-                    const Text('마이페이지', style: TextStyle(fontFamily: 'KoPub'))),
-          ],
-          backgroundColor: const Color(0xFFFFF8E7),
-          currentIndex: widget.location.contains('/main_page')
-              ? 0
-              : widget.location.contains('/product_page')
-                  ? 1
-                  : widget.location.contains('/shopping_cart_page')
-                      ? 2
-                      : 3,
-          onTap: (int index) {
-            if (_status == Status.unavailable) {
-              showConnectionErrorDialog();
-            } else {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              }
-              _goOtherTab(context, index);
-            }
-          },
-        ),
       ),
     );
   }
@@ -213,13 +225,16 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
     ];
     String? location = locations[index];
     if (index == 3) {
-      context.go(FirebaseAuth.instance.currentUser != null
-          ? '/profile_page'
-          : '/profile_page/login_page');
+      context.go(
+          FirebaseAuth.instance.currentUser != null
+              ? '/profile_page'
+              : '/profile_page/login_page',
+          extra: {'hideNavBar': hideNavBar});
     } else if (index == 0) {
       router.go(location);
     } else {
-      router.go(location, extra: {'navSetState': resetNavigation});
+      router.go(location,
+          extra: {'navSetState': resetNavigation, 'hideNavBar': hideNavBar});
     }
   }
 }

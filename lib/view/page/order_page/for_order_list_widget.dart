@@ -38,6 +38,7 @@ class ForOrderListWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               child: ImageLoadWidget(
                 width: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.32,
+                height: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.25,
                 imageUrl: orderItem.representativeImage,
                 fit: BoxFit.cover,
                           ),
