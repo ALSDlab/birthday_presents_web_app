@@ -32,8 +32,9 @@ class OneAnswerDialog extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              width: 150,
-              height: 150,
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
             ),
             const SizedBox(height: 10),
             Text(
