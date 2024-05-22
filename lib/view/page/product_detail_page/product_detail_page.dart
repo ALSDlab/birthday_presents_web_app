@@ -431,7 +431,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         });
                                   },
                                   child: const Text(
-                                    textAlign: TextAlign.center,
                                     '장바구니',
                                     style: TextStyle(
                                       color: Colors.black,
