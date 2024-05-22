@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/domain/order_repository.dart';
+import 'package:myk_market_app/utils/send_sms_widget.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,7 +68,8 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  void postPaidItems(BuildContext context, List<OrderModel> orderItems, int payStatus) async {
+  void postPaidItems(
+      BuildContext context, List<OrderModel> orderItems, int payStatus) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
     try {
@@ -138,7 +140,8 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  void bootpayPayment(BuildContext context, List<OrderModel> orderItems, bool Function(bool) hideNavBar) {
+  void bootpayPayment(BuildContext context, List<OrderModel> orderItems,
+      bool Function(bool) hideNavBar) {
     int totalAmount = 0;
     for (var e in orderItems) {
       totalAmount += e.payAmount!;
@@ -185,6 +188,8 @@ class PayPageViewModel extends ChangeNotifier {
                   firstButton: '확인');
             },
           );
+          sendSMS('01058377427', _state.orderItems.first.ordererPhoneNo!,
+              '[민영기염소탕]주문완료.\n주문번호: ${_state.orderItems.first.orderId}\n${_state.orderItems.first.ordererName} 고객님, 구매해 주셔서 감사드립니다.');
           hideNavBar(false);
         }
       },

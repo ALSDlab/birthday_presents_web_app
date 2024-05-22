@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myk_market_app/utils/gif_progress_bar.dart';
 
 class ImageLoadWidget extends StatefulWidget {
@@ -58,7 +59,7 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
         ? Center(
             child: SizedBox(
               width: widget.width,
-              height: (widget.width >= 200) ? 200 : widget.width,
+              height: (widget.width >= 110.w) ? 110.w : widget.width,
               child: const GifProgressBar(),
             ),
           )

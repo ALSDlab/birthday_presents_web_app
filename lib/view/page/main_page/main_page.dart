@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/image_load_widget.dart';
-import '../pay_page/send_sms_widget.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -118,15 +117,6 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-
-        // 테스트용으로 만든 버튼입니다. 아직 지우지 마세요.(이성대)
-        actions: [
-          TextButton(
-              onPressed: () async {
-                sendSMS('01058377427', '01027645102', 'SMS테스트입니다.');
-              },
-              child: const Text('SMS테스트'))
-        ],
       ),
       body: Center(
         child: SizedBox(
@@ -230,9 +220,10 @@ class _MainPageState extends State<MainPage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
                               child: ImageLoadWidget(
-                                width: (MediaQuery.of(context).size.width >= 1200)
-                                    ? 1200
-                                    : MediaQuery.of(context).size.width,
+                                width:
+                                    (MediaQuery.of(context).size.width >= 1200)
+                                        ? 1200
+                                        : MediaQuery.of(context).size.width,
                                 imageUrl: viewModel.storeList[0].images[43],
                                 fit: BoxFit.cover,
                               ),
@@ -246,9 +237,10 @@ class _MainPageState extends State<MainPage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
                               child: ImageLoadWidget(
-                                width: (MediaQuery.of(context).size.width >= 1200)
-                                    ? 1200
-                                    : MediaQuery.of(context).size.width,
+                                width:
+                                    (MediaQuery.of(context).size.width >= 1200)
+                                        ? 1200
+                                        : MediaQuery.of(context).size.width,
                                 imageUrl: viewModel.storeList[0].images[30],
                                 fit: BoxFit.cover,
                               ),
@@ -262,9 +254,10 @@ class _MainPageState extends State<MainPage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
                               child: ImageLoadWidget(
-                                width: (MediaQuery.of(context).size.width >= 1200)
-                                    ? 1200
-                                    : MediaQuery.of(context).size.width,
+                                width:
+                                    (MediaQuery.of(context).size.width >= 1200)
+                                        ? 1200
+                                        : MediaQuery.of(context).size.width,
                                 imageUrl: viewModel.storeList[0].images[14],
                                 fit: BoxFit.cover,
                               ),

@@ -264,7 +264,9 @@ class _AgreementPageState extends State<AgreementPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        Expanded(flex: 2, child: Container()),
                         Expanded(
+                          flex: 3,
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: OutlinedButton(
@@ -284,6 +286,7 @@ class _AgreementPageState extends State<AgreementPage> {
                           ),
                         ),
                         Expanded(
+                          flex: 3,
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: OutlinedButton(
@@ -313,6 +316,7 @@ class _AgreementPageState extends State<AgreementPage> {
                             ),
                           ),
                         ),
+                        Expanded(flex: 2, child: Container()),
                       ],
                     )
                   ],

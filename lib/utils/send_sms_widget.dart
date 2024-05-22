@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 
 
-import '../../../env/env.dart';
-import '../../../utils/simple_logger.dart';
+import '../env/env.dart';
+import 'simple_logger.dart';
 
 void sendSMS(String servicePhoneNo, String phoneNumber, String content) async {
   final body = {
@@ -35,9 +35,10 @@ void sendSMS(String servicePhoneNo, String phoneNumber, String content) async {
 
   final hmacSha256 = Hmac(sha256, utf8.encode(secretKey));
   final digest = hmacSha256.convert(utf8.encode(hmac));
-  final String signature = base64Encode(digest.bytes);
+  final String signature = base64.encode(digest.bytes);
 
   const String apiUrl = '${Env.sensApiUrl}/$serviceId/messages';
+  print(apiUrl);
   final headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'x-ncp-apigw-timestamp': timestamp,
