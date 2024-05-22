@@ -208,7 +208,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                   firstButton:
                                                                       '확인',
                                                                   imagePath:
-                                                                      'assets/gifs/fail.gif');
+                                                                      'assets/gifs/alert.gif');
                                                             });
                                                       } else {
                                                         // ShoppingCartPageWidget.checkedList = [];

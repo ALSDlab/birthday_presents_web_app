@@ -34,7 +34,8 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
   void _fetchImageSize() {
     final image = Image.network(widget.imageUrl);
     _imageStream = image.image.resolve(const ImageConfiguration());
-    _imageStreamListener = ImageStreamListener((ImageInfo info, bool synchronousCall) {
+    _imageStreamListener =
+        ImageStreamListener((ImageInfo info, bool synchronousCall) {
       if (mounted) {
         setState(() {
           _aspectRatio = info.image.height / info.image.width;
@@ -55,25 +56,29 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
   Widget build(BuildContext context) {
     return _aspectRatio == null
         ? Center(
-            child: Container(),
+            child: SizedBox(
+              width: widget.width,
+              height: (widget.width >= 200) ? 200 : widget.width,
+              child: const GifProgressBar(),
+            ),
           )
         : CachedNetworkImage(
-      width: widget.width,
-      height: widget.height ?? widget.width * _aspectRatio!,
-          imageUrl: widget.imageUrl,
-          imageBuilder: (context, imageProvider) => Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: imageProvider,
-                fit: widget.fit,
+            width: widget.width,
+            height: widget.height ?? widget.width * _aspectRatio!,
+            imageUrl: widget.imageUrl,
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: widget.fit,
+                ),
               ),
             ),
-          ),
-          progressIndicatorBuilder: (context, url, downloadProgress) =>
-              const Center(
-            child: GifProgressBar(),
-          ),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-        );
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                const Center(
+              child: GifProgressBar(),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          );
   }
 }
