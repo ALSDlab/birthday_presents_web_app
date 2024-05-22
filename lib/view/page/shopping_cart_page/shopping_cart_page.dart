@@ -114,7 +114,17 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                             MainAxisAlignment.center,
                                         children: [
                                           const Text('장바구니가 비었습니다.'),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
                                           OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10)))),
                                             onPressed: () {
                                               context
                                                   .go('/product_page', extra: {
@@ -123,7 +133,12 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                 'hideNavBar': widget.hideNavBar
                                               });
                                             },
-                                            child: const Text('상품 담으러 가기'),
+                                            child: const Text(
+                                              '상품 담으러 가기',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
