@@ -1,21 +1,19 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:myk_market_app/utils/send_sms_widget.dart';
+import 'package:intl/intl.dart';
 
 import '../../../utils/simple_logger.dart';
 
 class CellphoneValidPage extends StatefulWidget {
   const CellphoneValidPage(
       {super.key,
-      required this.verificationNumber,
       required this.servicePhoneNo,
       required this.phoneNumber});
 
-  final String verificationNumber;
   final String servicePhoneNo;
   final String phoneNumber;
 
@@ -30,6 +28,7 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
   final int _maxAttempts = 5;
   bool _isTimeout = false;
   bool _canResend = true;
+  String verificationNumber = '';
 
   @override
   void initState() {
@@ -53,10 +52,24 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
     });
   }
 
+  // 휴대폰 인증번호 생성하는 매서드 (랜덤숫자 6자리 형식)
+  String generateVerificationNo() {
+    // 4자리의 랜덤한 영문자 생성
+    String numbers = '1234567890';
+    String vNumber = '';
+    Random random = Random();
+    for (int i = 0; i < 6; i++) {
+      vNumber += numbers[random.nextInt(10)];
+    }
+    return vNumber;
+  }
+
   void sendVerificationCode() {
     // 실제로 문자 메시지를 발송하는 메서드 호출
-    sendSMS(widget.servicePhoneNo, widget.phoneNumber,
-        '[민영기염소탕] 인증번호\n[${widget.verificationNumber}]');
+    verificationNumber = generateVerificationNo();
+    debugPrint('[민영기염소탕] 인증번호\n[$verificationNumber]');
+    // sendSMS(widget.servicePhoneNo, widget.phoneNumber,
+    //     '[민영기염소탕] 인증번호\n[$verificationNumber]');
     logger.info("Sending verification code...");
   }
 
@@ -100,35 +113,43 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
         width: 300,
         height: 300,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '휴대폰 번호인증',
-              style: theme.textTheme.headlineMedium,
-            ),
+            const Text(
+              '휴대폰 번호인증',),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               '문자를 확인하시고 인증번호를 입력해 주세요.',
-              style: theme.textTheme.headlineLarge,
             ),
             const Spacer(flex: 2),
             OtpTextField(
               numberOfFields: 6,
               borderColor: Colors.black,
               focusedBorderColor: Colors.black,
-              styles: const [TextStyle(color: Colors.black)],
+              styles: const [
+                TextStyle(color: Colors.black),
+                TextStyle(color: Colors.black),
+                TextStyle(color: Colors.black),
+                TextStyle(color: Colors.black),
+                TextStyle(color: Colors.black),
+                TextStyle(color: Colors.black)
+              ],
               showFieldAsBox: false,
               borderWidth: 4.0,
               onCodeChanged: (String code) {
-                if (code.length == widget.verificationNumber.length &&
-                    code == widget.verificationNumber) {
-                  context.pop();
+
+              },
+              onSubmit: (String verificationCode) {
+                if (verificationCode == verificationNumber) {
+                  Navigator.pop(context);
+                  //TODO : 인증이 완료되면 회원가입페이지에 정보 전달
+
+
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("인증 완료"),
                   ));
                 }
-              },
-              // onSubmit: (String verificationCode) {}, // end onSubmit
+              }, // end onSubmit
             ),
             _isTimeout
                 ? const Text(
@@ -136,11 +157,11 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
                     style: TextStyle(color: Colors.red, fontSize: 20),
                   )
                 : Text(
-                    "남은 시간: ${_start ~/ 60}:${_start % 60}",
+                    "남은 시간: ${_start ~/ 60}:${NumberFormat("00").format(_start % 60)}",
                     style: const TextStyle(fontSize: 20),
                   ),
             ElevatedButton(
-              onPressed: _canResend && !_isTimeout ? resendCode : null,
+              onPressed: _canResend && _isTimeout ? resendCode : null,
               child: const Text("인증번호 재발송"),
             ),
             const SizedBox(height: 20),

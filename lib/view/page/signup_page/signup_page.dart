@@ -2,6 +2,7 @@ import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/view/page/cellphone_valid_page/cellphone_valid_page.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
@@ -31,6 +32,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController extraAddressController = TextEditingController();
 
   bool isValidPhoneNo = false;
+  String servicePhoneNo = '01058377427';
 
   @override
   void dispose() {
@@ -93,7 +95,7 @@ class _SignupPageState extends State<SignupPage> {
                 child: Column(
                   children: [
                     const Padding(
-                      padding: EdgeInsets.only(top: 8, left: 8),
+                      padding: EdgeInsets.only(top: 8, left: 8, right: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -215,8 +217,15 @@ class _SignupPageState extends State<SignupPage> {
                                                                             );
                                                                           },
                                                                         );
+                                                                      } else {
+                                                                        showDialog(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (context) {
+                                                                              return CellphoneValidPage(servicePhoneNo: servicePhoneNo, phoneNumber: phoneController.text);
+                                                                            });
                                                                       }
-                                                                      //TODO: 인증번호 생성후 문자발송, 다이얼로그 띄우고 인증절차
                                                                     },
                                                           child: isValidPhoneNo
                                                               ? const Icon(
@@ -489,7 +498,8 @@ class _SignupPageState extends State<SignupPage> {
                                             Radius.circular(10))),
                                     backgroundColor: const Color(0xFF2F362F)),
                                 onPressed: () {
-                                  if (idController.text.isEmpty || passwordController.text.isEmpty){
+                                  if (idController.text.isEmpty ||
+                                      passwordController.text.isEmpty) {
                                     showDialog(
                                       context: context,
                                       builder: (context) {
@@ -498,13 +508,13 @@ class _SignupPageState extends State<SignupPage> {
                                               Navigator.pop(context);
                                             },
                                             title: '알림',
-                                            subtitle: '아이디 또는 비밀번호가 입력되지 않았습니다.',
+                                            subtitle:
+                                                '아이디 또는 비밀번호가 입력되지 않았습니다.',
                                             firstButton: '확인',
                                             imagePath: 'assets/gifs/fail.gif');
                                       },
                                     );
-                                  }
-                                  else if (passwordController.text !=
+                                  } else if (passwordController.text !=
                                       passwordConfController.text) {
                                     showDialog(
                                       context: context,
@@ -519,7 +529,7 @@ class _SignupPageState extends State<SignupPage> {
                                             imagePath: 'assets/gifs/fail.gif');
                                       },
                                     );
-                                  }else if (nameController.text.isEmpty) {
+                                  } else if (nameController.text.isEmpty) {
                                     showDialog(
                                       context: context,
                                       builder: (context) {
@@ -533,8 +543,7 @@ class _SignupPageState extends State<SignupPage> {
                                             imagePath: 'assets/gifs/fail.gif');
                                       },
                                     );
-                                  }
-                                  else if (!isValidPhoneNo) {
+                                  } else if (!isValidPhoneNo) {
                                     showDialog(
                                       context: context,
                                       builder: (context) {
