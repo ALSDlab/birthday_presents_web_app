@@ -7,7 +7,9 @@ import 'order_history_list_widget.dart';
 import 'order_history_page_view_model.dart';
 
 class OrderHistoryPage extends StatelessWidget {
-  const OrderHistoryPage({super.key});
+  const OrderHistoryPage({super.key, required this.hideNavBar});
+
+  final bool Function(bool) hideNavBar;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +64,7 @@ class OrderHistoryPage extends StatelessWidget {
                                   state.orderHistoryList[index];
                               return OrderHistoryListWidget(
                                 orderItem: orderHistoryItem,
+                                  hideNavBar: hideNavBar
                               );
                             },
                           ),

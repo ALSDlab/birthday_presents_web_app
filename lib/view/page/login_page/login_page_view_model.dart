@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/order_model.dart';
@@ -50,18 +51,14 @@ class LoginPageViewModel with ChangeNotifier {
             context: context,
             builder: (context) {
               logger.info(e);
-              return AlertDialog(
-                title: const Text('알림'),
-                content: const Text('정보가 없습니다.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('확인'),
-                  )
-                ],
-              );
+              return OneAnswerDialog(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  title: '알림',
+                  subtitle: '정보가 없습니다.',
+                  firstButton: '확인',
+                  imagePath: 'assets/gifs/fail.gif');
             });
       }
     }
@@ -84,53 +81,41 @@ class LoginPageViewModel with ChangeNotifier {
           showDialog(
               context: context,
               builder: (context) {
-                return AlertDialog(
-                  title: const Text('알림'),
-                  content: const Text('로그인을 해주세요'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('확인'),
-                    )
-                  ],
-                );
+                return OneAnswerDialog(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    title: '알림',
+                    subtitle: '로그인을 해주세요',
+                    firstButton: '확인',
+                    imagePath: 'assets/gifs/fail.gif');
               });
         } else {
           if (state.orderItems.first.ordererName != ordererName) {
             showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(
-                    title: const Text('알림'),
-                    content: const Text('주문자명이 맞지 않습니다.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('확인'),
-                      )
-                    ],
-                  );
+                  return OneAnswerDialog(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      title: '알림',
+                      subtitle: '주문자명이 맞지 않습니다.',
+                      firstButton: '확인',
+                      imagePath: 'assets/gifs/fail.gif');
                 });
           } else if (state.orderItems.isEmpty) {
             showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(
-                    title: const Text('알림'),
-                    content: const Text('주문정보가 없습니다.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('확인'),
-                      )
-                    ],
-                  );
+                  return OneAnswerDialog(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      title: '알림',
+                      subtitle: '주문정보가 없습니다.',
+                      firstButton: '확인',
+                      imagePath: 'assets/gifs/fail.gif');
                 });
           } else {
             result = state.orderItems;

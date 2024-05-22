@@ -4,14 +4,19 @@ import 'package:myk_market_app/view/page/pay_page/pay_address_widget.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../../styles/app_text_colors.dart';
 import '../../../utils/gif_progress_bar.dart';
 import '../order_page/for_order_list_widget.dart';
 
 class PayPage extends StatefulWidget {
-  const PayPage({super.key, required this.forOrderItems});
+  PayPage(
+      {super.key,
+      required this.forOrderItems,
+      required this.hideNavBar,
+      this.newOrderCreated = false});
 
   final List<OrderModel> forOrderItems;
+  final bool Function(bool) hideNavBar;
+  bool? newOrderCreated;
 
   @override
   State<PayPage> createState() => _PayPageState();
@@ -21,14 +26,16 @@ class _PayPageState extends State<PayPage> {
   bool finalConfirmNeed = false;
   bool finalConfirmDemand = false;
 
-
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    Future.microtask(() async{
       final payViewModel = context.read<PayPageViewModel>();
       if (widget.forOrderItems.isNotEmpty) {
-        payViewModel.fetchMyOrderData(context, widget.forOrderItems.first.orderId);
+        await payViewModel.fetchMyOrderData(widget.forOrderItems.first.orderId);
+      }
+      if (mounted && widget.newOrderCreated == true) {
+        payViewModel.showSnackbar(context);
       }
     });
   }
@@ -53,7 +60,9 @@ class _PayPageState extends State<PayPage> {
         ),
         body: Center(
           child: SizedBox(
-            width: (MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width,
+            width: (MediaQuery.of(context).size.width >= 1200)
+                ? 1200
+                : MediaQuery.of(context).size.width,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -75,7 +84,8 @@ class _PayPageState extends State<PayPage> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+                                padding: const EdgeInsets.only(
+                                    top: 8, left: 8, right: 8),
                                 child: ListView(
                                   physics: const BouncingScrollPhysics(),
                                   children: [
@@ -88,7 +98,10 @@ class _PayPageState extends State<PayPage> {
                                         Expanded(
                                           child: Center(
                                             child: Text(
-                                              state.orderItems.first.orderId,
+                                              (state.orderItems.isNotEmpty)
+                                                  ? state
+                                                      .orderItems.first.orderId
+                                                  : '',
                                               style: const TextStyle(
                                                   color: Color(0xFF019934),
                                                   fontSize: 16,
@@ -104,10 +117,11 @@ class _PayPageState extends State<PayPage> {
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(top: 16, bottom: 16),
-                                      child: PayAddressWidget(
-                                          orderFirstItem: state.orderItems.first),
+                                      padding: const EdgeInsets.only(
+                                          top: 16, bottom: 16),
+                                      child: (state.orderItems.isNotEmpty) ?PayAddressWidget(
+                                          orderFirstItem:
+                                              state.orderItems.first) : const Center(child: GifProgressBar(),),
                                     ),
                                     const Divider(),
                                     const Text(
@@ -115,10 +129,11 @@ class _PayPageState extends State<PayPage> {
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(top: 8, bottom: 8),
+                                      padding: const EdgeInsets.only(
+                                          top: 8, bottom: 8),
                                       child: ListView.builder(
-                                        physics: const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: state.orderItems.length,
                                         itemBuilder: (context, index) {
@@ -134,7 +149,9 @@ class _PayPageState extends State<PayPage> {
                                     const Divider(),
                                     Visibility(
                                       visible: ((state.orderItems.isNotEmpty) &&
-                                          (state.orderItems.first.payAndStatus! < 1)),
+                                          (state.orderItems.first
+                                                  .payAndStatus! <
+                                              1)),
                                       // -1: 결제실패, 0: 결제전, 1: 결제완료, 2: 결제취소, 3: 배송중, 4: 배송완료
                                       child: const Row(
                                         mainAxisAlignment:
@@ -150,7 +167,9 @@ class _PayPageState extends State<PayPage> {
                                     ),
                                     Visibility(
                                       visible: ((state.orderItems.isNotEmpty) &&
-                                          (state.orderItems.first.payAndStatus! < 1)),
+                                          (state.orderItems.first
+                                                  .payAndStatus! <
+                                              1)),
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 13, bottom: 16, right: 13),
@@ -205,6 +224,7 @@ class _PayPageState extends State<PayPage> {
                                         ),
                                         onPressed: () {
                                           Navigator.pop(context);
+                                          widget.hideNavBar(false);
                                         },
                                         child: const Text(
                                           '이전',
@@ -223,7 +243,8 @@ class _PayPageState extends State<PayPage> {
                                             shape: const RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(10))),
-                                            backgroundColor: const Color(0xFF2F362F)),
+                                            backgroundColor:
+                                                const Color(0xFF2F362F)),
                                         onPressed: () {
                                           if (finalConfirmNeed == false) {
                                             setState(() {
@@ -231,7 +252,9 @@ class _PayPageState extends State<PayPage> {
                                             });
                                           } else {
                                             viewModel.bootpayPayment(
-                                                context, state.orderItems);
+                                                context,
+                                                state.orderItems,
+                                                widget.hideNavBar);
                                           }
                                         },
                                         child: const Text(

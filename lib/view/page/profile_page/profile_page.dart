@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required this.hideNavBar});
+
+  final bool Function(bool) hideNavBar;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -61,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           TextButton(
                             onPressed: () {
                               GoRouter.of(context)
-                                  .push('/profile_page/order_history_page');
+                                  .push('/profile_page/order_history_page', extra: {'hideNavBar': widget.hideNavBar});
                             },
                             child: const Text(' > 상세보기'),
                           ),

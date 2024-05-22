@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../styles/app_text_style.dart';
 
 class OneAnswerDialog extends StatelessWidget {
   final Function() onTap;
@@ -11,7 +10,7 @@ class OneAnswerDialog extends StatelessWidget {
   final String? subtitle;
   final String firstButton;
 
-  OneAnswerDialog(
+  const OneAnswerDialog(
       {super.key,
         required this.onTap,
         required this.title,
@@ -36,24 +35,24 @@ class OneAnswerDialog extends StatelessWidget {
               width: 150,
               height: 150,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               title,
-              style: TextStyle(fontSize: 16)
+              style: const TextStyle(fontSize: 16)
             ),
             Visibility(
                 visible: (subtitle !=  null),
-                child: SizedBox(height: 10)),
+                child: const SizedBox(height: 10)),
             Visibility(
               visible: (subtitle != null),
               child: Text(
                 subtitle ?? '',
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.visible,
               ),
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             SizedBox(
               width: 100,
               height: 32,
@@ -66,9 +65,9 @@ class OneAnswerDialog extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       backgroundColor: const Color(0xFF2F362F)),
                   child: Text(firstButton,
-                      style: TextStyle(fontSize: 14, color: Colors.white))),
+                      style: const TextStyle(fontSize: 14, color: Colors.white))),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
         ),
       ),

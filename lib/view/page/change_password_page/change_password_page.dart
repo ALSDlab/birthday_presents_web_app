@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/change_password_page/change_password_page_view_model.dart';
+import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -95,20 +96,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                return AlertDialog(
-                                  content: id != ''
-                                      ? Text('id는 $id 입니다.')
-                                      : Text(
-                                          '입력하신 정보로 아이디를 찾을 수 없습니다. \n다시 시도해주시거나 회원가입을 해주세요.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        context.go('/profile_page/login_page');
-                                      },
-                                      child: const Text('확인'),
-                                    ),
-                                  ],
+                                return OneAnswerDialog(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    context.go('/profile_page/login_page');
+                                  },
+                                  title: id != ''
+                                      ? 'id는 $id 입니다.'
+                                      : '입력하신 정보로 아이디를 찾을 수 없습니다.',
+                                  subtitle: id != ''
+                                      ? null
+                                      : '다시 시도해 주시거나 회원가입을 해 주세요.',
+                                  firstButton: '확인',
+                                  imagePath: id != ''
+                                      ? 'assets/gifs/success.gif'
+                                      : 'assets/gifs/fail.gif',
                                 );
                               },
                             );
@@ -144,8 +146,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         onPressed: () async {
                           if (_formKey2.currentState!.validate()) {
                             try {
-                              await FirebaseAuth.instance.sendPasswordResetEmail(
-                                  email: _emailController.text);
+                              await FirebaseAuth.instance
+                                  .sendPasswordResetEmail(
+                                      email: _emailController.text);
                             } catch (e) {
                               print(e);
                             }
@@ -154,19 +157,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return AlertDialog(
-                                    content: Text(
-                                        '비밀번호 재설정 메일을 보냈습니다. \n메일을 확인해주세요. '),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          context.go('/profile_page/login_page');
-                                        },
-                                        child: const Text('확인'),
-                                      ),
-                                    ],
-                                  );
+                                  return OneAnswerDialog(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        context.go('/profile_page/login_page');
+                                      },
+                                      title: '인증번호를 보냈습니다.',
+                                      subtitle: '문자를 확인해 주세요.',
+                                      firstButton: '확인',
+                                      imagePath: 'assets/gifs/success.gif');
                                 },
                               );
                             }

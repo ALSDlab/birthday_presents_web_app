@@ -6,9 +6,11 @@ import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({super.key, required this.navSetState});
+  const ProductPage(
+      {super.key, required this.navSetState, required this.hideNavBar});
 
-  final bool Function(int)? navSetState;
+  final bool Function(int) navSetState;
+  final bool Function(bool) hideNavBar;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -98,7 +100,8 @@ class _ProductPageState extends State<ProductPage> {
                       const Divider(),
                       // Text( '${state.products.length}'),
                       (state.isLoading)
-                          ? const Expanded(child: Center(child: GifProgressBar()))
+                          ? const Expanded(
+                              child: Center(child: GifProgressBar()))
                           : Expanded(
                               child: GridView.builder(
                                 gridDelegate:
@@ -111,11 +114,12 @@ class _ProductPageState extends State<ProductPage> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      context.push('/product_detail_page',
-                                          extra: {
-                                            'product': viewModel.products[index],
-                                            'navSetState': widget.navSetState
-                                          });
+                                      context
+                                          .push('/product_detail_page', extra: {
+                                        'product': viewModel.products[index],
+                                        'navSetState': widget.navSetState,
+                                        'hideNavBar': widget.hideNavBar
+                                      });
                                     },
                                     child: ProductImageWidget(
                                       product: viewModel.products[index],

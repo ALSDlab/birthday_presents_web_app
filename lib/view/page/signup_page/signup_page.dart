@@ -5,6 +5,7 @@ import 'package:myk_market_app/styles/app_text_colors.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
+import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 
 import '../../../utils/simple_logger.dart';
 
@@ -89,7 +90,8 @@ class _SignupPageState extends State<SignupPage> {
                         children: [
                           Text(
                             '기본정보',
-                            style: TextStyle(fontFamily: 'Jalnan', fontSize: 20),
+                            style:
+                                TextStyle(fontFamily: 'Jalnan', fontSize: 20),
                           ),
                           Text('* 표시된 항목은 필수 입력해야 합니다.'),
                         ],
@@ -113,8 +115,8 @@ class _SignupPageState extends State<SignupPage> {
                                       style: TextStyle(color: Colors.red),
                                     ),
                                     Expanded(
-                                      child: Text(
-                                          SignupViewModel().gridLeftArray[index]),
+                                      child: Text(SignupViewModel()
+                                          .gridLeftArray[index]),
                                     ),
                                     Expanded(
                                       flex: 2,
@@ -175,8 +177,8 @@ class _SignupPageState extends State<SignupPage> {
                                                         logger.info(error);
                                                       }
                                                     },
-                                                    icon:
-                                                        const Icon(Icons.search),
+                                                    icon: const Icon(
+                                                        Icons.search),
                                                     label: const Text("주소 검색"),
                                                   ),
                                                 ),
@@ -245,18 +247,14 @@ class _SignupPageState extends State<SignupPage> {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text('알림'),
-                                        content: const Text('비밀번호가 서로 다릅니다.'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('확인'),
-                                          ),
-                                        ],
-                                      );
+                                      return OneAnswerDialog(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          title: '알림',
+                                          subtitle: '비밀번호가 서로 다릅니다.',
+                                          firstButton: '확인',
+                                          imagePath: 'assets/gifs/fail.gif');
                                     },
                                   );
                                 } else if (viewModel.daumPostcodeSearchDataModel
@@ -266,16 +264,14 @@ class _SignupPageState extends State<SignupPage> {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return AlertDialog(
-                                          content: const Text('주소검색을 해주세요.'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('확인'),
-                                            )
-                                          ]);
+                                      return OneAnswerDialog(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        title: '주소를 검색해 주세요.',
+                                        firstButton: '확인',
+                                        imagePath: 'assets/gifs/fail.gif',
+                                      );
                                     },
                                   );
                                 } else {
@@ -299,20 +295,17 @@ class _SignupPageState extends State<SignupPage> {
                                     showDialog(
                                       context: context,
                                       builder: (context) {
-                                        return AlertDialog(
-                                          content: const Text(
-                                              '회원가입이 완료되었습니다. 로그인을 해주세요.'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                context.go(
-                                                    '/profile_page/login_page');
-                                              },
-                                              child: const Text('확인'),
-                                            ),
-                                          ],
-                                        );
+                                        return OneAnswerDialog(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              context.go(
+                                                  '/profile_page/login_page');
+                                            },
+                                            title: '회원가입이 완료되었습니다.',
+                                            subtitle: '로그인을 해주세요.',
+                                            firstButton: '확인',
+                                            imagePath:
+                                                'assets/gifs/success.gif');
                                       },
                                     );
                                   }
