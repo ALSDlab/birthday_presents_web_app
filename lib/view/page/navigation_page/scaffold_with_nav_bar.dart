@@ -120,7 +120,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                     BlendMode.dstATop,
                   ),
                   image: AssetImage(
-                    'assets/images/background.jpeg',
+                    'assets/images/background.png',
                   ),
                 ),
               ),

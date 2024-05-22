@@ -58,7 +58,7 @@ class LoginPageViewModel with ChangeNotifier {
                   title: '알림',
                   subtitle: '정보가 없습니다.',
                   firstButton: '확인',
-                  imagePath: 'assets/gifs/fail.gif');
+                  imagePath: 'assets/gifs/alert.gif');
             });
       }
     }
@@ -88,7 +88,7 @@ class LoginPageViewModel with ChangeNotifier {
                     title: '알림',
                     subtitle: '로그인을 해주세요',
                     firstButton: '확인',
-                    imagePath: 'assets/gifs/fail.gif');
+                    imagePath: 'assets/gifs/alert.gif');
               });
         } else {
           if (state.orderItems.first.ordererName != ordererName) {
@@ -102,7 +102,7 @@ class LoginPageViewModel with ChangeNotifier {
                       title: '알림',
                       subtitle: '주문자명이 맞지 않습니다.',
                       firstButton: '확인',
-                      imagePath: 'assets/gifs/fail.gif');
+                      imagePath: 'assets/gifs/alert.gif');
                 });
           } else if (state.orderItems.isEmpty) {
             showDialog(
@@ -115,7 +115,7 @@ class LoginPageViewModel with ChangeNotifier {
                       title: '알림',
                       subtitle: '주문정보가 없습니다.',
                       firstButton: '확인',
-                      imagePath: 'assets/gifs/fail.gif');
+                      imagePath: 'assets/gifs/alert.gif');
                 });
           } else {
             result = state.orderItems;
