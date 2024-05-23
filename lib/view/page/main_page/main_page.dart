@@ -25,14 +25,14 @@ class _MainPageState extends State<MainPage> {
   //
   // StreamSubscription<Status>? _subscription;
 
-  @override
-  void initState() {
-    super.initState();
-
-    Future.microtask(() {
-      final StoreViewModel viewModel = context.read<StoreViewModel>();
-      viewModel.loadingHome();
-    });
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   Future.microtask(() {
+  //     final StoreViewModel viewModel = context.read<StoreViewModel>();
+  //     viewModel.loadingHome();
+  //   });
 
     // _subscription = _connectivityObserver.observe().listen((status) {
     //   setState(() {
@@ -44,7 +44,7 @@ class _MainPageState extends State<MainPage> {
     //     }
     //   });
     // });
-  }
+  // }
 
   // //인터넷 연결 확인 체크 위젯
   // void showConnectionErrorDialog() {

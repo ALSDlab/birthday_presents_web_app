@@ -178,75 +178,96 @@ class _SignupPageState extends State<SignupPage> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: [
-                                                    Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                right: 16.0),
-                                                        child: OutlinedButton(
-                                                          style: OutlinedButton
-                                                              .styleFrom(
-                                                                  // shape: const RoundedRectangleBorder(
-                                                                  //     borderRadius: BorderRadius.zero),
-                                                                  shape: const RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.all(Radius.circular(
-                                                                              10))),
-                                                                  backgroundColor:
-                                                                      const Color(
-                                                                          0xFF2F362F)),
-                                                          onPressed:
-                                                              isValidPhoneNo
-                                                                  ? null
-                                                                  : () {
-                                                                      if (phoneController
-                                                                          .text
-                                                                          .isEmpty) {
-                                                                        showDialog(
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (context) {
-                                                                            return OneAnswerDialog(
-                                                                              onTap: () {
-                                                                                Navigator.pop(context);
-                                                                              },
-                                                                              title: '휴대폰번호를 입력해 주세요.',
-                                                                              firstButton: '확인',
-                                                                              imagePath: 'assets/gifs/fail.gif',
-                                                                            );
-                                                                          },
-                                                                        );
-                                                                      } else {
-                                                                        showDialog(
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 16.0),
+                                                          child: OutlinedButton(
+                                                            style: OutlinedButton
+                                                                .styleFrom(
+                                                                    // shape: const RoundedRectangleBorder(
+                                                                    //     borderRadius: BorderRadius.zero),
+                                                                    shape: const RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                10))),
+                                                                    backgroundColor:
+                                                                        const Color(
+                                                                            0xFF2F362F)),
+                                                            onPressed:
+                                                                isValidPhoneNo
+                                                                    ? null
+                                                                    : () async {
+                                                                        if (phoneController
+                                                                            .text
+                                                                            .isEmpty) {
+                                                                          showDialog(
                                                                             context:
                                                                                 context,
                                                                             builder:
                                                                                 (context) {
-                                                                              return CellphoneValidPage(servicePhoneNo: servicePhoneNo, phoneNumber: phoneController.text);
+                                                                              return OneAnswerDialog(
+                                                                                onTap: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                                title: '휴대폰번호를 입력해 주세요.',
+                                                                                firstButton: '확인',
+                                                                                imagePath: 'assets/gifs/fail.gif',
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                        } else {
+                                                                          final result = await showDialog(
+                                                                              context: context,
+                                                                              builder: (context) {
+                                                                                return CellphoneValidPage(servicePhoneNo: servicePhoneNo, phoneNumber: phoneController.text);
+                                                                              });
+                                                                          if (result ==
+                                                                              true) {
+                                                                            setState(() {
+                                                                              isValidPhoneNo = !isValidPhoneNo;
                                                                             });
-                                                                      }
-                                                                    },
-                                                          child: isValidPhoneNo
-                                                              ? const Icon(
-                                                                  Icons.check,
-                                                                  color: Colors
-                                                                      .white,
-                                                                )
-                                                              : const Text(
-                                                                  '인증하기',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                        )),
+                                                                          }
+                                                                          ScaffoldMessenger.of(context)
+                                                                              .showSnackBar(SnackBar(
+                                                                            content: Text((result == true)
+                                                                                ? "인증이 완료되었습니다."
+                                                                                : (result == false)
+                                                                                    ? "5회 이상 실패했습니다. 다른 휴대폰으로 인증해주세요."
+                                                                                    : '다시 인증해 주세요.'),
+                                                                          ));
+                                                                          // FocusScope.of(context)
+                                                                          //     .unfocus();
+                                                                        }
+                                                                      },
+                                                            child: isValidPhoneNo
+                                                                ? const Icon(
+                                                                    Icons.check,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )
+                                                                : const Text(
+                                                                    '인증하기',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                          )),
+                                                    ),
                                                     Expanded(
-                                                      flex: 1,
+                                                      flex: 2,
                                                       child: TextFormField(
+                                                        readOnly:
+                                                            (isValidPhoneNo)
+                                                                ? true
+                                                                : false,
                                                         validator: (value) {
                                                           if (value == null ||
                                                               value.isEmpty) {
-                                                            return '휴대폰번호를 입력해 주세요.';
+                                                            return '휴대폰 번호를 입력해 주세요.';
                                                           }
                                                           return null;
                                                         },
@@ -263,6 +284,8 @@ class _SignupPageState extends State<SignupPage> {
                                                             fontSize: 15),
                                                         decoration:
                                                             InputDecoration(
+                                                          hintText:
+                                                              '휴대폰 번호를 입력해 주세요.',
                                                           contentPadding:
                                                               const EdgeInsets
                                                                   .fromLTRB(
@@ -293,70 +316,70 @@ class _SignupPageState extends State<SignupPage> {
                                                           MainAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                OutlinedButton(
-                                                              style: OutlinedButton
-                                                                  .styleFrom(
-                                                                      // shape: const RoundedRectangleBorder(
-                                                                      //     borderRadius: BorderRadius.zero),
-                                                                      shape: const RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.all(Radius.circular(
-                                                                              10))),
-                                                                      backgroundColor:
-                                                                          const Color(
-                                                                              0xFF2F362F)),
-                                                              onPressed:
-                                                                  () async {
-                                                                try {
-                                                                  DataModel?
-                                                                      model =
-                                                                      await Navigator.of(
-                                                                              context)
-                                                                          .push(
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                check.pr),
-                                                                  );
-                                                                  setState(
-                                                                    () {
-                                                                      viewModel
-                                                                              .daumPostcodeSearchDataModel =
-                                                                          model;
-                                                                    },
-                                                                  );
-                                                                  postcodeController
-                                                                      .text = (viewModel
-                                                                          .daumPostcodeSearchDataModel
-                                                                          ?.zonecode) ??
-                                                                      viewModel
-                                                                          .zoneCode;
-                                                                  addressController
-                                                                      .text = (viewModel
-                                                                          .daumPostcodeSearchDataModel
-                                                                          ?.address) ??
-                                                                      viewModel
-                                                                          .address;
-                                                                } catch (error) {
-                                                                  logger.info(
-                                                                      error);
-                                                                }
-                                                              },
-                                                              child: const Text(
-                                                                '주소검색',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white),
-                                                              ),
-                                                            )),
                                                         Expanded(
                                                           flex: 1,
+                                                          child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      right:
+                                                                          16.0),
+                                                              child:
+                                                                  OutlinedButton(
+                                                                style: OutlinedButton
+                                                                    .styleFrom(
+                                                                        // shape: const RoundedRectangleBorder(
+                                                                        //     borderRadius: BorderRadius.zero),
+                                                                        shape: const RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.all(Radius.circular(
+                                                                                10))),
+                                                                        backgroundColor:
+                                                                            const Color(0xFF2F362F)),
+                                                                onPressed:
+                                                                    () async {
+                                                                  try {
+                                                                    DataModel?
+                                                                        model =
+                                                                        await Navigator.of(context)
+                                                                            .push(
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              check.pr),
+                                                                    );
+                                                                    setState(
+                                                                      () {
+                                                                        viewModel.daumPostcodeSearchDataModel =
+                                                                            model;
+                                                                      },
+                                                                    );
+                                                                    postcodeController
+                                                                        .text = (viewModel
+                                                                            .daumPostcodeSearchDataModel
+                                                                            ?.zonecode) ??
+                                                                        viewModel
+                                                                            .zoneCode;
+                                                                    addressController
+                                                                        .text = (viewModel
+                                                                            .daumPostcodeSearchDataModel
+                                                                            ?.address) ??
+                                                                        viewModel
+                                                                            .address;
+                                                                  } catch (error) {
+                                                                    logger.info(
+                                                                        error);
+                                                                  }
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                  '주소검색',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              )),
+                                                        ),
+                                                        Expanded(
+                                                          flex: 2,
                                                           child: TextFormField(
                                                             readOnly: true,
                                                             style:
@@ -479,7 +502,7 @@ class _SignupPageState extends State<SignupPage> {
                                   Navigator.pop(context);
                                 },
                                 child: const Text(
-                                  '취소',
+                                  '이전',
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),

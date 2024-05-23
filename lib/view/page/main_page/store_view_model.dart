@@ -4,9 +4,23 @@ import 'package:myk_market_app/data/repository/store_repository_impl.dart';
 import 'package:myk_market_app/view/page/main_page/store_state.dart';
 
 class StoreViewModel extends ChangeNotifier {
-
-  StoreViewModel(){
+  StoreViewModel() {
     loadingHome();
+  }
+
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
   }
 
   StoreRepositoryImpl repository = StoreRepositoryImpl();
@@ -19,8 +33,6 @@ class StoreViewModel extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-
-
   Future<void> loadingHome() async {
     _isLoading = true;
     notifyListeners();
@@ -30,6 +42,4 @@ class StoreViewModel extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
-
-
 }

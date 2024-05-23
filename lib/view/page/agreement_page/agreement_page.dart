@@ -279,7 +279,7 @@ class _AgreementPageState extends State<AgreementPage> {
                                 context.pop();
                               },
                               child: const Text(
-                                '이전',
+                                '취소',
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),

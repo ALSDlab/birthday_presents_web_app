@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +13,16 @@ class SignupViewModel {
 
   SignupViewModel._internal();
 
-  final gridLeftArray = ['아이디', '비밀번호', '비밀번호 확인', '이름', '휴대폰 번호', '주소', '', '상세주소'];
+  final gridLeftArray = [
+    '아이디',
+    '비밀번호',
+    '비밀번호 확인',
+    '이름',
+    '휴대폰 번호',
+    '주소',
+    '',
+    '상세주소'
+  ];
   DataModel? daumPostcodeSearchDataModel;
 
   String _address = '';
@@ -54,7 +61,8 @@ class SignupViewModel {
       bool checked) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: '$id@gmail.com', password: password);
+          .createUserWithEmailAndPassword(
+              email: '$id@gmail.com', password: password);
       await userCredential.user?.updateDisplayName(name);
     } catch (e) {
       return e.toString();
@@ -88,5 +96,4 @@ class SignupViewModel {
       return false;
     }
   }
-
 }
