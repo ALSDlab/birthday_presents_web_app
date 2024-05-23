@@ -22,6 +22,7 @@ class ShoppingCartPage extends StatefulWidget {
 
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
   bool isAllChecked = false;
+  bool resetShoppingCart = false;
 
   // @override
   // void initState() {
@@ -124,10 +125,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                               Radius.circular(
                                                                   10)))),
                                           onPressed: () {
-                                            context
-                                                .go('/product_page', extra: {
-                                              'navSetState':
-                                                  widget.navSetState,
+                                            context.go('/product_page', extra: {
+                                              'navSetState': widget.navSetState,
                                               'hideNavBar': widget.hideNavBar
                                             });
                                           },
@@ -155,8 +154,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                     state.cartList[index],
                                                 removeFromCartList: viewModel
                                                     .removeFromCartList,
-                                                navSetState:
-                                                    widget.navSetState,
+                                                navSetState: widget.navSetState,
                                               );
                                             },
                                             itemCount: state.cartList.length,
@@ -175,8 +173,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                         reloadedList =
                                                         await viewModel
                                                             .updateCartList(
-                                                                state
-                                                                    .cartList);
+                                                                state.cartList);
                                                     final List<OrderModel>
                                                         orderItemList =
                                                         await viewModel.sendCart(
@@ -187,8 +184,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                 .toList());
                                                     if (reloadedList
                                                         .where((e) =>
-                                                            e.isChecked ==
-                                                            true)
+                                                            e.isChecked == true)
                                                         .toList()
                                                         .isEmpty) {
                                                       showDialog(
@@ -210,17 +206,21 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                           });
                                                     } else {
                                                       // ShoppingCartPageWidget.checkedList = [];
-                                                      GoRouter.of(context).go(
-                                                          '/shopping_cart_page/fill_order_page',
-                                                          extra: {
+                                                      final result = await GoRouter
+                                                              .of(context)
+                                                          .push(
+                                                              '/shopping_cart_page/fill_order_page',
+                                                              extra: {
                                                             'orderModelList':
                                                                 orderItemList,
                                                             'navSetState': widget
                                                                 .navSetState,
-                                                            'hideNavBar':
-                                                                widget
-                                                                    .hideNavBar
+                                                            'hideNavBar': widget
+                                                                .hideNavBar
                                                           });
+                                                      if (result == true) {
+                                                        viewModel.getCartList();
+                                                      }
                                                     }
                                                   },
                                                   style: ElevatedButton.styleFrom(
@@ -230,8 +230,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                       shape: const RoundedRectangleBorder(
                                                           borderRadius:
                                                               BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      10)))),
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)))),
                                                   child: const Text(
                                                     '주문하기',
                                                     style: TextStyle(

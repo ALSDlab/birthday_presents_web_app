@@ -188,9 +188,11 @@ class PayPageViewModel extends ChangeNotifier {
                   firstButton: '확인');
             },
           );
-          sendSMS('01058377427', _state.orderItems.first.ordererPhoneNo!,
-              '[민영기염소탕]주문완료.\n주문번호: ${_state.orderItems.first.orderId}\n${_state.orderItems.first.ordererName} 고객님, 구매해 주셔서 감사드립니다.');
+          logger.info('[민영기염소탕]주문완료.\n주문번호: ${_state.orderItems.first.orderId}\n${_state.orderItems.first.ordererName} 고객님, 저희 제품을\n구매해 주셔서 감사드립니다.');
+          // sendSMS('01058377427', _state.orderItems.first.ordererPhoneNo!,
+          //     '[민영기염소탕]주문완료.\n주문번호: ${_state.orderItems.first.orderId}\n${_state.orderItems.first.ordererName} 고객님, 저희 제품을\n구매해 주셔서 감사드립니다.');
           hideNavBar(false);
+
         }
       },
       onIssued: (String data) {
@@ -220,16 +222,6 @@ class PayPageViewModel extends ChangeNotifier {
         logger.info(paidResultData);
         if (paidResultData == 'done') {
           postPaidItems(context, orderItems, 1); // 결제완료되면 서버로 pay status 변경
-          //TODO : 장바구니 비우기 적용(결제 한것만)
-          List<ShoppingProductForCart> currentList =
-              await getShoppingCartList();
-          List<String> orderIds =
-              orderItems.map((e) => e.orderId).toSet().toList();
-          currentList.removeWhere((e) => orderIds.contains(e.orderId));
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          String jsonString =
-              jsonEncode(currentList.map((e) => e.toJson()).toList());
-          prefs.setString('shoppingCartList', jsonString);
         }
       },
     );
@@ -289,18 +281,5 @@ class PayPageViewModel extends ChangeNotifier {
     return payload;
   }
 
-  Future<List<ShoppingProductForCart>> getShoppingCartList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? selectedProducts = prefs.getString('shoppingCartList');
 
-    if (selectedProducts != null) {
-      // 저장된 데이터가 있다면 JSON을 파싱하여 리스트로 변환
-      final jsonList = jsonDecode(selectedProducts) as List<dynamic>;
-      final cartList =
-          jsonList.map((e) => ShoppingProductForCart.fromJson(e)).toList();
-      return cartList;
-    } else {
-      return [];
-    }
-  }
 }
