@@ -81,11 +81,13 @@ final router = GoRouter(
                     builder: (context, state) {
                       final extra = state.extra! as Map<String, dynamic>;
                       final hideNavBar = extra['hideNavBar'];
+                      final navSetState = extra['navSetState'];
                       return ChangeNotifierProvider(
                         create: (_) => getIt<FillOrderFormPageViewModel>(),
                         child: FillOrderFormPage(
                             forOrderItems: extra['orderModelList'],
-                            hideNavBar: hideNavBar),
+                            hideNavBar: hideNavBar,
+                            navSetState: navSetState),
                       );
                     },
                     routes: [
@@ -141,7 +143,7 @@ final router = GoRouter(
                           ]),
                       GoRoute(
                         path: 'change_password_page',
-                        builder: (context, state) => ChangePasswordPage(),
+                        builder: (context, state) => const ChangePasswordPage(),
                       )
                     ]),
                 GoRoute(

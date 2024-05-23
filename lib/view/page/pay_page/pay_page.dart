@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_address_widget.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_view_model.dart';
@@ -29,7 +30,7 @@ class _PayPageState extends State<PayPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async{
+    Future.microtask(() async {
       final payViewModel = context.read<PayPageViewModel>();
       if (widget.forOrderItems.isNotEmpty) {
         await payViewModel.fetchMyOrderData(widget.forOrderItems.first.orderId);
@@ -97,8 +98,7 @@ class _PayPageState extends State<PayPage> {
                                         child: Center(
                                           child: Text(
                                             (state.orderItems.isNotEmpty)
-                                                ? state
-                                                    .orderItems.first.orderId
+                                                ? state.orderItems.first.orderId
                                                 : '',
                                             style: const TextStyle(
                                                 color: Color(0xFF019934),
@@ -117,9 +117,13 @@ class _PayPageState extends State<PayPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         top: 16, bottom: 16),
-                                    child: (state.orderItems.isNotEmpty) ?PayAddressWidget(
-                                        orderFirstItem:
-                                            state.orderItems.first) : const Center(child: GifProgressBar(),),
+                                    child: (state.orderItems.isNotEmpty)
+                                        ? PayAddressWidget(
+                                            orderFirstItem:
+                                                state.orderItems.first)
+                                        : const Center(
+                                            child: GifProgressBar(),
+                                          ),
                                   ),
                                   const Divider(),
                                   const Text(
@@ -147,8 +151,7 @@ class _PayPageState extends State<PayPage> {
                                   const Divider(),
                                   Visibility(
                                     visible: ((state.orderItems.isNotEmpty) &&
-                                        (state.orderItems.first
-                                                .payAndStatus! <
+                                        (state.orderItems.first.payAndStatus! <
                                             1)),
                                     // -1: 결제실패, 0: 결제전, 1: 결제완료, 2: 결제취소, 3: 배송중, 4: 배송완료
                                     child: const Row(
@@ -165,8 +168,7 @@ class _PayPageState extends State<PayPage> {
                                   ),
                                   Visibility(
                                     visible: ((state.orderItems.isNotEmpty) &&
-                                        (state.orderItems.first
-                                                .payAndStatus! <
+                                        (state.orderItems.first.payAndStatus! <
                                             1)),
                                     child: Padding(
                                       padding: const EdgeInsets.only(
@@ -221,11 +223,11 @@ class _PayPageState extends State<PayPage> {
                                                 Radius.circular(10))),
                                       ),
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        GoRouter.of(context).pop(true);
                                         widget.hideNavBar(false);
                                       },
                                       child: const Text(
-                                        '이전',
+                                        '취소',
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ),
