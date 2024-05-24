@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: Padding(
-                padding: const EdgeInsets.all(64.0),
+                padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -167,10 +167,10 @@ class _LoginPageState extends State<LoginPage> {
                                         passwordController.text, context);
                                   }
                                 },
-                                child: Text(
+                                child: const Text(
                                   '로그인',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 16.h),
+                                      color: Colors.white, fontSize: 16),
                                 ),
                               ),
                               Row(
@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 64.0),
+                            padding: const EdgeInsets.symmetric(vertical: 5.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
