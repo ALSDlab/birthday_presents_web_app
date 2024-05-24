@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/agreement_page/agreement_page.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_page.dart';
+import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_page_view_model.dart';
 import 'package:myk_market_app/view/page/login_page/login_page.dart';
 import 'package:myk_market_app/view/page/login_page/login_page_view_model.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
@@ -21,6 +22,7 @@ import 'package:myk_market_app/view/page/profile_page/profile_page.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
+import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'di/get_it.dart';
@@ -135,15 +137,25 @@ final router = GoRouter(
                           routes: [
                             GoRoute(
                               path: 'signup_page',
-                              builder: (context, state) => SignupPage(
-                                isPersonalInfoForDeliverChecked:
-                                    state.extra! as bool,
-                              ),
+                              builder: (context, state) {
+                                return ChangeNotifierProvider(
+                                  create: (_) => getIt<SignupPageViewModel>(),
+                                  child: SignupPage(
+                                    isPersonalInfoForDeliverChecked:
+                                        state.extra! as bool,
+                                  ),
+                                );
+                              },
                             ),
                           ]),
                       GoRoute(
                         path: 'change_password_page',
-                        builder: (context, state) => const FindIdPasswordPage(),
+                        builder: (context, state) {
+                          return ChangeNotifierProvider(
+                            create: (_) => getIt<FindIdPasswordViewModel>(),
+                            child: const FindIdPasswordPage(),
+                          );
+                        },
                       )
                     ]),
                 GoRoute(

@@ -50,7 +50,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
-    SignupViewModel().getUserArray();
+    SignupPageViewModel().getUserArray();
   }
 
   @override
@@ -66,7 +66,8 @@ class _SignupPageState extends State<SignupPage> {
       extraAddressController
     ];
 
-    final viewModel = SignupViewModel();
+    final viewModel = SignupPageViewModel();
+    final state = viewModel.state;
 
     return Scaffold(
       appBar: AppBar(
@@ -91,7 +92,13 @@ class _SignupPageState extends State<SignupPage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: EdgeInsets.only(
+                    top: 5.0,
+                    left: 5.0,
+                    right: 5.0,
+                    bottom: state.showSnackbarPadding
+                        ? MediaQuery.of(context).padding.bottom + 48.0
+                        : 0), // Snackbar 높이만큼 padding 추가
                 child: Column(
                   children: [
                     const Padding(
@@ -220,7 +227,7 @@ class _SignupPageState extends State<SignupPage> {
                                                                             },
                                                                           );
                                                                         } else {
-                                                                          final result = await showDialog(
+                                                                          final bool result = await showDialog(
                                                                               context: context,
                                                                               builder: (context) {
                                                                                 return CellphoneValidPage(servicePhoneNo: servicePhoneNo, phoneNumber: phoneController.text);
@@ -231,14 +238,14 @@ class _SignupPageState extends State<SignupPage> {
                                                                               isValidPhoneNo = !isValidPhoneNo;
                                                                             });
                                                                           }
-                                                                          ScaffoldMessenger.of(context)
-                                                                              .showSnackBar(SnackBar(
-                                                                            content: Text((result == true)
-                                                                                ? "인증이 완료되었습니다."
-                                                                                : (result == false)
-                                                                                    ? "5회 이상 실패했습니다. 다른 휴대폰으로 인증해주세요."
-                                                                                    : '다시 인증해 주세요.'),
-                                                                          ));
+                                                                          final Widget content = Text((result == true)
+                                                                              ? "인증이 완료되었습니다."
+                                                                              : (result == false)
+                                                                                  ? "5회 이상 실패했습니다. 다른 휴대폰으로 인증해주세요."
+                                                                                  : '다시 인증해 주세요.');
+                                                                          viewModel.showSnackbar(
+                                                                              context,
+                                                                              content);
                                                                           // FocusScope.of(context)
                                                                           //     .unfocus();
                                                                         }

@@ -182,7 +182,8 @@ class _PayPageState extends State<PayPage> {
                                                 finalConfirmNeed = newValue!;
                                               });
                                             },
-                                            activeColor: const Color(0xFF2F362F),
+                                            activeColor:
+                                                const Color(0xFF2F362F),
                                             checkColor: Colors.white,
                                           ),
                                           const Expanded(

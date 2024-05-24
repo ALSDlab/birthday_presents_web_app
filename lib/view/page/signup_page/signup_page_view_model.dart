@@ -1,17 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:myk_market_app/view/page/signup_page/signup_page_state.dart';
 
 import '../../../utils/simple_logger.dart';
 
-class SignupViewModel {
-  static final SignupViewModel _instance = SignupViewModel._internal();
+class SignupPageViewModel extends ChangeNotifier {
+  SignupPageState _state = const SignupPageState();
 
-  factory SignupViewModel() {
-    return _instance;
-  }
-
-  SignupViewModel._internal();
+  SignupPageState get state => _state;
 
   final gridLeftArray = [
     '아이디',
@@ -95,5 +93,24 @@ class SignupViewModel {
       logger.info('에러: $e');
       return false;
     }
+  }
+
+  void showSnackbar(BuildContext context, Widget content) {
+    _state = state.copyWith(showSnackbarPadding: true);
+    notifyListeners();
+
+    final snackBar = SnackBar(
+      content: content,
+      duration: const Duration(seconds: 2),
+      onVisible: () {
+        // snackbar가 사라질 때 패딩을 제거합니다.
+        Future.delayed(const Duration(milliseconds: 2200), () {
+          _state = state.copyWith(showSnackbarPadding: false);
+          notifyListeners();
+        });
+      },
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

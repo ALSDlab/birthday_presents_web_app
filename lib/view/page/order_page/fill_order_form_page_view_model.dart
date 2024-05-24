@@ -82,7 +82,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   }
 
   void fillTextField() {
-    SignupViewModel viewModel = SignupViewModel();
+    SignupPageViewModel viewModel = SignupPageViewModel();
     nameController.text = ((currentUser.isNotEmpty)
         ? currentUser.first.name
         : (nameController.text));

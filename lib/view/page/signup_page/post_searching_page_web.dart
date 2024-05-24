@@ -23,7 +23,7 @@ class _PostSearchingPageWebState extends State<PostSearchingPageWeb> {
             flex: 2,
             child: KakaoAddressWidget(
               onComplete: (kakaoAddress) {
-                SignupViewModel viewModel = SignupViewModel();
+                SignupPageViewModel viewModel = SignupPageViewModel();
                 viewModel.setAddress(kakaoAddress.address, kakaoAddress.postCode);
               },
               onClose: () {
