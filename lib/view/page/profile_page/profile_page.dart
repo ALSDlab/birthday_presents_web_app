@@ -38,49 +38,98 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.fromLTRB(25, 30, 25, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.person),
-                        Text(
-                          FirebaseAuth.instance.currentUser?.displayName ??
-                              '사용자',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 9),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.person),
+                          SizedBox(
+                            width: 15.h,
+                          ),
+                          Text(
+                            FirebaseAuth.instance.currentUser?.displayName ??
+                                '사용자',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 32.h,
                     ),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('주문내역'),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                '주문내역',
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  GoRouter.of(context).push(
+                                      '/profile_page/order_history_page',
+                                      extra: {'hideNavBar': widget.hideNavBar});
+                                },
+                                // style: TextButton.styleFrom(
+                                //   padding: EdgeInsets.zero,
+                                // ),
+                                child: const Text(' > 상세보기'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 0),
+                          child: const Divider(
+                            thickness: 0.5,
+                            height: 4,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            '회원정보 수정',
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 0.5,
+                        ),
                         TextButton(
                           onPressed: () {
-                            GoRouter.of(context)
-                                .push('/profile_page/order_history_page', extra: {'hideNavBar': widget.hideNavBar});
+                            FirebaseAuth.instance.signOut();
+                            GoRouter.of(context).go('/main_page');
                           },
-                          child: const Text(' > 상세보기'),
+                          child: const Text(
+                            '로그아웃',
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 0.5,
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            '회원탈퇴',
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 0.5,
                         ),
                       ],
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text('회원정보 수정'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        FirebaseAuth.instance.signOut();
-                        GoRouter.of(context).go('/main_page');
-                      },
-                      child: const Text('로그아웃'),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text('회원탈퇴'),
                     ),
                   ],
                 ),
