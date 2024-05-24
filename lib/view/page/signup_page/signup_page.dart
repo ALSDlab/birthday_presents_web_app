@@ -34,6 +34,11 @@ class _SignupPageState extends State<SignupPage> {
   bool isValidPhoneNo = false;
   String servicePhoneNo = '01058377427';
 
+  String? _errorIdText;
+  String? _errorPasswordText;
+  String? _errorPasswordConfirmText;
+  String? _errorNameText;
+
   @override
   void dispose() {
     idController.dispose();
@@ -64,6 +69,16 @@ class _SignupPageState extends State<SignupPage> {
       postcodeController,
       addressController,
       extraAddressController
+    ];
+    final errorControllers = [
+      _errorIdText,
+      _errorPasswordText,
+      _errorPasswordConfirmText,
+      _errorNameText,
+      null,
+      null,
+      null,
+      null
     ];
 
     final viewModel = SignupPageViewModel();
@@ -241,7 +256,7 @@ class _SignupPageState extends State<SignupPage> {
                                                                           final Widget content = Text((result == true)
                                                                               ? "인증이 완료되었습니다."
                                                                               : (result == false)
-                                                                                  ? "5회 이상 실패했습니다. 다른 휴대폰으로 인증해주세요."
+                                                                                  ? "5회 이상 실패했습니다. 상담실로 문의해 주세요."
                                                                                   : '다시 인증해 주세요.');
                                                                           viewModel.showSnackbar(
                                                                               context,
@@ -271,13 +286,13 @@ class _SignupPageState extends State<SignupPage> {
                                                             (isValidPhoneNo)
                                                                 ? true
                                                                 : false,
-                                                        validator: (value) {
-                                                          if (value == null ||
-                                                              value.isEmpty) {
-                                                            return '휴대폰 번호를 입력해 주세요.';
-                                                          }
-                                                          return null;
-                                                        },
+                                                        // validator: (value) {
+                                                        //   if (value == null ||
+                                                        //       value.isEmpty) {
+                                                        //     return '휴대폰 번호를 입력해 주세요.';
+                                                        //   }
+                                                        //   return null;
+                                                        // },
                                                         keyboardType:
                                                             TextInputType
                                                                 .number,
@@ -423,60 +438,143 @@ class _SignupPageState extends State<SignupPage> {
                                                         ),
                                                       ],
                                                     )
-                                                  : TextFormField(
-                                                      obscureText:
-                                                          (index == 1 ||
+                                                  : Stack(
+                                                      children: [
+                                                        TextFormField(
+                                                          obscureText: (index ==
+                                                                      1 ||
                                                                   index == 2)
                                                               ? true
                                                               : false,
-                                                      validator: (value) {
-                                                        if (value == null ||
-                                                            value.isEmpty) {
-                                                          return '필수항목입니다.';
-                                                        }
-                                                        if (index == 0) {
-                                                          if (viewModel
-                                                              .userArray
-                                                              .contains(
-                                                                  idController
-                                                                      .text)) {
-                                                            return '사용중인 아이디입니다.';
-                                                          }
-                                                        }
-                                                        if (index == 1) {
-                                                          if (passwordController
-                                                                  .text.length <
-                                                              6) {
-                                                            return '6자리 이상 입력해주세요.';
-                                                          }
-                                                        }
-                                                        return null;
-                                                      },
-                                                      readOnly: (index == 6)
-                                                          ? true
-                                                          : false,
-                                                      style: const TextStyle(
-                                                          fontSize: 15),
-                                                      decoration:
-                                                          InputDecoration(
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .fromLTRB(
-                                                                10, 5, 0, 5),
-                                                        border:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              const BorderSide(
-                                                            width: 0.1,
-                                                            color: Colors.white,
+
+                                                          // validator: (value) {
+                                                          //   if (value == null ||
+                                                          //       value.isEmpty) {
+                                                          //     return '필수항목입니다.';
+                                                          //   }
+                                                          //   if (index == 0) {
+                                                          //     if (viewModel
+                                                          //         .userArray
+                                                          //         .contains(
+                                                          //             idController
+                                                          //                 .text)) {
+                                                          //       return '사용중인 아이디입니다.';
+                                                          //     }
+                                                          //   }
+                                                          //   if (index == 1) {
+                                                          //     if (passwordController
+                                                          //             .text.length <
+                                                          //         6) {
+                                                          //       return '6자리 이상 입력해주세요.';
+                                                          //     }
+                                                          //   }
+                                                          //   return null;
+                                                          // },
+
+                                                          readOnly: (index == 6)
+                                                              ? true
+                                                              : false,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 15),
+                                                          decoration:
+                                                              InputDecoration(
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                    .fromLTRB(
+                                                                    10,
+                                                                    5,
+                                                                    0,
+                                                                    5),
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  const BorderSide(
+                                                                width: 0.1,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                width: 2,
+                                                                color: (errorControllers[
+                                                                            index] ==
+                                                                        null)
+                                                                    ? Colors
+                                                                        .grey
+                                                                    : const Color(
+                                                                        0xFFba1a1a),
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                width: 2,
+                                                                color: (errorControllers[
+                                                                            index] ==
+                                                                        null)
+                                                                    ? const Color(
+                                                                        0xFF2F362F)
+                                                                    : const Color(
+                                                                        0xFFba1a1a),
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
                                                           ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              errorControllers[
+                                                                  index] = (value
+                                                                      .isEmpty
+                                                                  ? '필수항목입니다.'
+                                                                  : null);
+                                                            });
+                                                          },
+                                                          controller:
+                                                              controllers[
+                                                                  index],
                                                         ),
-                                                      ),
-                                                      controller:
-                                                          controllers[index],
+                                                        if (errorControllers[
+                                                                index] !=
+                                                            null)
+                                                          Positioned(
+                                                            top: 15,
+                                                            right: 15,
+                                                            child: Container(
+                                                              color:
+                                                                  Colors.white,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          4),
+                                                              child: Text(
+                                                                errorControllers[
+                                                                    index]!,
+                                                                style: const TextStyle(
+                                                                    color: Color(
+                                                                        0xFFba1a1a),
+                                                                    fontSize:
+                                                                        12),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                      ],
                                                     ),
                                         ],
                                       ),
