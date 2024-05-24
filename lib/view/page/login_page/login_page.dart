@@ -11,6 +11,7 @@ import '../../../data/model/order_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.hideNavBar});
+
   final bool Function(bool) hideNavBar;
 
   @override
@@ -87,7 +88,11 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const Text(
                       '로그인',
-                      style: TextStyle(fontSize: 30),
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const Divider(),
+                    SizedBox(
+                      height: 10.h,
                     ),
                     Expanded(
                       child: ListView(
@@ -107,8 +112,16 @@ class _LoginPageState extends State<LoginPage> {
                                         return null;
                                       },
                                       decoration: const InputDecoration(
-                                          hintText: '아이디',
-                                          border: OutlineInputBorder()),
+                                        hintText: '아이디',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
                                     ),
                                     TextFormField(
                                       controller: passwordController,
@@ -120,8 +133,13 @@ class _LoginPageState extends State<LoginPage> {
                                         return null;
                                       },
                                       decoration: const InputDecoration(
-                                          hintText: '비밀번호',
-                                          border: OutlineInputBorder()),
+                                        hintText: '비밀번호',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -193,20 +211,40 @@ class _LoginPageState extends State<LoginPage> {
                               children: [
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Text('비회원 주문 조회'),
+                                  child: Text(
+                                    '비회원 주문 조회',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ),
+                                const Divider(),
+                                SizedBox(
+                                  height: 10.h,
                                 ),
                                 TextField(
                                   controller: orderedUserController,
                                   decoration: const InputDecoration(
-                                      hintText: '주문자명',
-                                      border: OutlineInputBorder()),
+                                    hintText: '주문자명',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
                                 ),
                                 TextField(
                                   controller: orderNumberController,
                                   obscureText: true,
                                   decoration: const InputDecoration(
-                                      hintText: '주문번호',
-                                      border: OutlineInputBorder()),
+                                    hintText: '주문번호',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.0),
