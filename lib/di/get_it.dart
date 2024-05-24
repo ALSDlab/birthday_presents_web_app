@@ -30,13 +30,13 @@ void diSetup() {
         () => PayPageViewModel(orderRepository: getIt<OrderRepository>()))
     ..registerFactory<FillOrderFormPageViewModel>(() =>
         FillOrderFormPageViewModel(userRepository: getIt<UserRepository>()))
+    ..registerFactory<FindIdPasswordViewModel>(() =>
+        FindIdPasswordViewModel(userRepository: getIt<UserRepository>()))
     ..registerFactory<ShoppingCartViewModel>(() => ShoppingCartViewModel())
     ..registerFactory<LoginPageViewModel>(
         () => LoginPageViewModel(orderRepository: getIt<OrderRepository>()))
     ..registerFactory<OrderHistoryPageViewModel>(() =>
         OrderHistoryPageViewModel(orderRepository: getIt<OrderRepository>()))
     ..registerFactory<SignupPageViewModel>(() =>
-        SignupPageViewModel())
-    ..registerFactory<FindIdPasswordViewModel>(() =>
-        FindIdPasswordViewModel());
+        SignupPageViewModel());
 }
