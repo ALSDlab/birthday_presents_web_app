@@ -23,7 +23,7 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
   bool _isTimeout = true;
   bool _canResend = true;
   bool _correctVerificationCode = true;
-  int _start = 10; // 3 minutes in seconds
+  int _start = 180; // 3 minutes in seconds
   int _attempts = 0;
   final int _maxAttempts = 5;
 
@@ -53,7 +53,7 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
   }
 
   void startTimer() {
-    _start = 10;
+    _start = 180;
     _isTimeout = false;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
@@ -78,7 +78,7 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
           .sendVerificationCode(widget.servicePhoneNo, widget.phoneNumber);
       _attempts = (await CelllphoneVaildPageViewModel()
           .getVerificationPhoneNo(widget.phoneNumber));
-      Future.delayed(Duration(seconds: _start), () {
+      Future.delayed(const Duration(seconds: 60), () {
         if (mounted) {
           setState(() {
             _canResend = true;

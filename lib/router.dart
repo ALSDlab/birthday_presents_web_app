@@ -151,9 +151,13 @@ final router = GoRouter(
                       GoRoute(
                         path: 'change_password_page',
                         builder: (context, state) {
+                          final extra = state.extra! as Map<String, dynamic>;
+                          final hideNavBar = extra['hideNavBar'];
                           return ChangeNotifierProvider(
                             create: (_) => getIt<FindIdPasswordViewModel>(),
-                            child: const FindIdPasswordPage(),
+                            child: FindIdPasswordPage(
+                              hideNavBar: hideNavBar,
+                            ),
                           );
                         },
                       )

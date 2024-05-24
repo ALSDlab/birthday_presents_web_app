@@ -8,7 +8,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<List<UserModel>> getFirebaseUserData(String userId) async {
     // Firebase Firestore에서 데이터 읽어오기
-    var query = FirebaseFirestore.instance
+    var query = _firestore
         .collection('user')
         .where('id', isEqualTo: userId);
 

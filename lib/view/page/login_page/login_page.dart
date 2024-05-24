@@ -11,6 +11,7 @@ import '../../../data/model/order_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.hideNavBar});
+
   final bool Function(bool) hideNavBar;
 
   @override
@@ -160,7 +161,10 @@ class _LoginPageState extends State<LoginPage> {
                                   TextButton(
                                     onPressed: () {
                                       context.push(
-                                          '/profile_page/login_page/change_password_page');
+                                          '/profile_page/login_page/change_password_page',
+                                          extra: {
+                                            'hideNavBar': widget.hideNavBar
+                                          });
                                     },
                                     child: const Text(
                                       '아이디 / 비밀번호 찾기',

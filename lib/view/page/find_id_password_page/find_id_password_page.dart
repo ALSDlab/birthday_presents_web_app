@@ -1,15 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_page_view_model.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/reset_password_page.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/simple_logger.dart';
 import '../cellphone_valid_page/cellphone_valid_page.dart';
 
 class FindIdPasswordPage extends StatefulWidget {
-  const FindIdPasswordPage({super.key});
+  const FindIdPasswordPage({super.key, required this.hideNavBar});
+
+  final bool Function(bool) hideNavBar;
 
   @override
   State<FindIdPasswordPage> createState() => _FindIdPasswordPageState();
@@ -41,7 +44,8 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = FindIdPasswordViewModel();
+    final viewModel = context.watch<FindIdPasswordViewModel>();
+    final state = viewModel.state;
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +76,13 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: EdgeInsets.only(
+                    top: 5.0,
+                    left: 5.0,
+                    right: 5.0,
+                    bottom: state.showSnackbarPadding
+                        ? MediaQuery.of(context).padding.bottom + 48.0
+                        : 0), // Snackbar 높이만큼 padding 추가
                 child: Column(
                   children: [
                     const Padding(
@@ -576,7 +586,7 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                                     ? "인증이 완료되었습니다."
                                                                     : (result ==
                                                                             false)
-                                                                        ? "5회 이상 실패했습니다. 다른 휴대폰으로 인증해주세요."
+                                                                        ? "5회 이상 실패했습니다. 상담실로 문의해 주세요."
                                                                         : '다시 인증해 주세요.');
                                                             viewModel
                                                                 .showSnackbar(
@@ -605,6 +615,9 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                             child: Stack(
                                               children: [
                                                 TextFormField(
+                                                  readOnly: (isValidPhoneNo)
+                                                      ? true
+                                                      : false,
                                                   keyboardType:
                                                       TextInputType.number,
                                                   inputFormatters: [
@@ -730,32 +743,150 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                     _errorPhoneForPasswordText ==
                                                         null) {
                                                   if (isValidPhoneNo) {
-                                                    final String newPassword =
-                                                        await showDialog(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return const ResetPasswordPage();
-                                                            });
-                                                    viewModel.passwordUpdate(newPassword);
-
-                                                    //TODO: 인증이 완료되면 비밀번호 재설정 기능 구현
-                                                    // 다이얼로그로 재설정, 완료되면 스낵바로 완료 알림
-                                                    // 아이디로 메일형식을 만든 후 계정 확인, 인증된 휴대폰번호 확인 후
-                                                    // 변경 구현
-
                                                     try {
-                                                      // await FirebaseAuth
-                                                      //     .instance
-                                                      //     .sendPasswordResetEmail(
-                                                      //         email:
-                                                      //             _emailController
-                                                      //                 .text);
+                                                      // 아이디 확인
+                                                      final resultStatus =
+                                                          await viewModel
+                                                              .verifyInputData(
+                                                                  _idController
+                                                                      .text);
+                                                      switch (resultStatus) {
+                                                        case '': // 존재하지 않는 아이디
+                                                          if (context.mounted) {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return OneAnswerDialog(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      title:
+                                                                          '알림',
+                                                                      subtitle:
+                                                                          '아이디가 존재하지 없습니다.',
+                                                                      firstButton:
+                                                                          '확인',
+                                                                      imagePath:
+                                                                          'assets/gifs/alert.gif');
+                                                                });
+                                                          }
+
+                                                        case 'error': // 에러 발생
+                                                          if (context.mounted) {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return OneAnswerDialog(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      title:
+                                                                          '에러 발생',
+                                                                      subtitle:
+                                                                          '잠시 후 다시 시도해 주세요.',
+                                                                      firstButton:
+                                                                          '확인',
+                                                                      imagePath:
+                                                                          'assets/gifs/alert.gif');
+                                                                });
+                                                          }
+                                                        default: // 전화번호 데이터 확인
+                                                          if (_phoneForPasswordController
+                                                                  .text ==
+                                                              resultStatus) {
+                                                            // 입력된 전화번호가 일치하다면 비밀번호 재설정
+                                                            final String
+                                                                newPassword =
+                                                                await showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return const ResetPasswordPage();
+                                                                    });
+                                                            if (newPassword
+                                                                .isEmpty) {
+                                                              // 비밀번호를 변경하지 않고 취소함
+                                                              const Widget
+                                                                  content =
+                                                                  Text(
+                                                                      '비밀번호가 재설정되지 않았습니다.');
+                                                              viewModel
+                                                                  .showSnackbar(
+                                                                      context,
+                                                                      content);
+                                                            } else {
+                                                              // firebase에 비밀번호 재설정
+                                                              await viewModel
+                                                                  .passwordUpdate(
+                                                                      newPassword);
+                                                              if (context
+                                                                  .mounted) {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return OneAnswerDialog(
+                                                                          onTap:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                            GoRouter.of(context).go('/profile_page/login_page', extra: {
+                                                                              'hideNavBar': widget.hideNavBar
+                                                                            });
+                                                                          },
+                                                                          title:
+                                                                              '비밀번호가 재설정 되었습니다.',
+                                                                          subtitle:
+                                                                              '로그인 페이지로 돌아갑니다.',
+                                                                          firstButton:
+                                                                              '확인',
+                                                                          imagePath:
+                                                                              'assets/gifs/success.gif');
+                                                                    });
+                                                              }
+                                                            }
+                                                          } else {
+                                                            // 입력된 전화번호가 불일치하면 알림
+                                                            if (context
+                                                                .mounted) {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return OneAnswerDialog(
+                                                                        onTap:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        title:
+                                                                            '알림',
+                                                                        subtitle:
+                                                                            '전화번호가 일치하지 않습니다.',
+                                                                        firstButton:
+                                                                            '확인',
+                                                                        imagePath:
+                                                                            'assets/gifs/alert.gif');
+                                                                  });
+                                                            }
+                                                          }
+                                                      }
                                                     } catch (e) {
                                                       logger.info(e);
                                                     }
                                                   } else {
                                                     // 인증이 되지 않았을 때 스낵바로 알림
-                                                    final Widget content = Text(
+                                                    const Widget content = Text(
                                                         '휴대폰번호 인증을 완료해 주세요.');
                                                     viewModel.showSnackbar(
                                                         context, content);
