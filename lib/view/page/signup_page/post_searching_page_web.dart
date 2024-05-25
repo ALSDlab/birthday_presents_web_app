@@ -9,6 +9,13 @@ class PostSearchingPageWeb extends StatefulWidget {
   State<PostSearchingPageWeb> createState() => _PostSearchingPageWebState();
 }
 
+Map<String, String> addressSet = {};
+
+void getAddress(String postcode, String address){
+  addressSet['postcode'] = postcode;
+  addressSet['address'] = address;
+}
+
 class _PostSearchingPageWebState extends State<PostSearchingPageWeb> {
   @override
   Widget build(BuildContext context) {
@@ -23,11 +30,10 @@ class _PostSearchingPageWebState extends State<PostSearchingPageWeb> {
             flex: 2,
             child: KakaoAddressWidget(
               onComplete: (kakaoAddress) {
-                SignupPageViewModel viewModel = SignupPageViewModel();
-                viewModel.setAddress(kakaoAddress.address, kakaoAddress.postCode);
+                getAddress(kakaoAddress.postCode, kakaoAddress.address);
               },
               onClose: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(addressSet);
               },
             ),
           ),

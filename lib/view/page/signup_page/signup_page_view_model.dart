@@ -32,19 +32,24 @@ class SignupPageViewModel extends ChangeNotifier {
 
   String get zoneCode => _zoneCode;
 
-  void setAddress(String newAddress, String newZoneCode) {
+  void setAddress(String newZoneCode, String newAddress) {
     _address = newAddress;
     _zoneCode = newZoneCode;
+    notifyListeners();
   }
 
   String? passwordValidator(String? value) {
     if (value == null || value.isEmpty) {
+      notifyListeners();
       return '비밀번호를 입력하세요.';
     }
     if (value.length < 6) {
+      notifyListeners();
       return '6자리 이상 입력하세요';
     }
+    notifyListeners();
     return null;
+
   }
 
   Future saveUserInfo(
@@ -56,11 +61,12 @@ class SignupPageViewModel extends ChangeNotifier {
       String address,
       String addrDetail,
       int created,
+      int recreatCount,
       bool checked) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: '$id@gmail.com', password: password);
+              email: '$recreatCount.$id@gmail.com', password: password);
       await userCredential.user?.updateDisplayName(name);
     } catch (e) {
       return e.toString();
@@ -77,7 +83,9 @@ class SignupPageViewModel extends ChangeNotifier {
       'addressDetail': addrDetail,
       'created': created,
       'checked': checked,
+      'recreatCount': recreatCount,
     });
+    notifyListeners();
   }
 
   Future getUserArray() async {
@@ -88,6 +96,7 @@ class SignupPageViewModel extends ChangeNotifier {
       for (var element in query.docs) {
         String userId = element.data()['id'];
         userArray.add(userId);
+        notifyListeners();
       }
     } catch (e) {
       logger.info('에러: $e');

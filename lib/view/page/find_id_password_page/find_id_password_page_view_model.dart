@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_state.dart';
 
@@ -55,6 +56,82 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       logger.info('오류 발생: $error');
       return 'error';
     }
+  }
+
+  // 유저데이터 삭제하고 재가입되는 방식으로 비밀번호를 변경함(Firebase Auth에는 그대로 남아있음)
+  Future<UserModel?> getUserModelById(String userId) async {
+    try {
+      // 아이디로 유저정보 확인
+      currentUser = await userRepository.getFirebaseUserData(userId);
+
+      if (currentUser.isNotEmpty) {
+        return currentUser.first;
+      }
+    } catch (error) {
+      logger.info('오류 발생: $error');
+    }
+    return null;
+  }
+
+  // 기존 유저 데이터는 삭제하고 재가입함
+  Future<void> deleteAndResignup(String userId, String newPassword) async {
+    final userData = await getUserModelById(userId);
+    try {
+      if (userData != null) {
+        // TODO:기존에 있던 데이터는 삭제함
+        await userRepository.deleteFirebaseUserData(userId);
+
+        await saveUserInfo(
+            userData.id,
+            userData.name,
+            newPassword,
+            userData.phone,
+            userData.postcode,
+            userData.address,
+            userData.addressDetail,
+            DateTime.now().millisecondsSinceEpoch,
+            userData.recreatCount + 1,
+            userData.checked);
+      }
+    } catch (error) {
+      logger.info('오류 발생: $error');
+    }
+  }
+
+// 유저정보를 Firebase에 저장
+  Future saveUserInfo(
+      String id,
+      String name,
+      String password,
+      String phone,
+      String postcode,
+      String address,
+      String addrDetail,
+      int created,
+      int recreatCount,
+      bool checked) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: '$recreatCount.$id@gmail.com', password: password);
+      await userCredential.user?.updateDisplayName(name);
+    } catch (e) {
+      return e.toString();
+    }
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(created.toString() + id)
+        .set({
+      'id': id,
+      'name': name,
+      'phone': phone,
+      'postcode': postcode,
+      'address': address,
+      'addressDetail': addrDetail,
+      'created': created,
+      'checked': checked,
+      'recreatCount': recreatCount,
+    });
   }
 
   // 비밀번호 재설정 메서드
