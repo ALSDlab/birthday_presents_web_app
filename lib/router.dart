@@ -133,16 +133,23 @@ final router = GoRouter(
                     routes: [
                       GoRoute(
                           path: 'agreement_page',
-                          builder: (context, state) => const AgreementPage(),
+                          builder: (context, state) {
+                            final extra = state.extra! as Map<String, dynamic>;
+                            final hideNavBar = extra['hideNavBar'];
+                            return AgreementPage(hideNavBar: hideNavBar);
+                          },
                           routes: [
                             GoRoute(
                               path: 'signup_page',
                               builder: (context, state) {
+                                final extra = state.extra! as Map<String, dynamic>;
+                                final hideNavBar = extra['hideNavBar'];
+                                final isPersonalInfoForDeliverChecked = extra['isPersonalInfoForDeliverChecked'];
                                 return ChangeNotifierProvider(
                                   create: (_) => getIt<SignupPageViewModel>(),
                                   child: SignupPage(
                                     isPersonalInfoForDeliverChecked:
-                                        state.extra! as bool,
+                                    isPersonalInfoForDeliverChecked, hideNavBar: hideNavBar,
                                   ),
                                 );
                               },

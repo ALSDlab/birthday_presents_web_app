@@ -42,6 +42,14 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  final List<String> textField = [
+    'name',
+    'phone',
+    'post',
+    'address',
+    'extraAddress'
+  ];
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<FillOrderFormPageViewModel>();
@@ -199,59 +207,60 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                             MainAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      right:
-                                                                          16.0),
-                                                              child:
-                                                                  OutlinedButton(
-                                                                style: OutlinedButton
-                                                                    .styleFrom(
-                                                                        // shape: const RoundedRectangleBorder(
-                                                                        //     borderRadius: BorderRadius.zero),
-                                                                        shape: const RoundedRectangleBorder(
-                                                                            borderRadius: BorderRadius.all(Radius.circular(
-                                                                                10))),
-                                                                        backgroundColor:
-                                                                            const Color(0xFF2F362F)),
-                                                                onPressed:
-                                                                    () async {
-                                                                  try {
-                                                                    viewModel
-                                                                        .addressChangeRequest();
-                                                                    DataModel?
-                                                                        model =
-                                                                        await Navigator.of(context)
-                                                                            .push(
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              check.pr),
-                                                                    );
-                                                                    setState(
-                                                                      () {
-                                                                        viewModel.daumPostcodeSearchDataModel =
-                                                                            model;
-                                                                      },
-                                                                    );
-                                                                    viewModel
-                                                                        .fillTextField();
-                                                                  } catch (error) {
-                                                                    logger.info(
-                                                                        error);
-                                                                  }
-                                                                },
-                                                                child:
-                                                                    const Text(
-                                                                  '주소검색',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                              )),
                                                           Expanded(
                                                             flex: 1,
+                                                            child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        right:
+                                                                            16.0),
+                                                                child:
+                                                                    OutlinedButton(
+                                                                  style: OutlinedButton
+                                                                      .styleFrom(
+                                                                          // shape: const RoundedRectangleBorder(
+                                                                          //     borderRadius: BorderRadius.zero),
+                                                                          shape: const RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.all(Radius.circular(
+                                                                                  10))),
+                                                                          backgroundColor:
+                                                                              const Color(0xFF2F362F)),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    try {
+                                                                      viewModel
+                                                                          .addressChangeRequest();
+                                                                      dynamic
+                                                                          model =
+                                                                          await Navigator.of(context)
+                                                                              .push(
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                check.pr),
+                                                                      );
+                                                                      if (model is DataModel) {
+                                                                        viewModel.setAddress(model.zonecode, model.address);
+                                                                      } else if (model is Map<String, String>) {
+                                                                        viewModel.setAddress(model['postcode']!, model['address']!);
+                                                                      }
+                                                                      viewModel.fillTextField();
+                                                                    } catch (error) {
+                                                                      logger.info(
+                                                                          error);
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    '주소검색',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                )),
+                                                          ),
+                                                          Expanded(
+                                                            flex: 2,
                                                             child:
                                                                 TextFormField(
                                                               readOnly: true,
@@ -284,7 +293,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                               ),
                                                               controller: viewModel
                                                                       .controllers[
-                                                                  index],
+                                                                  textField[
+                                                                      index]],
                                                             ),
                                                           ),
                                                         ],
@@ -316,7 +326,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           ),
                                                         ),
                                                         controller: viewModel
-                                                            .controllers[index],
+                                                                .controllers[
+                                                            textField[index]],
                                                       ),
                                               ],
                                             ),
@@ -695,12 +706,14 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                           setState(() {
                                             inevitableChecked = true;
                                           });
-                                        } else if (viewModel
-                                                    .controllers[0].text ==
+                                        } else if (viewModel.controllers['name']
+                                                    ?.text ==
                                                 '' ||
-                                            viewModel.controllers[1].text ==
+                                            viewModel.controllers['phone']
+                                                    ?.text ==
                                                 '' ||
-                                            viewModel.controllers[2].text ==
+                                            viewModel.controllers['post']
+                                                    ?.text ==
                                                 '') {
                                           setState(() {
                                             moreDataNeed = true;
@@ -719,17 +732,18 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                   ? isPersonalInfoForDeliverChecked
                                                   : viewModel.currentUser.first
                                                       .checked;
-                                          final ordererName =
-                                              viewModel.controllers[0].text;
-                                          final ordererPhoneNo =
-                                              viewModel.controllers[1].text;
-                                          final ordererPostcode =
-                                              viewModel.controllers[2].text;
+                                          final ordererName = viewModel
+                                              .controllers['name']?.text;
+                                          final ordererPhoneNo = viewModel
+                                              .controllers['phone']?.text;
+                                          final ordererPostcode = viewModel
+                                              .controllers['post']?.text;
 
-                                          final ordererAddress =
-                                              viewModel.controllers[3].text;
-                                          final ordererAddressDetail =
-                                              viewModel.controllers[4].text;
+                                          final ordererAddress = viewModel
+                                              .controllers['address']?.text;
+                                          final ordererAddressDetail = viewModel
+                                              .controllers['extraAddress']
+                                              ?.text;
                                           await Future.forEach(
                                               widget.forOrderItems
                                                   .asMap()
@@ -742,11 +756,11 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                               orderedDate,
                                               personalInfoForDeliverChecked,
                                               ordererId,
-                                              ordererName,
-                                              ordererPhoneNo,
-                                              ordererAddress,
-                                              ordererAddressDetail,
-                                              ordererPostcode,
+                                              ordererName!,
+                                              ordererPhoneNo!,
+                                              ordererAddress!,
+                                              ordererAddressDetail!,
+                                              ordererPostcode!,
                                             );
                                           });
 

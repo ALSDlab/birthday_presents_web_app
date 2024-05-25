@@ -7,6 +7,7 @@ class UserModel {
   String addressDetail;
   bool checked;
   int created;
+  int recreatCount;
 
 //<editor-fold desc="Data Methods">
   UserModel({
@@ -18,6 +19,7 @@ class UserModel {
     required this.addressDetail,
     required this.checked,
     required this.created,
+    required this.recreatCount
   });
 
   @override
@@ -32,7 +34,8 @@ class UserModel {
           address == other.address &&
           addressDetail == other.addressDetail &&
           checked == other.checked &&
-          created == other.created);
+          created == other.created &&
+          recreatCount == other.recreatCount);
 
   @override
   int get hashCode =>
@@ -43,11 +46,12 @@ class UserModel {
       address.hashCode ^
       addressDetail.hashCode ^
       checked.hashCode ^
-      created.hashCode;
+      created.hashCode ^
+      recreatCount.hashCode;
 
   @override
   String toString() {
-    return 'User{ name: $name, id: $id, postcode: $postcode, phone: $phone, address: $address, addressDetail: $addressDetail, checked: $checked, created: $created,}';
+    return 'User{ name: $name, id: $id, postcode: $postcode, phone: $phone, address: $address, addressDetail: $addressDetail, checked: $checked, created: $created, recreatCount: $recreatCount}';
   }
 
   UserModel copyWith({
@@ -59,6 +63,7 @@ class UserModel {
     String? addressDetail,
     bool? checked,
     int? created,
+    int? recreatCount,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -69,6 +74,7 @@ class UserModel {
       addressDetail: addressDetail ?? this.addressDetail,
       checked: checked ?? this.checked,
       created: created ?? this.created,
+      recreatCount: recreatCount ?? this.recreatCount,
     );
   }
 
@@ -82,6 +88,7 @@ class UserModel {
       'addressDetail': addressDetail,
       'checked': checked,
       'created': created,
+      'recreatCount': recreatCount,
     };
   }
 
@@ -95,6 +102,7 @@ class UserModel {
       addressDetail: map['addressDetail'] as String,
       checked: map['checked'] as bool,
       created: map['created'] as int,
+      recreatCount: map['recreatCount'] as int,
     );
   }
 

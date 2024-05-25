@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/user_repository.dart';
-import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/shopping_cart_model.dart';
@@ -23,7 +22,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   }
 
   final gridLeftArray = ['주문자명', '휴대폰번호', '주 소', '', '상세주소'];
-  List<TextEditingController> controllers = [];
+  Map<String, TextEditingController> controllers = {};
   DataModel? daumPostcodeSearchDataModel;
 
   List<UserModel> currentUser = [];
@@ -37,6 +36,13 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   FillOrderFormPageState _state = const FillOrderFormPageState();
 
   FillOrderFormPageState get state => _state;
+
+  String _address = '';
+  String _zoneCode = '';
+
+  String get address => _address;
+
+  String get zoneCode => _zoneCode;
 
   bool _disposed = false;
 
@@ -62,13 +68,13 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
     try {
-      final userId = FirebaseAuth.instance.currentUser;
+      final String userId = FirebaseAuth.instance.currentUser!.email!
+          .replaceAll('@gmail.com', '');
+      int dotIndex = userId.indexOf('.');
+      String currentUserId = userId.substring(dotIndex + 1);
 
       // logger.info(userId?.email!.replaceAll('@gmail.com', ''));
-      if (userId != null) {
-        currentUser = await userRepository
-            .getFirebaseUserData(userId.email!.replaceAll('@gmail.com', ''));
-      }
+      currentUser = await userRepository.getFirebaseUserData(currentUserId);
       fillTextField();
 
       notifyListeners();
@@ -81,30 +87,35 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     }
   }
 
+  void setAddress(String newZoneCode, String newAddress) {
+    _address = newAddress;
+    _zoneCode = newZoneCode;
+    notifyListeners();
+  }
+
   void fillTextField() {
-    SignupPageViewModel viewModel = SignupPageViewModel();
     nameController.text = ((currentUser.isNotEmpty)
         ? currentUser.first.name
         : (nameController.text));
-    controllers.add(nameController);
+    controllers['name'] = (nameController);
     phoneController.text = (currentUser.isNotEmpty)
         ? currentUser.first.phone
         : (phoneController.text);
-    controllers.add(phoneController);
+    controllers['phone'] = (phoneController);
     postcodeController.text =
         (currentUser.isNotEmpty && state.addressChange == false)
             ? currentUser.first.postcode
-            : (daumPostcodeSearchDataModel?.zonecode) ?? viewModel.zoneCode;
-    controllers.add(postcodeController);
+            : (daumPostcodeSearchDataModel?.zonecode) ?? zoneCode;
+    controllers['post'] = (postcodeController);
     addressController.text =
         (currentUser.isNotEmpty && state.addressChange == false)
             ? currentUser.first.address
-            : (daumPostcodeSearchDataModel?.address) ?? viewModel.address;
-    controllers.add(addressController);
+            : (daumPostcodeSearchDataModel?.address) ?? address;
+    controllers['address'] = (addressController);
     extraAddressController.text = (currentUser.isNotEmpty)
         ? currentUser.first.addressDetail
         : (extraAddressController.text);
-    controllers.add(extraAddressController);
+    controllers['extraAddress'] = (extraAddressController);
     notifyListeners();
   }
 

@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'agreement_texts.dart';
 
 class AgreementPage extends StatefulWidget {
-  const AgreementPage({super.key});
+  const AgreementPage({super.key, required this.hideNavBar});
+
+  final bool Function(bool) hideNavBar;
 
   @override
   State<AgreementPage> createState() => _AgreementPageState();
@@ -306,7 +308,11 @@ class _AgreementPageState extends State<AgreementPage> {
                                 } else {
                                   context.push(
                                       '/profile_page/login_page/agreement_page/signup_page',
-                                      extra: isPersonalInfoForDeliverChecked);
+                                      extra: {
+                                        'isPersonalInfoForDeliverChecked':
+                                            isPersonalInfoForDeliverChecked,
+                                        'hideNavBar': widget.hideNavBar
+                                      });
                                 }
                               },
                               child: const Text(

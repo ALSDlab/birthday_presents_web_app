@@ -47,7 +47,9 @@ class OrderHistoryPageViewModel extends ChangeNotifier {
       List<OrderModel> myOrder = [];
       String currentUser = FirebaseAuth.instance.currentUser!.email!
           .replaceAll('@gmail.com', '');
-      myOrder = await orderRepository.getFirebaseOrderByUserId(currentUser);
+      int dotIndex = currentUser.indexOf('.');
+      String currentUserId = currentUser.substring(dotIndex + 1);
+      myOrder = await orderRepository.getFirebaseOrderByUserId(currentUserId);
       myOrder.sort((a, b) => b.orderId.compareTo(a.orderId));
       final List<OrderModel> mySortedOrder =
           myOrder.where((e) => e.deletedDate == '').toList();

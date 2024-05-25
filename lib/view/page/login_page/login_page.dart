@@ -46,12 +46,10 @@ class _LoginPageState extends State<LoginPage> {
       loginViewModel.initPreferences();
     });
     authStateChanges = FirebaseAuth.instance.authStateChanges().listen((user) {
-      setState(() {
-        if (user != null) {
-          GoRouter.of(context).go('/main_page', extra: 0);
-          return;
-        }
-      });
+      if (user != null) {
+        GoRouter.of(context).go('/main_page');
+        return;
+      }
     });
   }
 
@@ -193,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                                   TextButton(
                                     onPressed: () {
                                       context.push(
-                                          '/profile_page/login_page/agreement_page');
+                                          '/profile_page/login_page/agreement_page', extra: {'hideNavBar': widget.hideNavBar});
                                     },
                                     child: const Text(
                                       '회원가입',

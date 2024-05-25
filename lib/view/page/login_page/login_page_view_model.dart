@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/domain/user_repository.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,10 +13,13 @@ import 'login_page_state.dart';
 SharedPreferences? prefs;
 
 class LoginPageViewModel with ChangeNotifier {
+  final UserRepository userRepository;
   final OrderRepository orderRepository;
 
   LoginPageViewModel({
     required this.orderRepository,
+    required this.userRepository,
+
   });
 
   LoginPageState _state = const LoginPageState();
@@ -39,10 +43,16 @@ class LoginPageViewModel with ChangeNotifier {
 
   Future signIn(String id, String password, BuildContext context) async {
     try {
+      // 아이디로 유저정보를 우선 확인
+      int recreatedCount = 0;
+      final currentUser = await userRepository.getFirebaseUserData(id);
+      if (currentUser.isNotEmpty){
+        recreatedCount = currentUser.first.recreatCount;
+      }
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: '$id@gmail.com', password: password);
+          email: '$recreatedCount.$id@gmail.com', password: password);
       if (context.mounted) {
-        prefs!.setString('_email', '$id@gmail.com');
+        prefs!.setString('_email', '$recreatedCount.$id@gmail.com');
         context.go('/main_page');
       }
     } catch (e) {

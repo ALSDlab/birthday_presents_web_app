@@ -11,8 +11,12 @@ import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 import '../../../utils/simple_logger.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key, required this.isPersonalInfoForDeliverChecked});
+  const SignupPage(
+      {super.key,
+      required this.isPersonalInfoForDeliverChecked,
+      required this.hideNavBar});
 
+  final bool Function(bool) hideNavBar;
   final bool isPersonalInfoForDeliverChecked;
 
   @override
@@ -33,6 +37,7 @@ class _SignupPageState extends State<SignupPage> {
 
   bool isValidPhoneNo = false;
   String servicePhoneNo = '01058377427';
+
 
   String? _errorIdText;
   String? _errorPasswordText;
@@ -360,7 +365,7 @@ class _SignupPageState extends State<SignupPage> {
                                                                 onPressed:
                                                                     () async {
                                                                   try {
-                                                                    DataModel?
+                                                                    dynamic
                                                                         model =
                                                                         await Navigator.of(context)
                                                                             .push(
@@ -368,24 +373,15 @@ class _SignupPageState extends State<SignupPage> {
                                                                           builder: (context) =>
                                                                               check.pr),
                                                                     );
-                                                                    setState(
-                                                                      () {
-                                                                        viewModel.daumPostcodeSearchDataModel =
-                                                                            model;
-                                                                      },
-                                                                    );
+                                                                    if (model is DataModel) {
+                                                                      viewModel.setAddress(model.zonecode, model.address);
+                                                                    } else if (model is Map<String, String>) {
+                                                                      viewModel.setAddress(model['postcode']!, model['address']!);
+                                                                    }
                                                                     postcodeController
-                                                                        .text = (viewModel
-                                                                            .daumPostcodeSearchDataModel
-                                                                            ?.zonecode) ??
-                                                                        viewModel
-                                                                            .zoneCode;
+                                                                        .text = viewModel.zoneCode;
                                                                     addressController
-                                                                        .text = (viewModel
-                                                                            .daumPostcodeSearchDataModel
-                                                                            ?.address) ??
-                                                                        viewModel
-                                                                            .address;
+                                                                        .text = viewModel.address;
                                                                   } catch (error) {
                                                                     logger.info(
                                                                         error);
@@ -625,7 +621,7 @@ class _SignupPageState extends State<SignupPage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
                                     backgroundColor: const Color(0xFF2F362F)),
-                                onPressed: () {
+                                onPressed: () async {
                                   if (idController.text.isEmpty ||
                                       passwordController.text.isEmpty) {
                                     showDialog(
@@ -685,11 +681,7 @@ class _SignupPageState extends State<SignupPage> {
                                             imagePath: 'assets/gifs/fail.gif');
                                       },
                                     );
-                                  } else if (viewModel
-                                              .daumPostcodeSearchDataModel
-                                              ?.address ==
-                                          null &&
-                                      viewModel.address == '') {
+                                  } else if (postcodeController.text.isEmpty) {
                                     showDialog(
                                       context: context,
                                       builder: (context) {
@@ -706,37 +698,42 @@ class _SignupPageState extends State<SignupPage> {
                                   } else {
                                     if (_formKey.currentState!.validate()) {
                                       // _formKey.currentState?.save();
-                                      final message = viewModel.saveUserInfo(
+                                      await viewModel.saveUserInfo(
                                         idController.text,
                                         nameController.text,
                                         passwordController.text,
                                         phoneController.text,
-                                        viewModel.daumPostcodeSearchDataModel
-                                                ?.zonecode ??
-                                            viewModel.zoneCode,
-                                        viewModel.daumPostcodeSearchDataModel
-                                                ?.address ??
-                                            viewModel.address,
+                                        postcodeController.text,
+                                        addressController.text,
                                         extraAddressController.text,
                                         DateTime.now().millisecondsSinceEpoch,
+                                        0,
+                                        // 첫 회원가입시 '0'으로 함. 미로그인 상태에서 비밀번호 변경 시 기존데이터 삭제 후 1 추가하여 재가입하는 방식
                                         widget.isPersonalInfoForDeliverChecked,
                                       );
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return OneAnswerDialog(
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                                context.go(
-                                                    '/profile_page/login_page');
-                                              },
-                                              title: '회원가입이 완료되었습니다.',
-                                              subtitle: '로그인을 해주세요.',
-                                              firstButton: '확인',
-                                              imagePath:
-                                                  'assets/gifs/success.gif');
-                                        },
-                                      );
+                                      if(context.mounted){
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return OneAnswerDialog(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  context.go(
+                                                      '/profile_page/login_page',
+                                                      extra: {
+                                                        'hideNavBar':
+                                                        widget.hideNavBar
+                                                      });
+                                                },
+                                                title: '회원가입이 완료되었습니다.',
+                                                subtitle: '로그인을 해주세요.',
+                                                firstButton: '확인',
+                                                imagePath:
+                                                'assets/gifs/success.gif');
+                                          },
+                                        );
+                                      }
+
                                     }
                                   }
                                 },
