@@ -40,10 +40,17 @@ class _SignupPageState extends State<SignupPage> {
   bool isValidPhoneNo = false;
   String servicePhoneNo = '01058377427';
 
-  String? _errorIdText;
-  String? _errorPasswordText;
-  String? _errorPasswordConfirmText;
-  String? _errorNameText;
+  // String? _errorIdText;
+  // String? _errorPasswordText;
+  // String? _errorPasswordConfirmText;
+  // String? _errorNameText;
+
+  Map<int, dynamic> errorControllers = {
+    0: null,
+    1: null,
+    2: null,
+    3: null
+  };
 
   @override
   void dispose() {
@@ -77,12 +84,7 @@ class _SignupPageState extends State<SignupPage> {
       addressController,
       extraAddressController
     ];
-    Map<int, dynamic> errorControllers = {
-      0: _errorIdText,
-      1: _errorPasswordText,
-      2: _errorPasswordConfirmText,
-      3: _errorNameText
-    };
+
 
     final viewModel = context.watch<SignupPageViewModel>();
     final state = viewModel.state;

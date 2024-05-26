@@ -30,15 +30,16 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
   String servicePhoneNo = '01058377427';
 
   bool isChangedPassword = false;
-  String? _errorNameText;
-  String? _errorPhoneText;
+
+
+  Map<int, dynamic> errorControllers = {
+    0: null,
+    1: null,
+  };
 
   @override
   Widget build(BuildContext context) {
-    final Map<int, dynamic> errorControllers = {
-      0: _errorNameText,
-      1: _errorPhoneText,
-    };
+
 
     final viewModel = context.watch<EditUserInfoViewModel>();
     final state = viewModel.state;
@@ -596,13 +597,13 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                               const Color(0xFF2F362F)),
                                       onPressed: () async {
                                         setState(() {
-                                          _errorNameText = (viewModel
+                                          errorControllers[0] = (viewModel
                                                       .controllers['name']
                                                       ?.text ==
                                                   ''
                                               ? '필수항목입니다.'
                                               : null);
-                                          _errorPhoneText = (viewModel
+                                          errorControllers[1] = (viewModel
                                                       .controllers['phone']
                                                       ?.text ==
                                                   ''

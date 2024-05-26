@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -23,10 +22,14 @@ class _LoginPageState extends State<LoginPage> {
 
   var idController = TextEditingController();
   var passwordController = TextEditingController();
-  var orderNumberController = TextEditingController();
   var orderedUserController = TextEditingController();
+  var orderNumberController = TextEditingController();
 
   StreamSubscription? authStateChanges;
+  String? _errorIdText;
+  String? _errorPasswordText;
+  String? _errorOrdererNameText;
+  String? _errorOrderNumberText;
 
   @override
   void dispose() {
@@ -101,43 +104,148 @@ class _LoginPageState extends State<LoginPage> {
                                 key: _formKey,
                                 child: Column(
                                   children: [
-                                    TextFormField(
-                                      controller: idController,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '필수항목입니다.';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: const InputDecoration(
-                                        hintText: '아이디',
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10),
+                                    Stack(
+                                      children: [
+                                        TextFormField(
+                                          controller: idController,
+                                          // validator: (value) {
+                                          //   if (value == null || value.isEmpty) {
+                                          //     return '필수항목입니다.';
+                                          //   }
+                                          //   return null;
+                                          // },
+                                          decoration: InputDecoration(
+                                            hintText: '아이디',
+                                            border: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                width: 0.1,
+                                                color: Colors.white,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                width: 2,
+                                                color: (_errorIdText == null)
+                                                    ? Colors.grey
+                                                    : const Color(0xFFba1a1a),
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                width: 2,
+                                                color: (_errorIdText == null)
+                                                    ? const Color(0xFF2F362F)
+                                                    : const Color(0xFFba1a1a),
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
                                           ),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _errorIdText = (value.isEmpty
+                                                  ? '필수항목입니다.'
+                                                  : null);
+                                            });
+                                          },
                                         ),
-                                      ),
+                                        if (_errorIdText != null)
+                                          Positioned(
+                                            top: 19,
+                                            right: 15,
+                                            child: Container(
+                                              color: Colors.transparent,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 4),
+                                              child: Text(
+                                                _errorIdText!,
+                                                style: const TextStyle(
+                                                    color: Color(0xFFba1a1a),
+                                                    fontSize: 12),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                     SizedBox(
                                       height: 10.h,
                                     ),
-                                    TextFormField(
-                                      controller: passwordController,
-                                      obscureText: true,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '필수항목입니다.';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: const InputDecoration(
-                                        hintText: '비밀번호',
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10),
+                                    Stack(
+                                      children: [
+                                        TextFormField(
+                                          controller: passwordController,
+                                          obscureText: true,
+                                          // validator: (value) {
+                                          //   if (value == null || value.isEmpty) {
+                                          //     return '필수항목입니다.';
+                                          //   }
+                                          //   return null;
+                                          // },
+                                          decoration: InputDecoration(
+                                            hintText: '비밀번호',
+                                            border: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                width: 0.1,
+                                                color: Colors.white,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                width: 2,
+                                                color: (_errorPasswordText ==
+                                                        null)
+                                                    ? Colors.grey
+                                                    : const Color(0xFFba1a1a),
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                width: 2,
+                                                color: (_errorPasswordText ==
+                                                        null)
+                                                    ? const Color(0xFF2F362F)
+                                                    : const Color(0xFFba1a1a),
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
                                           ),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _errorPasswordText =
+                                                  (value.isEmpty
+                                                      ? '필수항목입니다.'
+                                                      : null);
+                                            });
+                                          },
                                         ),
-                                      ),
+                                        if (_errorPasswordText != null)
+                                          Positioned(
+                                            top: 19,
+                                            right: 15,
+                                            child: Container(
+                                              color: Colors.transparent,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 4),
+                                              child: Text(
+                                                _errorPasswordText!,
+                                                style: const TextStyle(
+                                                    color: Color(0xFFba1a1a),
+                                                    fontSize: 12),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -147,19 +255,28 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               TextButton(
                                 style: ButtonStyle(
-                                  minimumSize: MaterialStateProperty.all(
+                                  minimumSize: WidgetStateProperty.all(
                                     Size(double.infinity, 52.h),
                                   ),
-                                  shape: const MaterialStatePropertyAll(
+                                  shape: const WidgetStatePropertyAll(
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
                                   ),
                                   backgroundColor:
-                                      const MaterialStatePropertyAll(
+                                      const WidgetStatePropertyAll(
                                           Color(0xFF008080)),
                                 ),
                                 onPressed: () async {
+                                  setState(() {
+                                    _errorIdText = (idController.text.isEmpty
+                                        ? '필수항목입니다.'
+                                        : null);
+                                    _errorPasswordText =
+                                        (passwordController.text.isEmpty
+                                            ? '필수항목입니다.'
+                                            : null);
+                                  });
                                   if (_formKey.currentState!.validate()) {
                                     await viewModel.signIn(idController.text,
                                         passwordController.text, context);
@@ -191,7 +308,10 @@ class _LoginPageState extends State<LoginPage> {
                                   TextButton(
                                     onPressed: () {
                                       context.push(
-                                          '/profile_page/login_page/agreement_page', extra: {'hideNavBar': widget.hideNavBar});
+                                          '/profile_page/login_page/agreement_page',
+                                          extra: {
+                                            'hideNavBar': widget.hideNavBar
+                                          });
                                     },
                                     child: const Text(
                                       '회원가입',
@@ -221,31 +341,135 @@ class _LoginPageState extends State<LoginPage> {
                                 SizedBox(
                                   height: 10.h,
                                 ),
-                                TextField(
-                                  controller: orderedUserController,
-                                  decoration: const InputDecoration(
-                                    hintText: '주문자명',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
+                                Stack(
+                                  children: [
+                                    TextField(
+                                      controller: orderedUserController,
+                                      decoration: InputDecoration(
+                                        hintText: '주문자명',
+                                        border: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            width: 0.1,
+                                            color: Colors.white,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color:
+                                                (_errorOrdererNameText == null)
+                                                    ? Colors.grey
+                                                    : const Color(0xFFba1a1a),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color:
+                                                (_errorOrdererNameText == null)
+                                                    ? const Color(0xFF2F362F)
+                                                    : const Color(0xFFba1a1a),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
                                       ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _errorOrdererNameText = (value.isEmpty
+                                              ? '필수항목입니다.'
+                                              : null);
+                                        });
+                                      },
                                     ),
-                                  ),
+                                    if (_errorOrdererNameText != null)
+                                      Positioned(
+                                        top: 19,
+                                        right: 15,
+                                        child: Container(
+                                          color: Colors.transparent,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4),
+                                          child: Text(
+                                            _errorOrdererNameText!,
+                                            style: const TextStyle(
+                                                color: Color(0xFFba1a1a),
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                                 SizedBox(
                                   height: 10.h,
                                 ),
-                                TextField(
-                                  controller: orderNumberController,
-                                  obscureText: true,
-                                  decoration: const InputDecoration(
-                                    hintText: '주문번호',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
+                                Stack(
+                                  children: [
+                                    TextField(
+                                      controller: orderNumberController,
+                                      obscureText: true,
+                                      decoration: InputDecoration(
+                                        hintText: '주문번호',
+                                        border: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            width: 0.1,
+                                            color: Colors.white,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color:
+                                                (_errorOrderNumberText == null)
+                                                    ? Colors.grey
+                                                    : const Color(0xFFba1a1a),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color:
+                                                (_errorOrderNumberText == null)
+                                                    ? const Color(0xFF2F362F)
+                                                    : const Color(0xFFba1a1a),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
                                       ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _errorOrderNumberText = (value.isEmpty
+                                              ? '필수항목입니다.'
+                                              : null);
+                                        });
+                                      },
                                     ),
-                                  ),
+                                    if (_errorOrderNumberText != null)
+                                      Positioned(
+                                        top: 19,
+                                        right: 15,
+                                        child: Container(
+                                          color: Colors.transparent,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4),
+                                          child: Text(
+                                            _errorOrderNumberText!,
+                                            style: const TextStyle(
+                                                color: Color(0xFFba1a1a),
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -257,6 +481,16 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 TextButton(
                                   onPressed: () async {
+                                    setState(() {
+                                      _errorOrdererNameText =
+                                          (orderedUserController.text.isEmpty
+                                              ? '필수항목입니다.'
+                                              : null);
+                                      _errorOrderNumberText =
+                                          (orderNumberController.text.isEmpty
+                                              ? '필수항목입니다.'
+                                              : null);
+                                    });
                                     final List<OrderModel> orderCheckList =
                                         await viewModel.orderCheckforNoMember(
                                             orderNumberController.text,
@@ -274,16 +508,16 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                   },
                                   style: ButtonStyle(
-                                    minimumSize: MaterialStateProperty.all(
+                                    minimumSize: WidgetStateProperty.all(
                                       Size(double.infinity, 52.h),
                                     ),
-                                    shape: const MaterialStatePropertyAll(
+                                    shape: const WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10))),
                                     ),
                                     backgroundColor:
-                                        const MaterialStatePropertyAll(
+                                        const WidgetStatePropertyAll(
                                             Colors.black),
                                   ),
                                   child: const Text(

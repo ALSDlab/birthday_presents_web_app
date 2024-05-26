@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myk_market_app/utils/gif_progress_bar.dart';
 import 'package:myk_market_app/view/page/profile_page/profile_page_view_model.dart';
+import 'package:myk_market_app/view/widgets/two_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/one_answer_dialog.dart';
@@ -88,22 +89,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: state.isLoading
                                     ? const GifProgressBar()
                                     : AvatarGlow(
-                                  startDelay:
-                                      const Duration(milliseconds: 1000),
-                                  glowColor: Colors.red,
-                                  glowShape: BoxShape.circle,
-                                  animate: true,
-                                  curve: Curves.fastOutSlowIn,
-                                  glowCount: 5,
-                                  glowRadiusFactor: 0.1,
-                                  child: Material(
-                                    elevation: 8.0,
-                                    shape: const CircleBorder(),
-                                    color: Colors.white,
-                                    child: ClipOval(
-                                            child: (viewModel.currentUser.first
-                                                        .profileImage ==
-                                                    '')
+                                        startDelay:
+                                            const Duration(milliseconds: 1000),
+                                        glowColor: Colors.red,
+                                        glowShape: BoxShape.circle,
+                                        animate: true,
+                                        curve: Curves.fastOutSlowIn,
+                                        glowCount: 5,
+                                        glowRadiusFactor: 0.1,
+                                        child: Material(
+                                          elevation: 8.0,
+                                          shape: const CircleBorder(),
+                                          color: Colors.white,
+                                          child: ClipOval(
+                                            child: (viewModel
+                                                        .currentUser.isEmpty ||
+                                                    viewModel.currentUser.first
+                                                            .profileImage ==
+                                                        '')
                                                 ? Image.asset(
                                                     'assets/images/myk_market_logo.png',
                                                     width: imageSize,
@@ -118,8 +121,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     fit: BoxFit.cover,
                                                   ),
                                           ),
-                                  ),
-                                ),
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
@@ -216,22 +219,39 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            FirebaseAuth.instance.signOut();
-                            if (context.mounted) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return OneAnswerDialog(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                        title: '찾아주셔서 감사합니다.',
-                                        subtitle: '로그아웃 되었습니다.',
-                                        firstButton: '확인',
-                                        imagePath: 'assets/gifs/success.gif');
-                                  });
-                            }
-                            GoRouter.of(context).go('/main_page');
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return TwoAnswerDialog(
+                                    title: '정말 로그아웃하시겠습니까?',
+                                    firstButton: '아니오',
+                                    secondButton: '예',
+                                    imagePath: 'assets/gifs/shopping_cart.gif',
+                                    onFirstTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    onSecondTap: () {
+                                      FirebaseAuth.instance.signOut();
+                                      Navigator.pop(context);
+                                      if (context.mounted) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return OneAnswerDialog(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  title: '찾아주셔서 감사합니다.',
+                                                  subtitle: '로그아웃 되었습니다.',
+                                                  firstButton: '확인',
+                                                  imagePath:
+                                                      'assets/gifs/success.gif');
+                                            });
+                                      }
+                                      GoRouter.of(context).go('/main_page');
+                                    },
+                                  );
+                                });
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 24, left: 12),

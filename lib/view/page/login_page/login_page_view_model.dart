@@ -101,7 +101,7 @@ class LoginPageViewModel with ChangeNotifier {
       await getMyOrderData(orderNumber);
       List<OrderModel> result = [];
       if (context.mounted) {
-        if (state.orderItems.first.ordererId != 'notRegistered') {
+        if (state.orderItems.isNotEmpty && state.orderItems.first.ordererId != 'notRegistered') {
           showDialog(
               context: context,
               builder: (context) {
@@ -115,7 +115,7 @@ class LoginPageViewModel with ChangeNotifier {
                     imagePath: 'assets/gifs/alert.gif');
               });
         } else {
-          if (state.orderItems.first.ordererName != ordererName) {
+          if (state.orderItems.isNotEmpty && state.orderItems.first.ordererName != ordererName) {
             showDialog(
                 context: context,
                 builder: (context) {
@@ -164,7 +164,6 @@ class LoginPageViewModel with ChangeNotifier {
     try {
       final myOrder =
           await orderRepository.getFirebaseOrdersByOrderNo(orderNumberForPay);
-      logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
 
       notifyListeners();
