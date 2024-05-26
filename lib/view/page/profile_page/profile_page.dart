@@ -24,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _imageSize = MediaQuery.of(context).size.width / 4;
+    final imageSize = MediaQuery.of(context).size.width / 6;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -62,8 +62,15 @@ class _ProfilePageState extends State<ProfilePage> {
                           if (_pickedFile == null)
                             Container(
                               constraints: BoxConstraints(
-                                minHeight: _imageSize,
-                                minWidth: _imageSize,
+                                minHeight: imageSize,
+                                minWidth: imageSize,
+                              ),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    width: 2,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
                               ),
                               child: GestureDetector(
                                 onTap: () {
@@ -71,7 +78,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                                 child: Center(
                                   child: AvatarGlow(
-                                    startDelay: const Duration(milliseconds: 1000),
+                                    startDelay:
+                                        const Duration(milliseconds: 1000),
                                     glowColor: Colors.red,
                                     glowShape: BoxShape.circle,
                                     animate: true,
@@ -94,20 +102,43 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             )
                           else
-                            Center(
-                              child: Container(
-                                width: _imageSize,
-                                height: _imageSize,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      width: 2,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                  image: DecorationImage(
-                                      image: FileImage(File(_pickedFile!.path)),
-                                      fit: BoxFit.cover),
+                            Container(
+                              constraints: BoxConstraints(
+                                minHeight: imageSize,
+                                minWidth: imageSize,
+                              ),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    width: 2,
+                                    color:
+                                    Theme.of(context).colorScheme.primary),
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showBottomSheet();
+                                },
+                                child: Center(
+                                  child: AvatarGlow(
+                                    startDelay:
+                                        const Duration(milliseconds: 1000),
+                                    glowColor: Colors.red,
+                                    glowShape: BoxShape.circle,
+                                    animate: true,
+                                    curve: Curves.fastOutSlowIn,
+                                    glowCount: 3,
+                                    glowRadiusFactor: 0.2,
+                                    child: Material(
+                                      elevation: 8.0,
+                                      shape: const CircleBorder(),
+                                      color: Colors.transparent,
+                                      child: CircleAvatar(
+                                        backgroundImage:
+                                            FileImage(File(_pickedFile!.path)),
+                                        radius: 50.0,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -325,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _pickedFile = _pickedFile;
+        _pickedFile = pickedFile;
       });
     } else {
       if (kDebugMode) {
