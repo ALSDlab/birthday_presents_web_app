@@ -34,16 +34,16 @@ class _MainPageState extends State<MainPage> {
   //     viewModel.loadingHome();
   //   });
 
-    // _subscription = _connectivityObserver.observe().listen((status) {
-    //   setState(() {
-    //     _status = status;
-    //     //print('Status changed : $_status');
-    //     //인터넷 연결 확인 체크 코드
-    //     if (_status == Status.unavailable) {
-    //       showConnectionErrorDialog();
-    //     }
-    //   });
-    // });
+  // _subscription = _connectivityObserver.observe().listen((status) {
+  //   setState(() {
+  //     _status = status;
+  //     //print('Status changed : $_status');
+  //     //인터넷 연결 확인 체크 코드
+  //     if (_status == Status.unavailable) {
+  //       showConnectionErrorDialog();
+  //     }
+  //   });
+  // });
   // }
 
   // //인터넷 연결 확인 체크 위젯
@@ -268,15 +268,28 @@ class _MainPageState extends State<MainPage> {
                           const Divider(),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              softWrap: true,//긴 텍스트 줄 바꿈
-                              style: TextStyle(
-                                  letterSpacing: 1.1,
-                                  height: 1.4,
-                                  fontFamily: 'Kopub',
-                                  color: Colors.grey
-                              ),
-                              '상호: 민영기염소탕 | 대표: 민영기 | 주소: 충남 아산시 둔포면 중앙공원로 33번길 3-11 | 사업자번호: 186-62-00277 | 통신판매업신고: 2023-충남아산-1498 | 고객상담실: 010-5837-7427 | e-메일: envy1012@naver.com',
+                            child: Column(
+                              children: [
+                                Text(
+                                  softWrap: true, //긴 텍스트 줄 바꿈
+                                  style: TextStyle(
+                                      letterSpacing: 1.1,
+                                      height: 1.4,
+                                      fontFamily: 'Kopub',
+                                      color: Colors.grey),
+                                  '상호: 건강담은 민영기염소탕 흑염소진액 | 대표: 임유리 | 주소: 충남 아산시 둔포면 중앙공원로 33번길 3-11 | 사업자번호: 106-53-60883 | 통신판매업신고: 2024-충남아산-0466 | 고객상담실: 010-5837-7427 | e-메일: envy1012@naver.com',
+                                ),
+                                SizedBox(height: 15,),
+                                Text(
+                                    softWrap: true, //긴 텍스트 줄 바꿈
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                        letterSpacing: 1.1,
+                                        height: 1.4,
+                                        fontFamily: 'Kopub',
+                                        color: Colors.grey),
+                                    'ⓒ 2024. 건강담은 민영기염소탕 흑염소진액 Co. All rights reserved.'),
+                              ],
                             ),
                           ),
 

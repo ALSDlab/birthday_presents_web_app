@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final imageSize = MediaQuery.of(context).size.width / 6;
+    const double imageSize = 100;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -48,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(25, 30, 25, 10),
+                padding: const EdgeInsets.fromLTRB(25, 40, 25, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -61,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           if (_pickedFile == null)
                             Container(
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 minHeight: imageSize,
                                 minWidth: imageSize,
                               ),
@@ -94,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         backgroundImage: AssetImage(
                                           'assets/images/myk_market_logo.png',
                                         ),
-                                        radius: 50.0,
+                                        radius: imageSize / 2,
                                       ),
                                     ),
                                   ),
@@ -103,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             )
                           else
                             Container(
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 minHeight: imageSize,
                                 minWidth: imageSize,
                               ),
@@ -112,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 border: Border.all(
                                     width: 2,
                                     color:
-                                    Theme.of(context).colorScheme.primary),
+                                        Theme.of(context).colorScheme.primary),
                               ),
                               child: GestureDetector(
                                 onTap: () {
@@ -143,18 +145,25 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                           SizedBox(
-                            width: 15.h,
+                            width: 50.h,
                           ),
-                          Text(
-                            FirebaseAuth.instance.currentUser?.displayName ??
-                                '사용자',
-                            style: const TextStyle(fontSize: 20),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 50,),
+                              const Text('반갑습니다.',style: TextStyle(fontSize: 20),),
+                              Text(
+                                '${FirebaseAuth.instance.currentUser?.displayName} 님,',
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
                     SizedBox(
-                      height: 32.h,
+                      height: 70.h,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,10 +174,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 '/profile_page/order_history_page',
                                 extra: {'hideNavBar': widget.hideNavBar});
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.only(top: 24, left: 12),
-                            child: SizedBox(
-                              child: Row(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 24, left: 12),
+                            child: Container(
+                              width: double.infinity,
+                              color: Colors.transparent,
+                              child: const Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 mainAxisSize: MainAxisSize.max,
@@ -176,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Text(
                                     '주문내역',
                                     style: TextStyle(
-                                      color: Colors.black87,
+                                      color: Colors.black87, fontSize: 20
                                     ),
                                   ),
                                   Text(' > 상세보기'),
@@ -196,17 +207,19 @@ class _ProfilePageState extends State<ProfilePage> {
                             GoRouter.of(context)
                                 .push('/profile_page/edit_user_info_page');
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.only(top: 24, left: 12),
-                            child: SizedBox(
-                              child: Row(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 24, left: 12),
+                            child: Container(
+                              width: double.infinity,
+                              color: Colors.transparent,
+                              child: const Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
                                     '회원정보 수정',
                                     style: TextStyle(
-                                      color: Colors.black87,
+                                      color: Colors.black87,  fontSize: 20
                                     ),
                                   ),
                                 ],
@@ -238,19 +251,23 @@ class _ProfilePageState extends State<ProfilePage> {
                             }
                             GoRouter.of(context).go('/main_page');
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.only(top: 24, left: 12),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '로그아웃',
-                                  style: TextStyle(
-                                    color: Colors.black87,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 24, left: 12),
+                            child: Container(
+                              width: double.infinity,
+                              color: Colors.transparent,
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '로그아웃',
+                                    style: TextStyle(
+                                      color: Colors.black87, fontSize: 20
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -263,19 +280,23 @@ class _ProfilePageState extends State<ProfilePage> {
                           onTap: () {
                             //TODO: 회원탈퇴 기능 넣기
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.only(top: 24, left: 12),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '회원탈퇴',
-                                  style: TextStyle(
-                                    color: Colors.black87,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 24, left: 12),
+                            child: Container(
+                              width: double.infinity,
+                              color: Colors.transparent,
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '회원탈퇴',
+                                    style: TextStyle(
+                                      color: Colors.black87, fontSize: 20
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
