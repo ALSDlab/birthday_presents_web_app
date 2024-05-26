@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_state.dart';
 
@@ -93,7 +92,7 @@ class FindIdPasswordViewModel extends ChangeNotifier {
             userData.recreatCount + 1,
             userData.checked);
 
-        FirebaseAuth.instance.signOut();
+        firebase_auth.FirebaseAuth.instance.signOut();
       }
     } catch (error) {
       logger.info('오류 발생: $error');
@@ -113,7 +112,8 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       int recreatCount,
       bool checked) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      firebase_auth.UserCredential userCredential = await firebase_auth
+          .FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: '$recreatCount.$id@gmail.com', password: password);
       await userCredential.user?.updateDisplayName(name);
@@ -135,17 +135,6 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       'recreatCount': recreatCount,
     });
   }
-
-  // 비밀번호 재설정 메서드(여기서 사용하지 않음)
-  Future<void> passwordUpdate(String newPassword) async {
-    firebaseAuth.User? user = firebaseAuth.FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await user.updatePassword(newPassword);
-    }
-  }
-
-
-
 
   void showSnackbar(BuildContext context, Widget content) {
     _state = state.copyWith(showSnackbarPadding: true);

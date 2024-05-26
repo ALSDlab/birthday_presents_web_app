@@ -40,7 +40,6 @@ class _SignupPageState extends State<SignupPage> {
   bool isValidPhoneNo = false;
   String servicePhoneNo = '01058377427';
 
-
   String? _errorIdText;
   String? _errorPasswordText;
   String? _errorPasswordConfirmText;
@@ -78,16 +77,12 @@ class _SignupPageState extends State<SignupPage> {
       addressController,
       extraAddressController
     ];
-    final errorControllers = [
-      _errorIdText,
-      _errorPasswordText,
-      _errorPasswordConfirmText,
-      _errorNameText,
-      null,
-      null,
-      null,
-      null
-    ];
+    Map<int, dynamic> errorControllers = {
+      0: _errorIdText,
+      1: _errorPasswordText,
+      2: _errorPasswordConfirmText,
+      3: _errorNameText
+    };
 
     final viewModel = context.watch<SignupPageViewModel>();
     final state = viewModel.state;
@@ -376,15 +371,31 @@ class _SignupPageState extends State<SignupPage> {
                                                                           builder: (context) =>
                                                                               check.pr),
                                                                     );
-                                                                    if (model is DataModel) {
-                                                                      viewModel.setAddress(model.zonecode, model.address);
-                                                                    } else if (model is Map<String, String>) {
-                                                                      viewModel.setAddress(model['postcode']!, model['address']!);
+                                                                    if (model
+                                                                        is DataModel) {
+                                                                      viewModel.setAddress(
+                                                                          model
+                                                                              .zonecode,
+                                                                          model
+                                                                              .address);
+                                                                    } else if (model
+                                                                        is Map<
+                                                                            String,
+                                                                            String>) {
+                                                                      viewModel.setAddress(
+                                                                          model[
+                                                                              'postcode']!,
+                                                                          model[
+                                                                              'address']!);
                                                                     }
                                                                     postcodeController
-                                                                        .text = viewModel.zoneCode;
+                                                                            .text =
+                                                                        viewModel
+                                                                            .zoneCode;
                                                                     addressController
-                                                                        .text = viewModel.address;
+                                                                            .text =
+                                                                        viewModel
+                                                                            .address;
                                                                   } catch (error) {
                                                                     logger.info(
                                                                         error);
@@ -715,7 +726,7 @@ class _SignupPageState extends State<SignupPage> {
                                         widget.isPersonalInfoForDeliverChecked,
                                       );
                                       FirebaseAuth.instance.signOut();
-                                      if(context.mounted){
+                                      if (context.mounted) {
                                         showDialog(
                                           context: context,
                                           builder: (context) {
@@ -726,18 +737,17 @@ class _SignupPageState extends State<SignupPage> {
                                                       '/profile_page/login_page',
                                                       extra: {
                                                         'hideNavBar':
-                                                        widget.hideNavBar
+                                                            widget.hideNavBar
                                                       });
                                                 },
                                                 title: '회원가입이 완료되었습니다.',
                                                 subtitle: '로그인을 해주세요.',
                                                 firstButton: '확인',
                                                 imagePath:
-                                                'assets/gifs/success.gif');
+                                                    'assets/gifs/success.gif');
                                           },
                                         );
                                       }
-
                                     }
                                   }
                                 },

@@ -68,7 +68,7 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  void postPaidItems(
+  Future<void> postPaidItems(
       BuildContext context, List<OrderModel> orderItems, int payStatus) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
@@ -159,9 +159,9 @@ class PayPageViewModel extends ChangeNotifier {
       onCancel: (String data) {
         logger.info('------- onCancel: $data');
       },
-      onError: (String data) {
+      onError: (String data) async{
         logger.info('------- onError: $data');
-        postPaidItems(context, orderItems, -1);
+        await postPaidItems(context, orderItems, -1);
       },
       onClose: () async {
         logger.info('------- onClose');
@@ -221,7 +221,7 @@ class PayPageViewModel extends ChangeNotifier {
         String paidResultData = jsonDecode(data)['event'];
         logger.info(paidResultData);
         if (paidResultData == 'done') {
-          postPaidItems(context, orderItems, 1); // 결제완료되면 서버로 pay status 변경
+          await postPaidItems(context, orderItems, 1); // 결제완료되면 서버로 pay status 변경
         }
       },
     );

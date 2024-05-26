@@ -187,9 +187,11 @@ final router = GoRouter(
                 GoRoute(
                   path: 'edit_user_info_page',
                   builder: (context, state) {
+                    final extra = state.extra! as Map<String, dynamic>;
+                    final hideNavBar = extra['hideNavBar'];
                     return ChangeNotifierProvider(
                         create: (_) => getIt<EditUserInfoViewModel>(),
-                        child: const EditUserInfoPage());
+                        child: EditUserInfoPage(hideNavBar: hideNavBar));
                   },
                 ),
               ]),

@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,8 +49,8 @@ class _ProfilePageState extends State<ProfilePage> {
               color: const Color(0xFFFFF8E7),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(25, 40, 25, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: ListView(
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 9),
@@ -86,13 +84,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     glowShape: BoxShape.circle,
                                     animate: true,
                                     curve: Curves.fastOutSlowIn,
-                                    glowCount: 3,
-                                    glowRadiusFactor: 0.2,
+                                    glowCount: 5,
+                                    glowRadiusFactor: 0.1,
                                     child: const Material(
                                       elevation: 8.0,
                                       shape: CircleBorder(),
-                                      color: Colors.transparent,
+                                      color: Colors.white,
                                       child: CircleAvatar(
+                                        backgroundColor: Colors.white,
                                         backgroundImage: AssetImage(
                                           'assets/images/myk_market_logo.png',
                                         ),
@@ -151,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 50,),
+                              const SizedBox(height: 50,),
                               const Text('반갑습니다.',style: TextStyle(fontSize: 20),),
                               Text(
                                 '${FirebaseAuth.instance.currentUser?.displayName} 님,',
@@ -205,7 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           onTap: () {
                             //TODO: 회원정보 수정 페이지로 이동
                             GoRouter.of(context)
-                                .push('/profile_page/edit_user_info_page');
+                                .push('/profile_page/edit_user_info_page', extra: {'hideNavBar':widget.hideNavBar});
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 24, left: 12),
@@ -279,6 +278,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         GestureDetector(
                           onTap: () {
                             //TODO: 회원탈퇴 기능 넣기
+
+
+
+
+
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 24, left: 12),

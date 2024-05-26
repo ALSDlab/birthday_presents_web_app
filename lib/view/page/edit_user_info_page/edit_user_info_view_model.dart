@@ -1,15 +1,11 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/model/order_model.dart';
-import '../../../data/model/shopping_cart_model.dart';
 import '../../../data/model/user_model.dart';
 import '../../../domain/user_repository.dart';
+import '../../../utils/simple_logger.dart';
 import 'edit_user_info_state.dart';
 
 class EditUserInfoViewModel extends ChangeNotifier {
@@ -21,6 +17,13 @@ class EditUserInfoViewModel extends ChangeNotifier {
     getUserList();
   }
 
+  final List<String> textField = [
+    'name',
+    'phone',
+    'postcode',
+    'address',
+    'addressDetail'
+  ];
   final gridLeftArray = ['이름', '휴대폰번호', '주 소', '', '상세주소'];
   Map<String, TextEditingController> controllers = {};
   DataModel? daumPostcodeSearchDataModel;
@@ -31,7 +34,7 @@ class EditUserInfoViewModel extends ChangeNotifier {
   TextEditingController phoneController = TextEditingController();
   TextEditingController postcodeController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController extraAddressController = TextEditingController();
+  TextEditingController addressDetailController = TextEditingController();
 
   EditUserInfoState _state = const EditUserInfoState();
 
@@ -53,7 +56,7 @@ class EditUserInfoViewModel extends ChangeNotifier {
     phoneController.dispose();
     postcodeController.dispose();
     addressController.dispose();
-    extraAddressController.dispose();
+    addressDetailController.dispose();
     super.dispose();
   }
 
@@ -106,16 +109,16 @@ class EditUserInfoViewModel extends ChangeNotifier {
         (currentUser.isNotEmpty && state.addressChange == false)
             ? currentUser.first.postcode
             : (daumPostcodeSearchDataModel?.zonecode) ?? zoneCode;
-    controllers['post'] = (postcodeController);
+    controllers['postcode'] = (postcodeController);
     addressController.text =
         (currentUser.isNotEmpty && state.addressChange == false)
             ? currentUser.first.address
             : (daumPostcodeSearchDataModel?.address) ?? address;
     controllers['address'] = (addressController);
-    extraAddressController.text = (currentUser.isNotEmpty)
+    addressDetailController.text = (currentUser.isNotEmpty)
         ? currentUser.first.addressDetail
-        : (extraAddressController.text);
-    controllers['extraAddress'] = (extraAddressController);
+        : (addressDetailController.text);
+    controllers['addressDetail'] = (addressDetailController);
     notifyListeners();
   }
 
@@ -124,80 +127,62 @@ class EditUserInfoViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> saveOrdersInfo(
-    OrderModel item,
-    String index,
-    String currentDate,
-    bool personalInfoForDeliverChecked,
-    String ordererId,
-    String ordererName,
-    String ordererPhoneNo,
-    String ordererAddress,
-    String ordererAddressDetail,
-    String ordererPostcode,
-  ) async {
+  bool checkUpdated() {
+    for (var field in textField) {
+      if (currentUser.first.toJson()[field] == controllers[field]!.text) {
+        continue;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+
+  // 유저정보 Update
+  Future<void> updateUserInfo(UserModel updatedUserInfo) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
-
     try {
       await FirebaseFirestore.instance
-          .collection('orders')
-          .doc(item.orderId + item.productId)
-          .set(
-        {
-          'orderId': item.orderId,
-          'productId': item.productId,
-          'orderProductName': item.orderProductName,
-          'representativeImage': item.representativeImage,
-          'price': item.price,
-          'count': item.count,
-          'orderedDate': item.orderedDate,
-          'personalInfoForDeliverChecked': personalInfoForDeliverChecked,
-          'ordererId': ordererId,
-          'ordererName': ordererName,
-          'ordererPhoneNo': ordererPhoneNo,
-          'ordererAddress': ordererAddress,
-          'ordererAddressDetail': ordererAddressDetail,
-          'ordererPostcode': ordererPostcode,
-          'payAndStatus': 0,
-          'payAmount': int.parse(item.price.replaceAll(',', '')) * item.count,
-          'paymentDate': '',
-          'deletedDate': '',
-        },
-      );
+          .collection('user')
+          .doc(updatedUserInfo.created.toString() + updatedUserInfo.id)
+          .update({
+        'name': updatedUserInfo.name,
+        'phone': updatedUserInfo.phone,
+        'postcode': updatedUserInfo.postcode,
+        'address': updatedUserInfo.address,
+        'addressDetail': updatedUserInfo.addressDetail,
+      });
     } catch (error) {
       // 에러 처리
-      debugPrint('Error saving ordersInfo: $error');
+      logger.info('Error post payInfo: $error');
     } finally {
+      await getUserList();
       _state = state.copyWith(isLoading: false);
       notifyListeners();
     }
-    return true;
   }
 
-  Future<int> updateShoppingCart(List<OrderModel> orderItems) async {
-    //TODO : 장바구니 비우기 적용(결제 할 것만)
-    List<ShoppingProductForCart> currentList = await getShoppingCartList();
-    List<String> orderIds = orderItems.map((e) => e.orderId).toSet().toList();
-    currentList.removeWhere((e) => orderIds.contains(e.orderId));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString = jsonEncode(currentList.map((e) => e.toJson()).toList());
-    prefs.setString('shoppingCartList', jsonString);
-    return currentList.length;
-  }
 
-  Future<List<ShoppingProductForCart>> getShoppingCartList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? selectedProducts = prefs.getString('shoppingCartList');
+  void showSnackbar(BuildContext context, Widget content) {
+    _state = state.copyWith(showSnackbarPadding: true);
+    notifyListeners();
 
-    if (selectedProducts != null) {
-      // 저장된 데이터가 있다면 JSON을 파싱하여 리스트로 변환
-      final jsonList = jsonDecode(selectedProducts) as List<dynamic>;
-      final cartList =
-          jsonList.map((e) => ShoppingProductForCart.fromJson(e)).toList();
-      return cartList;
-    } else {
-      return [];
-    }
+    final snackBar = SnackBar(
+      content: content,
+      duration: const Duration(seconds: 2),
+      onVisible: () {
+        // snackbar가 사라질 때 패딩을 제거합니다.
+        Future.delayed(const Duration(milliseconds: 2200), () {
+          _state = state.copyWith(showSnackbarPadding: false);
+          notifyListeners();
+        });
+      },
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
+

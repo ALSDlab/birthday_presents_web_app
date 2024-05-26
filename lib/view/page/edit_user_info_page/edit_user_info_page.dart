@@ -1,16 +1,23 @@
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/view/page/edit_user_info_page/change_password_page.dart';
 import 'package:myk_market_app/view/page/edit_user_info_page/edit_user_info_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
+import 'package:myk_market_app/view/widgets/two_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/model/user_model.dart';
 import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/simple_logger.dart';
+import '../../widgets/one_answer_dialog.dart';
 
 class EditUserInfoPage extends StatefulWidget {
-  const EditUserInfoPage({super.key});
+  const EditUserInfoPage({super.key, required this.hideNavBar});
+
+  final bool Function(bool) hideNavBar;
 
   @override
   State<EditUserInfoPage> createState() => _EditUserInfoPageState();
@@ -19,39 +26,19 @@ class EditUserInfoPage extends StatefulWidget {
 class _EditUserInfoPageState extends State<EditUserInfoPage> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController idController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController postcodeController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController extraAddressController = TextEditingController();
-
   bool isValidPhoneNo = false;
   String servicePhoneNo = '01058377427';
 
-  String? _errorIdText;
+  bool isChangedPassword = false;
   String? _errorNameText;
-
-  @override
-  void dispose() {
-    idController.dispose();
-    nameController.dispose();
-    phoneController.dispose();
-    postcodeController.dispose();
-    addressController.dispose();
-    extraAddressController.dispose();
-    super.dispose();
-  }
+  String? _errorPhoneText;
 
   @override
   Widget build(BuildContext context) {
-    final List<String> textField = [
-      'name',
-      'phone',
-      'post',
-      'address',
-      'extraAddress'
-    ];
+    final Map<int, dynamic> errorControllers = {
+      0: _errorNameText,
+      1: _errorPhoneText,
+    };
 
     final viewModel = context.watch<EditUserInfoViewModel>();
     final state = viewModel.state;
@@ -83,29 +70,162 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                       child: GifProgressBar(),
                     )
                   : Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: EdgeInsets.only(
+                          top: 5.0,
+                          left: 5.0,
+                          right: 5.0,
+                          bottom: state.showSnackbarPadding
+                              ? MediaQuery.of(context).padding.bottom + 48.0
+                              : 0), // Snackbar 높이만큼 padding 추가
                       child: Column(
                         children: [
                           Expanded(
                             child: ListView(
                               physics: const BouncingScrollPhysics(),
                               children: [
-                                // TODO: 아이디, 비밀번호 변경 위젯 추가
-
-                                const Divider(),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 8, left: 8),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, left: 8),
+                                  child: Column(
                                     children: [
-                                      Text(
-                                        '회원 정보',
-                                        style: TextStyle(
-                                          fontSize: 18,
+                                      const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '회원 정보',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 18),
+                                          ),
+                                          Text('* 표시된 항목은 필수 입력돼야 합니다.'),
+                                        ],
+                                      ),
+                                      const Divider(),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 5, left: 16.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '아이디',
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 25,
+                                                ),
+                                                Text('비밀번호 ',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                    )),
+                                              ],
+                                            ),
+                                            Container(
+                                              width: 70.w,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    viewModel
+                                                        .currentUser.first.id,
+                                                    style: const TextStyle(
+                                                      fontSize: 20,
+                                                    )),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                OutlinedButton(
+                                                  onPressed: (isChangedPassword)
+                                                      ? () {}
+                                                      : () async {
+                                                          final newPassword =
+                                                              await showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return const ChangePasswordPage();
+                                                                  });
+                                                          if (newPassword ==
+                                                              null) {
+                                                            // 비밀번호를 변경하지 않고 취소함
+                                                            const Widget
+                                                                content = Text(
+                                                                    '비밀번호가 재설정되지 않았습니다.');
+                                                            viewModel
+                                                                .showSnackbar(
+                                                                    context,
+                                                                    content);
+                                                          } else {
+                                                            if (context
+                                                                .mounted) {
+                                                              setState(() {
+                                                                isChangedPassword =
+                                                                    !isChangedPassword;
+                                                              });
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return OneAnswerDialog(
+                                                                        onTap:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        title:
+                                                                            '비밀번호가 변경되었습니다.',
+                                                                        firstButton:
+                                                                            '확인',
+                                                                        imagePath:
+                                                                            'assets/gifs/success.gif');
+                                                                  });
+                                                            }
+                                                          }
+                                                        },
+                                                  style: OutlinedButton.styleFrom(
+                                                      backgroundColor:
+                                                          (isChangedPassword)
+                                                              ? Colors.grey
+                                                              : const Color(
+                                                                  0xFF2F362F),
+                                                      shape: const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)))),
+                                                  child: (isChangedPassword)
+                                                      ? const Icon(
+                                                          Icons.check,
+                                                          color: Colors.white,
+                                                        )
+                                                      : const Text(
+                                                          '변경하기',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(),
+                                          ],
                                         ),
                                       ),
-                                      Text('* 표시된 항목은 필수 입력돼야 합니다.'),
                                     ],
                                   ),
                                 ),
@@ -271,44 +391,160 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                                                           .circular(
                                                                               10),
                                                                 ),
+                                                                enabledBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                                    width: 2,
+                                                                    color: (errorControllers[index] ==
+                                                                            null)
+                                                                        ? Colors
+                                                                            .grey
+                                                                        : const Color(
+                                                                            0xFFba1a1a),
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                                    width: 2,
+                                                                    color: (errorControllers[index] ==
+                                                                            null)
+                                                                        ? const Color(
+                                                                            0xFF2F362F)
+                                                                        : const Color(
+                                                                            0xFFba1a1a),
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
                                                               ),
                                                               controller: viewModel
                                                                       .controllers[
-                                                                  textField[
+                                                                  viewModel
+                                                                          .textField[
                                                                       index]],
                                                             ),
                                                           ),
                                                         ],
                                                       )
-                                                    : TextFormField(
-                                                        readOnly: (index == 3)
-                                                            ? true
-                                                            : false,
-                                                        style: const TextStyle(
-                                                            fontSize: 15),
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .fromLTRB(
-                                                                  10, 5, 0, 5),
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                              width: 0.1,
-                                                              color:
-                                                                  Colors.white,
+                                                    : Stack(
+                                                        children: [
+                                                          TextFormField(
+                                                            readOnly:
+                                                                (index == 3)
+                                                                    ? true
+                                                                    : false,
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            decoration:
+                                                                InputDecoration(
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .fromLTRB(
+                                                                      10,
+                                                                      5,
+                                                                      0,
+                                                                      5),
+                                                              border:
+                                                                  OutlineInputBorder(
+                                                                borderSide:
+                                                                    const BorderSide(
+                                                                  width: 0.1,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  width: 2,
+                                                                  color: (errorControllers[
+                                                                              index] ==
+                                                                          null)
+                                                                      ? Colors
+                                                                          .grey
+                                                                      : const Color(
+                                                                          0xFFba1a1a),
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  width: 2,
+                                                                  color: (errorControllers[
+                                                                              index] ==
+                                                                          null)
+                                                                      ? const Color(
+                                                                          0xFF2F362F)
+                                                                      : const Color(
+                                                                          0xFFba1a1a),
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
                                                             ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                errorControllers[
+                                                                        index] =
+                                                                    (value == ''
+                                                                        ? '필수항목입니다.'
+                                                                        : null);
+                                                              });
+                                                            },
+                                                            controller: viewModel
+                                                                    .controllers[
+                                                                viewModel
+                                                                        .textField[
+                                                                    index]],
                                                           ),
-                                                        ),
-                                                        controller: viewModel
-                                                                .controllers[
-                                                            textField[index]],
+                                                          if (errorControllers[
+                                                                  index] !=
+                                                              null)
+                                                            Positioned(
+                                                              top: 15,
+                                                              right: 15,
+                                                              child: Container(
+                                                                color: Colors
+                                                                    .white,
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        4),
+                                                                child: Text(
+                                                                  errorControllers[
+                                                                      index],
+                                                                  style: const TextStyle(
+                                                                      color: Color(
+                                                                          0xFFba1a1a),
+                                                                      fontSize:
+                                                                          12),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        ],
                                                       ),
                                               ],
                                             ),
@@ -358,75 +594,172 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                                   Radius.circular(10))),
                                           backgroundColor:
                                               const Color(0xFF2F362F)),
-                                      onPressed: () async {},
-                                      // {
-                                      //   if ((viewModel.currentUser.isEmpty) &&
-                                      //       (isTermsNConditionsChecked ==
-                                      //           false ||
-                                      //           isPersonalInfoChecked ==
-                                      //               false)) {
-                                      //     setState(() {
-                                      //       inevitableChecked = true;
-                                      //     });
-                                      //   } else if (viewModel.controllers['name']
-                                      //       ?.text ==
-                                      //       '' ||
-                                      //       viewModel.controllers['phone']
-                                      //           ?.text ==
-                                      //           '' ||
-                                      //       viewModel.controllers['post']
-                                      //           ?.text ==
-                                      //           '') {
-                                      //     setState(() {
-                                      //       moreDataNeed = true;
-                                      //     });
-                                      //   } else {
-                                      //     final orderedDate = DateTime.now()
-                                      //         .toString()
-                                      //         .substring(2, 10)
-                                      //         .replaceAll('-', '');
-                                      //     final ordererId = viewModel
-                                      //         .currentUser.isEmpty
-                                      //         ? 'notRegistered'
-                                      //         : viewModel.currentUser.first.id;
-                                      //     final personalInfoForDeliverChecked =
-                                      //     viewModel.currentUser.isEmpty
-                                      //         ? isPersonalInfoForDeliverChecked
-                                      //         : viewModel.currentUser.first
-                                      //         .checked;
-                                      //     final ordererName = viewModel
-                                      //         .controllers['name']?.text;
-                                      //     final ordererPhoneNo = viewModel
-                                      //         .controllers['phone']?.text;
-                                      //     final ordererPostcode = viewModel
-                                      //         .controllers['post']?.text;
-                                      //
-                                      //     final ordererAddress = viewModel
-                                      //         .controllers['address']?.text;
-                                      //     final ordererAddressDetail = viewModel
-                                      //         .controllers['extraAddress']
-                                      //         ?.text;
-                                      //     await Future.forEach(
-                                      //         widget.forOrderItems
-                                      //             .asMap()
-                                      //             .entries, (entry) async {
-                                      //       final index = entry.key;
-                                      //       final item = entry.value;
-                                      //       await viewModel.saveOrdersInfo(
-                                      //         item,
-                                      //         index.toString(),
-                                      //         orderedDate,
-                                      //         personalInfoForDeliverChecked,
-                                      //         ordererId,
-                                      //         ordererName!,
-                                      //         ordererPhoneNo!,
-                                      //         ordererAddress!,
-                                      //         ordererAddressDetail!,
-                                      //         ordererPostcode!,
-                                      //       );
-                                      //     });
-                                      //   }
-                                      // },
+                                      onPressed: () async {
+                                        setState(() {
+                                          _errorNameText = (viewModel
+                                                      .controllers['name']
+                                                      ?.text ==
+                                                  ''
+                                              ? '필수항목입니다.'
+                                              : null);
+                                          _errorPhoneText = (viewModel
+                                                      .controllers['phone']
+                                                      ?.text ==
+                                                  ''
+                                              ? '필수항목입니다.'
+                                              : null);
+                                        });
+                                        if (viewModel
+                                                .controllers['name']?.text ==
+                                            '') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return OneAnswerDialog(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  title: '알림',
+                                                  subtitle: '이름을 입력해 주세요.',
+                                                  firstButton: '확인',
+                                                  imagePath:
+                                                      'assets/gifs/fail.gif');
+                                            },
+                                          );
+                                        } else if (viewModel
+                                                .controllers['phone']?.text ==
+                                            '') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return OneAnswerDialog(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  title: '알림',
+                                                  subtitle: '휴대폰 번호를 입력해 주세요.',
+                                                  firstButton: '확인',
+                                                  imagePath:
+                                                      'assets/gifs/fail.gif');
+                                            },
+                                          );
+                                        } else if (viewModel
+                                                .controllers['postcode']
+                                                ?.text ==
+                                            '') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return OneAnswerDialog(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                title: '주소를 검색해 주세요.',
+                                                firstButton: '확인',
+                                                imagePath:
+                                                    'assets/gifs/fail.gif',
+                                              );
+                                            },
+                                          );
+                                        } else {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            // _formKey.currentState?.save();
+                                            // 정보변경여부 확인
+                                            if (viewModel.checkUpdated()) {
+                                              final UserModel updatedUserInfo =
+                                                  UserModel(
+                                                      name: viewModel
+                                                          .controllers['name']!
+                                                          .text,
+                                                      id: viewModel
+                                                          .currentUser.first.id,
+                                                      postcode:
+                                                          viewModel
+                                                              .controllers[
+                                                                  'postcode']!
+                                                              .text,
+                                                      phone: viewModel
+                                                          .controllers['phone']!
+                                                          .text,
+                                                      address:
+                                                          viewModel
+                                                              .controllers[
+                                                                  'address']!
+                                                              .text,
+                                                      addressDetail: viewModel
+                                                          .controllers[
+                                                              'addressDetail']!
+                                                          .text,
+                                                      checked:
+                                                          viewModel.currentUser
+                                                              .first.checked,
+                                                      created: viewModel
+                                                          .currentUser
+                                                          .first
+                                                          .created,
+                                                      recreatCount: viewModel
+                                                          .currentUser
+                                                          .first
+                                                          .recreatCount);
+                                              await viewModel.updateUserInfo(
+                                                  updatedUserInfo);
+                                              if (context.mounted) {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return OneAnswerDialog(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          GoRouter.of(context).go(
+                                                              '/profile_page',
+                                                              extra: {
+                                                                'hideNavBar':
+                                                                    widget
+                                                                        .hideNavBar
+                                                              });
+                                                        },
+                                                        title: '정보가 변경되었습니다.',
+                                                        subtitle:
+                                                            '마이페이지로 돌아갑니다.',
+                                                        firstButton: '확인',
+                                                        imagePath:
+                                                            'assets/gifs/success.gif');
+                                                  },
+                                                );
+                                              }
+                                            } else {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return TwoAnswerDialog(
+                                                      title: '변경된 정보가 없습니다.',
+                                                      subtitle:
+                                                          '마이페이지로 돌아가시겠습니까?',
+                                                      firstButton: '아니오',
+                                                      secondButton: '예',
+                                                      imagePath:
+                                                          'assets/gifs/shopping_cart.gif',
+                                                      onFirstTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      onSecondTap: () {
+                                                        Navigator.pop(context);
+                                                        GoRouter.of(context).go(
+                                                            '/profile_page',
+                                                            extra: {
+                                                              'hideNavBar':
+                                                                  widget
+                                                                      .hideNavBar
+                                                            });
+                                                      },
+                                                    );
+                                                  });
+                                            }
+                                          }
+                                        }
+                                      },
                                       child: const Text(
                                         '변경',
                                         style: TextStyle(color: Colors.white),
