@@ -674,34 +674,39 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                                           .text,
                                                       id: viewModel
                                                           .currentUser.first.id,
-                                                      postcode:
-                                                          viewModel
-                                                              .controllers[
-                                                                  'postcode']!
-                                                              .text,
-                                                      phone: viewModel
-                                                          .controllers['phone']!
-                                                          .text,
-                                                      address:
-                                                          viewModel
-                                                              .controllers[
-                                                                  'address']!
-                                                              .text,
-                                                      addressDetail: viewModel
+                                                      postcode: viewModel
                                                           .controllers[
-                                                              'addressDetail']!
+                                                              'postcode']!
                                                           .text,
-                                                      checked:
-                                                          viewModel.currentUser
-                                                              .first.checked,
-                                                      created: viewModel
+                                                      phone:
+                                                          viewModel
+                                                              .controllers[
+                                                                  'phone']!
+                                                              .text,
+                                                      address: viewModel
+                                                          .controllers[
+                                                              'address']!
+                                                          .text,
+                                                      addressDetail:
+                                                          viewModel
+                                                              .controllers[
+                                                                  'addressDetail']!
+                                                              .text,
+                                                      checked: viewModel
                                                           .currentUser
                                                           .first
-                                                          .created,
+                                                          .checked,
+                                                      created:
+                                                          viewModel.currentUser
+                                                              .first.created,
                                                       recreatCount: viewModel
                                                           .currentUser
                                                           .first
-                                                          .recreatCount);
+                                                          .recreatCount,
+                                                      profileImage: viewModel
+                                                          .currentUser
+                                                          .first
+                                                          .profileImage);
                                               await viewModel.updateUserInfo(
                                                   updatedUserInfo);
                                               if (context.mounted) {

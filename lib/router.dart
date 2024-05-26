@@ -21,6 +21,7 @@ import 'package:myk_market_app/view/page/product_detail_page/product_detail_page
 import 'package:myk_market_app/view/page/product_page/product_page.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
 import 'package:myk_market_app/view/page/profile_page/profile_page.dart';
+import 'package:myk_market_app/view/page/profile_page/profile_page_view_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page.dart';
@@ -118,7 +119,7 @@ final router = GoRouter(
                 final extra = state.extra! as Map<String, dynamic>;
                 final hideNavBar = extra['hideNavBar'];
                 return ChangeNotifierProvider(
-                    create: (_) => getIt<OrderHistoryPageViewModel>(),
+                    create: (_) => getIt<ProfilePageViewModel>(),
                     child: ProfilePage(hideNavBar: hideNavBar));
               },
               routes: [

@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:myk_market_app/utils/gif_progress_bar.dart';
+import 'package:myk_market_app/view/page/profile_page/profile_page_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/one_answer_dialog.dart';
 
@@ -20,10 +23,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  XFile? _pickedFile;
+  XFile? _myPickedFile;
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<ProfilePageViewModel>();
+    final state = viewModel.state;
     const double imageSize = 100;
     return Scaffold(
       appBar: AppBar(
@@ -59,90 +64,65 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(
                             height: 20,
                           ),
-                          if (_pickedFile == null)
-                            Container(
-                              constraints: const BoxConstraints(
-                                minHeight: imageSize,
-                                minWidth: imageSize,
-                              ),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    width: 2,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  _showBottomSheet();
-                                },
-                                child: Center(
-                                  child: AvatarGlow(
-                                    startDelay:
-                                        const Duration(milliseconds: 1000),
-                                    glowColor: Colors.red,
-                                    glowShape: BoxShape.circle,
-                                    animate: true,
-                                    curve: Curves.fastOutSlowIn,
-                                    glowCount: 5,
-                                    glowRadiusFactor: 0.1,
-                                    child: const Material(
-                                      elevation: 8.0,
-                                      shape: CircleBorder(),
-                                      color: Colors.white,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        backgroundImage: AssetImage(
-                                          'assets/images/myk_market_logo.png',
-                                        ),
-                                        radius: imageSize / 2,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          else
-                            Container(
-                              constraints: const BoxConstraints(
-                                minHeight: imageSize,
-                                minWidth: imageSize,
-                              ),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    width: 2,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  _showBottomSheet();
-                                },
-                                child: Center(
-                                  child: AvatarGlow(
-                                    startDelay:
-                                        const Duration(milliseconds: 1000),
-                                    glowColor: Colors.red,
-                                    glowShape: BoxShape.circle,
-                                    animate: true,
-                                    curve: Curves.fastOutSlowIn,
-                                    glowCount: 3,
-                                    glowRadiusFactor: 0.2,
-                                    child: Material(
-                                      elevation: 8.0,
-                                      shape: const CircleBorder(),
-                                      color: Colors.transparent,
-                                      child: CircleAvatar(
-                                        backgroundImage:
-                                            FileImage(File(_pickedFile!.path)),
-                                        radius: 50.0,
-                                      ),
-                                    ),
+                          Container(
+                            constraints: const BoxConstraints(
+                              minHeight: imageSize,
+                              minWidth: imageSize,
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  width: 2,
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await _showBottomSheet();
+                                print(_myPickedFile);
+                                if (_myPickedFile != null) {
+                                  await viewModel
+                                      .saveProfileImage(_myPickedFile!);
+                                }
+                              },
+                              child: Center(
+                                child: state.isLoading
+                                    ? const GifProgressBar()
+                                    : AvatarGlow(
+                                  startDelay:
+                                      const Duration(milliseconds: 1000),
+                                  glowColor: Colors.red,
+                                  glowShape: BoxShape.circle,
+                                  animate: true,
+                                  curve: Curves.fastOutSlowIn,
+                                  glowCount: 5,
+                                  glowRadiusFactor: 0.1,
+                                  child: Material(
+                                    elevation: 8.0,
+                                    shape: const CircleBorder(),
+                                    color: Colors.white,
+                                    child: ClipOval(
+                                            child: (viewModel.currentUser.first
+                                                        .profileImage ==
+                                                    '')
+                                                ? Image.asset(
+                                                    'assets/images/myk_market_logo.png',
+                                                    width: imageSize,
+                                                    height: imageSize,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Image.network(
+                                                    viewModel.currentUser.first
+                                                        .profileImage,
+                                                    width: imageSize,
+                                                    height: imageSize,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                          ),
                                   ),
                                 ),
                               ),
                             ),
+                          ),
                           SizedBox(
                             width: 50.h,
                           ),
@@ -150,8 +130,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 50,),
-                              const Text('반갑습니다.',style: TextStyle(fontSize: 20),),
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              const Text(
+                                '반갑습니다.',
+                                style: TextStyle(fontSize: 20),
+                              ),
                               Text(
                                 '${FirebaseAuth.instance.currentUser?.displayName} 님,',
                                 style: const TextStyle(fontSize: 20),
@@ -186,8 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Text(
                                     '주문내역',
                                     style: TextStyle(
-                                      color: Colors.black87, fontSize: 20
-                                    ),
+                                        color: Colors.black87, fontSize: 20),
                                   ),
                                   Text(' > 상세보기'),
                                 ],
@@ -202,9 +186,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            //TODO: 회원정보 수정 페이지로 이동
-                            GoRouter.of(context)
-                                .push('/profile_page/edit_user_info_page', extra: {'hideNavBar':widget.hideNavBar});
+                            GoRouter.of(context).push(
+                                '/profile_page/edit_user_info_page',
+                                extra: {'hideNavBar': widget.hideNavBar});
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 24, left: 12),
@@ -218,8 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Text(
                                     '회원정보 수정',
                                     style: TextStyle(
-                                      color: Colors.black87,  fontSize: 20
-                                    ),
+                                        color: Colors.black87, fontSize: 20),
                                   ),
                                 ],
                               ),
@@ -262,8 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Text(
                                     '로그아웃',
                                     style: TextStyle(
-                                      color: Colors.black87, fontSize: 20
-                                    ),
+                                        color: Colors.black87, fontSize: 20),
                                   ),
                                 ],
                               ),
@@ -278,11 +260,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         GestureDetector(
                           onTap: () {
                             //TODO: 회원탈퇴 기능 넣기
-
-
-
-
-
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 24, left: 12),
@@ -296,8 +273,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Text(
                                     '회원탈퇴',
                                     style: TextStyle(
-                                      color: Colors.black87, fontSize: 20
-                                    ),
+                                        color: Colors.black87, fontSize: 20),
                                   ),
                                 ],
                               ),
@@ -321,7 +297,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  _showBottomSheet() {
+  Future<void> _showBottomSheet() async {
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -337,7 +313,7 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () => _getCameraImage(),
+              onPressed: () async => await _getCameraImage(),
               child: const Text('사진찍기'),
             ),
             const SizedBox(
@@ -350,7 +326,7 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () => _getPhotoLibraryImage(),
+              onPressed: () async => await _getPhotoLibraryImage(),
               child: const Text('라이브러리에서 불러오기'),
             ),
             const SizedBox(
@@ -362,12 +338,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  _getCameraImage() async {
+  Future<void> _getCameraImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       setState(() {
-        _pickedFile = pickedFile;
+        _myPickedFile = pickedFile;
       });
     } else {
       if (kDebugMode) {
@@ -376,12 +352,12 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  _getPhotoLibraryImage() async {
+  Future<void> _getPhotoLibraryImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _pickedFile = pickedFile;
+        _myPickedFile = pickedFile;
       });
     } else {
       if (kDebugMode) {

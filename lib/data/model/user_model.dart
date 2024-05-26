@@ -8,19 +8,20 @@ class UserModel {
   bool checked;
   int created;
   int recreatCount;
+  String profileImage;
 
 //<editor-fold desc="Data Methods">
-  UserModel({
-    required this.name,
-    required this.id,
-    required this.postcode,
-    required this.phone,
-    required this.address,
-    required this.addressDetail,
-    required this.checked,
-    required this.created,
-    required this.recreatCount
-  });
+  UserModel(
+      {required this.name,
+      required this.id,
+      required this.postcode,
+      required this.phone,
+      required this.address,
+      required this.addressDetail,
+      required this.checked,
+      required this.created,
+      required this.recreatCount,
+      required this.profileImage});
 
   @override
   bool operator ==(Object other) =>
@@ -35,7 +36,8 @@ class UserModel {
           addressDetail == other.addressDetail &&
           checked == other.checked &&
           created == other.created &&
-          recreatCount == other.recreatCount);
+          recreatCount == other.recreatCount &&
+          profileImage == other.profileImage);
 
   @override
   int get hashCode =>
@@ -47,11 +49,12 @@ class UserModel {
       addressDetail.hashCode ^
       checked.hashCode ^
       created.hashCode ^
-      recreatCount.hashCode;
+      recreatCount.hashCode ^
+      profileImage.hashCode;
 
   @override
   String toString() {
-    return 'User{ name: $name, id: $id, postcode: $postcode, phone: $phone, address: $address, addressDetail: $addressDetail, checked: $checked, created: $created, recreatCount: $recreatCount}';
+    return 'User{ name: $name, id: $id, postcode: $postcode, phone: $phone, address: $address, addressDetail: $addressDetail, checked: $checked, created: $created, recreatCount: $recreatCount, profileImage: $profileImage}';
   }
 
   UserModel copyWith({
@@ -64,6 +67,7 @@ class UserModel {
     bool? checked,
     int? created,
     int? recreatCount,
+    String? profileImage,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -75,6 +79,7 @@ class UserModel {
       checked: checked ?? this.checked,
       created: created ?? this.created,
       recreatCount: recreatCount ?? this.recreatCount,
+      profileImage: profileImage ?? this.profileImage,
     );
   }
 
@@ -89,6 +94,7 @@ class UserModel {
       'checked': checked,
       'created': created,
       'recreatCount': recreatCount,
+      'profileImage': profileImage,
     };
   }
 
@@ -103,6 +109,7 @@ class UserModel {
       checked: map['checked'] as bool,
       created: map['created'] as int,
       recreatCount: map['recreatCount'] as int,
+      profileImage: map['profileImage'] as String,
     );
   }
 
