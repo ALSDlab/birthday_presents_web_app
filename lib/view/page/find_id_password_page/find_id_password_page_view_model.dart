@@ -92,6 +92,8 @@ class FindIdPasswordViewModel extends ChangeNotifier {
             DateTime.now().millisecondsSinceEpoch,
             userData.recreatCount + 1,
             userData.checked);
+
+        FirebaseAuth.instance.signOut();
       }
     } catch (error) {
       logger.info('오류 발생: $error');
@@ -134,13 +136,16 @@ class FindIdPasswordViewModel extends ChangeNotifier {
     });
   }
 
-  // 비밀번호 재설정 메서드
+  // 비밀번호 재설정 메서드(여기서 사용하지 않음)
   Future<void> passwordUpdate(String newPassword) async {
     firebaseAuth.User? user = firebaseAuth.FirebaseAuth.instance.currentUser;
     if (user != null) {
       await user.updatePassword(newPassword);
     }
   }
+
+
+
 
   void showSnackbar(BuildContext context, Widget content) {
     _state = state.copyWith(showSnackbarPadding: true);

@@ -17,7 +17,13 @@ class OrderHistoryPage extends StatelessWidget {
     final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white,
+        ),
         backgroundColor: const Color(0xFF2F362F),
         scrolledUnderElevation: 0,
         title: const Text(
@@ -61,9 +67,8 @@ class OrderHistoryPage extends StatelessWidget {
                             final orderHistoryItem =
                                 state.orderHistoryList[index];
                             return OrderHistoryListWidget(
-                              orderItem: orderHistoryItem,
-                                hideNavBar: hideNavBar
-                            );
+                                orderItem: orderHistoryItem,
+                                hideNavBar: hideNavBar);
                           },
                         ),
             ),

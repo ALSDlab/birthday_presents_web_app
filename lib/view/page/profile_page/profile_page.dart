@@ -1,7 +1,14 @@
+import 'dart:io';
+
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../widgets/one_answer_dialog.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key, required this.hideNavBar});
@@ -13,8 +20,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  XFile? _pickedFile;
+
   @override
   Widget build(BuildContext context) {
+    final _imageSize = MediaQuery.of(context).size.width / 4;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -46,14 +56,68 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: const EdgeInsets.only(left: 9),
                       child: Row(
                         children: [
-                          const Icon(Icons.person),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          if (_pickedFile == null)
+                            Container(
+                              constraints: BoxConstraints(
+                                minHeight: _imageSize,
+                                minWidth: _imageSize,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showBottomSheet();
+                                },
+                                child: Center(
+                                  child: AvatarGlow(
+                                    startDelay: const Duration(milliseconds: 1000),
+                                    glowColor: Colors.red,
+                                    glowShape: BoxShape.circle,
+                                    animate: true,
+                                    curve: Curves.fastOutSlowIn,
+                                    glowCount: 3,
+                                    glowRadiusFactor: 0.2,
+                                    child: const Material(
+                                      elevation: 8.0,
+                                      shape: CircleBorder(),
+                                      color: Colors.transparent,
+                                      child: CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                          'assets/images/myk_market_logo.png',
+                                        ),
+                                        radius: 50.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          else
+                            Center(
+                              child: Container(
+                                width: _imageSize,
+                                height: _imageSize,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      width: 2,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  image: DecorationImage(
+                                      image: FileImage(File(_pickedFile!.path)),
+                                      fit: BoxFit.cover),
+                                ),
+                              ),
+                            ),
                           SizedBox(
                             width: 15.h,
                           ),
                           Text(
                             FirebaseAuth.instance.currentUser?.displayName ??
                                 '사용자',
-                            style: TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ],
                       ),
@@ -64,70 +128,130 @@ class _ProfilePageState extends State<ProfilePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                '주문내역',
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                ),
+                        GestureDetector(
+                          onTap: () {
+                            GoRouter.of(context).push(
+                                '/profile_page/order_history_page',
+                                extra: {'hideNavBar': widget.hideNavBar});
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.only(top: 24, left: 12),
+                            child: SizedBox(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Text(
+                                    '주문내역',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  Text(' > 상세보기'),
+                                ],
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  GoRouter.of(context).push(
-                                      '/profile_page/order_history_page',
-                                      extra: {'hideNavBar': widget.hideNavBar});
-                                },
-                                // style: TextButton.styleFrom(
-                                //   padding: EdgeInsets.zero,
-                                // ),
-                                child: const Text(' > 상세보기'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 0),
-                          child: const Divider(
-                            thickness: 0.5,
-                            height: 4,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            '회원정보 수정',
-                            style: TextStyle(color: Colors.black87),
+                            ),
                           ),
                         ),
                         const Divider(
+                          indent: 10,
                           thickness: 0.5,
+                          height: 10,
                         ),
-                        TextButton(
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
+                            //TODO: 회원정보 수정 페이지로 이동
+                            GoRouter.of(context)
+                                .push('/profile_page/edit_user_info_page');
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.only(top: 24, left: 12),
+                            child: SizedBox(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '회원정보 수정',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Divider(
+                          indent: 10,
+                          thickness: 0.5,
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
                             FirebaseAuth.instance.signOut();
+                            if (context.mounted) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return OneAnswerDialog(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        title: '찾아주셔서 감사합니다.',
+                                        subtitle: '로그아웃 되었습니다.',
+                                        firstButton: '확인',
+                                        imagePath: 'assets/gifs/success.gif');
+                                  });
+                            }
                             GoRouter.of(context).go('/main_page');
                           },
-                          child: const Text(
-                            '로그아웃',
-                            style: TextStyle(color: Colors.black87),
+                          child: const Padding(
+                            padding: EdgeInsets.only(top: 24, left: 12),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '로그아웃',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         const Divider(
+                          indent: 10,
                           thickness: 0.5,
+                          height: 10,
                         ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            '회원탈퇴',
-                            style: TextStyle(color: Colors.black87),
+                        GestureDetector(
+                          onTap: () {
+                            //TODO: 회원탈퇴 기능 넣기
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.only(top: 24, left: 12),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '회원탈퇴',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         const Divider(
+                          indent: 10,
                           thickness: 0.5,
+                          height: 10,
                         ),
                       ],
                     ),
@@ -139,5 +263,74 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  _showBottomSheet() {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25),
+        ),
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () => _getCameraImage(),
+              child: const Text('사진찍기'),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Divider(
+              thickness: 3,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () => _getPhotoLibraryImage(),
+              child: const Text('라이브러리에서 불러오기'),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _getCameraImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _pickedFile = pickedFile;
+      });
+    } else {
+      if (kDebugMode) {
+        print('이미지 선택안함');
+      }
+    }
+  }
+
+  _getPhotoLibraryImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _pickedFile = _pickedFile;
+      });
+    } else {
+      if (kDebugMode) {
+        print('이미지 선택안함');
+      }
+    }
   }
 }

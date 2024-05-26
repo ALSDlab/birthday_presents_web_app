@@ -1,4 +1,5 @@
 import 'package:daum_postcode_search/data_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.d
     as check;
 import 'package:myk_market_app/view/page/signup_page/signup_page_view_model.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/simple_logger.dart';
 
@@ -60,7 +62,8 @@ class _SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
-    SignupPageViewModel().getUserArray();
+    final viewModel = context.read<SignupPageViewModel>();
+    viewModel.getUserArray();
   }
 
   @override
@@ -86,7 +89,7 @@ class _SignupPageState extends State<SignupPage> {
       null
     ];
 
-    final viewModel = SignupPageViewModel();
+    final viewModel = context.watch<SignupPageViewModel>();
     final state = viewModel.state;
 
     return Scaffold(
@@ -711,6 +714,7 @@ class _SignupPageState extends State<SignupPage> {
                                         // 첫 회원가입시 '0'으로 함. 미로그인 상태에서 비밀번호 변경 시 기존데이터 삭제 후 1 추가하여 재가입하는 방식
                                         widget.isPersonalInfoForDeliverChecked,
                                       );
+                                      FirebaseAuth.instance.signOut();
                                       if(context.mounted){
                                         showDialog(
                                           context: context,

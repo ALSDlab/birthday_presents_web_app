@@ -98,7 +98,7 @@ class PayPageViewModel extends ChangeNotifier {
     notifyListeners();
 
     final snackBar = SnackBar(
-      content: const Text('주문생성 완료'),
+      content: const Text('주문번호가 생성되었습니다.'),
       duration: const Duration(seconds: 2),
       onVisible: () {
         // snackbar가 사라질 때 패딩을 제거합니다.

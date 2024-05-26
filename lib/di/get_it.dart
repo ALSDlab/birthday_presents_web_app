@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:myk_market_app/view/page/edit_user_info_page/edit_user_info_view_model.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_page_view_model.dart';
 
 import '../data/repository/order_repository_impl.dart';
@@ -38,5 +39,7 @@ void diSetup() {
         userRepository: getIt<UserRepository>()))
     ..registerFactory<OrderHistoryPageViewModel>(() =>
         OrderHistoryPageViewModel(orderRepository: getIt<OrderRepository>()))
-    ..registerFactory<SignupPageViewModel>(() => SignupPageViewModel());
+    ..registerFactory<SignupPageViewModel>(() => SignupPageViewModel())
+    ..registerFactory<EditUserInfoViewModel>(
+        () => EditUserInfoViewModel(userRepository: getIt<UserRepository>()));
 }

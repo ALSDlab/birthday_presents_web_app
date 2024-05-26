@@ -45,12 +45,12 @@ class _LoginPageState extends State<LoginPage> {
 
       loginViewModel.initPreferences();
     });
-    authStateChanges = FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user != null) {
-        GoRouter.of(context).go('/main_page');
-        return;
-      }
-    });
+    // authStateChanges = FirebaseAuth.instance.authStateChanges().listen((user) {
+    //   if (user != null) {
+    //     GoRouter.of(context).go('/main_page');
+    //     return;
+    //   }
+    // });
   }
 
   @override

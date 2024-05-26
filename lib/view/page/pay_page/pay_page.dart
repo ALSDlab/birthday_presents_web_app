@@ -173,27 +173,34 @@ class _PayPageState extends State<PayPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           top: 13, bottom: 16, right: 13),
-                                      child: Row(
-                                        children: [
-                                          Checkbox(
-                                            value: finalConfirmNeed,
-                                            onChanged: (bool? newValue) {
-                                              setState(() {
-                                                finalConfirmNeed = newValue!;
-                                              });
-                                            },
-                                            activeColor:
-                                                const Color(0xFF2F362F),
-                                            checkColor: Colors.white,
-                                          ),
-                                          const Expanded(
-                                            child: Text(
-                                              '(필수) 구매하실 상품의 모든 정보를 확인하였으며, 구매진행에 동의합니다.',
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          setState(() {
+                                            finalConfirmNeed = !finalConfirmNeed;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Checkbox(
+                                              value: finalConfirmNeed,
+                                              onChanged: (bool? newValue) {
+                                                setState(() {
+                                                  finalConfirmNeed = newValue!;
+                                                });
+                                              },
+                                              activeColor:
+                                                  const Color(0xFF2F362F),
+                                              checkColor: Colors.white,
                                             ),
-                                          ),
-                                        ],
+                                            const Expanded(
+                                              child: Text(
+                                                '(필수) 구매하실 상품의 모든 정보를 확인하였으며, 구매진행에 동의합니다.',
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -228,39 +235,42 @@ class _PayPageState extends State<PayPage> {
                                         widget.hideNavBar(false);
                                       },
                                       child: const Text(
-                                        '취소',
+                                        '이전',
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          // shape: const RoundedRectangleBorder(
-                                          //     borderRadius: BorderRadius.zero),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
-                                          backgroundColor:
-                                              const Color(0xFF2F362F)),
-                                      onPressed: () {
-                                        if (finalConfirmNeed == false) {
-                                          setState(() {
-                                            finalConfirmDemand = true;
-                                          });
-                                        } else {
-                                          viewModel.bootpayPayment(
-                                              context,
-                                              state.orderItems,
-                                              widget.hideNavBar);
-                                        }
-                                      },
-                                      child: const Text(
-                                        '결제',
-                                        style: TextStyle(color: Colors.white),
+                                Visibility(
+                                  visible: widget.forOrderItems.first.payAndStatus! < 1,
+                                  child: Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            // shape: const RoundedRectangleBorder(
+                                            //     borderRadius: BorderRadius.zero),
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
+                                            backgroundColor:
+                                                const Color(0xFF2F362F)),
+                                        onPressed: () {
+                                          if (finalConfirmNeed == false) {
+                                            setState(() {
+                                              finalConfirmDemand = true;
+                                            });
+                                          } else {
+                                            viewModel.bootpayPayment(
+                                                context,
+                                                state.orderItems,
+                                                widget.hideNavBar);
+                                          }
+                                        },
+                                        child: const Text(
+                                          '결제',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
                                   ),

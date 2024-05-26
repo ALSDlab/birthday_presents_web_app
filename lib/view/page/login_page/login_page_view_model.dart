@@ -53,6 +53,20 @@ class LoginPageViewModel with ChangeNotifier {
           email: '$recreatedCount.$id@gmail.com', password: password);
       if (context.mounted) {
         prefs!.setString('_email', '$recreatedCount.$id@gmail.com');
+        if (context.mounted) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return OneAnswerDialog(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    title: '안녕하세요, ${currentUser.first.name} 고객님',
+                    subtitle: '로그인 되었습니다.',
+                    firstButton: '확인',
+                    imagePath: 'assets/gifs/success.gif');
+              });
+        }
         context.go('/main_page');
       }
     } catch (e) {

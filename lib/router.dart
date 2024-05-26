@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/agreement_page/agreement_page.dart';
+import 'package:myk_market_app/view/page/edit_user_info_page/edit_user_info_page.dart';
+import 'package:myk_market_app/view/page/edit_user_info_page/edit_user_info_view_model.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_page.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_page_view_model.dart';
 import 'package:myk_market_app/view/page/login_page/login_page.dart';
@@ -142,14 +144,17 @@ final router = GoRouter(
                             GoRoute(
                               path: 'signup_page',
                               builder: (context, state) {
-                                final extra = state.extra! as Map<String, dynamic>;
+                                final extra =
+                                    state.extra! as Map<String, dynamic>;
                                 final hideNavBar = extra['hideNavBar'];
-                                final isPersonalInfoForDeliverChecked = extra['isPersonalInfoForDeliverChecked'];
+                                final isPersonalInfoForDeliverChecked =
+                                    extra['isPersonalInfoForDeliverChecked'];
                                 return ChangeNotifierProvider(
                                   create: (_) => getIt<SignupPageViewModel>(),
                                   child: SignupPage(
                                     isPersonalInfoForDeliverChecked:
-                                    isPersonalInfoForDeliverChecked, hideNavBar: hideNavBar,
+                                        isPersonalInfoForDeliverChecked,
+                                    hideNavBar: hideNavBar,
                                   ),
                                 );
                               },
@@ -179,6 +184,14 @@ final router = GoRouter(
                         child: OrderHistoryPage(hideNavBar: hideNavBar),
                       );
                     }),
+                GoRoute(
+                  path: 'edit_user_info_page',
+                  builder: (context, state) {
+                    return ChangeNotifierProvider(
+                        create: (_) => getIt<EditUserInfoViewModel>(),
+                        child: const EditUserInfoPage());
+                  },
+                ),
               ]),
           GoRoute(
             path: '/product_detail_page',
