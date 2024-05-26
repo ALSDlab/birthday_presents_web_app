@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart'  as firebase_auth;
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -31,7 +31,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   // 현재 비밀번호 다시 확인
   Future<bool> _reauthenticateUser(String currentPassword) async {
     try {
-      firebase_auth.User? user = firebase_auth.FirebaseAuth.instance.currentUser;
+      firebase_auth.User? user =
+          firebase_auth.FirebaseAuth.instance.currentUser;
       if (user == null) {
         setState(() {
           _errorPasswordText = '사용자가 인증되지 않았습니다.';
@@ -39,7 +40,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         return false;
       }
 
-      firebase_auth.AuthCredential credential = firebase_auth.EmailAuthProvider.credential(
+      firebase_auth.AuthCredential credential =
+          firebase_auth.EmailAuthProvider.credential(
         email: user.email!,
         password: currentPassword,
       );
@@ -54,13 +56,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     }
   }
 
-  // 비밀번호 재설정 메서드(여기서 사용하지 않음)
+  // 비밀번호 재설정 메서드
   Future<void> passwordUpdate(String newPassword) async {
-
     String currentPassword = _passwordController.text;
     if (await _reauthenticateUser(currentPassword)) {
       try {
-        firebase_auth.User? user = firebase_auth.FirebaseAuth.instance.currentUser;
+        firebase_auth.User? user =
+            firebase_auth.FirebaseAuth.instance.currentUser;
         if (user != null) {
           await user.updatePassword(newPassword);
         }
@@ -68,9 +70,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         logger.info('Error changing password: $e');
       }
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +132,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       onChanged: (value) {
                         setState(() {
                           _errorPasswordText =
-                          (value.isEmpty ? '필수항목입니다.' : null);
+                              (value.isEmpty ? '필수항목입니다.' : null);
                         });
                       },
                       // validator: (value) {
@@ -311,11 +311,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         onPressed: () async {
                           setState(() {
                             _errorPasswordText =
-                            (_passwordController.text.isEmpty
-                                ? '필수항목입니다.'
-                                : _passwordController.text.length < 6
-                                ? '6자리 이상 입력해주세요.'
-                                : null);
+                                (_passwordController.text.isEmpty
+                                    ? '필수항목입니다.'
+                                    : _passwordController.text.length < 6
+                                        ? '6자리 이상 입력해주세요.'
+                                        : null);
                             _errorNewPasswordText =
                                 (_newPasswordController.text.isEmpty
                                     ? '필수항목입니다.'
@@ -335,9 +335,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                             ? '비밀번호가 서로 다릅니다.'
                                             : null);
                           });
-                          if (_errorPasswordText == null && _errorNewPasswordText == null &&
+                          if (_errorPasswordText == null &&
+                              _errorNewPasswordText == null &&
                               _errorNewPasswordConfirmText == null) {
-                            await passwordUpdate(_newPasswordConfirmController.text);
+                            await passwordUpdate(
+                                _newPasswordConfirmController.text);
                             Navigator.pop(
                                 context, _newPasswordConfirmController.text);
                           }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myk_market_app/utils/gif_progress_bar.dart';
 import 'package:myk_market_app/view/page/profile_page/profile_page_view_model.dart';
+import 'package:myk_market_app/view/page/profile_page/user_withdrawal_page.dart';
 import 'package:myk_market_app/view/widgets/two_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -278,8 +277,27 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 10,
                         ),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             //TODO: 회원탈퇴 기능 넣기
+                            final withdrawalResult = await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const UserWithdrawalPage();
+                                });
+
+                            if (withdrawalResult && context.mounted) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return OneAnswerDialog(
+                                        onTap: () {
+                                          GoRouter.of(context).go('/main_page');
+                                        },
+                                        title: '정상적으로 완료되었습니다.',
+                                        firstButton: '확인',
+                                        imagePath: 'assets/gifs/success.gif');
+                                  });
+                            }
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 24, left: 12),
