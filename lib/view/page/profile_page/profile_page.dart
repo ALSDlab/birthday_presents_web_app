@@ -78,7 +78,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: GestureDetector(
                               onTap: () async {
                                 await _showBottomSheet();
-                                print(_myPickedFile);
                                 if (_myPickedFile != null) {
                                   await viewModel
                                       .saveProfileImage(_myPickedFile!);
@@ -90,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     : AvatarGlow(
                                         startDelay:
                                             const Duration(milliseconds: 1000),
-                                        glowColor: Colors.red,
+                                        glowColor: Color(0xFF2F362F),
                                         glowShape: BoxShape.circle,
                                         animate: true,
                                         curve: Curves.fastOutSlowIn,

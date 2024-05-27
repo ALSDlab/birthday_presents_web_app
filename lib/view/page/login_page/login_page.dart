@@ -278,6 +278,8 @@ class _LoginPageState extends State<LoginPage> {
                                             : null);
                                   });
                                   if (_formKey.currentState!.validate()) {
+                                    print(idController.text);
+                                    print(passwordController.text);
                                     await viewModel.signIn(idController.text,
                                         passwordController.text, context);
                                   }

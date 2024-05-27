@@ -631,7 +631,7 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                                                           Navigator.pop(context);
                                                                                         },
                                                                                         title: '알림',
-                                                                                        subtitle: '아이디가 존재하지 없습니다.',
+                                                                                        subtitle: '아이디가 존재하지 않습니다.',
                                                                                         firstButton: '확인',
                                                                                         imagePath: 'assets/gifs/alert.gif');
                                                                                   });

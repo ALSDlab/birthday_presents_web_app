@@ -41,16 +41,17 @@ class LoginPageViewModel with ChangeNotifier {
     }
   }
 
-  Future signIn(String id, String password, BuildContext context) async {
+  Future signIn(String? id, String? password, BuildContext context) async {
     try {
       // 아이디로 유저정보를 우선 확인
       int recreatedCount = 0;
-      final currentUser = await userRepository.getFirebaseUserData(id);
+      final currentUser = await userRepository.getFirebaseUserData(id!);
+      print(currentUser);
       if (currentUser.isNotEmpty){
         recreatedCount = currentUser.first.recreatCount;
       }
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: '$recreatedCount.$id@gmail.com', password: password);
+          email: '$recreatedCount.$id@gmail.com', password: password!);
       if (context.mounted) {
         prefs!.setString('_email', '$recreatedCount.$id@gmail.com');
         if (context.mounted) {
@@ -74,7 +75,7 @@ class LoginPageViewModel with ChangeNotifier {
         showDialog(
             context: context,
             builder: (context) {
-              logger.info(e);
+              logger.info('에러:$e');
               return OneAnswerDialog(
                   onTap: () {
                     Navigator.pop(context);

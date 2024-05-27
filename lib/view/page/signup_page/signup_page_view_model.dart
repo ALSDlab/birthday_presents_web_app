@@ -84,6 +84,7 @@ class SignupPageViewModel extends ChangeNotifier {
       'created': created,
       'checked': checked,
       'recreatCount': recreatCount,
+      'profileImage': ''
     });
     notifyListeners();
   }

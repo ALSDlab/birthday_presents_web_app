@@ -45,6 +45,7 @@ class FindIdPasswordViewModel extends ChangeNotifier {
   // 반환값이 'error': 에러 발생
   Future<String> verifyInputData(String userId) async {
     try {
+      print(currentUser.first.id);
       currentUser = await userRepository.getFirebaseUserData(userId);
 
       if (currentUser.isNotEmpty) {

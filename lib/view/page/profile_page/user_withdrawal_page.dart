@@ -54,7 +54,8 @@ class _UserWithdrawalPageState extends State<UserWithdrawalPage> {
       try {
         if (user != null) {
           await user!.delete();
-          //TODO: 회원탈퇴 및 유저정보, 프로필 이미지 삭제 기능 넣기
+          //TODO: 유저정보, 프로필 이미지 삭제 기능 넣기
+
         }
       } catch (e) {
         logger.info('Error user withdrawal: $e');
