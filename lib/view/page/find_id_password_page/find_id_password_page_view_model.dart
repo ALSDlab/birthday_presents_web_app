@@ -45,7 +45,6 @@ class FindIdPasswordViewModel extends ChangeNotifier {
   // 반환값이 'error': 에러 발생
   Future<String> verifyInputData(String userId) async {
     try {
-      print(currentUser.first.id);
       currentUser = await userRepository.getFirebaseUserData(userId);
 
       if (currentUser.isNotEmpty) {
@@ -53,7 +52,7 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       }
       return '';
     } catch (error) {
-      logger.info('오류 발생: $error');
+      logger.info('오류: $error');
       return 'error';
     }
   }
@@ -91,7 +90,8 @@ class FindIdPasswordViewModel extends ChangeNotifier {
             userData.addressDetail,
             DateTime.now().millisecondsSinceEpoch,
             userData.recreatCount + 1,
-            userData.checked);
+            userData.checked,
+        userData.profileImage);
 
         firebase_auth.FirebaseAuth.instance.signOut();
       }
@@ -111,7 +111,8 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       String addrDetail,
       int created,
       int recreatCount,
-      bool checked) async {
+      bool checked,
+      String profileImage) async {
     try {
       firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth.instance
@@ -134,6 +135,7 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       'created': created,
       'checked': checked,
       'recreatCount': recreatCount,
+      'profileImage': profileImage
     });
   }
 
