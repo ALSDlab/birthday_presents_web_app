@@ -60,7 +60,7 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
             child: SizedBox(
               width: widget.width,
               height: (widget.width >= 110.w) ? 110.w : widget.width,
-              child: const GifProgressBar(),
+              child: GifProgressBar(),
             ),
           )
         : CachedNetworkImage(
@@ -76,7 +76,7 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
               ),
             ),
             progressIndicatorBuilder: (context, url, downloadProgress) =>
-                const Center(
+                Center(
               child: GifProgressBar(),
             ),
             errorWidget: (context, url, error) => const Icon(Icons.error),

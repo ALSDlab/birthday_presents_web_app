@@ -68,7 +68,7 @@ class _PayPageState extends State<PayPage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: (state.isLoading)
-                  ? const Center(
+                  ? Center(
                       child: GifProgressBar(),
                     )
                   : Padding(
@@ -121,7 +121,7 @@ class _PayPageState extends State<PayPage> {
                                         ? PayAddressWidget(
                                             orderFirstItem:
                                                 state.orderItems.first)
-                                        : const Center(
+                                        : Center(
                                             child: GifProgressBar(),
                                           ),
                                   ),

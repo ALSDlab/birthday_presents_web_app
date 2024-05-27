@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../data/model/user_model.dart';
 import '../../../utils/simple_logger.dart';
 
 class UserWithdrawalPage extends StatefulWidget {
-  const UserWithdrawalPage({super.key});
+  const UserWithdrawalPage({
+    super.key,
+  });
 
   @override
   State<UserWithdrawalPage> createState() => _UserWithdrawalPageState();
@@ -53,9 +56,8 @@ class _UserWithdrawalPageState extends State<UserWithdrawalPage> {
     if (await _reauthenticateUser(currentPassword)) {
       try {
         if (user != null) {
+          // 유저 계정 삭제
           await user!.delete();
-          //TODO: 유저정보, 프로필 이미지 삭제 기능 넣기
-
         }
       } catch (e) {
         logger.info('Error user withdrawal: $e');
@@ -81,6 +83,16 @@ class _UserWithdrawalPageState extends State<UserWithdrawalPage> {
             children: [
               const Text('정말 탈퇴하시겠습니까?',
                   style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+              const SizedBox(height: 8),
+              const Text(
+                '탈퇴 이후에는 동일한 아이디로 재가입 할 수 없습니다.',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Color(0xFFba1a1a),
+                ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.visible,
+              ),
               const SizedBox(height: 8),
               const Text(
                 '확인을 위해 현재 비밀번호를 입력해 주세요.',
@@ -196,7 +208,8 @@ class _UserWithdrawalPageState extends State<UserWithdrawalPage> {
                             });
                             if (_errorPasswordText == null) {
                               await userWithdrawal();
-                              Navigator.pop(context, true);
+                              Navigator.pop(context,
+                                  true); // 계정 삭제 후 true 값 반환, 유저 정보 삭제 기능 구현
                             }
                           },
                           style: OutlinedButton.styleFrom(

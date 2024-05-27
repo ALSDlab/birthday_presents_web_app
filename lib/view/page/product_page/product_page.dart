@@ -60,7 +60,11 @@ class _ProductPageState extends State<ProductPage> {
                 topLeft: Radius.circular(32), topRight: Radius.circular(32)),
             child: Container(
               color: const Color(0xFFFFF8E7),
-              child: Padding(
+              child:(state.isLoading)
+                  ? Center(
+                child: GifProgressBar(),
+              )
+                  : Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
                   children: [
@@ -98,10 +102,11 @@ class _ProductPageState extends State<ProductPage> {
                     const Divider(),
                     // Text( '${state.products.length}'),
                     (state.isLoading)
-                        ? const Expanded(
+                        ? Expanded(
                             child: Center(child: GifProgressBar()))
                         : Expanded(
                             child: GridView.builder(
+                              physics: const BouncingScrollPhysics(),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,

@@ -2,7 +2,7 @@ import 'package:daum_postcode_search/data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:myk_market_app/view/page/edit_user_info_page/change_password_page.dart';
+import 'package:myk_market_app/view/page/edit_user_info_page/change_password_dialog.dart';
 import 'package:myk_market_app/view/page/edit_user_info_page/edit_user_info_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
@@ -67,7 +67,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: (state.isLoading)
-                  ? const Center(
+                  ? Center(
                       child: GifProgressBar(),
                     )
                   : Padding(

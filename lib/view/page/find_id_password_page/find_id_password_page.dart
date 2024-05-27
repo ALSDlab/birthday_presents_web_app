@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/utils/gif_progress_bar.dart';
 import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_page_view_model.dart';
-import 'package:myk_market_app/view/page/find_id_password_page/reset_password_page.dart';
+import 'package:myk_market_app/view/page/find_id_password_page/reset_password_dialog.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/simple_logger.dart';
-import '../cellphone_valid_page/cellphone_valid_page.dart';
+import '../cellphone_valid_page/cellphone_valid_dialog.dart';
 
 class FindIdPasswordPage extends StatefulWidget {
   const FindIdPasswordPage({super.key, required this.hideNavBar});
 
   final bool Function(bool) hideNavBar;
-
 
   @override
   State<FindIdPasswordPage> createState() => _FindIdPasswordPageState();
@@ -839,7 +839,9 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                 Expanded(child: Container()),
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    onPressed: () async {
+                                                    onPressed: (state
+                                                        .isLoading)
+                                                        ? (){} : () async {
                                                       setState(() {
                                                         _errorIdText =
                                                             (_idController.text
@@ -859,8 +861,7 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                               null) {
                                                         if (isValidPhoneNo) {
                                                           // 입력된 전화번호가 일치하다면 비밀번호 재설정
-                                                          final
-                                                              newPassword =
+                                                          final newPassword =
                                                               await showDialog(
                                                                   context:
                                                                       context,
@@ -868,7 +869,8 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                                       (context) {
                                                                     return const ResetPasswordPage();
                                                                   });
-                                                          if (newPassword == null) {
+                                                          if (newPassword ==
+                                                              null) {
                                                             // 비밀번호를 변경하지 않고 취소함
                                                             const Widget
                                                                 content = Text(
@@ -893,24 +895,21 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                                   builder:
                                                                       (context) {
                                                                     return OneAnswerDialog(
-                                                                        onTap:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                          GoRouter.of(context).go(
-                                                                              '/profile_page/login_page',
-                                                                              extra: {
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                              GoRouter.of(context).go('/profile_page/login_page', extra: {
                                                                                 'hideNavBar': widget.hideNavBar
                                                                               });
-                                                                        },
-                                                                        title:
-                                                                            '비밀번호가 재설정 되었습니다.',
-                                                                        subtitle:
-                                                                            '로그인 페이지로 돌아갑니다.',
-                                                                        firstButton:
-                                                                            '확인',
-                                                                        imagePath:
-                                                                            'assets/gifs/success.gif');
+                                                                            },
+                                                                            title:
+                                                                                '비밀번호가 재설정 되었습니다.',
+                                                                            subtitle:
+                                                                                '로그인 페이지로 돌아갑니다.',
+                                                                            firstButton:
+                                                                                '확인',
+                                                                            imagePath:
+                                                                                'assets/gifs/success.gif');
                                                                   });
                                                             }
                                                           }
@@ -928,15 +927,24 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                     },
 
                                                     style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            const Color(
+                                                        backgroundColor:(state
+                                                            .isLoading)
+                                                            ? Colors.grey
+                                                            :
+                                                        const Color(
                                                                 0xFF2F362F),
                                                         shape: const RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius.all(
                                                                     Radius.circular(
                                                                         10)))),
-                                                    child: const Text(
+                                                    child: (state
+                                                        .isLoading)
+                                                        ? Center(
+                                                      child:
+                                                      GifProgressBar(radius: 15,),
+                                                    )
+                                                        : const Text(
                                                       '재설정하기',
                                                       style: TextStyle(
                                                           color: Colors.white),

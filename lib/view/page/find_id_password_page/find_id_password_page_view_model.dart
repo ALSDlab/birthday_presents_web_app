@@ -74,10 +74,11 @@ class FindIdPasswordViewModel extends ChangeNotifier {
 
   // 기존 유저 데이터는 삭제하고 재가입함
   Future<void> deleteAndResignup(String userId, String newPassword) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
     final userData = await getUserModelById(userId);
     try {
       if (userData != null) {
-        // TODO:기존에 있던 데이터는 삭제함
         await userRepository.deleteFirebaseUserData(userId);
 
         await saveUserInfo(
@@ -97,6 +98,9 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       }
     } catch (error) {
       logger.info('오류 발생: $error');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
     }
   }
 

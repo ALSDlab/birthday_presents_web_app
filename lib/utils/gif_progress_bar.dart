@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 class GifProgressBar extends StatelessWidget {
-  const GifProgressBar({super.key});
+  GifProgressBar({super.key, this.radius = 25});
+  double? radius;
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: CircleAvatar(
-        radius: 25,
+        radius: radius,
         backgroundColor: Colors.transparent,
-        backgroundImage: AssetImage("assets/gifs/loading_animation.gif"),
+        backgroundImage: const AssetImage("assets/gifs/loading_animation.gif"),
       ),
     );
   }

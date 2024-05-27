@@ -4,9 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myk_market_app/view/page/signup_page/signup_page_state.dart';
 
+import '../../../domain/user_repository.dart';
 import '../../../utils/simple_logger.dart';
 
 class SignupPageViewModel extends ChangeNotifier {
+  final UserRepository userRepository;
+
+  SignupPageViewModel({required this.userRepository}) {
+    getEmailsFromFirestore();
+  }
+
   SignupPageState _state = const SignupPageState();
 
   SignupPageState get state => _state;
@@ -38,6 +45,22 @@ class SignupPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 회원가입 시 사용된 이메일 리스트 불러오기
+  Future<void> getEmailsFromFirestore() async {
+    try {
+      _state = state.copyWith(isLoading: true);
+      notifyListeners();
+      List<String> emails = await userRepository.getUsedEmails();
+      _state = state.copyWith(existingEmails: emails);
+      notifyListeners();
+    } catch (e) {
+      logger.info('Error fetching emails: $e');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
+    }
+  }
+
   String? passwordValidator(String? value) {
     if (value == null || value.isEmpty) {
       notifyListeners();
@@ -49,7 +72,6 @@ class SignupPageViewModel extends ChangeNotifier {
     }
     notifyListeners();
     return null;
-
   }
 
   Future saveUserInfo(
@@ -63,30 +85,38 @@ class SignupPageViewModel extends ChangeNotifier {
       int created,
       int recreatCount,
       bool checked) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
     try {
+      final String saveUserEmail = '$recreatCount.$id@gmail.com';
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: '$recreatCount.$id@gmail.com', password: password);
+              email: saveUserEmail, password: password);
       await userCredential.user?.updateDisplayName(name);
-    } catch (e) {
-      return e.toString();
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(created.toString() + id)
+          .set({
+        'id': id,
+        'name': name,
+        'phone': phone,
+        'postcode': postcode,
+        'address': address,
+        'addressDetail': addrDetail,
+        'created': created,
+        'checked': checked,
+        'recreatCount': recreatCount,
+        'profileImage': ''
+      });
+      // used_emails에 저장하기
+      await userRepository.addEmailToFirestore(saveUserEmail);
+      notifyListeners();
+    } catch (error) {
+      logger.info('오류 발생: $error');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
     }
-    await FirebaseFirestore.instance
-        .collection('user')
-        .doc(created.toString() + id)
-        .set({
-      'id': id,
-      'name': name,
-      'phone': phone,
-      'postcode': postcode,
-      'address': address,
-      'addressDetail': addrDetail,
-      'created': created,
-      'checked': checked,
-      'recreatCount': recreatCount,
-      'profileImage': ''
-    });
-    notifyListeners();
   }
 
   Future getUserArray() async {
@@ -122,5 +152,19 @@ class SignupPageViewModel extends ChangeNotifier {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  bool idValidator(String id) {
+    for (String email in state.existingEmails) {
+      final String splitedEmail = email.split('@').first;
+      int firstDotIndex = splitedEmail.indexOf('.');
+      if (firstDotIndex != -1) {
+        final String resultString = splitedEmail.substring(firstDotIndex + 1);
+        if (resultString == id) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

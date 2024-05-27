@@ -21,6 +21,7 @@ FindIdPasswordState _$FindIdPasswordStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FindIdPasswordState {
   bool get showSnackbarPadding => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,7 @@ abstract class $FindIdPasswordStateCopyWith<$Res> {
           FindIdPasswordState value, $Res Function(FindIdPasswordState) then) =
       _$FindIdPasswordStateCopyWithImpl<$Res, FindIdPasswordState>;
   @useResult
-  $Res call({bool showSnackbarPadding});
+  $Res call({bool showSnackbarPadding, bool isLoading});
 }
 
 /// @nodoc
@@ -51,11 +52,16 @@ class _$FindIdPasswordStateCopyWithImpl<$Res, $Val extends FindIdPasswordState>
   @override
   $Res call({
     Object? showSnackbarPadding = null,
+    Object? isLoading = null,
   }) {
     return _then(_value.copyWith(
       showSnackbarPadding: null == showSnackbarPadding
           ? _value.showSnackbarPadding
           : showSnackbarPadding // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -69,7 +75,7 @@ abstract class _$$FindIdPasswordStateImplCopyWith<$Res>
       __$$FindIdPasswordStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool showSnackbarPadding});
+  $Res call({bool showSnackbarPadding, bool isLoading});
 }
 
 /// @nodoc
@@ -84,11 +90,16 @@ class __$$FindIdPasswordStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? showSnackbarPadding = null,
+    Object? isLoading = null,
   }) {
     return _then(_$FindIdPasswordStateImpl(
       showSnackbarPadding: null == showSnackbarPadding
           ? _value.showSnackbarPadding
           : showSnackbarPadding // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -97,7 +108,8 @@ class __$$FindIdPasswordStateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$FindIdPasswordStateImpl implements _FindIdPasswordState {
-  const _$FindIdPasswordStateImpl({this.showSnackbarPadding = false});
+  const _$FindIdPasswordStateImpl(
+      {this.showSnackbarPadding = false, this.isLoading = false});
 
   factory _$FindIdPasswordStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$FindIdPasswordStateImplFromJson(json);
@@ -105,10 +117,13 @@ class _$FindIdPasswordStateImpl implements _FindIdPasswordState {
   @override
   @JsonKey()
   final bool showSnackbarPadding;
+  @override
+  @JsonKey()
+  final bool isLoading;
 
   @override
   String toString() {
-    return 'FindIdPasswordState(showSnackbarPadding: $showSnackbarPadding)';
+    return 'FindIdPasswordState(showSnackbarPadding: $showSnackbarPadding, isLoading: $isLoading)';
   }
 
   @override
@@ -117,12 +132,14 @@ class _$FindIdPasswordStateImpl implements _FindIdPasswordState {
         (other.runtimeType == runtimeType &&
             other is _$FindIdPasswordStateImpl &&
             (identical(other.showSnackbarPadding, showSnackbarPadding) ||
-                other.showSnackbarPadding == showSnackbarPadding));
+                other.showSnackbarPadding == showSnackbarPadding) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, showSnackbarPadding);
+  int get hashCode => Object.hash(runtimeType, showSnackbarPadding, isLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -140,14 +157,17 @@ class _$FindIdPasswordStateImpl implements _FindIdPasswordState {
 }
 
 abstract class _FindIdPasswordState implements FindIdPasswordState {
-  const factory _FindIdPasswordState({final bool showSnackbarPadding}) =
-      _$FindIdPasswordStateImpl;
+  const factory _FindIdPasswordState(
+      {final bool showSnackbarPadding,
+      final bool isLoading}) = _$FindIdPasswordStateImpl;
 
   factory _FindIdPasswordState.fromJson(Map<String, dynamic> json) =
       _$FindIdPasswordStateImpl.fromJson;
 
   @override
   bool get showSnackbarPadding;
+  @override
+  bool get isLoading;
   @override
   @JsonKey(ignore: true)
   _$$FindIdPasswordStateImplCopyWith<_$FindIdPasswordStateImpl> get copyWith =>

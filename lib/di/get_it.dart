@@ -40,9 +40,10 @@ void diSetup() {
         userRepository: getIt<UserRepository>()))
     ..registerFactory<OrderHistoryPageViewModel>(() =>
         OrderHistoryPageViewModel(orderRepository: getIt<OrderRepository>()))
-    ..registerFactory<SignupPageViewModel>(() => SignupPageViewModel())
+    ..registerFactory<SignupPageViewModel>(
+        () => SignupPageViewModel(userRepository: getIt<UserRepository>()))
     ..registerFactory<EditUserInfoViewModel>(
         () => EditUserInfoViewModel(userRepository: getIt<UserRepository>()))
     ..registerFactory<ProfilePageViewModel>(
-            () => ProfilePageViewModel(userRepository: getIt<UserRepository>()));
+        () => ProfilePageViewModel(userRepository: getIt<UserRepository>()));
 }

@@ -50,6 +50,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
     'extraAddress'
   ];
 
+  Map<int, dynamic> errorControllers = {0: null, 1: null};
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<FillOrderFormPageViewModel>();
@@ -85,7 +87,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: (state.isLoading)
-                  ? const Center(
+                  ? Center(
                       child: GifProgressBar(),
                     )
                   : Padding(
@@ -217,15 +219,11 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                             16.0),
                                                                 child:
                                                                     OutlinedButton(
-                                                                  style: OutlinedButton
-                                                                      .styleFrom(
-                                                                          // shape: const RoundedRectangleBorder(
-                                                                          //     borderRadius: BorderRadius.zero),
-                                                                          shape: const RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.all(Radius.circular(
-                                                                                  10))),
-                                                                          backgroundColor:
-                                                                              const Color(0xFF2F362F)),
+                                                                  style: OutlinedButton.styleFrom(
+                                                                      // shape: const RoundedRectangleBorder(
+                                                                      //     borderRadius: BorderRadius.zero),
+                                                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                                                                      backgroundColor: const Color(0xFF2F362F)),
                                                                   onPressed:
                                                                       () async {
                                                                     try {
@@ -239,12 +237,20 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                             builder: (context) =>
                                                                                 check.pr),
                                                                       );
-                                                                      if (model is DataModel) {
-                                                                        viewModel.setAddress(model.zonecode, model.address);
-                                                                      } else if (model is Map<String, String>) {
-                                                                        viewModel.setAddress(model['postcode']!, model['address']!);
+                                                                      if (model
+                                                                          is DataModel) {
+                                                                        viewModel.setAddress(
+                                                                            model.zonecode,
+                                                                            model.address);
+                                                                      } else if (model is Map<
+                                                                          String,
+                                                                          String>) {
+                                                                        viewModel.setAddress(
+                                                                            model['postcode']!,
+                                                                            model['address']!);
                                                                       }
-                                                                      viewModel.fillTextField();
+                                                                      viewModel
+                                                                          .fillTextField();
                                                                     } catch (error) {
                                                                       logger.info(
                                                                           error);
@@ -290,6 +296,40 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                                           .circular(
                                                                               10),
                                                                 ),
+                                                                enabledBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                                    width: 2,
+                                                                    color: (errorControllers[index] ==
+                                                                            null)
+                                                                        ? Colors
+                                                                            .grey
+                                                                        : const Color(
+                                                                            0xFFba1a1a),
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                                    width: 2,
+                                                                    color: (errorControllers[index] ==
+                                                                            null)
+                                                                        ? const Color(
+                                                                            0xFF2F362F)
+                                                                        : const Color(
+                                                                            0xFFba1a1a),
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
                                                               ),
                                                               controller: viewModel
                                                                       .controllers[
@@ -299,35 +339,115 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                           ),
                                                         ],
                                                       )
-                                                    : TextFormField(
-                                                        readOnly: (index == 3)
-                                                            ? true
-                                                            : false,
-                                                        style: const TextStyle(
-                                                            fontSize: 15),
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .fromLTRB(
-                                                                  10, 5, 0, 5),
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                              width: 0.1,
-                                                              color:
-                                                                  Colors.white,
+                                                    : Stack(
+                                                        children: [
+                                                          TextFormField(
+                                                            readOnly:
+                                                                (index == 3)
+                                                                    ? true
+                                                                    : false,
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            decoration:
+                                                                InputDecoration(
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .fromLTRB(
+                                                                      10,
+                                                                      5,
+                                                                      0,
+                                                                      5),
+                                                              border:
+                                                                  OutlineInputBorder(
+                                                                borderSide:
+                                                                    const BorderSide(
+                                                                  width: 0.1,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  width: 2,
+                                                                  color: (errorControllers[
+                                                                              index] ==
+                                                                          null)
+                                                                      ? Colors
+                                                                          .grey
+                                                                      : const Color(
+                                                                          0xFFba1a1a),
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  width: 2,
+                                                                  color: (errorControllers[
+                                                                              index] ==
+                                                                          null)
+                                                                      ? const Color(
+                                                                          0xFF2F362F)
+                                                                      : const Color(
+                                                                          0xFFba1a1a),
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
                                                             ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                errorControllers[
+                                                                index] =
+                                                                (value == ''
+                                                                    ? '필수항목입니다.'
+                                                                    : null);
+                                                              });
+                                                            },
+                                                            controller: viewModel
+                                                                    .controllers[
+                                                                textField[
+                                                                    index]],
                                                           ),
-                                                        ),
-                                                        controller: viewModel
-                                                                .controllers[
-                                                            textField[index]],
+                                                          if (errorControllers[
+                                                                  index] !=
+                                                              null)
+                                                            Positioned(
+                                                              top: 15,
+                                                              right: 15,
+                                                              child: Container(
+                                                                color: Colors
+                                                                    .white,
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        4),
+                                                                child: Text(
+                                                                  errorControllers[
+                                                                      index],
+                                                                  style: const TextStyle(
+                                                                      color: Color(
+                                                                          0xFFba1a1a),
+                                                                      fontSize:
+                                                                          12),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        ],
                                                       ),
                                               ],
                                             ),

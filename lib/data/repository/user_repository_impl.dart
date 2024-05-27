@@ -37,4 +37,30 @@ class UserRepositoryImpl implements UserRepository {
       logger.info('Error deleting document: $e');
     }
   }
+
+  @override
+  Future<List<String>> getUsedEmails() async {
+    try {
+      DocumentSnapshot docSnapshot =
+          await _firestore.collection('user').doc('used_emails').get();
+      List<String> emails = List<String>.from(docSnapshot['used_emails']);
+      return emails;
+    } catch (e) {
+      logger.info('Error fetching emails: $e');
+      return [];
+    }
+  }
+
+  @override
+  Future<void> addEmailToFirestore(String email) async {
+    try {
+      DocumentReference docRef =
+          FirebaseFirestore.instance.collection('user').doc('used_emails');
+      await docRef.update({
+        'used_emails': FieldValue.arrayUnion([email])
+      });
+    } catch (e) {
+      logger.info('Error adding email: $e');
+    }
+  }
 }

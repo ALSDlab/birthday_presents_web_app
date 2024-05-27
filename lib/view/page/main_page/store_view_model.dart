@@ -24,22 +24,18 @@ class StoreViewModel extends ChangeNotifier {
   }
 
   StoreRepositoryImpl repository = StoreRepositoryImpl();
-  final StoreState _state = StoreState();
+  StoreState _state = StoreState();
   List<Store> storeList = [];
 
   StoreState get state => _state;
 
-  bool _isLoading = false;
-
-  bool get isLoading => _isLoading;
-
   Future<void> loadingHome() async {
-    _isLoading = true;
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
 
     storeList = await repository.getFirebaseStore();
 
-    _isLoading = false;
+    _state = state.copyWith(isLoading: false);
     notifyListeners();
   }
 }

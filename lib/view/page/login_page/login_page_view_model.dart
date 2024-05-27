@@ -19,7 +19,6 @@ class LoginPageViewModel with ChangeNotifier {
   LoginPageViewModel({
     required this.orderRepository,
     required this.userRepository,
-
   });
 
   LoginPageState _state = const LoginPageState();
@@ -47,7 +46,7 @@ class LoginPageViewModel with ChangeNotifier {
       int recreatedCount = 0;
       final currentUser = await userRepository.getFirebaseUserData(id!);
       print(currentUser);
-      if (currentUser.isNotEmpty){
+      if (currentUser.isNotEmpty) {
         recreatedCount = currentUser.first.recreatCount;
       }
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -98,11 +97,15 @@ class LoginPageViewModel with ChangeNotifier {
   // 비회원 주문조회 메서드
   Future<List<OrderModel>> orderCheckforNoMember(
       String orderNumber, String ordererName, BuildContext context) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+
     try {
       await getMyOrderData(orderNumber);
       List<OrderModel> result = [];
       if (context.mounted) {
-        if (state.orderItems.isNotEmpty && state.orderItems.first.ordererId != 'notRegistered') {
+        if (state.orderItems.isNotEmpty &&
+            state.orderItems.first.ordererId != 'notRegistered') {
           showDialog(
               context: context,
               builder: (context) {
@@ -116,7 +119,8 @@ class LoginPageViewModel with ChangeNotifier {
                     imagePath: 'assets/gifs/alert.gif');
               });
         } else {
-          if (state.orderItems.isNotEmpty && state.orderItems.first.ordererName != ordererName) {
+          if (state.orderItems.isNotEmpty &&
+              state.orderItems.first.ordererName != ordererName) {
             showDialog(
                 context: context,
                 builder: (context) {
@@ -152,16 +156,14 @@ class LoginPageViewModel with ChangeNotifier {
     } catch (error) {
       // 에러 처리
       logger.info('Error order check: $error');
-      notifyListeners();
-
       return [];
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
     }
   }
 
   Future<void> getMyOrderData(String orderNumberForPay) async {
-    _state = state.copyWith(isLoading: true);
-    notifyListeners();
-
     try {
       final myOrder =
           await orderRepository.getFirebaseOrdersByOrderNo(orderNumberForPay);
@@ -171,9 +173,6 @@ class LoginPageViewModel with ChangeNotifier {
     } catch (error) {
       // 에러 처리
       logger.info('Error fetching data: $error');
-    } finally {
-      _state = state.copyWith(isLoading: false);
-      notifyListeners();
     }
   }
 }

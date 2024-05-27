@@ -40,7 +40,7 @@ class ProfilePageViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (error) {
       // 에러 처리
-      debugPrint('Error saving ordersInfo: $error');
+      logger.info('Error saving ordersInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
       notifyListeners();
@@ -79,5 +79,37 @@ class ProfilePageViewModel extends ChangeNotifier {
       _state = state.copyWith(isLoading: false);
       notifyListeners();
     }
+  }
+
+  Future<void> userWithdrawalProcess(String userId) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+
+    try {
+      // 유저정보 삭제
+      await userRepository.deleteFirebaseUserData(userId);
+      String folderPath = 'profile/$userId';
+      // storage 파일 삭제
+      await deleteFolder(folderPath);
+    } catch (error) {
+      logger.info('오류 발생: $error');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteFolder(String folderPath) async {
+    // 폴더 내의 모든 파일을 참조
+    ListResult result = await _auth.ref(folderPath).listAll();
+    // 폴더 내의 모든 파일을 삭제
+    for (Reference file in result.items) {
+      await file.delete();
+    }
+    // 폴더 내의 모든 하위 폴더를 참조
+    for (Reference folder in result.prefixes) {
+      await deleteFolder(folder.fullPath); // 재귀적으로 하위 폴더도 삭제
+    }
+    // 폴더 자체는 Firebase Storage에서 자동으로 제거됩니다 (비어있으면 자동으로 제거됨).
   }
 }

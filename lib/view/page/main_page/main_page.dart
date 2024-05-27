@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
@@ -130,11 +128,12 @@ class _MainPageState extends State<MainPage> {
               color: const Color(0xFFFFF8E7),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: viewModel.isLoading
-                    ? const Center(
+                child: state.isLoading
+                    ? Center(
                         child: GifProgressBar(),
                       )
                     : ListView(
+                  physics: const BouncingScrollPhysics(),
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),

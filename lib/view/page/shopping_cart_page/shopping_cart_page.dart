@@ -57,7 +57,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: state.isLoading
-                  ? const Center(child: GifProgressBar())
+                  ? Center(child: GifProgressBar())
                   : Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -148,6 +148,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                       children: [
                                         Expanded(
                                           child: ListView.builder(
+                                            physics:
+                                                const BouncingScrollPhysics(),
                                             itemBuilder: (context, index) {
                                               return ShoppingCartPageWidget(
                                                 shoppingProductForCart:

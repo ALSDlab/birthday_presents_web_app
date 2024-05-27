@@ -10,12 +10,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
-import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/domain/order_repository.dart';
-import 'package:myk_market_app/utils/send_sms_widget.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../env/env.dart';
 import '../../../utils/simple_logger.dart';
@@ -61,7 +58,7 @@ class PayPageViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (error) {
       // 에러 처리
-      debugPrint('Error fetching data: $error');
+      logger.info('Error fetching data: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
       notifyListeners();

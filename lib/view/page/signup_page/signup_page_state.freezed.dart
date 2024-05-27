@@ -21,6 +21,8 @@ SignupPageState _$SignupPageStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SignupPageState {
   bool get showSnackbarPadding => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+  List<String> get existingEmails => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +36,8 @@ abstract class $SignupPageStateCopyWith<$Res> {
           SignupPageState value, $Res Function(SignupPageState) then) =
       _$SignupPageStateCopyWithImpl<$Res, SignupPageState>;
   @useResult
-  $Res call({bool showSnackbarPadding});
+  $Res call(
+      {bool showSnackbarPadding, bool isLoading, List<String> existingEmails});
 }
 
 /// @nodoc
@@ -51,12 +54,22 @@ class _$SignupPageStateCopyWithImpl<$Res, $Val extends SignupPageState>
   @override
   $Res call({
     Object? showSnackbarPadding = null,
+    Object? isLoading = null,
+    Object? existingEmails = null,
   }) {
     return _then(_value.copyWith(
       showSnackbarPadding: null == showSnackbarPadding
           ? _value.showSnackbarPadding
           : showSnackbarPadding // ignore: cast_nullable_to_non_nullable
               as bool,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      existingEmails: null == existingEmails
+          ? _value.existingEmails
+          : existingEmails // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -69,7 +82,8 @@ abstract class _$$SignupPageStateImplCopyWith<$Res>
       __$$SignupPageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool showSnackbarPadding});
+  $Res call(
+      {bool showSnackbarPadding, bool isLoading, List<String> existingEmails});
 }
 
 /// @nodoc
@@ -84,12 +98,22 @@ class __$$SignupPageStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? showSnackbarPadding = null,
+    Object? isLoading = null,
+    Object? existingEmails = null,
   }) {
     return _then(_$SignupPageStateImpl(
       showSnackbarPadding: null == showSnackbarPadding
           ? _value.showSnackbarPadding
           : showSnackbarPadding // ignore: cast_nullable_to_non_nullable
               as bool,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      existingEmails: null == existingEmails
+          ? _value._existingEmails
+          : existingEmails // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -97,7 +121,11 @@ class __$$SignupPageStateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$SignupPageStateImpl implements _SignupPageState {
-  const _$SignupPageStateImpl({this.showSnackbarPadding = false});
+  const _$SignupPageStateImpl(
+      {this.showSnackbarPadding = false,
+      this.isLoading = false,
+      final List<String> existingEmails = const []})
+      : _existingEmails = existingEmails;
 
   factory _$SignupPageStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$SignupPageStateImplFromJson(json);
@@ -105,10 +133,21 @@ class _$SignupPageStateImpl implements _SignupPageState {
   @override
   @JsonKey()
   final bool showSnackbarPadding;
+  @override
+  @JsonKey()
+  final bool isLoading;
+  final List<String> _existingEmails;
+  @override
+  @JsonKey()
+  List<String> get existingEmails {
+    if (_existingEmails is EqualUnmodifiableListView) return _existingEmails;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_existingEmails);
+  }
 
   @override
   String toString() {
-    return 'SignupPageState(showSnackbarPadding: $showSnackbarPadding)';
+    return 'SignupPageState(showSnackbarPadding: $showSnackbarPadding, isLoading: $isLoading, existingEmails: $existingEmails)';
   }
 
   @override
@@ -117,12 +156,17 @@ class _$SignupPageStateImpl implements _SignupPageState {
         (other.runtimeType == runtimeType &&
             other is _$SignupPageStateImpl &&
             (identical(other.showSnackbarPadding, showSnackbarPadding) ||
-                other.showSnackbarPadding == showSnackbarPadding));
+                other.showSnackbarPadding == showSnackbarPadding) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading) &&
+            const DeepCollectionEquality()
+                .equals(other._existingEmails, _existingEmails));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, showSnackbarPadding);
+  int get hashCode => Object.hash(runtimeType, showSnackbarPadding, isLoading,
+      const DeepCollectionEquality().hash(_existingEmails));
 
   @JsonKey(ignore: true)
   @override
@@ -140,14 +184,20 @@ class _$SignupPageStateImpl implements _SignupPageState {
 }
 
 abstract class _SignupPageState implements SignupPageState {
-  const factory _SignupPageState({final bool showSnackbarPadding}) =
-      _$SignupPageStateImpl;
+  const factory _SignupPageState(
+      {final bool showSnackbarPadding,
+      final bool isLoading,
+      final List<String> existingEmails}) = _$SignupPageStateImpl;
 
   factory _SignupPageState.fromJson(Map<String, dynamic> json) =
       _$SignupPageStateImpl.fromJson;
 
   @override
   bool get showSnackbarPadding;
+  @override
+  bool get isLoading;
+  @override
+  List<String> get existingEmails;
   @override
   @JsonKey(ignore: true)
   _$$SignupPageStateImplCopyWith<_$SignupPageStateImpl> get copyWith =>

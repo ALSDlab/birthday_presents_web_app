@@ -18,11 +18,22 @@ class ProductDetailPageViewModel extends ChangeNotifier {
   }
 
   Future<int> getBadgeCount() async {
-    final resultList = await getShoppingCartList();
-    _state = state.copyWith(forBadgeList: resultList);
-
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
-    return resultList.length;
+    try {
+      final resultList = await getShoppingCartList();
+      _state = state.copyWith(forBadgeList: resultList);
+
+      notifyListeners();
+      return resultList.length;
+    } catch (error) {
+      // 에러 처리
+      logger.info('Error get badge: $error');
+      return 0;
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
+    }
   }
 
   int purchaseCount = 1;
@@ -104,8 +115,8 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     List<ShoppingProductForCart> currentList = await getShoppingCartList();
 
     // 중복 체크
-    var index =
-        currentList.indexWhere((product) => product.productId == item.productId);
+    var index = currentList
+        .indexWhere((product) => product.productId == item.productId);
     if (index == -1) {
       currentList.add(item);
     } else {
@@ -124,12 +135,12 @@ class ProductDetailPageViewModel extends ChangeNotifier {
 
   // 스낵바 구현 매서드
   void cartAddSnackBar(BuildContext context) {
-
     _state = state.copyWith(showSnackbarPadding: true);
     notifyListeners();
 
     final snackBar = SnackBar(
-      content: const Text('장바구니에 담겼습니다.', style: TextStyle(fontFamily: 'Jalnan')),
+      content:
+          const Text('장바구니에 담겼습니다.', style: TextStyle(fontFamily: 'Jalnan')),
       duration: const Duration(seconds: 2),
       onVisible: () {
         // snackbar가 사라질 때 패딩을 제거합니다.
@@ -141,11 +152,6 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
-
-
-
-
 
   // 장바구니에서 제거하는 기능
   Future<void> removeFromCartList(ShoppingProductForCart item) async {

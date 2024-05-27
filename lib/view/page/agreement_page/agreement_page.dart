@@ -60,6 +60,7 @@ class _AgreementPageState extends State<AgreementPage> {
                     ),
                     Expanded(
                       child: ListView(
+                        physics: const BouncingScrollPhysics(),
                         children: [
                           Row(
                             mainAxisSize: MainAxisSize.min,

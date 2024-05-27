@@ -53,7 +53,7 @@ class OrderHistoryPage extends StatelessWidget {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: (state.isLoading)
-                  ? const Center(
+                  ? Center(
                       child: GifProgressBar(),
                     )
                   : (state.orderHistoryList.isEmpty)
