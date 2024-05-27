@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     : AvatarGlow(
                                         startDelay:
                                             const Duration(milliseconds: 1000),
-                                        glowColor: Color(0xFF2F362F),
+                                        glowColor: const Color(0xFF2F362F),
                                         glowShape: BoxShape.circle,
                                         animate: true,
                                         curve: Curves.fastOutSlowIn,
@@ -98,10 +98,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                         child: Material(
                                           elevation: 8.0,
                                           shape: const CircleBorder(),
-                                          color: Colors.white,
+                                          color: const Color(0xFFFFF8E7),
                                           child: ClipOval(
-                                            child: (viewModel
-                                                        .currentUser.isEmpty ||
+                                            child: (_myPickedFile == null &&
                                                     viewModel.currentUser.first
                                                             .profileImage ==
                                                         '')
@@ -350,7 +349,10 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () async => await _getCameraImage(),
+              onPressed: () async {
+                await _getCameraImage();
+                Navigator.pop(context);
+              },
               child: const Text('사진찍기'),
             ),
             const SizedBox(
@@ -363,7 +365,10 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () async => await _getPhotoLibraryImage(),
+              onPressed: () async {
+                await _getPhotoLibraryImage();
+                Navigator.pop(context);
+              },
               child: const Text('라이브러리에서 불러오기'),
             ),
             const SizedBox(

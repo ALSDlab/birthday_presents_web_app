@@ -48,16 +48,19 @@ class ProfilePageViewModel extends ChangeNotifier {
   }
 
   Future<void> saveProfileImage(XFile myPickedFile) async {
-    final registerDate = DateTime.now().millisecondsSinceEpoch;
-    final uploadRef = _auth
-        .ref('profile/${currentUser.first.id}')
-        .child('${registerDate}_${currentUser.first.id}.jpg');
-    typed_data.Uint8List profileImage = await myPickedFile.readAsBytes();
-    await uploadRef.putData(
-        profileImage, SettableMetadata(contentType: "image/jpeg"));
-    final downloadUrl = await uploadRef.getDownloadURL();
-
     try {
+      _state = state.copyWith(isLoading: true);
+      notifyListeners();
+
+      final registerDate = DateTime.now().millisecondsSinceEpoch;
+      final uploadRef = _auth
+          .ref('profile/${currentUser.first.id}')
+          .child('${registerDate}_${currentUser.first.id}.jpg');
+      typed_data.Uint8List profileImage = await myPickedFile.readAsBytes();
+      await uploadRef.putData(
+          profileImage, SettableMetadata(contentType: "image/jpeg"));
+      final downloadUrl = await uploadRef.getDownloadURL();
+
       // Firestore에서 `id` 필드 확인
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('user')
@@ -69,8 +72,12 @@ class ProfilePageViewModel extends ChangeNotifier {
         DocumentReference docRef = querySnapshot.docs.first.reference;
         await docRef.update({'profileImage': downloadUrl});
       }
+      notifyListeners();
     } catch (e) {
       logger.info('Error saving profile image: $e');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
     }
   }
 }
