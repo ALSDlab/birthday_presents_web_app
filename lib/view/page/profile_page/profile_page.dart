@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,7 @@ import 'package:myk_market_app/view/page/profile_page/user_withdrawal_dialog.dar
 import 'package:myk_market_app/view/widgets/two_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/simple_logger.dart';
 import '../../widgets/one_answer_dialog.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -52,11 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 topLeft: Radius.circular(32), topRight: Radius.circular(32)),
             child: Container(
               color: const Color(0xFFFFF8E7),
-              child: (state.isLoading)
-                  ? Center(
-                child: GifProgressBar(),
-              )
-                  :Padding(
+              child: Padding(
                 padding: const EdgeInsets.fromLTRB(25, 40, 25, 10),
                 child: ListView(
                   physics: const NeverScrollableScrollPhysics(),
@@ -79,51 +79,96 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: 2,
                                   color: Theme.of(context).colorScheme.primary),
                             ),
-                            child: GestureDetector(
-                              onTap: () async {
-                                await _showBottomSheet();
-                                if (_myPickedFile != null) {
-                                  await viewModel
-                                      .saveProfileImage(_myPickedFile!);
-                                }
-                              },
-                              child: AvatarGlow(
-                                startDelay: const Duration(milliseconds: 1000),
-                                glowColor: const Color(0xFF2F362F),
-                                glowShape: BoxShape.circle,
-                                animate: true,
-                                curve: Curves.fastOutSlowIn,
-                                glowCount: 5,
-                                glowRadiusFactor: 0.1,
-                                child: Material(
-                                  elevation: 8.0,
-                                  shape: const CircleBorder(),
-                                  color: const Color(0xFFFFF8E7),
-                                  child: Center(
-                                    child: (state.isLoading)
-                                        ? GifProgressBar()
-                                        : ClipOval(
-                                            child: (viewModel.currentUser
-                                                        .isNotEmpty &&
-                                                    viewModel.currentUser.first
-                                                            .profileImage !=
-                                                        '')
-                                                ? Image.network(
-                                                    viewModel.currentUser.first
-                                                        .profileImage,
-                                                    width: imageSize,
-                                                    height: imageSize,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Image.asset(
-                                                    'assets/images/myk_market_logo.png',
-                                                    width: imageSize,
-                                                    height: imageSize,
-                                                    fit: BoxFit.cover,
-                                                  )),
-                                  ),
-                                ),
-                              ),
+                            child: Center(
+                              child: (state.isLoading)
+                                  ? GifProgressBar(radius: 15,)
+                                  : GestureDetector(
+                                      onTap: () async {
+                                        if (kIsWeb) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return OneAnswerDialog(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  imagePath:
+                                                      'assets/gifs/fail.gif',
+                                                  title: '알림.',
+                                                  subtitle:
+                                                      '웹페이지에서는 프로필 편집이 지원되지 않습니다.',
+                                                  firstButton: '확인');
+                                            },
+                                          );
+                                        } else {
+                                          await _showBottomSheet();
+                                          if (_myPickedFile != null) {
+                                            await viewModel.saveProfileImage(
+                                                _myPickedFile!);
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return OneAnswerDialog(
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    title: '알림',
+                                                    subtitle: '지원되지 않는 형식입니다.',
+                                                    firstButton: '확인',
+                                                    imagePath:
+                                                        'assets/gifs/fail.gif');
+                                              },
+                                            );
+                                          }
+                                        }
+                                      },
+                                      child: AvatarGlow(
+                                        startDelay:
+                                            const Duration(milliseconds: 1000),
+                                        glowColor: const Color(0xFF2F362F),
+                                        glowShape: BoxShape.circle,
+                                        animate: true,
+                                        curve: Curves.fastOutSlowIn,
+                                        glowCount: 5,
+                                        glowRadiusFactor: 0.1,
+                                        child: Material(
+                                          elevation: 8.0,
+                                          shape: const CircleBorder(),
+                                          color: const Color(0xFFFFF8E7),
+                                          child: ClipOval(
+                                              child: (_myPickedFile != null)
+                                                  ? Image.file(
+                                                      File(_myPickedFile!.path),
+                                                      width: imageSize,
+                                                      height: imageSize,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : (viewModel.currentUser
+                                                              .isNotEmpty &&
+                                                          viewModel
+                                                                  .currentUser
+                                                                  .first
+                                                                  .profileImage !=
+                                                              '')
+                                                      ? Image.network(
+                                                          viewModel
+                                                              .currentUser
+                                                              .first
+                                                              .profileImage,
+                                                          width: imageSize,
+                                                          height: imageSize,
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : Image.asset(
+                                                          'assets/images/myk_market_logo.png',
+                                                          width: imageSize,
+                                                          height: imageSize,
+                                                          fit: BoxFit.cover,
+                                                        )),
+                                        ),
+                                      ),
+                                    ),
                             ),
                           ),
                           SizedBox(
@@ -357,28 +402,59 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await _getCameraImage();
-                Navigator.pop(context);
-              },
-              child: const Text('사진찍기'),
+            Row(
+              children: [
+                Expanded(child: Container()),
+                Expanded(
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        // shape: const RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.zero),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        backgroundColor: const Color(0xFF2F362F)),
+                    onPressed: () async {
+                      await _getCameraImage();
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      BootstrapIcons.camera2,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Expanded(child: Container()),
+              ],
             ),
             const SizedBox(
               height: 10,
             ),
-            const Divider(
-              thickness: 3,
-            ),
+            const Divider(),
             const SizedBox(
               height: 10,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await _getPhotoLibraryImage();
-                Navigator.pop(context);
-              },
-              child: const Text('라이브러리에서 불러오기'),
+            Row(
+              children: [
+                Expanded(child: Container()),
+                Expanded(
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                    ),
+                    onPressed: () async {
+                      await _getPhotoLibraryImage();
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      BootstrapIcons.file_earmark_image,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                Expanded(child: Container()),
+              ],
             ),
             const SizedBox(
               height: 20,
@@ -390,30 +466,38 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _getCameraImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      setState(() {
-        _myPickedFile = pickedFile;
-      });
-    } else {
-      if (kDebugMode) {
-        print('이미지 선택안함');
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (pickedFile != null) {
+        setState(() {
+          _myPickedFile = pickedFile;
+        });
+      } else {
+        if (kDebugMode) {
+          print('이미지 선택안함');
+        }
       }
+    } catch (e) {
+      logger.info('image load error: $e');
     }
   }
 
   Future<void> _getPhotoLibraryImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _myPickedFile = pickedFile;
-      });
-    } else {
-      if (kDebugMode) {
-        print('이미지 선택안함');
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _myPickedFile = pickedFile;
+        });
+      } else {
+        if (kDebugMode) {
+          print('이미지 선택안함');
+        }
       }
+    } catch (e) {
+      logger.info('image load error: $e');
     }
   }
 }
