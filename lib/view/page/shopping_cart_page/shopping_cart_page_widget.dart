@@ -124,11 +124,12 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                               )
                             :
                             // (0 < product.salesId && product.salesId <= 100) ?
-                            Text(
-                                (widget.salesContent!.salesAmount > 0 &&
+                            Text((widget.salesContent != null)
+                                ?
+                            (widget.salesContent!.salesAmount > 0 &&
                                         widget.salesContent!.salesRate <= 0)
                                     ? ' ${widget.salesContent!.salesAmount}원 할인'
-                                    : ' ${widget.salesContent!.salesRate}% 세일 ',
+                                    : ' ${widget.salesContent!.salesRate}% 세일 ' : '',
                                 style: const TextStyle(
                                     fontSize: 13,
                                     color: Colors.white,
@@ -244,7 +245,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
       resultPrice = int.parse(originalPrice) - saleContent.salesAmount;
     } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
       resultPrice =
-          int.parse(originalPrice) * (100 - saleContent.salesRate) / 100;
+      (int.parse(originalPrice) * (100 - saleContent.salesRate) / 100).round();
     }
     return resultPrice.toString();
   }

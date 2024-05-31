@@ -9,13 +9,14 @@ class ImageLoadWidget extends StatefulWidget {
     required this.imageUrl,
     required this.width,
     required this.fit,
-    this.height,
+    this.height, this.loadingBarRadius,
   });
 
   final String imageUrl;
   final double width;
   final double? height;
   final BoxFit fit;
+  final double? loadingBarRadius;
 
   @override
   _ImageLoadWidgetState createState() => _ImageLoadWidgetState();
@@ -60,7 +61,7 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
             child: SizedBox(
               width: widget.width,
               height: (widget.width >= 110.w) ? 110.w : widget.width,
-              child: GifProgressBar(),
+              child: GifProgressBar(radius: widget.loadingBarRadius,),
             ),
           )
         : CachedNetworkImage(
@@ -77,7 +78,7 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
             ),
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 Center(
-              child: GifProgressBar(),
+              child: GifProgressBar(radius: widget.loadingBarRadius,),
             ),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           );

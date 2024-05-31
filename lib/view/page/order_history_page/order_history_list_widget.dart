@@ -76,7 +76,7 @@ class OrderHistoryListWidget extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '${NumberFormat('###,###,###,###').format(orderItem.fold(0, (p, e) => p + e.payAmount!))} 원',
+                        '${NumberFormat('###,###,###,###').format(orderItem.fold(0, (e, v) => e + v.payAmount! - v.usedCouponPriceInOrder!.toInt()))} 원',
                         style: const TextStyle(
                             color: Color(0xFF019934),
                             fontWeight: FontWeight.w900,

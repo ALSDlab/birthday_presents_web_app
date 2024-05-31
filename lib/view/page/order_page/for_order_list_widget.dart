@@ -96,7 +96,7 @@ String deCalculatedPrice(String originalPrice, SalesModel saleContent) {
     resultPrice = int.parse(originalPrice) - saleContent.salesAmount;
   } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
     resultPrice =
-        int.parse(originalPrice) * (100 - saleContent.salesRate) / 100;
+        (int.parse(originalPrice) * (100 - saleContent.salesRate) / 100).round();
   }
   return resultPrice.toString();
 }

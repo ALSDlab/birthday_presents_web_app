@@ -160,11 +160,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           )
                                               :
                                           // (0 < product.salesId && product.salesId <= 100) ?
-                                          Text(
-                                            (widget.salesContent!.salesAmount > 0 &&
+                                          Text((widget.salesContent != null)
+                                              ?
+                                          (widget.salesContent!.salesAmount > 0 &&
                                                 widget.salesContent!.salesRate <= 0)
                                                 ? ' ${widget.salesContent!.salesAmount}원 할인'
-                                                : ' ${widget.salesContent!.salesRate}% 세일 ',
+                                                : ' ${widget.salesContent!.salesRate}% 세일 ' : '',
                                             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900,
                                                 color: Colors.white, backgroundColor: Color(0xffb158ff)),
                                           )
@@ -914,7 +915,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       if (saleContent.salesRate <= 0 && saleContent.salesAmount > 0) {
         resultPrice = resultPrice - saleContent.salesAmount;
       } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
-        resultPrice = resultPrice * (100 - saleContent.salesRate) / 100;
+        resultPrice = (resultPrice * (100 - saleContent.salesRate) / 100).round();
       }
     }
     return NumberFormat('###,###,###,###').format(resultPrice);

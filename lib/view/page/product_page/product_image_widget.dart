@@ -36,8 +36,7 @@ class ProductImageWidget extends StatelessWidget {
               ),
             ),
             Text(
-              (salesContent != null) ?
-              salesContent!.salesName : '',
+              (salesContent != null) ? salesContent!.salesName : '',
               style: TextStyle(fontSize: 9.w, color: Colors.red),
             ),
             Text(
@@ -87,12 +86,15 @@ class ProductImageWidget extends StatelessWidget {
                 :
                 // (0 < product.salesId && product.salesId <= 100) ?
                 Text(
-                    (salesContent!.salesAmount > 0 &&
-                            salesContent!.salesRate <= 0)
-                        ? ' ${salesContent!.salesAmount}원 할인 '
-                        : '${salesContent!.salesRate}% 세일',
+                    (salesContent != null)
+                        ? (salesContent!.salesAmount > 0 &&
+                                salesContent!.salesRate <= 0)
+                            ? ' ${salesContent!.salesAmount}원 할인 '
+                            : ' ${salesContent!.salesRate}% 세일'
+                        : '',
                     style: const TextStyle(
-                        color: Colors.white, backgroundColor: Color(0xffb158ff)),
+                        color: Colors.white,
+                        backgroundColor: Color(0xffb158ff)),
                   )
             // : Row(
             //     crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,7 +126,7 @@ class ProductImageWidget extends StatelessWidget {
     if (saleContent!.salesRate <= 0 && saleContent.salesAmount > 0) {
       resultPrice = resultPrice - saleContent.salesAmount;
     } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
-      resultPrice = resultPrice * (100 - saleContent.salesRate) / 100;
+      resultPrice = (resultPrice * (100 - saleContent.salesRate) / 100).round();
     }
     return NumberFormat('###,###,###,###').format(resultPrice);
   }

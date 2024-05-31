@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myk_market_app/utils/gif_progress_bar.dart';
+import 'package:myk_market_app/utils/image_load_widget.dart';
 import 'package:myk_market_app/view/page/profile_page/profile_page_view_model.dart';
 import 'package:myk_market_app/view/page/profile_page/user_withdrawal_dialog.dart';
 import 'package:myk_market_app/view/widgets/two_answer_dialog.dart';
@@ -81,7 +82,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             child: Center(
                               child: (state.isLoading)
-                                  ? GifProgressBar(radius: 15,)
+                                  ? GifProgressBar(
+                                      radius: 15,
+                                    )
                                   : GestureDetector(
                                       onTap: () async {
                                         if (kIsWeb) {
@@ -131,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         animate: true,
                                         curve: Curves.fastOutSlowIn,
                                         glowCount: 5,
-                                        glowRadiusFactor: 0.1,
+                                        glowRadiusFactor: 0.07,
                                         child: Material(
                                           elevation: 8.0,
                                           shape: const CircleBorder(),
@@ -151,14 +154,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                   .first
                                                                   .profileImage !=
                                                               '')
-                                                      ? Image.network(
-                                                          viewModel
+                                                      ? ImageLoadWidget(
+                                                          imageUrl: viewModel
                                                               .currentUser
                                                               .first
                                                               .profileImage,
                                                           width: imageSize,
                                                           height: imageSize,
                                                           fit: BoxFit.cover,
+                                                          loadingBarRadius: 15,
                                                         )
                                                       : Image.asset(
                                                           'assets/images/myk_market_logo.png',
@@ -271,7 +275,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     title: '정말 로그아웃하시겠습니까?',
                                     firstButton: '아니오',
                                     secondButton: '예',
-                                    imagePath: 'assets/gifs/two_answer_dialog.gif',
+                                    imagePath:
+                                        'assets/gifs/two_answer_dialog.gif',
                                     onFirstTap: () {
                                       Navigator.pop(context);
                                     },

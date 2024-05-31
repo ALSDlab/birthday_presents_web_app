@@ -17,6 +17,21 @@ class ProductDetailPageViewModel extends ChangeNotifier {
     getBadgeCount();
   }
 
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
+  }
+
   Future<int> getBadgeCount() async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();

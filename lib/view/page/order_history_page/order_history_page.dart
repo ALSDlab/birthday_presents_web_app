@@ -60,17 +60,20 @@ class OrderHistoryPage extends StatelessWidget {
                       ? const Center(
                           child: Text('주문하신 내역이 없습니다.'),
                         )
-                      : ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: state.orderHistoryList.length,
-                          itemBuilder: (context, index) {
-                            final orderHistoryItem =
-                                state.orderHistoryList[index];
-                            return OrderHistoryListWidget(
-                                orderItem: orderHistoryItem,
-                                hideNavBar: hideNavBar);
-                          },
-                        ),
+                      : Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: state.orderHistoryList.length,
+                            itemBuilder: (context, index) {
+                              final orderHistoryItem =
+                                  state.orderHistoryList[index];
+                              return OrderHistoryListWidget(
+                                  orderItem: orderHistoryItem,
+                                  hideNavBar: hideNavBar);
+                            },
+                          ),
+                      ),
             ),
           ),
         ),
