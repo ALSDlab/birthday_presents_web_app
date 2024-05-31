@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myk_market_app/data/model/coupons_model.dart';
 import 'package:myk_market_app/data/model/user_model.dart';
 import 'package:myk_market_app/domain/user_repository.dart';
 import 'package:myk_market_app/utils/simple_logger.dart';
@@ -61,6 +62,30 @@ class UserRepositoryImpl implements UserRepository {
       });
     } catch (e) {
       logger.info('Error adding email: $e');
+    }
+  }
+
+  @override
+  Future<CouponsModel?> getCoupon(int couponId) async {
+    try {
+      // Firebase Firestore에서 데이터 읽어오기
+      var querySnapshot = await _firestore
+          .collection('coupons')
+          .where('couponId', isEqualTo: couponId)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // 첫 번째 문서를 가져와서 CouponsModel로 변환
+        var doc = querySnapshot.docs.first;
+        return CouponsModel.fromJson(doc.data());
+      } else {
+        // 쿠폰이 없을 경우 null 반환
+        return null;
+      }
+    } catch (e) {
+      // 오류가 발생하면 null 반환하거나, 적절한 오류 처리를 합니다.
+      logger.info('Error getting coupon: $e');
+      return null;
     }
   }
 }

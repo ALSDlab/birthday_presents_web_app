@@ -115,9 +115,9 @@ class EditUserInfoViewModel extends ChangeNotifier {
             ? currentUser.first.address
             : (daumPostcodeSearchDataModel?.address) ?? address;
     controllers['address'] = (addressController);
-    addressDetailController.text = (currentUser.isNotEmpty)
+    addressDetailController.text = ((currentUser.isNotEmpty)
         ? currentUser.first.addressDetail
-        : (addressDetailController.text);
+        : (addressDetailController.text));
     controllers['addressDetail'] = (addressDetailController);
     notifyListeners();
   }

@@ -32,8 +32,12 @@ mixin _$OrderModel {
   String get price => throw _privateConstructorUsedError;
   @JsonKey(name: 'count')
   int get count => throw _privateConstructorUsedError;
+  @JsonKey(name: 'salesId')
+  int get salesId => throw _privateConstructorUsedError;
   @JsonKey(name: 'orderedDate')
   String? get orderedDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'usedCouponPriceInOrder')
+  num? get usedCouponPriceInOrder => throw _privateConstructorUsedError;
   @JsonKey(name: 'personalInfoForDeliverChecked')
   bool? get personalInfoForDeliverChecked => throw _privateConstructorUsedError;
   @JsonKey(name: 'ordererId')
@@ -77,7 +81,9 @@ abstract class $OrderModelCopyWith<$Res> {
       @JsonKey(name: 'representativeImage') String representativeImage,
       @JsonKey(name: 'price') String price,
       @JsonKey(name: 'count') int count,
+      @JsonKey(name: 'salesId') int salesId,
       @JsonKey(name: 'orderedDate') String? orderedDate,
+      @JsonKey(name: 'usedCouponPriceInOrder') num? usedCouponPriceInOrder,
       @JsonKey(name: 'personalInfoForDeliverChecked')
       bool? personalInfoForDeliverChecked,
       @JsonKey(name: 'ordererId') String? ordererId,
@@ -111,7 +117,9 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
     Object? representativeImage = null,
     Object? price = null,
     Object? count = null,
+    Object? salesId = null,
     Object? orderedDate = freezed,
+    Object? usedCouponPriceInOrder = freezed,
     Object? personalInfoForDeliverChecked = freezed,
     Object? ordererId = freezed,
     Object? ordererName = freezed,
@@ -149,10 +157,18 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
               as int,
+      salesId: null == salesId
+          ? _value.salesId
+          : salesId // ignore: cast_nullable_to_non_nullable
+              as int,
       orderedDate: freezed == orderedDate
           ? _value.orderedDate
           : orderedDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      usedCouponPriceInOrder: freezed == usedCouponPriceInOrder
+          ? _value.usedCouponPriceInOrder
+          : usedCouponPriceInOrder // ignore: cast_nullable_to_non_nullable
+              as num?,
       personalInfoForDeliverChecked: freezed == personalInfoForDeliverChecked
           ? _value.personalInfoForDeliverChecked
           : personalInfoForDeliverChecked // ignore: cast_nullable_to_non_nullable
@@ -216,7 +232,9 @@ abstract class _$$OrderModelImplCopyWith<$Res>
       @JsonKey(name: 'representativeImage') String representativeImage,
       @JsonKey(name: 'price') String price,
       @JsonKey(name: 'count') int count,
+      @JsonKey(name: 'salesId') int salesId,
       @JsonKey(name: 'orderedDate') String? orderedDate,
+      @JsonKey(name: 'usedCouponPriceInOrder') num? usedCouponPriceInOrder,
       @JsonKey(name: 'personalInfoForDeliverChecked')
       bool? personalInfoForDeliverChecked,
       @JsonKey(name: 'ordererId') String? ordererId,
@@ -248,7 +266,9 @@ class __$$OrderModelImplCopyWithImpl<$Res>
     Object? representativeImage = null,
     Object? price = null,
     Object? count = null,
+    Object? salesId = null,
     Object? orderedDate = freezed,
+    Object? usedCouponPriceInOrder = freezed,
     Object? personalInfoForDeliverChecked = freezed,
     Object? ordererId = freezed,
     Object? ordererName = freezed,
@@ -286,10 +306,18 @@ class __$$OrderModelImplCopyWithImpl<$Res>
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
               as int,
+      salesId: null == salesId
+          ? _value.salesId
+          : salesId // ignore: cast_nullable_to_non_nullable
+              as int,
       orderedDate: freezed == orderedDate
           ? _value.orderedDate
           : orderedDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      usedCouponPriceInOrder: freezed == usedCouponPriceInOrder
+          ? _value.usedCouponPriceInOrder
+          : usedCouponPriceInOrder // ignore: cast_nullable_to_non_nullable
+              as num?,
       personalInfoForDeliverChecked: freezed == personalInfoForDeliverChecked
           ? _value.personalInfoForDeliverChecked
           : personalInfoForDeliverChecked // ignore: cast_nullable_to_non_nullable
@@ -348,7 +376,9 @@ class _$OrderModelImpl implements _OrderModel {
       @JsonKey(name: 'representativeImage') required this.representativeImage,
       @JsonKey(name: 'price') required this.price,
       @JsonKey(name: 'count') required this.count,
+      @JsonKey(name: 'salesId') required this.salesId,
       @JsonKey(name: 'orderedDate') this.orderedDate,
+      @JsonKey(name: 'usedCouponPriceInOrder') this.usedCouponPriceInOrder,
       @JsonKey(name: 'personalInfoForDeliverChecked')
       this.personalInfoForDeliverChecked,
       @JsonKey(name: 'ordererId') this.ordererId,
@@ -384,8 +414,14 @@ class _$OrderModelImpl implements _OrderModel {
   @JsonKey(name: 'count')
   final int count;
   @override
+  @JsonKey(name: 'salesId')
+  final int salesId;
+  @override
   @JsonKey(name: 'orderedDate')
   final String? orderedDate;
+  @override
+  @JsonKey(name: 'usedCouponPriceInOrder')
+  final num? usedCouponPriceInOrder;
   @override
   @JsonKey(name: 'personalInfoForDeliverChecked')
   final bool? personalInfoForDeliverChecked;
@@ -423,7 +459,7 @@ class _$OrderModelImpl implements _OrderModel {
 
   @override
   String toString() {
-    return 'OrderModel(orderId: $orderId, productId: $productId, orderProductName: $orderProductName, representativeImage: $representativeImage, price: $price, count: $count, orderedDate: $orderedDate, personalInfoForDeliverChecked: $personalInfoForDeliverChecked, ordererId: $ordererId, ordererName: $ordererName, ordererPhoneNo: $ordererPhoneNo, ordererAddress: $ordererAddress, ordererAddressDetail: $ordererAddressDetail, ordererPostcode: $ordererPostcode, payAndStatus: $payAndStatus, payAmount: $payAmount, paymentDate: $paymentDate, deletedDate: $deletedDate)';
+    return 'OrderModel(orderId: $orderId, productId: $productId, orderProductName: $orderProductName, representativeImage: $representativeImage, price: $price, count: $count, salesId: $salesId, orderedDate: $orderedDate, usedCouponPriceInOrder: $usedCouponPriceInOrder, personalInfoForDeliverChecked: $personalInfoForDeliverChecked, ordererId: $ordererId, ordererName: $ordererName, ordererPhoneNo: $ordererPhoneNo, ordererAddress: $ordererAddress, ordererAddressDetail: $ordererAddressDetail, ordererPostcode: $ordererPostcode, payAndStatus: $payAndStatus, payAmount: $payAmount, paymentDate: $paymentDate, deletedDate: $deletedDate)';
   }
 
   @override
@@ -440,8 +476,11 @@ class _$OrderModelImpl implements _OrderModel {
                 other.representativeImage == representativeImage) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.count, count) || other.count == count) &&
+            (identical(other.salesId, salesId) || other.salesId == salesId) &&
             (identical(other.orderedDate, orderedDate) ||
                 other.orderedDate == orderedDate) &&
+            (identical(other.usedCouponPriceInOrder, usedCouponPriceInOrder) ||
+                other.usedCouponPriceInOrder == usedCouponPriceInOrder) &&
             (identical(other.personalInfoForDeliverChecked,
                     personalInfoForDeliverChecked) ||
                 other.personalInfoForDeliverChecked ==
@@ -470,26 +509,29 @@ class _$OrderModelImpl implements _OrderModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      orderId,
-      productId,
-      orderProductName,
-      representativeImage,
-      price,
-      count,
-      orderedDate,
-      personalInfoForDeliverChecked,
-      ordererId,
-      ordererName,
-      ordererPhoneNo,
-      ordererAddress,
-      ordererAddressDetail,
-      ordererPostcode,
-      payAndStatus,
-      payAmount,
-      paymentDate,
-      deletedDate);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        orderId,
+        productId,
+        orderProductName,
+        representativeImage,
+        price,
+        count,
+        salesId,
+        orderedDate,
+        usedCouponPriceInOrder,
+        personalInfoForDeliverChecked,
+        ordererId,
+        ordererName,
+        ordererPhoneNo,
+        ordererAddress,
+        ordererAddressDetail,
+        ordererPostcode,
+        payAndStatus,
+        payAmount,
+        paymentDate,
+        deletedDate
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -514,7 +556,10 @@ abstract class _OrderModel implements OrderModel {
       required final String representativeImage,
       @JsonKey(name: 'price') required final String price,
       @JsonKey(name: 'count') required final int count,
+      @JsonKey(name: 'salesId') required final int salesId,
       @JsonKey(name: 'orderedDate') final String? orderedDate,
+      @JsonKey(name: 'usedCouponPriceInOrder')
+      final num? usedCouponPriceInOrder,
       @JsonKey(name: 'personalInfoForDeliverChecked')
       final bool? personalInfoForDeliverChecked,
       @JsonKey(name: 'ordererId') final String? ordererId,
@@ -551,8 +596,14 @@ abstract class _OrderModel implements OrderModel {
   @JsonKey(name: 'count')
   int get count;
   @override
+  @JsonKey(name: 'salesId')
+  int get salesId;
+  @override
   @JsonKey(name: 'orderedDate')
   String? get orderedDate;
+  @override
+  @JsonKey(name: 'usedCouponPriceInOrder')
+  num? get usedCouponPriceInOrder;
   @override
   @JsonKey(name: 'personalInfoForDeliverChecked')
   bool? get personalInfoForDeliverChecked;

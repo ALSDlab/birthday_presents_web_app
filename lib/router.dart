@@ -203,12 +203,14 @@ final router = GoRouter(
               final productDetailMap = extra['product'];
               final navSetState = extra['navSetState'];
               final hideNavBar = extra['hideNavBar'];
+              final salesContent = extra['salesContent'];
               return ChangeNotifierProvider(
                   create: (_) => ProductDetailPageViewModel(),
                   child: ProductDetailPage(
                       product: productDetailMap,
                       navSetState: navSetState,
-                      hideNavBar: hideNavBar));
+                      hideNavBar: hideNavBar,
+                      salesContent: salesContent,));
             },
           ),
         ]),

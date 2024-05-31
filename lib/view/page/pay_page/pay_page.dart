@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_address_widget.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/model/sales_model.dart';
 import '../../../utils/gif_progress_bar.dart';
 import '../order_page/for_order_list_widget.dart';
 
@@ -26,6 +28,9 @@ class PayPage extends StatefulWidget {
 class _PayPageState extends State<PayPage> {
   bool finalConfirmNeed = false;
   bool finalConfirmDemand = false;
+  bool isCalculating = false;
+  Map<String, SalesModel?> salesContentsList = {};
+  num salePrice = 0;
 
   @override
   void initState() {
@@ -34,7 +39,13 @@ class _PayPageState extends State<PayPage> {
       final payViewModel = context.read<PayPageViewModel>();
       if (widget.forOrderItems.isNotEmpty) {
         await payViewModel.fetchMyOrderData(widget.forOrderItems.first.orderId);
-      }
+        salesContentsList =
+            await payViewModel.getSalesContentsList(widget.forOrderItems);
+        for (int i = 0; i < widget.forOrderItems.length; i++) {
+          salePrice += calculatedSalesPrice(
+                  widget.forOrderItems[i].price, salesContentsList[widget.forOrderItems[i].productId]) *
+              widget.forOrderItems[i].count;
+        }}
       if (mounted && widget.newOrderCreated == true) {
         payViewModel.showSnackbar(context);
       }
@@ -80,212 +91,335 @@ class _PayPageState extends State<PayPage> {
                               ? MediaQuery.of(context).padding.bottom + 48.0
                               : 0), // Snackbar 높이만큼 padding 추가
                       child: Column(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8, left: 8, right: 8),
-                              child: ListView(
-                                physics: const BouncingScrollPhysics(),
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Text(
-                                        '주문 번호',
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      Expanded(
-                                        child: Center(
-                                          child: Text(
-                                            (state.orderItems.isNotEmpty)
-                                                ? state.orderItems.first.orderId
-                                                : '',
-                                            style: const TextStyle(
-                                                color: Color(0xFF019934),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w900),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const Divider(),
-                                  const Text(
-                                    '배송지 정보',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 16, bottom: 16),
-                                    child: (state.orderItems.isNotEmpty)
-                                        ? PayAddressWidget(
-                                            orderFirstItem:
-                                                state.orderItems.first)
-                                        : Center(
-                                            child: GifProgressBar(),
-                                          ),
-                                  ),
-                                  const Divider(),
-                                  const Text(
-                                    '주문 상품',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8, bottom: 8),
-                                    child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: state.orderItems.length,
-                                      itemBuilder: (context, index) {
-                                        final forOrderItem =
-                                            state.orderItems[index];
-                                        return ForOrderListWidget(
-                                          orderItem: forOrderItem,
-                                          forConfirm: true,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const Divider(),
-                                  Visibility(
-                                    visible: ((state.orderItems.isNotEmpty) &&
-                                        (state.orderItems.first.payAndStatus! <
-                                            1)),
-                                    // -1: 결제실패, 0: 결제전, 1: 결제완료, 2: 결제취소, 3: 배송중, 4: 배송완료
-                                    child: const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '청약의사 재확인',
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                        Text(''),
-                                      ],
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: ((state.orderItems.isNotEmpty) &&
-                                        (state.orderItems.first.payAndStatus! <
-                                            1)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 13, bottom: 16, right: 13),
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          setState(() {
-                                            finalConfirmNeed = !finalConfirmNeed;
-                                          });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Checkbox(
-                                              value: finalConfirmNeed,
-                                              onChanged: (bool? newValue) {
-                                                setState(() {
-                                                  finalConfirmNeed = newValue!;
-                                                });
-                                              },
-                                              activeColor:
-                                                  const Color(0xFF2F362F),
-                                              checkColor: Colors.white,
-                                            ),
-                                            const Expanded(
-                                              child: Text(
-                                                '(필수) 구매하실 상품의 모든 정보를 확인하였으며, 구매진행에 동의합니다.',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: (finalConfirmDemand == true),
-                            child: const Text(
-                              '(필수) 청약의사 재확인을 동의하셔야 주문이 진행됩니다.',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(child: Container()),
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10))),
-                                      ),
-                                      onPressed: () {
-                                        GoRouter.of(context).pop(true);
-                                        widget.hideNavBar(false);
-                                      },
-                                      child: const Text(
-                                        '이전',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
+                                    padding: const EdgeInsets.only(
+                                        top: 8, left: 8, right: 8),
+                                    child: ListView(
+                                      physics: const BouncingScrollPhysics(),
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              '주문 번호',
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  (state.orderItems.isNotEmpty)
+                                                      ? state.orderItems.first
+                                                          .orderId
+                                                      : '',
+                                                  style: const TextStyle(
+                                                      color: Color(0xFF019934),
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w900),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const Divider(),
+                                        const Text(
+                                          '배송지 정보',
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8, bottom: 8),
+                                          child: (state.orderItems.isNotEmpty)
+                                              ? PayAddressWidget(
+                                                  orderFirstItem:
+                                                      state.orderItems.first)
+                                              : Center(
+                                                  child: GifProgressBar(),
+                                                ),
+                                        ),
+                                        const Divider(),
+                                        const Text(
+                                          '주문 상품',
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: state.orderItems.length,
+                                          itemBuilder: (context, index) {
+                                            final forOrderItem =
+                                                state.orderItems[index];
+                                            return ForOrderListWidget(
+                                              orderItem: forOrderItem,
+                                              forConfirm: true,
+                                              salesContent:
+                                                  salesContentsList[state.orderItems[index].productId],
+                                            );
+                                          },
+                                        ),
+                                        const Divider(),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 16.0, right: 16),
+                                          child: Column(
+                                            children: [
+                                              // 상품금액 총합
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  const Text(
+                                                    '상품금액',
+                                                    style:
+                                                        TextStyle(fontSize: 14),
+                                                  ),
+                                                  Text(
+                                                    '${NumberFormat('###,###,###,###').format(state.orderItems.fold(0, (e, v) => e + int.parse(v.price.replaceAll(',', '')) * v.count))} 원',
+                                                    style: const TextStyle(
+                                                        fontSize: 13),
+                                                  )
+                                                ],
+                                              ),
+                                              // 할인되는 금액 총합
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  const Text(
+                                                    '할인금액',
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  ),
+                                                  Text(
+                                                    '- ${NumberFormat('###,###,###,###').format(salePrice)} 원',
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                              // 쿠폰적용 할인금액
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  const Text(
+                                                    '쿠폰사용',
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  ),
+                                                  Text(
+                                                    '- ${NumberFormat('###,###,###,###').format((state.orderItems.isNotEmpty) ? state.orderItems.fold(0, (e, v) => e + v.usedCouponPriceInOrder!.toInt()) : 0)} 원',
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                              // 총 결제금액
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  const Text(
+                                                    '총 결제금액',
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                  Text(
+                                                    '${NumberFormat('###,###,###,###').format(state.orderItems.fold(0, (e, v) => e + v.payAmount! - v.usedCouponPriceInOrder!.toInt()))} 원',
+                                                    style: const TextStyle(
+                                                        color: Color(0xFF019934),
+                                                        fontSize: 16),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const Divider(),
+                                        Visibility(
+                                          visible:
+                                              ((state.orderItems.isNotEmpty) &&
+                                                  (state.orderItems.first
+                                                          .payAndStatus! <
+                                                      1)),
+                                          // -1: 결제실패, 0: 결제전, 1: 결제완료, 2: 결제취소, 3: 배송중, 4: 배송완료
+                                          child: const Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '청약의사 재확인',
+                                                style: TextStyle(fontSize: 18),
+                                              ),
+                                              Text(''),
+                                            ],
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              ((state.orderItems.isNotEmpty) &&
+                                                  (state.orderItems.first
+                                                          .payAndStatus! <
+                                                      1)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 13, bottom: 16, right: 13),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  finalConfirmNeed =
+                                                      !finalConfirmNeed;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Checkbox(
+                                                    value: finalConfirmNeed,
+                                                    onChanged:
+                                                        (bool? newValue) {
+                                                      setState(() {
+                                                        finalConfirmNeed =
+                                                            newValue!;
+                                                      });
+                                                    },
+                                                    activeColor:
+                                                        const Color(0xFF2F362F),
+                                                    checkColor: Colors.white,
+                                                  ),
+                                                  const Expanded(
+                                                    child: Text(
+                                                      '(필수) 구매하실 상품의 모든 정보를 확인하였으며, 구매진행에 동의합니다.',
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
                                 Visibility(
-                                  visible: widget.forOrderItems.first.payAndStatus! < 1,
-                                  child: Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            // shape: const RoundedRectangleBorder(
-                                            //     borderRadius: BorderRadius.zero),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10))),
-                                            backgroundColor:
-                                                const Color(0xFF2F362F)),
-                                        onPressed: () {
-                                          if (finalConfirmNeed == false) {
-                                            setState(() {
-                                              finalConfirmDemand = true;
-                                            });
-                                          } else {
-                                            viewModel.bootpayPayment(
-                                                context,
-                                                state.orderItems,
-                                                widget.hideNavBar);
-                                          }
-                                        },
-                                        child: const Text(
-                                          '결제',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
+                                  visible: (finalConfirmDemand == true),
+                                  child: const Text(
+                                    '(필수) 청약의사 재확인을 동의하셔야 주문이 진행됩니다.',
+                                    style: TextStyle(color: Colors.red),
                                   ),
                                 ),
-                                Expanded(child: Container())
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(child: Container()),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10))),
+                                            ),
+                                            onPressed: () {
+                                              GoRouter.of(context).pop(true);
+                                              widget.hideNavBar(false);
+                                            },
+                                            child: const Text(
+                                              '이전',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: widget.forOrderItems.first
+                                                .payAndStatus! <
+                                            1,
+                                        child: Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  // shape: const RoundedRectangleBorder(
+                                                  //     borderRadius: BorderRadius.zero),
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10))),
+                                                  backgroundColor:
+                                                      const Color(0xFF2F362F)),
+                                              onPressed: () {
+                                                if (finalConfirmNeed == false) {
+                                                  setState(() {
+                                                    finalConfirmDemand = true;
+                                                  });
+                                                } else {
+                                                  viewModel.bootpayPayment(
+                                                      context,
+                                                      state.orderItems,
+                                                      state.orderItems.fold(
+                                                              0,
+                                                              (e, v) =>
+                                                                  e +
+                                                                  v
+                                                                      .payAmount!) -
+                                                          state.orderItems.first
+                                                              .usedCouponPriceInOrder!,
+                                                      widget.hideNavBar);
+                                                }
+                                              },
+                                              child: const Text(
+                                                '결제',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(child: Container())
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                          )
-                        ],
-                      ),
                     ),
             ),
           ),
         ),
       ),
     );
+  }
+
+// 세일로 할인된 금액 계산
+  num calculatedSalesPrice(String originalPrice, SalesModel? saleContent) {
+    num originPrice = int.parse(originalPrice.replaceAll(',', ''));
+    num salePrice = 0;
+    if (saleContent != null) {
+      if (saleContent.salesRate <= 0 && saleContent.salesAmount > 0) {
+        salePrice = saleContent.salesAmount;
+      } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
+        salePrice = originPrice * (saleContent.salesRate) / 100;
+      }
+    }
+    return salePrice;
   }
 }

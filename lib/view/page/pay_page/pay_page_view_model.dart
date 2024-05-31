@@ -14,10 +14,13 @@ import 'package:myk_market_app/domain/order_repository.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 
+import '../../../data/model/sales_model.dart';
+import '../../../data/repository/product_repository_impl.dart';
 import '../../../env/env.dart';
 import '../../../utils/simple_logger.dart';
 
 class PayPageViewModel extends ChangeNotifier {
+  ProductRepositoryImpl repository = ProductRepositoryImpl();
   final OrderRepository orderRepository;
 
   PayPageViewModel({
@@ -29,6 +32,7 @@ class PayPageViewModel extends ChangeNotifier {
   PayPageState get state => _state;
 
   List<int> afterPayStatus = [];
+
 
   bool _disposed = false;
 
@@ -137,13 +141,26 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  void bootpayPayment(BuildContext context, List<OrderModel> orderItems,
-      bool Function(bool) hideNavBar) {
-    int totalAmount = 0;
-    for (var e in orderItems) {
-      totalAmount += e.payAmount!;
+  Future<Map<String, SalesModel?>> getSalesContentsList(List<OrderModel> forOrderItems) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+    Map<String, SalesModel?> salesContentsList = {};
+    for (var product in forOrderItems) {
+      SalesModel? salesContent = await repository.getSales(product.salesId);
+      salesContentsList[product.productId] = salesContent;
     }
-    Payload payload = getPayload(totalAmount);
+    _state = state.copyWith(isLoading: false);
+    notifyListeners();
+    return salesContentsList;
+  }
+
+
+
+
+  void bootpayPayment(BuildContext context, List<OrderModel> orderItems, num totalPayment,
+      bool Function(bool) hideNavBar) {
+
+    Payload payload = getPayload(totalPayment);
     if (kIsWeb) {
       payload.extra!.openType = "iframe";
     }
@@ -224,7 +241,7 @@ class PayPageViewModel extends ChangeNotifier {
     );
   }
 
-  Payload getPayload(int totalAmount) {
+  Payload getPayload(num totalAmount) {
     Payload payload = Payload();
     Item item1 = Item();
     item1.name = (_state.orderItems.length > 1)

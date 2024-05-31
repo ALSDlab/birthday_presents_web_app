@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
@@ -5,20 +6,23 @@ import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_m
 import 'package:myk_market_app/view/widgets/two_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/model/sales_model.dart';
 import '../../../utils/image_load_widget.dart';
+import '../../../utils/marketing_expression.dart';
 
 class ShoppingCartPageWidget extends StatefulWidget {
   final ShoppingProductForCart shoppingProductForCart;
   static List<ShoppingProductForCart> checkedList = [];
   final Future<void> Function(ShoppingProductForCart) removeFromCartList;
   final bool Function(int) navSetState;
+  SalesModel? salesContent;
 
-  const ShoppingCartPageWidget({
-    super.key,
-    required this.shoppingProductForCart,
-    required this.removeFromCartList,
-    required this.navSetState,
-  });
+  ShoppingCartPageWidget(
+      {super.key,
+      required this.shoppingProductForCart,
+      required this.removeFromCartList,
+      required this.navSetState,
+      this.salesContent});
 
   @override
   State<ShoppingCartPageWidget> createState() => _ShoppingCartPageWidgetState();
@@ -61,8 +65,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                             title: '상품을 삭제하시겠습니까?',
                             firstButton: '아니요',
                             secondButton: '예',
-                            imagePath: 'assets/gifs/shopping_cart.gif',
-                            //TODO: 선택아이콘으로 이미지 바꾸기
+                            imagePath: 'assets/gifs/two_answer_dialog.gif',
                             onFirstTap: () {
                               Navigator.pop(context);
                             },
@@ -90,20 +93,69 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: ImageLoadWidget(
-                    width: ((MediaQuery.of(context).size.width >= 1200)
-                            ? 1200
-                            : MediaQuery.of(context).size.width) *
-                        0.32,
-                    height: ((MediaQuery.of(context).size.width >= 1200)
-                            ? 1200
-                            : MediaQuery.of(context).size.width) *
-                        0.25,
-                    imageUrl: widget.shoppingProductForCart.representativeImage,
-                    fit: BoxFit.cover,
-                  ),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: ImageLoadWidget(
+                        width: ((MediaQuery.of(context).size.width >= 1200)
+                                ? 1200
+                                : MediaQuery.of(context).size.width) *
+                            0.32,
+                        height: ((MediaQuery.of(context).size.width >= 1200)
+                                ? 1200
+                                : MediaQuery.of(context).size.width) *
+                            0.25,
+                        imageUrl:
+                            widget.shoppingProductForCart.representativeImage,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    MarketingExpression(
+                        visible: (widget.shoppingProductForCart.salesId >= 0),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10)),
+                        child: (widget.shoppingProductForCart.salesId == 0)
+                            ? Image.asset(
+                                'assets/gifs/hot_expression.gif',
+                                width: (kIsWeb) ? 60 : 30,
+                                height: (kIsWeb) ? 60 : 30,
+                                fit: BoxFit.cover,
+                              )
+                            :
+                            // (0 < product.salesId && product.salesId <= 100) ?
+                            Text(
+                                (widget.salesContent!.salesAmount > 0 &&
+                                        widget.salesContent!.salesRate <= 0)
+                                    ? ' ${widget.salesContent!.salesAmount}원 할인'
+                                    : ' ${widget.salesContent!.salesRate}% 세일 ',
+                                style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.white,
+                                    backgroundColor: Color(0xffb158ff)),
+                              )
+                        // : Row(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       Text(
+                        //         (salesContent!.salesAmount > 0 &&
+                        //                 salesContent!.salesRate <= 0)
+                        //             ? ' ${salesContent!.salesAmount}원 할인 '
+                        //             : '${salesContent!.salesRate}% 세일',
+                        //         style: const TextStyle(
+                        //             color: Colors.white,
+                        //             backgroundColor: Colors.red),
+                        //       ),
+                        //       Image.asset(
+                        //         'assets/gifs/hot_expression.gif',
+                        //         width: (kIsWeb) ? 60 : 30,
+                        //         height: (kIsWeb) ? 60 : 30,
+                        //         fit: BoxFit.cover,
+                        //       )
+                        //     ],
+                        //   )
+                        )
+                  ],
                 ),
               ),
               const SizedBox(width: 16),
@@ -172,7 +224,7 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
                     ),
                   ),
                   Text(
-                    '${NumberFormat('###,###,###,###').format(int.parse(widget.shoppingProductForCart.price.replaceAll(',', '')) * widget.shoppingProductForCart.count)}원',
+                    '${NumberFormat('###,###,###,###').format(widget.shoppingProductForCart.count * int.parse((widget.salesContent != null) ? deCalculatedPrice(widget.shoppingProductForCart.price.replaceAll(',', ''), widget.salesContent!) : widget.shoppingProductForCart.price.replaceAll(',', '')))}원',
                     style: const TextStyle(
                         fontWeight: FontWeight.w900, fontSize: 18),
                   ),
@@ -184,5 +236,16 @@ class _ShoppingCartPageWidgetState extends State<ShoppingCartPageWidget> {
         const Divider(),
       ],
     );
+  }
+
+  String deCalculatedPrice(String originalPrice, SalesModel saleContent) {
+    num resultPrice = int.parse(originalPrice);
+    if (saleContent.salesRate <= 0 && saleContent.salesAmount > 0) {
+      resultPrice = int.parse(originalPrice) - saleContent.salesAmount;
+    } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
+      resultPrice =
+          int.parse(originalPrice) * (100 - saleContent.salesRate) / 100;
+    }
+    return resultPrice.toString();
   }
 }

@@ -1,8 +1,12 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:bootstrap_icons/bootstrap_icons.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/product_model.dart';
+import 'package:myk_market_app/data/model/sales_model.dart';
 import 'package:myk_market_app/data/model/shopping_cart_model.dart';
 import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +14,7 @@ import 'package:provider/provider.dart';
 import '../../../data/model/order_model.dart';
 import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/image_load_widget.dart';
+import '../../../utils/marketing_expression.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
@@ -17,11 +22,13 @@ class ProductDetailPage extends StatefulWidget {
     required this.product,
     required this.navSetState,
     required this.hideNavBar,
+    this.salesContent,
   });
 
-  final Product product;
+  final ProductModel product;
   final bool Function(int) navSetState;
   final bool Function(bool) hideNavBar;
+  final SalesModel? salesContent;
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -118,22 +125,71 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: ImageLoadWidget(
-                                    width: (MediaQuery.of(context).size.width >=
-                                            1200)
-                                        ? 1200
-                                        : MediaQuery.of(context).size.width,
-                                    height:
-                                        ((MediaQuery.of(context).size.width >=
+                                  child: Stack(
+                                    children: [
+                                      ImageLoadWidget(
+                                        width: (MediaQuery.of(context)
+                                                    .size
+                                                    .width >=
+                                                1200)
+                                            ? 1200
+                                            : MediaQuery.of(context).size.width,
+                                        height: ((MediaQuery.of(context)
+                                                        .size
+                                                        .width >=
                                                     1200)
                                                 ? 1200
                                                 : MediaQuery.of(context)
                                                     .size
                                                     .width) *
                                             0.58,
-                                    imageUrl:
-                                        widget.product.representativeImage,
-                                    fit: BoxFit.cover,
+                                        imageUrl:
+                                            widget.product.representativeImage,
+                                        fit: BoxFit.cover,
+                                      ),
+
+                                      MarketingExpression(
+                                          visible: (widget.product.salesId >= 0),
+                                          borderRadius: const BorderRadius.only(topLeft: Radius.zero),
+                                          child: (widget.product.salesId == 0)
+                                              ? Image.asset(
+                                            'assets/gifs/hot_expression.gif',
+                                            width: (kIsWeb) ? 100 : 80,
+                                            height: (kIsWeb) ? 100 : 80,
+                                            fit: BoxFit.cover,
+                                          )
+                                              :
+                                          // (0 < product.salesId && product.salesId <= 100) ?
+                                          Text(
+                                            (widget.salesContent!.salesAmount > 0 &&
+                                                widget.salesContent!.salesRate <= 0)
+                                                ? ' ${widget.salesContent!.salesAmount}원 할인'
+                                                : ' ${widget.salesContent!.salesRate}% 세일 ',
+                                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900,
+                                                color: Colors.white, backgroundColor: Color(0xffb158ff)),
+                                          )
+                                        // : Row(
+                                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                                        //     children: [
+                                        //       Text(
+                                        //         (salesContent!.salesAmount > 0 &&
+                                        //                 salesContent!.salesRate <= 0)
+                                        //             ? ' ${salesContent!.salesAmount}원 할인 '
+                                        //             : '${salesContent!.salesRate}% 세일',
+                                        //         style: const TextStyle(
+                                        //             color: Colors.white,
+                                        //             backgroundColor: Colors.red),
+                                        //       ),
+                                        //       Image.asset(
+                                        //         'assets/gifs/hot_expression.gif',
+                                        //         width: (kIsWeb) ? 100 : 80,
+                                        //         height: (kIsWeb) ? 100 : 80,
+                                        //         fit: BoxFit.cover,
+                                        //       )
+                                        //     ],
+                                        //   )
+                                      )
+                                    ],
                                   ),
                                 ),
                                 const Divider(),
@@ -153,7 +209,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text('${widget.product.price}원'),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        (widget.salesContent == null)
+                                            ? Text(
+                                                '${widget.product.price}원',
+                                              )
+                                            : Text(
+                                                '${widget.product.price}원',
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey,
+                                                    decoration: TextDecoration
+                                                        .lineThrough),
+                                              ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              (widget.salesContent != null),
+                                          child: Text(
+                                            '${(widget.salesContent != null) ? deCalculatedPrice(widget.product.price, widget.salesContent!) : widget.product.price}원',
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 const Divider(),
@@ -277,8 +362,42 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                 .only(
                                                                 left: 16,
                                                                 bottom: 32),
-                                                        child: Text(
-                                                            '${widget.product.price}원'),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            (widget.salesContent ==
+                                                                    null)
+                                                                ? Text(
+                                                                    '${widget.product.price}원',
+                                                                  )
+                                                                : Text(
+                                                                    '${widget.product.price}원',
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        decoration:
+                                                                            TextDecoration.lineThrough),
+                                                                  ),
+                                                            const SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Visibility(
+                                                              visible: (widget
+                                                                      .salesContent !=
+                                                                  null),
+                                                              child: Text(
+                                                                '${(widget.salesContent != null) ? deCalculatedPrice(widget.product.price, widget.salesContent!) : widget.product.price}원',
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
                                                       Padding(
                                                         padding:
@@ -366,13 +485,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                             Text(
                                                                 '수량 ${viewModel.cartCount}개'),
                                                             Text(
-                                                              '${viewModel.formatKoreanNumber(viewModel.cartCount * int.parse(widget.product.price.replaceAll(',', '')))}원',
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800,
-                                                                  fontSize: 17),
-                                                            )
+                                                              '${NumberFormat(
+                                                                  '###,###,###,###')
+                                                                  .format(viewModel
+                                                                  .cartCount *
+                                                                  int.parse((widget
+                                                                      .salesContent !=
+                                                                      null)
+                                                                      ? deCalculatedPrice(
+                                                                      widget.product
+                                                                          .price,
+                                                                      widget
+                                                                          .salesContent!)
+                                                                      .replaceAll(
+                                                                      ',', '')
+                                                                      : widget.product
+                                                                      .price
+                                                                      .replaceAll(
+                                                                      ',', '')))
+                                                              }원',
+                                                            ),
                                                           ],
                                                         ),
                                                       ),
@@ -411,24 +543,32 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                     .replaceAll(
                                                                         '-',
                                                                         '');
-                                                                ShoppingProductForCart item = ShoppingProductForCart(
-                                                                    orderId: viewModel
-                                                                        .generateLicensePlate(
-                                                                            createdDate),
-                                                                    productId: widget
-                                                                        .product
-                                                                        .productId,
-                                                                    orderProductName: widget
-                                                                        .product
-                                                                        .title,
-                                                                    price: widget
-                                                                        .product
-                                                                        .price,
-                                                                    representativeImage: widget
-                                                                        .product
-                                                                        .representativeImage,
-                                                                    count: viewModel
-                                                                        .cartCount);
+                                                                ShoppingProductForCart
+                                                                    item =
+                                                                    ShoppingProductForCart(
+                                                                  orderId: viewModel
+                                                                      .generateLicensePlate(
+                                                                          createdDate),
+                                                                  productId: widget
+                                                                      .product
+                                                                      .productId,
+                                                                  orderProductName:
+                                                                      widget
+                                                                          .product
+                                                                          .title,
+                                                                  price: widget
+                                                                      .product
+                                                                      .price,
+                                                                  representativeImage:
+                                                                      widget
+                                                                          .product
+                                                                          .representativeImage,
+                                                                  count: viewModel
+                                                                      .cartCount,
+                                                                  salesId: widget
+                                                                      .product
+                                                                      .salesId,
+                                                                );
                                                                 await viewModel
                                                                     .addToShoppingCartList(
                                                                         item,
@@ -518,8 +658,42 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                 .only(
                                                                 left: 16,
                                                                 bottom: 32),
-                                                        child: Text(
-                                                            '${widget.product.price}원'),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            (widget.salesContent ==
+                                                                    null)
+                                                                ? Text(
+                                                                    '${widget.product.price}원',
+                                                                  )
+                                                                : Text(
+                                                                    '${widget.product.price}원',
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        decoration:
+                                                                            TextDecoration.lineThrough),
+                                                                  ),
+                                                            const SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Visibility(
+                                                              visible: (widget
+                                                                      .salesContent !=
+                                                                  null),
+                                                              child: Text(
+                                                                '${(widget.salesContent != null) ? deCalculatedPrice(widget.product.price, widget.salesContent!) : widget.product.price}원',
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
                                                       Padding(
                                                         padding:
@@ -607,13 +781,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                             Text(
                                                                 '수량 ${viewModel.purchaseCount}개'),
                                                             Text(
-                                                              '${viewModel.formatKoreanNumber(viewModel.purchaseCount * int.parse(widget.product.price.replaceAll(',', '')))}원',
-                                                              style: const TextStyle(
-                                                                  fontSize: 17,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800),
-                                                            )
+                                                              '${NumberFormat('###,###,###,###').format(viewModel.purchaseCount * int.parse((widget.salesContent != null) ? deCalculatedPrice(widget.product.price, widget.salesContent!).replaceAll(',', '') : widget.product.price.replaceAll(',', '')))}원',
+                                                            ),
                                                           ],
                                                         ),
                                                       ),
@@ -671,6 +840,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                       .price,
                                                                   count: viewModel
                                                                       .purchaseCount,
+                                                                  salesId: widget.product.salesId,
                                                                   orderedDate:
                                                                       createdDate,
                                                                   payAndStatus:
@@ -736,5 +906,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
       ),
     );
+  }
+
+  String deCalculatedPrice(String originalPrice, SalesModel? saleContent) {
+    num resultPrice = int.parse(originalPrice.replaceAll(',', ''));
+    if (saleContent != null) {
+      if (saleContent.salesRate <= 0 && saleContent.salesAmount > 0) {
+        resultPrice = resultPrice - saleContent.salesAmount;
+      } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
+        resultPrice = resultPrice * (100 - saleContent.salesRate) / 100;
+      }
+    }
+    return NumberFormat('###,###,###,###').format(resultPrice);
   }
 }

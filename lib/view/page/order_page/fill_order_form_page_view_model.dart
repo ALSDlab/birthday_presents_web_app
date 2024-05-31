@@ -4,16 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:myk_market_app/data/model/coupons_model.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../data/model/sales_model.dart';
 import '../../../data/model/shopping_cart_model.dart';
 import '../../../data/model/user_model.dart';
+import '../../../data/repository/product_repository_impl.dart';
+import '../../../utils/simple_logger.dart';
 import 'fill_order_form_page_state.dart';
 
 class FillOrderFormPageViewModel extends ChangeNotifier {
   final UserRepository userRepository;
+  ProductRepositoryImpl repository = ProductRepositoryImpl();
 
   FillOrderFormPageViewModel({
     required this.userRepository,
@@ -26,6 +31,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   DataModel? daumPostcodeSearchDataModel;
 
   List<UserModel> currentUser = [];
+  List myCouponList = [null];
 
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -76,7 +82,10 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       // logger.info(userId?.email!.replaceAll('@gmail.com', ''));
       currentUser = await userRepository.getFirebaseUserData(currentUserId);
       fillTextField();
-
+      for (int couponId in currentUser.first.coupons) {
+        CouponsModel? myCoupon = await getMyCoupon(couponId);
+        myCouponList.add(myCoupon!);
+      }
       notifyListeners();
     } catch (error) {
       // 에러 처리
@@ -124,9 +133,24 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<SalesModel?> getSalesContent(int saleId) async {
+    SalesModel? salesContent = await repository.getSales(saleId);
+    return salesContent;
+  }
+
+  Future<CouponsModel?> getMyCoupon(int couponId) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+    CouponsModel? myCoupon = await userRepository.getCoupon(couponId);
+    _state = state.copyWith(isLoading: false);
+    notifyListeners();
+    return myCoupon;
+  }
+
   Future<bool> saveOrdersInfo(
+    CouponsModel? selectedCoupon,
     OrderModel item,
-    String index,
+    int itemsCount,
     String currentDate,
     bool personalInfoForDeliverChecked,
     String ordererId,
@@ -140,6 +164,11 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final salesContent = await getSalesContent(item.salesId);
+      final itemPayAmount = item.count *
+          int.parse((salesContent != null)
+              ? deCalculatedPrice(item.price.replaceAll(',', ''), salesContent)
+              : item.price.replaceAll(',', ''));
       await FirebaseFirestore.instance
           .collection('orders')
           .doc(item.orderId + item.productId)
@@ -151,7 +180,13 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
           'representativeImage': item.representativeImage,
           'price': item.price,
           'count': item.count,
+          'salesId': item.salesId,
           'orderedDate': item.orderedDate,
+          'usedCouponPriceInOrder': (selectedCoupon == null)
+              ? 0
+              : (selectedCoupon.dcAmount > 0)
+                  ? selectedCoupon.dcAmount / itemsCount
+                  : itemPayAmount * selectedCoupon.dcRate / 100,
           'personalInfoForDeliverChecked': personalInfoForDeliverChecked,
           'ordererId': ordererId,
           'ordererName': ordererName,
@@ -160,14 +195,14 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
           'ordererAddressDetail': ordererAddressDetail,
           'ordererPostcode': ordererPostcode,
           'payAndStatus': 0,
-          'payAmount': int.parse(item.price.replaceAll(',', '')) * item.count,
+          'payAmount': itemPayAmount,
           'paymentDate': '',
           'deletedDate': '',
         },
       );
     } catch (error) {
       // 에러 처리
-      debugPrint('Error saving ordersInfo: $error');
+      logger.info('Error saving ordersInfo: $error');
     } finally {
       _state = state.copyWith(isLoading: false);
       notifyListeners();
@@ -175,15 +210,37 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     return true;
   }
 
+  String deCalculatedPrice(String originalPrice, SalesModel saleContent) {
+    num resultPrice = int.parse(originalPrice);
+    if (saleContent.salesRate <= 0 && saleContent.salesAmount > 0) {
+      resultPrice = int.parse(originalPrice) - saleContent.salesAmount;
+    } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
+      resultPrice =
+          int.parse(originalPrice) * (100 - saleContent.salesRate) / 100;
+    }
+    return resultPrice.toString();
+  }
+
   Future<int> updateShoppingCart(List<OrderModel> orderItems) async {
-    //TODO : 장바구니 비우기 적용(결제 할 것만)
-    List<ShoppingProductForCart> currentList = await getShoppingCartList();
-    List<String> orderIds = orderItems.map((e) => e.orderId).toSet().toList();
-    currentList.removeWhere((e) => orderIds.contains(e.orderId));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString = jsonEncode(currentList.map((e) => e.toJson()).toList());
-    prefs.setString('shoppingCartList', jsonString);
-    return currentList.length;
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+    try {
+      List<ShoppingProductForCart> currentList = await getShoppingCartList();
+      List<String> orderIds = orderItems.map((e) => e.orderId).toSet().toList();
+      currentList.removeWhere((e) => orderIds.contains(e.orderId));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String jsonString =
+          jsonEncode(currentList.map((e) => e.toJson()).toList());
+      prefs.setString('shoppingCartList', jsonString);
+      return currentList.length;
+    } catch (error) {
+      // 에러 처리
+      logger.info('Error update shoppingcart: $error');
+      return 0;
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
+    }
   }
 
   Future<List<ShoppingProductForCart>> getShoppingCartList() async {

@@ -94,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   },
                                                   imagePath:
                                                       'assets/gifs/fail.gif',
-                                                  title: '알림.',
+                                                  title: '알림',
                                                   subtitle:
                                                       '웹페이지에서는 프로필 편집이 지원되지 않습니다.',
                                                   firstButton: '확인');
@@ -113,8 +113,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     onTap: () {
                                                       Navigator.pop(context);
                                                     },
-                                                    title: '알림',
-                                                    subtitle: '지원되지 않는 형식입니다.',
+                                                    title: '이미지가 선택되지 않았습니다.',
+                                                    subtitle: '다시 시도해 주세요',
                                                     firstButton: '확인',
                                                     imagePath:
                                                         'assets/gifs/fail.gif');
@@ -271,7 +271,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     title: '정말 로그아웃하시겠습니까?',
                                     firstButton: '아니오',
                                     secondButton: '예',
-                                    imagePath: 'assets/gifs/shopping_cart.gif',
+                                    imagePath: 'assets/gifs/two_answer_dialog.gif',
                                     onFirstTap: () {
                                       Navigator.pop(context);
                                     },

@@ -84,7 +84,9 @@ class SignupPageViewModel extends ChangeNotifier {
       String addrDetail,
       int created,
       int recreatCount,
-      bool checked) async {
+      bool checked,
+      List<int> coupons,
+      int verificationLimit) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
     try {
@@ -106,7 +108,9 @@ class SignupPageViewModel extends ChangeNotifier {
         'created': created,
         'checked': checked,
         'recreatCount': recreatCount,
-        'profileImage': ''
+        'profileImage': '',
+      'coupons': coupons,
+      'verificationLimit': verificationLimit
       });
       // used_emails에 저장하기
       await userRepository.addEmailToFirestore(saveUserEmail);

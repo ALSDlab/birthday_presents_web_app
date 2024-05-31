@@ -7,6 +7,7 @@ import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_m
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/model/sales_model.dart';
 import '../../../utils/gif_progress_bar.dart';
 
 class ShoppingCartPage extends StatefulWidget {
@@ -151,12 +152,39 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                             physics:
                                                 const BouncingScrollPhysics(),
                                             itemBuilder: (context, index) {
-                                              return ShoppingCartPageWidget(
-                                                shoppingProductForCart:
-                                                    state.cartList[index],
-                                                removeFromCartList: viewModel
-                                                    .removeFromCartList,
-                                                navSetState: widget.navSetState,
+                                              return FutureBuilder<SalesModel?>(
+                                                future: viewModel
+                                                    .getSalesContent(state
+                                                        .cartList[index]
+                                                        .salesId),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return Center(
+                                                        child:
+                                                            GifProgressBar());
+                                                  } else if (snapshot
+                                                      .hasError) {
+                                                    return Center(
+                                                        child: Text(
+                                                            'Error: ${snapshot.error}'));
+                                                  } else {
+                                                    final salesContent =
+                                                        snapshot.data;
+                                                    return ShoppingCartPageWidget(
+                                                      shoppingProductForCart:
+                                                          state.cartList[index],
+                                                      removeFromCartList:
+                                                          viewModel
+                                                              .removeFromCartList,
+                                                      navSetState:
+                                                          widget.navSetState,
+                                                      salesContent:
+                                                          salesContent,
+                                                    );
+                                                  }
+                                                },
                                               );
                                             },
                                             itemCount: state.cartList.length,

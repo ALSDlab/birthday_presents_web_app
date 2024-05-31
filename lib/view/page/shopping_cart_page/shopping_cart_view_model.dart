@@ -6,10 +6,14 @@ import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../data/model/sales_model.dart';
 import '../../../data/model/shopping_cart_model.dart';
+import '../../../data/repository/product_repository_impl.dart';
 
 class ShoppingCartViewModel extends ChangeNotifier {
+  ProductRepositoryImpl repository = ProductRepositoryImpl();
   ShoppingCartState _state = const ShoppingCartState();
+  SalesModel? saleContent;
 
   ShoppingCartState get state => _state;
 
@@ -26,6 +30,11 @@ class ShoppingCartViewModel extends ChangeNotifier {
     _state = state.copyWith(isLoading: false);
     notifyListeners();
     return resultList.length;
+  }
+
+  Future<SalesModel?> getSalesContent (int saleId) async {
+    SalesModel? salesContent = await repository.getSales(saleId);
+    return salesContent;
   }
 
   // shared_preferences를 이용하여 장바구니에 담는 기능 구현 (장바구니에서 삭제하는 기능 포함)
@@ -153,16 +162,17 @@ class ShoppingCartViewModel extends ChangeNotifier {
     final createdDate =
         DateTime.now().toString().substring(2, 10).replaceAll('-', '');
 
-    // final String newOrderId = generateLicensePlate(createdDate);
+    final String newOrderId = generateLicensePlate(createdDate);
 
     for (int i = 0; i < list.length; i++) {
       final OrderModel directOrderItem = OrderModel(
-        orderId: list[i].orderId,
+        orderId: newOrderId,
         productId: list[i].productId,
         orderProductName: list[i].orderProductName,
         representativeImage: list[i].representativeImage,
         price: list[i].price,
         count: list[i].count,
+        salesId: list[i].salesId,
         orderedDate: createdDate,
         payAndStatus: 0,
       );

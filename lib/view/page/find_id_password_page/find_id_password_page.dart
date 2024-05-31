@@ -252,8 +252,7 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                   style: const TextStyle(
                                                       fontSize: 15),
                                                   decoration: InputDecoration(
-                                                    hintText:
-                                                        '회원가입 시 등록한 휴대폰번호',
+                                                    hintText: '등록된 휴대폰번호',
                                                     contentPadding:
                                                         const EdgeInsets
                                                             .fromLTRB(
@@ -658,7 +657,11 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                                               final result = await showDialog(
                                                                                   context: context,
                                                                                   builder: (context) {
-                                                                                    return CellphoneValidPage(servicePhoneNo: servicePhoneNo, phoneNumber: _phoneForPasswordController.text);
+                                                                                    return CellphoneValidPage(
+                                                                                      servicePhoneNo: servicePhoneNo,
+                                                                                      phoneNumber: _phoneForPasswordController.text,
+                                                                                      verificationLimit: viewModel.currentUser.first.verificationLimit,
+                                                                                    );
                                                                                   });
                                                                               if (result == true) {
                                                                                 setState(() {
@@ -736,8 +739,7 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                             fontSize: 15),
                                                         decoration:
                                                             InputDecoration(
-                                                          hintText:
-                                                              '회원가입 시 등록한 휴대폰번호',
+                                                          hintText: '등록된 휴대폰번호',
                                                           contentPadding:
                                                               const EdgeInsets
                                                                   .fromLTRB(
@@ -839,116 +841,113 @@ class _FindIdPasswordPageState extends State<FindIdPasswordPage> {
                                                 Expanded(child: Container()),
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    onPressed: (state
-                                                        .isLoading)
-                                                        ? (){} : () async {
-                                                      setState(() {
-                                                        _errorIdText =
-                                                            (_idController.text
-                                                                    .isEmpty
-                                                                ? '필수항목입니다.'
-                                                                : null);
-                                                        _errorPhoneForPasswordText =
-                                                            (_phoneForPasswordController
-                                                                    .text
-                                                                    .isEmpty
-                                                                ? '필수항목입니다.'
-                                                                : null);
-                                                      });
-                                                      if (_errorIdText ==
-                                                              null &&
-                                                          _errorPhoneForPasswordText ==
-                                                              null) {
-                                                        if (isValidPhoneNo) {
-                                                          // 입력된 전화번호가 일치하다면 비밀번호 재설정
-                                                          final newPassword =
-                                                              await showDialog(
-                                                                  context:
+                                                    onPressed: (state.isLoading)
+                                                        ? () {}
+                                                        : () async {
+                                                            setState(() {
+                                                              _errorIdText =
+                                                                  (_idController
+                                                                          .text
+                                                                          .isEmpty
+                                                                      ? '필수항목입니다.'
+                                                                      : null);
+                                                              _errorPhoneForPasswordText =
+                                                                  (_phoneForPasswordController
+                                                                          .text
+                                                                          .isEmpty
+                                                                      ? '필수항목입니다.'
+                                                                      : null);
+                                                            });
+                                                            if (_errorIdText ==
+                                                                    null &&
+                                                                _errorPhoneForPasswordText ==
+                                                                    null) {
+                                                              if (isValidPhoneNo) {
+                                                                // 입력된 전화번호가 일치하다면 비밀번호 재설정
+                                                                final newPassword =
+                                                                    await showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (context) {
+                                                                          return const ResetPasswordPage();
+                                                                        });
+                                                                if (newPassword ==
+                                                                    null) {
+                                                                  // 비밀번호를 변경하지 않고 취소함
+                                                                  const Widget
+                                                                      content =
+                                                                      Text(
+                                                                          '비밀번호가 재설정되지 않았습니다.');
+                                                                  viewModel.showSnackbar(
                                                                       context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return const ResetPasswordPage();
-                                                                  });
-                                                          if (newPassword ==
-                                                              null) {
-                                                            // 비밀번호를 변경하지 않고 취소함
-                                                            const Widget
-                                                                content = Text(
-                                                                    '비밀번호가 재설정되지 않았습니다.');
-                                                            viewModel
-                                                                .showSnackbar(
-                                                                    context,
-                                                                    content);
-                                                          } else {
-                                                            // firebase에 바뀐 비밀번호로 재가입
+                                                                      content);
+                                                                } else {
+                                                                  // firebase에 바뀐 비밀번호로 재가입
 
-                                                            await viewModel
-                                                                .deleteAndResignup(
-                                                                    _idController
-                                                                        .text,
-                                                                    newPassword);
-                                                            if (context
-                                                                .mounted) {
-                                                              showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return OneAnswerDialog(
-                                                                            onTap:
-                                                                                () {
-                                                                              Navigator.pop(context);
-                                                                              GoRouter.of(context).go('/profile_page/login_page', extra: {
-                                                                                'hideNavBar': widget.hideNavBar
-                                                                              });
-                                                                            },
-                                                                            title:
-                                                                                '비밀번호가 재설정 되었습니다.',
-                                                                            subtitle:
-                                                                                '로그인 페이지로 돌아갑니다.',
-                                                                            firstButton:
-                                                                                '확인',
-                                                                            imagePath:
-                                                                                'assets/gifs/success.gif');
-                                                                  });
+                                                                  await viewModel.deleteAndResignup(
+                                                                      _idController
+                                                                          .text,
+                                                                      newPassword);
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (context) {
+                                                                          return OneAnswerDialog(
+                                                                              onTap: () {
+                                                                                Navigator.pop(context);
+                                                                                GoRouter.of(context).go('/profile_page/login_page', extra: {
+                                                                                  'hideNavBar': widget.hideNavBar
+                                                                                });
+                                                                              },
+                                                                              title: '비밀번호가 재설정 되었습니다.',
+                                                                              subtitle: '로그인 페이지로 돌아갑니다.',
+                                                                              firstButton: '확인',
+                                                                              imagePath: 'assets/gifs/success.gif');
+                                                                        });
+                                                                  }
+                                                                }
+                                                              } else {
+                                                                // 인증이 되지 않았을 때 스낵바로 알림
+                                                                const Widget
+                                                                    content =
+                                                                    Text(
+                                                                        '휴대폰번호 인증을 완료해 주세요.');
+                                                                viewModel
+                                                                    .showSnackbar(
+                                                                        context,
+                                                                        content);
+                                                              }
                                                             }
-                                                          }
-                                                        } else {
-                                                          // 인증이 되지 않았을 때 스낵바로 알림
-                                                          const Widget content =
-                                                              Text(
-                                                                  '휴대폰번호 인증을 완료해 주세요.');
-                                                          viewModel
-                                                              .showSnackbar(
-                                                                  context,
-                                                                  content);
-                                                        }
-                                                      }
-                                                    },
+                                                          },
 
                                                     style: ElevatedButton.styleFrom(
-                                                        backgroundColor:(state
-                                                            .isLoading)
-                                                            ? Colors.grey
-                                                            :
-                                                        const Color(
-                                                                0xFF2F362F),
+                                                        backgroundColor:
+                                                            (state.isLoading)
+                                                                ? Colors.grey
+                                                                : const Color(
+                                                                    0xFF2F362F),
                                                         shape: const RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius.all(
                                                                     Radius.circular(
                                                                         10)))),
-                                                    child: (state
-                                                        .isLoading)
+                                                    child: (state.isLoading)
                                                         ? Center(
-                                                      child:
-                                                      GifProgressBar(radius: 15,),
-                                                    )
+                                                            child:
+                                                                GifProgressBar(
+                                                              radius: 15,
+                                                            ),
+                                                          )
                                                         : const Text(
-                                                      '재설정하기',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
+                                                            '재설정하기',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
                                                     // style: ButtonStyle(
                                                     //   backgroundColor: MaterialStateProperty.all(
                                                     //     const Color(0xFF2F362F),

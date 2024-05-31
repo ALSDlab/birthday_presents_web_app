@@ -3,6 +3,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'order_model.freezed.dart';
+
 part 'order_model.g.dart';
 
 @freezed
@@ -14,7 +15,9 @@ abstract class OrderModel with _$OrderModel {
     @JsonKey(name: 'representativeImage') required String representativeImage,
     @JsonKey(name: 'price') required String price,
     @JsonKey(name: 'count') required int count,
+    @JsonKey(name: 'salesId') required int salesId,
     @JsonKey(name: 'orderedDate') String? orderedDate,
+    @JsonKey(name: 'usedCouponPriceInOrder') num? usedCouponPriceInOrder,
     @JsonKey(name: 'personalInfoForDeliverChecked')
     bool? personalInfoForDeliverChecked,
     @JsonKey(name: 'ordererId') String? ordererId,

@@ -1,21 +1,25 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 
+import '../../../data/model/sales_model.dart';
 import '../../../utils/image_load_widget.dart';
 
 class ForOrderListWidget extends StatelessWidget {
-  const ForOrderListWidget(
-      {super.key, required this.orderItem, this.forConfirm = false});
+  ForOrderListWidget(
+      {super.key,
+      required this.orderItem,
+      this.forConfirm = false,
+      this.salesContent});
 
   final OrderModel orderItem;
   final bool forConfirm;
+  SalesModel? salesContent;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      padding: const EdgeInsets.only(top: 4, bottom: 4),
       child: Container(
         margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
@@ -31,19 +35,24 @@ class ForOrderListWidget extends StatelessWidget {
           ],
         ),
         padding: const EdgeInsets.all(3),
-        child:Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: ImageLoadWidget(
-                width: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.32,
-                height: ((MediaQuery.of(context).size.width >= 1200) ? 1200 : MediaQuery.of(context).size.width) * 0.25,
+                width: ((MediaQuery.of(context).size.width >= 1200)
+                        ? 1200
+                        : MediaQuery.of(context).size.width) *
+                    0.32,
+                height: ((MediaQuery.of(context).size.width >= 1200)
+                        ? 1200
+                        : MediaQuery.of(context).size.width) *
+                    0.25,
                 imageUrl: orderItem.representativeImage,
                 fit: BoxFit.cover,
-                          ),
+              ),
             ),
-
             const SizedBox(width: 16),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +60,8 @@ class ForOrderListWidget extends StatelessWidget {
               children: [
                 Text(
                   orderItem.orderProductName,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Text(
                   '주문수량: ${orderItem.count}',
@@ -64,9 +74,9 @@ class ForOrderListWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${NumberFormat('###,###,###,###').format(int.parse(orderItem.price.replaceAll(',', '')) * orderItem.count)} 원',
-                      style:
-                          const TextStyle(color: Color(0xFF019934), fontWeight: FontWeight.w900, fontSize: 16),
+                      '${NumberFormat('###,###,###,###').format(orderItem.count * int.parse((salesContent != null) ? deCalculatedPrice(orderItem.price.replaceAll(',', ''), salesContent!) : orderItem.price.replaceAll(',', '')))}원',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w900, fontSize: 16),
                     ),
                     payStatusWidget(orderItem.payAndStatus!),
                   ],
@@ -78,6 +88,17 @@ class ForOrderListWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+String deCalculatedPrice(String originalPrice, SalesModel saleContent) {
+  num resultPrice = int.parse(originalPrice);
+  if (saleContent.salesRate <= 0 && saleContent.salesAmount > 0) {
+    resultPrice = int.parse(originalPrice) - saleContent.salesAmount;
+  } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
+    resultPrice =
+        int.parse(originalPrice) * (100 - saleContent.salesRate) / 100;
+  }
+  return resultPrice.toString();
 }
 
 Widget payStatusWidget(int statusValue) {

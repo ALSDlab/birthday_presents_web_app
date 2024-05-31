@@ -9,10 +9,11 @@ import 'celllphone_vaild_page_view_model.dart';
 
 class CellphoneValidPage extends StatefulWidget {
   const CellphoneValidPage(
-      {super.key, required this.servicePhoneNo, required this.phoneNumber});
+      {super.key, required this.servicePhoneNo, required this.phoneNumber, required this.verificationLimit});
 
   final String servicePhoneNo;
   final String phoneNumber;
+  final int verificationLimit;
 
   @override
   _CellphoneValidPageState createState() => _CellphoneValidPageState();
@@ -25,7 +26,6 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
   bool _correctVerificationCode = true;
   int _start = 180; // 3 minutes in seconds
   int _attempts = 0;
-  final int _maxAttempts = 5;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
     setState(() {
       _attempts;
     });
-    if (_attempts >= 5 && (_canResend || _isTimeout)) {
+    if (_attempts >= widget.verificationLimit && (_canResend || _isTimeout)) {
       // 5번 시도 및 시간초과 시 false 반환. 다른번호 유도
       Navigator.pop(context, false);
     }
@@ -68,7 +68,7 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
   }
 
   Future<void> sendCode(String phoneNumber) async {
-    if (_attempts < _maxAttempts) {
+    if (_attempts < widget.verificationLimit) {
       setState(() {
         _canResend = false;
         _isTimeout = false;
@@ -195,7 +195,7 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
                             setState(() {
                               _attempts;
                             });
-                            if (_attempts >= 5) {
+                            if (_attempts >= widget.verificationLimit) {
                               // 5번 시도 및 시간초과 시 false 반환. 다른번호 유도
                               Future.delayed(Duration(seconds: _start), () {
                                 Navigator.pop(context, false);
@@ -203,7 +203,7 @@ class _CellphoneValidPageState extends State<CellphoneValidPage> {
                             }
                           }
                         : () {},
-                    child: Text("인증번호 발송 ($_attempts/$_maxAttempts)",
+                    child: Text("인증번호 발송 ($_attempts/${widget.verificationLimit})",
                         style: const TextStyle(
                             fontSize: 14, color: Colors.white))),
               ),

@@ -2,12 +2,15 @@ import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/data/model/coupons_model.dart';
+import 'package:myk_market_app/view/page/order_history_page/order_history_page_view_model.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
 import 'package:provider/provider.dart';
 
 import '../../../data/model/order_model.dart';
+import '../../../data/model/sales_model.dart';
 import '../../../utils/gif_progress_bar.dart';
 import '../../../utils/simple_logger.dart';
 import '../agreement_page/agreement_texts.dart';
@@ -39,6 +42,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
   bool isPersonalInfoForDeliverOpened = false;
   bool inevitableChecked = false;
   bool moreDataNeed = false;
+  CouponsModel? selectedCoupon;
+  SalesModel? salesContent;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -51,6 +56,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
   ];
 
   Map<int, dynamic> errorControllers = {0: null, 1: null};
+  List<CouponsModel?> myCouponList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -110,10 +116,28 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                   physics: const BouncingScrollPhysics(),
                                   itemCount: widget.forOrderItems.length,
                                   itemBuilder: (context, index) {
-                                    final forOrderItem =
-                                        widget.forOrderItems[index];
-                                    return ForOrderListWidget(
-                                      orderItem: forOrderItem,
+                                    return FutureBuilder<SalesModel?>(
+                                      future: viewModel.getSalesContent(
+                                          widget.forOrderItems[index].salesId),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child: GifProgressBar());
+                                        } else if (snapshot.hasError) {
+                                          return Center(
+                                              child: Text(
+                                                  'Error: ${snapshot.error}'));
+                                        } else {
+                                          salesContent = snapshot.data;
+                                          final forOrderItem =
+                                              widget.forOrderItems[index];
+                                          return ForOrderListWidget(
+                                            orderItem: forOrderItem,
+                                            salesContent: salesContent,
+                                          );
+                                        }
+                                      },
                                     );
                                   },
                                 ),
@@ -412,10 +436,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                             onChanged: (value) {
                                                               setState(() {
                                                                 errorControllers[
-                                                                index] =
-                                                                (value == ''
-                                                                    ? '필수항목입니다.'
-                                                                    : null);
+                                                                        index] =
+                                                                    (value == ''
+                                                                        ? '필수항목입니다.'
+                                                                        : null);
                                                               });
                                                             },
                                                             controller: viewModel
@@ -457,299 +481,365 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                     ),
                                   ),
                                 ),
-                                Visibility(
-                                    visible:
-                                        FirebaseAuth.instance.currentUser ==
-                                            null,
-                                    child: Column(
-                                      children: [
-                                        const Divider(),
-                                        const Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 8, left: 8),
-                                              child: Text(
-                                                '약관 동의',
-                                                style: TextStyle(fontSize: 18),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, bottom: 8),
-                                          child: Container(
-                                            margin: const EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.3),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 3,
-                                                  offset: const Offset(0, 3),
-                                                ),
-                                              ],
-                                            ),
-                                            padding: const EdgeInsets.all(3),
-                                            child: ListView(
-                                              shrinkWrap: true,
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Checkbox(
-                                                      value: isAllChecked,
-                                                      onChanged:
-                                                          (bool? newValue) {
-                                                        setState(() {
-                                                          isAllChecked =
-                                                              newValue!;
-                                                          isTermsNConditionsChecked =
-                                                              newValue;
-                                                          isPersonalInfoChecked =
-                                                              newValue;
-                                                          isPersonalInfoForDeliverChecked =
-                                                              newValue;
-                                                        });
-                                                      },
-                                                      activeColor: const Color(
-                                                          0xFF2F362F),
-                                                      checkColor: Colors.white,
-                                                    ),
-                                                    const Expanded(
-                                                      child: Text(
-                                                          '건강담은 민영기염소탕 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Divider(
-                                                  indent: 50,
-                                                  endIndent: 50,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Checkbox(
-                                                          value:
-                                                              isTermsNConditionsChecked,
-                                                          onChanged:
-                                                              (bool? newValue) {
-                                                            setState(() {
-                                                              isTermsNConditionsChecked =
-                                                                  newValue!;
-                                                            });
-                                                          },
-                                                          activeColor:
-                                                              const Color(
-                                                                  0xFF2F362F),
-                                                          checkColor:
-                                                              Colors.white,
-                                                        ),
-                                                        const Text('(필수) 이용약관'),
-                                                      ],
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          isTermsNConditionsOpened =
-                                                              !isTermsNConditionsOpened;
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 100,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(10),
-                                                          ),
-                                                        ),
-                                                        child:
-                                                            isTermsNConditionsOpened
-                                                                ? const Text(
-                                                                    '닫기 ▲',
-                                                                  )
-                                                                : const Text(
-                                                                    '열기 ▼',
-                                                                  ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                AnimatedSize(
-                                                  duration: const Duration(
-                                                      milliseconds: 500),
-                                                  child: SizedBox(
-                                                    height:
-                                                        isTermsNConditionsOpened
-                                                            ? null
-                                                            : 0.0,
-                                                    child:
-                                                        Text(agreementTexts[0]),
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Checkbox(
-                                                          value:
-                                                              isPersonalInfoChecked,
-                                                          onChanged:
-                                                              (bool? newValue) {
-                                                            setState(() {
-                                                              isPersonalInfoChecked =
-                                                                  newValue!;
-                                                            });
-                                                          },
-                                                          activeColor:
-                                                              const Color(
-                                                                  0xFF2F362F),
-                                                          checkColor:
-                                                              Colors.white,
-                                                        ),
-                                                        const Text(
-                                                            '(필수) 개인정보 수집 및 이용'),
-                                                      ],
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          isPersonalInfoOpened =
-                                                              !isPersonalInfoOpened;
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 100,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(10),
-                                                          ),
-                                                        ),
-                                                        child:
-                                                            isPersonalInfoOpened
-                                                                ? const Text(
-                                                                    '닫기 ▲',
-                                                                  )
-                                                                : const Text(
-                                                                    '열기 ▼',
-                                                                  ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                AnimatedSize(
-                                                  duration: const Duration(
-                                                      milliseconds: 500),
-                                                  child: SizedBox(
-                                                    height: isPersonalInfoOpened
-                                                        ? null
-                                                        : 0.0,
-                                                    child:
-                                                        Text(agreementTexts[1]),
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Checkbox(
-                                                          value:
-                                                              isPersonalInfoForDeliverChecked,
-                                                          onChanged:
-                                                              (bool? newValue) {
-                                                            setState(() {
-                                                              isPersonalInfoForDeliverChecked =
-                                                                  newValue!;
-                                                            });
-                                                          },
-                                                          activeColor:
-                                                              const Color(
-                                                                  0xFF2F362F),
-                                                          checkColor:
-                                                              Colors.white,
-                                                        ),
-                                                        const Text(
-                                                            '(선택) 개인정보 수집 및 이용'),
-                                                      ],
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          isPersonalInfoForDeliverOpened =
-                                                              !isPersonalInfoForDeliverOpened;
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 100,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(10),
-                                                          ),
-                                                        ),
-                                                        child:
-                                                            isPersonalInfoForDeliverOpened
-                                                                ? const Text(
-                                                                    '닫기 ▲',
-                                                                  )
-                                                                : const Text(
-                                                                    '열기 ▼',
-                                                                  ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                AnimatedSize(
-                                                  duration: const Duration(
-                                                      milliseconds: 500),
-                                                  child: SizedBox(
-                                                    height:
-                                                        isPersonalInfoForDeliverOpened
-                                                            ? null
-                                                            : 0.0,
-                                                    child:
-                                                        Text(agreementTexts[2]),
-                                                  ),
-                                                ),
-                                              ],
+                                const Divider(),
+                                if (FirebaseAuth.instance.currentUser == null)
+                                  Column(
+                                    children: [
+                                      const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 8, left: 8),
+                                            child: Text(
+                                              '약관 동의',
+                                              style: TextStyle(fontSize: 18),
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8, bottom: 8),
+                                        child: Container(
+                                          margin: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.3),
+                                                spreadRadius: 2,
+                                                blurRadius: 3,
+                                                offset: const Offset(0, 3),
+                                              ),
+                                            ],
+                                          ),
+                                          padding: const EdgeInsets.all(3),
+                                          child: ListView(
+                                            shrinkWrap: true,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Checkbox(
+                                                    value: isAllChecked,
+                                                    onChanged:
+                                                        (bool? newValue) {
+                                                      setState(() {
+                                                        isAllChecked =
+                                                            newValue!;
+                                                        isTermsNConditionsChecked =
+                                                            newValue;
+                                                        isPersonalInfoChecked =
+                                                            newValue;
+                                                        isPersonalInfoForDeliverChecked =
+                                                            newValue;
+                                                      });
+                                                    },
+                                                    activeColor:
+                                                        const Color(0xFF2F362F),
+                                                    checkColor: Colors.white,
+                                                  ),
+                                                  const Expanded(
+                                                    child: Text(
+                                                        '건강담은 민영기염소탕 흑염소진액의 모든 약관을 확인하고 전체 동의합니다.'),
+                                                  ),
+                                                ],
+                                              ),
+                                              const Divider(
+                                                indent: 50,
+                                                endIndent: 50,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Checkbox(
+                                                        value:
+                                                            isTermsNConditionsChecked,
+                                                        onChanged:
+                                                            (bool? newValue) {
+                                                          setState(() {
+                                                            isTermsNConditionsChecked =
+                                                                newValue!;
+                                                          });
+                                                        },
+                                                        activeColor:
+                                                            const Color(
+                                                                0xFF2F362F),
+                                                        checkColor:
+                                                            Colors.white,
+                                                      ),
+                                                      const Text('(필수) 이용약관'),
+                                                    ],
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isTermsNConditionsOpened =
+                                                            !isTermsNConditionsOpened;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: 40,
+                                                      width: 100,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                      ),
+                                                      child:
+                                                          isTermsNConditionsOpened
+                                                              ? const Text(
+                                                                  '닫기 ▲',
+                                                                )
+                                                              : const Text(
+                                                                  '열기 ▼',
+                                                                ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              AnimatedSize(
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                child: SizedBox(
+                                                  height:
+                                                      isTermsNConditionsOpened
+                                                          ? null
+                                                          : 0.0,
+                                                  child:
+                                                      Text(agreementTexts[0]),
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Checkbox(
+                                                        value:
+                                                            isPersonalInfoChecked,
+                                                        onChanged:
+                                                            (bool? newValue) {
+                                                          setState(() {
+                                                            isPersonalInfoChecked =
+                                                                newValue!;
+                                                          });
+                                                        },
+                                                        activeColor:
+                                                            const Color(
+                                                                0xFF2F362F),
+                                                        checkColor:
+                                                            Colors.white,
+                                                      ),
+                                                      const Text(
+                                                          '(필수) 개인정보 수집 및 이용'),
+                                                    ],
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isPersonalInfoOpened =
+                                                            !isPersonalInfoOpened;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: 40,
+                                                      width: 100,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                      ),
+                                                      child:
+                                                          isPersonalInfoOpened
+                                                              ? const Text(
+                                                                  '닫기 ▲',
+                                                                )
+                                                              : const Text(
+                                                                  '열기 ▼',
+                                                                ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              AnimatedSize(
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                child: SizedBox(
+                                                  height: isPersonalInfoOpened
+                                                      ? null
+                                                      : 0.0,
+                                                  child:
+                                                      Text(agreementTexts[1]),
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Checkbox(
+                                                        value:
+                                                            isPersonalInfoForDeliverChecked,
+                                                        onChanged:
+                                                            (bool? newValue) {
+                                                          setState(() {
+                                                            isPersonalInfoForDeliverChecked =
+                                                                newValue!;
+                                                          });
+                                                        },
+                                                        activeColor:
+                                                            const Color(
+                                                                0xFF2F362F),
+                                                        checkColor:
+                                                            Colors.white,
+                                                      ),
+                                                      const Text(
+                                                          '(선택) 개인정보 수집 및 이용'),
+                                                    ],
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isPersonalInfoForDeliverOpened =
+                                                            !isPersonalInfoForDeliverOpened;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: 40,
+                                                      width: 100,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                      ),
+                                                      child:
+                                                          isPersonalInfoForDeliverOpened
+                                                              ? const Text(
+                                                                  '닫기 ▲',
+                                                                )
+                                                              : const Text(
+                                                                  '열기 ▼',
+                                                                ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              AnimatedSize(
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                child: SizedBox(
+                                                  height:
+                                                      isPersonalInfoForDeliverOpened
+                                                          ? null
+                                                          : 0.0,
+                                                  child:
+                                                      Text(agreementTexts[2]),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                else
+                                  Container(
+                                    margin: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 2,
+                                          blurRadius: 3,
+                                          offset: const Offset(0, 3),
                                         ),
                                       ],
-                                    ))
+                                    ),
+                                    padding: const EdgeInsets.all(3),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0),
+                                      child: Row(
+                                        children: [
+                                          const Text(
+                                            '쿠폰 사용하기',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 50,
+                                          ),
+                                          Expanded(
+                                            child: DropdownButton(
+                                              value: selectedCoupon,
+                                              items: viewModel.myCouponList
+                                                  .map((e) {
+                                                return DropdownMenuItem(
+                                                    value: e,
+                                                    child: (e != null)
+                                                        ? Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                  e.couponName),
+                                                              const SizedBox(
+                                                                width: 30,
+                                                              ),
+                                                              Text((e.dcAmount >
+                                                                      0)
+                                                                  ? '${e.dcAmount} 원'
+                                                                  : '${e.dcRate} %')
+                                                            ],
+                                                          )
+                                                        : const Text('사용안함'));
+                                              }).toList(),
+                                              onChanged: (value) {
+                                                // items 의 DropdownMenuItem 의 value 반환
+                                                setState(() {
+                                                  selectedCoupon =
+                                                      value as CouponsModel?;
+                                                });
+                                              },
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
                               ],
                             ),
                           ),
@@ -843,6 +933,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                               .toString()
                                               .substring(2, 10)
                                               .replaceAll('-', '');
+
+
                                           final ordererId = viewModel
                                                   .currentUser.isEmpty
                                               ? 'notRegistered'
@@ -864,15 +956,11 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                           final ordererAddressDetail = viewModel
                                               .controllers['extraAddress']
                                               ?.text;
-                                          await Future.forEach(
-                                              widget.forOrderItems
-                                                  .asMap()
-                                                  .entries, (entry) async {
-                                            final index = entry.key;
-                                            final item = entry.value;
+                                          for (OrderModel item in widget.forOrderItems) {
                                             await viewModel.saveOrdersInfo(
+                                              selectedCoupon,
                                               item,
-                                              index.toString(),
+                                              widget.forOrderItems.length,
                                               orderedDate,
                                               personalInfoForDeliverChecked,
                                               ordererId,
@@ -882,7 +970,9 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                               ordererAddressDetail!,
                                               ordererPostcode!,
                                             );
-                                          });
+                                          }
+
+
 
                                           // ShoppingCart에서 주문서작성 아이템 비우기
                                           if (widget.navSetState != null) {
@@ -901,7 +991,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                                       widget.forOrderItems,
                                                   'hideNavBar':
                                                       widget.hideNavBar,
-                                                  'newOrderCreated': true
+                                                  'newOrderCreated': true,
                                                 });
                                             widget.hideNavBar(true);
                                           }

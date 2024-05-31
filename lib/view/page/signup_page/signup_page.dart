@@ -250,7 +250,7 @@ class _SignupPageState extends State<SignupPage> {
                                                                                 final bool result = await showDialog(
                                                                                     context: context,
                                                                                     builder: (context) {
-                                                                                      return CellphoneValidPage(servicePhoneNo: servicePhoneNo, phoneNumber: phoneController.text);
+                                                                                      return CellphoneValidPage(servicePhoneNo: servicePhoneNo, phoneNumber: phoneController.text, verificationLimit: 5);
                                                                                     });
                                                                                 if (result == true) {
                                                                                   setState(() {
@@ -745,6 +745,8 @@ class _SignupPageState extends State<SignupPage> {
                                               // 첫 회원가입시 '0'으로 함. 미로그인 상태에서 비밀번호 변경 시 기존데이터 삭제 후 1 추가하여 재가입하는 방식
                                               widget
                                                   .isPersonalInfoForDeliverChecked,
+                                              [],5
+
                                             );
                                             FirebaseAuth.instance.signOut();
                                             if (context.mounted) {

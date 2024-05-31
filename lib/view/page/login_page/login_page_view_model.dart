@@ -45,7 +45,6 @@ class LoginPageViewModel with ChangeNotifier {
       // 아이디로 유저정보를 우선 확인
       int recreatedCount = 0;
       final currentUser = await userRepository.getFirebaseUserData(id!);
-      print(currentUser);
       if (currentUser.isNotEmpty) {
         recreatedCount = currentUser.first.recreatCount;
       }

@@ -92,7 +92,8 @@ class FindIdPasswordViewModel extends ChangeNotifier {
             DateTime.now().millisecondsSinceEpoch,
             userData.recreatCount + 1,
             userData.checked,
-        userData.profileImage);
+        userData.profileImage,
+        userData.coupons,userData.verificationLimit);
 
         firebase_auth.FirebaseAuth.instance.signOut();
       }
@@ -116,7 +117,9 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       int created,
       int recreatCount,
       bool checked,
-      String profileImage) async {
+      String profileImage,
+      List<int> coupons,
+      int verificationLimit) async {
     try {
       firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth.instance
@@ -139,7 +142,9 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       'created': created,
       'checked': checked,
       'recreatCount': recreatCount,
-      'profileImage': profileImage
+      'profileImage': profileImage,
+      'coupons': coupons,
+      'verificationLimit': verificationLimit
     });
   }
 

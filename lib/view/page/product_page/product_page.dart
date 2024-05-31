@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myk_market_app/data/model/sales_model.dart';
 import 'package:myk_market_app/utils/gif_progress_bar.dart';
 import 'package:myk_market_app/view/page/product_page/product_image_widget.dart';
 import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
@@ -60,80 +61,105 @@ class _ProductPageState extends State<ProductPage> {
                 topLeft: Radius.circular(32), topRight: Radius.circular(32)),
             child: Container(
               color: const Color(0xFFFFF8E7),
-              child:(state.isLoading)
+              child: (state.isLoading)
                   ? Center(
-                child: GifProgressBar(),
-              )
+                      child: GifProgressBar(),
+                    )
                   : Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        onChanged: viewModel.onChanged,
-                        controller: filterController,
-                        decoration: InputDecoration(
-                          // filled: true,
-                          // fillColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(40),
-                            borderSide: const BorderSide(width: 2),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(40),
-                            borderSide: const BorderSide(width: 2),
-                          ),
-                          hintText: '찾으시는 상품을 검색하세요',
-                          suffixIcon: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.search,
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              onChanged: viewModel.onChanged,
+                              controller: filterController,
+                              decoration: InputDecoration(
+                                // filled: true,
+                                // fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide: const BorderSide(width: 2),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                  borderSide: const BorderSide(width: 2),
+                                ),
+                                hintText: '찾으시는 상품을 검색하세요',
+                                suffixIcon: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.search,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: Divider(),
+                          ),
+                          const Text('상품 목록'),
+                          const Divider(),
+                          // Text( '${state.products.length}'),
+                          (state.isLoading)
+                              ? Expanded(child: Center(child: GifProgressBar()))
+                              : Expanded(
+                                  child: GridView.builder(
+                                    physics: const BouncingScrollPhysics(),
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      // mainAxisSpacing: 32,
+                                      crossAxisSpacing: 32,
+                                    ),
+                                    itemCount: viewModel.products.length,
+                                    itemBuilder: (context, index) {
+                                      return FutureBuilder<SalesModel?>(
+                                          future: viewModel.getSalesContent(
+                                              viewModel
+                                                  .products[index].salesId),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                  child: GifProgressBar());
+                                            } else if (snapshot.hasError) {
+                                              return Center(
+                                                  child: Text(
+                                                      'Error: ${snapshot.error}'));
+                                            } else {
+                                              final salesContent =
+                                                  snapshot.data;
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  context.push(
+                                                      '/product_detail_page',
+                                                      extra: {
+                                                        'product': viewModel
+                                                            .products[index],
+                                                        'navSetState':
+                                                            widget.navSetState,
+                                                        'hideNavBar':
+                                                            widget.hideNavBar,
+                                                        'salesContent':
+                                                            salesContent
+                                                      });
+                                                },
+                                                child: ProductImageWidget(
+                                                  product:
+                                                      viewModel.products[index],
+                                                  salesContent: salesContent,
+                                                ),
+                                              );
+                                            }
+                                          });
+                                    },
+                                  ),
+                                ),
+                        ],
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 8.0),
-                      child: Divider(),
-                    ),
-                    const Text('상품 목록'),
-                    const Divider(),
-                    // Text( '${state.products.length}'),
-                    (state.isLoading)
-                        ? Expanded(
-                            child: Center(child: GifProgressBar()))
-                        : Expanded(
-                            child: GridView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 32,
-                                crossAxisSpacing: 32,
-                              ),
-                              itemCount: viewModel.products.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    context
-                                        .push('/product_detail_page', extra: {
-                                      'product': viewModel.products[index],
-                                      'navSetState': widget.navSetState,
-                                      'hideNavBar': widget.hideNavBar
-                                    });
-                                  },
-                                  child: ProductImageWidget(
-                                    product: viewModel.products[index],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                  ],
-                ),
-              ),
             ),
           ),
         ),

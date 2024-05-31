@@ -1,3 +1,4 @@
+import '../data/model/coupons_model.dart';
 import '../data/model/user_model.dart';
 
 abstract interface class UserRepository {
@@ -8,4 +9,6 @@ abstract interface class UserRepository {
   Future<List<String>> getUsedEmails();
 
   Future<void> addEmailToFirestore(String email);
+
+  Future<CouponsModel?> getCoupon(int couponId);
 }
