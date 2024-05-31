@@ -30,6 +30,8 @@ mixin _$OrderModel {
   String get representativeImage => throw _privateConstructorUsedError;
   @JsonKey(name: 'price')
   String get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deliveryCostByOrder')
+  num get deliveryCostByOrder => throw _privateConstructorUsedError;
   @JsonKey(name: 'count')
   int get count => throw _privateConstructorUsedError;
   @JsonKey(name: 'salesId')
@@ -80,6 +82,7 @@ abstract class $OrderModelCopyWith<$Res> {
       @JsonKey(name: 'orderProductName') String orderProductName,
       @JsonKey(name: 'representativeImage') String representativeImage,
       @JsonKey(name: 'price') String price,
+      @JsonKey(name: 'deliveryCostByOrder') num deliveryCostByOrder,
       @JsonKey(name: 'count') int count,
       @JsonKey(name: 'salesId') int salesId,
       @JsonKey(name: 'orderedDate') String? orderedDate,
@@ -116,6 +119,7 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
     Object? orderProductName = null,
     Object? representativeImage = null,
     Object? price = null,
+    Object? deliveryCostByOrder = null,
     Object? count = null,
     Object? salesId = null,
     Object? orderedDate = freezed,
@@ -153,6 +157,10 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String,
+      deliveryCostByOrder: null == deliveryCostByOrder
+          ? _value.deliveryCostByOrder
+          : deliveryCostByOrder // ignore: cast_nullable_to_non_nullable
+              as num,
       count: null == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -231,6 +239,7 @@ abstract class _$$OrderModelImplCopyWith<$Res>
       @JsonKey(name: 'orderProductName') String orderProductName,
       @JsonKey(name: 'representativeImage') String representativeImage,
       @JsonKey(name: 'price') String price,
+      @JsonKey(name: 'deliveryCostByOrder') num deliveryCostByOrder,
       @JsonKey(name: 'count') int count,
       @JsonKey(name: 'salesId') int salesId,
       @JsonKey(name: 'orderedDate') String? orderedDate,
@@ -265,6 +274,7 @@ class __$$OrderModelImplCopyWithImpl<$Res>
     Object? orderProductName = null,
     Object? representativeImage = null,
     Object? price = null,
+    Object? deliveryCostByOrder = null,
     Object? count = null,
     Object? salesId = null,
     Object? orderedDate = freezed,
@@ -302,6 +312,10 @@ class __$$OrderModelImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String,
+      deliveryCostByOrder: null == deliveryCostByOrder
+          ? _value.deliveryCostByOrder
+          : deliveryCostByOrder // ignore: cast_nullable_to_non_nullable
+              as num,
       count: null == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -375,6 +389,7 @@ class _$OrderModelImpl implements _OrderModel {
       @JsonKey(name: 'orderProductName') required this.orderProductName,
       @JsonKey(name: 'representativeImage') required this.representativeImage,
       @JsonKey(name: 'price') required this.price,
+      @JsonKey(name: 'deliveryCostByOrder') required this.deliveryCostByOrder,
       @JsonKey(name: 'count') required this.count,
       @JsonKey(name: 'salesId') required this.salesId,
       @JsonKey(name: 'orderedDate') this.orderedDate,
@@ -410,6 +425,9 @@ class _$OrderModelImpl implements _OrderModel {
   @override
   @JsonKey(name: 'price')
   final String price;
+  @override
+  @JsonKey(name: 'deliveryCostByOrder')
+  final num deliveryCostByOrder;
   @override
   @JsonKey(name: 'count')
   final int count;
@@ -459,7 +477,7 @@ class _$OrderModelImpl implements _OrderModel {
 
   @override
   String toString() {
-    return 'OrderModel(orderId: $orderId, productId: $productId, orderProductName: $orderProductName, representativeImage: $representativeImage, price: $price, count: $count, salesId: $salesId, orderedDate: $orderedDate, usedCouponPriceInOrder: $usedCouponPriceInOrder, personalInfoForDeliverChecked: $personalInfoForDeliverChecked, ordererId: $ordererId, ordererName: $ordererName, ordererPhoneNo: $ordererPhoneNo, ordererAddress: $ordererAddress, ordererAddressDetail: $ordererAddressDetail, ordererPostcode: $ordererPostcode, payAndStatus: $payAndStatus, payAmount: $payAmount, paymentDate: $paymentDate, deletedDate: $deletedDate)';
+    return 'OrderModel(orderId: $orderId, productId: $productId, orderProductName: $orderProductName, representativeImage: $representativeImage, price: $price, deliveryCostByOrder: $deliveryCostByOrder, count: $count, salesId: $salesId, orderedDate: $orderedDate, usedCouponPriceInOrder: $usedCouponPriceInOrder, personalInfoForDeliverChecked: $personalInfoForDeliverChecked, ordererId: $ordererId, ordererName: $ordererName, ordererPhoneNo: $ordererPhoneNo, ordererAddress: $ordererAddress, ordererAddressDetail: $ordererAddressDetail, ordererPostcode: $ordererPostcode, payAndStatus: $payAndStatus, payAmount: $payAmount, paymentDate: $paymentDate, deletedDate: $deletedDate)';
   }
 
   @override
@@ -475,6 +493,8 @@ class _$OrderModelImpl implements _OrderModel {
             (identical(other.representativeImage, representativeImage) ||
                 other.representativeImage == representativeImage) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.deliveryCostByOrder, deliveryCostByOrder) ||
+                other.deliveryCostByOrder == deliveryCostByOrder) &&
             (identical(other.count, count) || other.count == count) &&
             (identical(other.salesId, salesId) || other.salesId == salesId) &&
             (identical(other.orderedDate, orderedDate) ||
@@ -516,6 +536,7 @@ class _$OrderModelImpl implements _OrderModel {
         orderProductName,
         representativeImage,
         price,
+        deliveryCostByOrder,
         count,
         salesId,
         orderedDate,
@@ -555,6 +576,8 @@ abstract class _OrderModel implements OrderModel {
       @JsonKey(name: 'representativeImage')
       required final String representativeImage,
       @JsonKey(name: 'price') required final String price,
+      @JsonKey(name: 'deliveryCostByOrder')
+      required final num deliveryCostByOrder,
       @JsonKey(name: 'count') required final int count,
       @JsonKey(name: 'salesId') required final int salesId,
       @JsonKey(name: 'orderedDate') final String? orderedDate,
@@ -592,6 +615,9 @@ abstract class _OrderModel implements OrderModel {
   @override
   @JsonKey(name: 'price')
   String get price;
+  @override
+  @JsonKey(name: 'deliveryCostByOrder')
+  num get deliveryCostByOrder;
   @override
   @JsonKey(name: 'count')
   int get count;

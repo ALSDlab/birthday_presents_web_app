@@ -14,6 +14,7 @@ abstract class OrderModel with _$OrderModel {
     @JsonKey(name: 'orderProductName') required String orderProductName,
     @JsonKey(name: 'representativeImage') required String representativeImage,
     @JsonKey(name: 'price') required String price,
+    @JsonKey(name: 'deliveryCostByOrder') required num deliveryCostByOrder,
     @JsonKey(name: 'count') required int count,
     @JsonKey(name: 'salesId') required int salesId,
     @JsonKey(name: 'orderedDate') String? orderedDate,

@@ -180,6 +180,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
           'representativeImage': item.representativeImage,
           'price': item.price,
           'count': item.count,
+          'deliveryCostByOrder': item.deliveryCostByOrder,
           'salesId': item.salesId,
           'orderedDate': item.orderedDate,
           'usedCouponPriceInOrder': (selectedCoupon == null)

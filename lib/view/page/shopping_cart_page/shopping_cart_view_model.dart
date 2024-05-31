@@ -32,7 +32,7 @@ class ShoppingCartViewModel extends ChangeNotifier {
     return resultList.length;
   }
 
-  Future<SalesModel?> getSalesContent (int saleId) async {
+  Future<SalesModel?> getSalesContent(int saleId) async {
     SalesModel? salesContent = await repository.getSales(saleId);
     return salesContent;
   }
@@ -163,6 +163,12 @@ class ShoppingCartViewModel extends ChangeNotifier {
         DateTime.now().toString().substring(2, 10).replaceAll('-', '');
 
     final String newOrderId = generateLicensePlate(createdDate);
+    final num deliveryCostByOrder = (list.isNotEmpty)
+        ? list
+            .fold(list.first.deliveryCost,
+                (e, v) => (e > v.deliveryCost) ? v.deliveryCost : e)
+            .toInt()
+        : 0;
 
     for (int i = 0; i < list.length; i++) {
       final OrderModel directOrderItem = OrderModel(
@@ -171,6 +177,7 @@ class ShoppingCartViewModel extends ChangeNotifier {
         orderProductName: list[i].orderProductName,
         representativeImage: list[i].representativeImage,
         price: list[i].price,
+        deliveryCostByOrder: deliveryCostByOrder,
         count: list[i].count,
         salesId: list[i].salesId,
         orderedDate: createdDate,

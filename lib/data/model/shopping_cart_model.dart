@@ -3,6 +3,7 @@ class ShoppingProductForCart {
   String productId;
   String orderProductName;
   String price;
+  num deliveryCost;
   String representativeImage;
   int count;
   int salesId;
@@ -15,6 +16,7 @@ class ShoppingProductForCart {
     required this.productId,
     required this.orderProductName,
     required this.price,
+    required this.deliveryCost,
     required this.representativeImage,
     required this.count,
     required this.salesId,
@@ -30,6 +32,7 @@ class ShoppingProductForCart {
           productId == other.productId &&
           orderProductName == other.orderProductName &&
           price == other.price &&
+          deliveryCost == other.deliveryCost &&
           representativeImage == other.representativeImage &&
           count == other.count &&
           salesId == other.salesId &&
@@ -41,6 +44,7 @@ class ShoppingProductForCart {
       productId.hashCode ^
       orderProductName.hashCode ^
       price.hashCode ^
+      deliveryCost.hashCode ^
       representativeImage.hashCode ^
       count.hashCode ^
       salesId.hashCode ^
@@ -48,7 +52,7 @@ class ShoppingProductForCart {
 
   @override
   String toString() {
-    return 'ShoppingProductForCart{ orderId: $orderId, productId: $productId, orderProductName: $orderProductName, price: $price, representativeImage: $representativeImage, count: $count, salesId: $salesId, isChecked: $isChecked,}';
+    return 'ShoppingProductForCart{ orderId: $orderId, productId: $productId, orderProductName: $orderProductName, price: $price, deliveryCost: $deliveryCost, representativeImage: $representativeImage, count: $count, salesId: $salesId, isChecked: $isChecked,}';
   }
 
   ShoppingProductForCart copyWith({
@@ -56,6 +60,7 @@ class ShoppingProductForCart {
     String? productId,
     String? orderProductName,
     String? price,
+    num? deliveryCost,
     String? representativeImage,
     int? count,
     int? salesId,
@@ -66,6 +71,7 @@ class ShoppingProductForCart {
       productId: productId ?? this.productId,
       orderProductName: orderProductName ?? this.orderProductName,
       price: price ?? this.price,
+      deliveryCost: deliveryCost ?? this.deliveryCost,
       representativeImage: representativeImage ?? this.representativeImage,
       count: count ?? this.count,
       salesId: count ?? this.salesId,
@@ -79,6 +85,7 @@ class ShoppingProductForCart {
       'productId': productId,
       'orderProductName': orderProductName,
       'price': price,
+      'deliveryCost': deliveryCost,
       'representativeImage': representativeImage,
       'count': count,
       'salesId': salesId,
@@ -92,6 +99,7 @@ class ShoppingProductForCart {
       productId: map['productId'] as String,
       orderProductName: map['orderProductName'] as String,
       price: map['price'] as String,
+      deliveryCost: map['deliveryCost'] as num,
       representativeImage: map['representativeImage'] as String,
       count: map['count'] as int,
       salesId: map['salesId'] as int,

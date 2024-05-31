@@ -147,49 +147,60 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             widget.product.representativeImage,
                                         fit: BoxFit.cover,
                                       ),
-
                                       MarketingExpression(
-                                          visible: (widget.product.salesId >= 0),
-                                          borderRadius: const BorderRadius.only(topLeft: Radius.zero),
+                                          visible:
+                                              (widget.product.salesId >= 0),
+                                          borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.zero),
                                           child: (widget.product.salesId == 0)
                                               ? Image.asset(
-                                            'assets/gifs/hot_expression.gif',
-                                            width: (kIsWeb) ? 100 : 80,
-                                            height: (kIsWeb) ? 100 : 80,
-                                            fit: BoxFit.cover,
-                                          )
+                                                  'assets/gifs/hot_expression.gif',
+                                                  width: (kIsWeb) ? 100 : 80,
+                                                  height: (kIsWeb) ? 100 : 80,
+                                                  fit: BoxFit.cover,
+                                                )
                                               :
-                                          // (0 < product.salesId && product.salesId <= 100) ?
-                                          Text((widget.salesContent != null)
-                                              ?
-                                          (widget.salesContent!.salesAmount > 0 &&
-                                                widget.salesContent!.salesRate <= 0)
-                                                ? ' ${widget.salesContent!.salesAmount}원 할인'
-                                                : ' ${widget.salesContent!.salesRate}% 세일 ' : '',
-                                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900,
-                                                color: Colors.white, backgroundColor: Color(0xffb158ff)),
+                                              // (0 < product.salesId && product.salesId <= 100) ?
+                                              Text(
+                                                  (widget.salesContent != null)
+                                                      ? (widget.salesContent!
+                                                                      .salesAmount >
+                                                                  0 &&
+                                                              widget.salesContent!
+                                                                      .salesRate <=
+                                                                  0)
+                                                          ? ' ${widget.salesContent!.salesAmount}원 할인'
+                                                          : ' ${widget.salesContent!.salesRate}% 세일 '
+                                                      : '',
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: Colors.white,
+                                                      backgroundColor:
+                                                          Color(0xffb158ff)),
+                                                )
+                                          // : Row(
+                                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                                          //     children: [
+                                          //       Text(
+                                          //         (salesContent!.salesAmount > 0 &&
+                                          //                 salesContent!.salesRate <= 0)
+                                          //             ? ' ${salesContent!.salesAmount}원 할인 '
+                                          //             : '${salesContent!.salesRate}% 세일',
+                                          //         style: const TextStyle(
+                                          //             color: Colors.white,
+                                          //             backgroundColor: Colors.red),
+                                          //       ),
+                                          //       Image.asset(
+                                          //         'assets/gifs/hot_expression.gif',
+                                          //         width: (kIsWeb) ? 100 : 80,
+                                          //         height: (kIsWeb) ? 100 : 80,
+                                          //         fit: BoxFit.cover,
+                                          //       )
+                                          //     ],
+                                          //   )
                                           )
-                                        // : Row(
-                                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                                        //     children: [
-                                        //       Text(
-                                        //         (salesContent!.salesAmount > 0 &&
-                                        //                 salesContent!.salesRate <= 0)
-                                        //             ? ' ${salesContent!.salesAmount}원 할인 '
-                                        //             : '${salesContent!.salesRate}% 세일',
-                                        //         style: const TextStyle(
-                                        //             color: Colors.white,
-                                        //             backgroundColor: Colors.red),
-                                        //       ),
-                                        //       Image.asset(
-                                        //         'assets/gifs/hot_expression.gif',
-                                        //         width: (kIsWeb) ? 100 : 80,
-                                        //         height: (kIsWeb) ? 100 : 80,
-                                        //         fit: BoxFit.cover,
-                                        //       )
-                                        //     ],
-                                        //   )
-                                      )
                                     ],
                                   ),
                                 ),
@@ -279,7 +290,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        widget.product.delivery,
+                                        (widget.product.deliveryCost != 0)
+                                            ? '${NumberFormat('###,###,###,###').format(widget.product.deliveryCost)} 원'
+                                            : '무료 배송',
                                         style: const TextStyle(
                                           color: Color(0xFF555555),
                                         ),
@@ -486,25 +499,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                             Text(
                                                                 '수량 ${viewModel.cartCount}개'),
                                                             Text(
-                                                              '${NumberFormat(
-                                                                  '###,###,###,###')
-                                                                  .format(viewModel
-                                                                  .cartCount *
-                                                                  int.parse((widget
-                                                                      .salesContent !=
-                                                                      null)
-                                                                      ? deCalculatedPrice(
-                                                                      widget.product
-                                                                          .price,
-                                                                      widget
-                                                                          .salesContent!)
-                                                                      .replaceAll(
-                                                                      ',', '')
-                                                                      : widget.product
-                                                                      .price
-                                                                      .replaceAll(
-                                                                      ',', '')))
-                                                              }원',
+                                                              '${NumberFormat('###,###,###,###').format(viewModel.cartCount * int.parse((widget.salesContent != null) ? deCalculatedPrice(widget.product.price, widget.salesContent!).replaceAll(',', '') : widget.product.price.replaceAll(',', '')))}원',
                                                             ),
                                                           ],
                                                         ),
@@ -560,6 +555,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                   price: widget
                                                                       .product
                                                                       .price,
+                                                                  deliveryCost: widget
+                                                                      .product
+                                                                      .deliveryCost,
                                                                   representativeImage:
                                                                       widget
                                                                           .product
@@ -839,9 +837,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                                   price: widget
                                                                       .product
                                                                       .price,
+                                                                  deliveryCostByOrder: widget
+                                                                      .product
+                                                                      .deliveryCost,
                                                                   count: viewModel
                                                                       .purchaseCount,
-                                                                  salesId: widget.product.salesId,
+                                                                  salesId: widget
+                                                                      .product
+                                                                      .salesId,
                                                                   orderedDate:
                                                                       createdDate,
                                                                   payAndStatus:
@@ -915,7 +918,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       if (saleContent.salesRate <= 0 && saleContent.salesAmount > 0) {
         resultPrice = resultPrice - saleContent.salesAmount;
       } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
-        resultPrice = (resultPrice * (100 - saleContent.salesRate) / 100).round();
+        resultPrice =
+            (resultPrice * (100 - saleContent.salesRate) / 100).round();
       }
     }
     return NumberFormat('###,###,###,###').format(resultPrice);

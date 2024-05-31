@@ -13,10 +13,10 @@ class ProductModel with _$ProductModel {
     @JsonKey(name: 'representativeImage') required String representativeImage,
     @JsonKey(name: 'price') required String price,
     @JsonKey(name: 'title') required String title,
-    @JsonKey(name: 'delivery') required String delivery,
     @JsonKey(name: 'ingredients') required String ingredients,
     @JsonKey(name: 'images') required List<String> images,
     @JsonKey(name: 'salesId') required int salesId,
+    @JsonKey(name: 'deliveryCost') required num deliveryCost,
 
 
 

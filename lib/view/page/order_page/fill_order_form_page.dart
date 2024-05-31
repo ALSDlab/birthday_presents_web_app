@@ -933,8 +933,6 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                               .toString()
                                               .substring(2, 10)
                                               .replaceAll('-', '');
-
-
                                           final ordererId = viewModel
                                                   .currentUser.isEmpty
                                               ? 'notRegistered'
