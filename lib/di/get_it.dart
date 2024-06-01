@@ -29,7 +29,7 @@ void diSetup() {
   // ViewModel
   getIt
     ..registerFactory<PayPageViewModel>(
-        () => PayPageViewModel(orderRepository: getIt<OrderRepository>()))
+        () => PayPageViewModel(orderRepository: getIt<OrderRepository>(), userRepository: getIt<UserRepository>(),))
     ..registerFactory<FillOrderFormPageViewModel>(() =>
         FillOrderFormPageViewModel(userRepository: getIt<UserRepository>()))
     ..registerFactory<FindIdPasswordViewModel>(

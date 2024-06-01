@@ -732,22 +732,22 @@ class _SignupPageState extends State<SignupPage> {
                                               .validate()) {
                                             // _formKey.currentState?.save();
                                             await viewModel.saveUserInfo(
-                                              idController.text,
-                                              nameController.text,
-                                              passwordController.text,
-                                              phoneController.text,
-                                              postcodeController.text,
-                                              addressController.text,
-                                              extraAddressController.text,
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch,
-                                              0,
-                                              // 첫 회원가입시 '0'으로 함. 미로그인 상태에서 비밀번호 변경 시 기존데이터 삭제 후 1 추가하여 재가입하는 방식
-                                              widget
-                                                  .isPersonalInfoForDeliverChecked,
-                                              [],5
-
-                                            );
+                                                idController.text,
+                                                nameController.text,
+                                                passwordController.text,
+                                                phoneController.text,
+                                                postcodeController.text,
+                                                addressController.text,
+                                                extraAddressController.text,
+                                                DateTime.now()
+                                                    .millisecondsSinceEpoch,
+                                                0,
+                                                // 첫 회원가입시 '0'으로 함. 미로그인 상태에서 비밀번호 변경 시 기존데이터 삭제 후 1 추가하여 재가입하는 방식
+                                                widget
+                                                    .isPersonalInfoForDeliverChecked,
+                                                [],
+                                                0,
+                                                5);
                                             FirebaseAuth.instance.signOut();
                                             if (context.mounted) {
                                               showDialog(

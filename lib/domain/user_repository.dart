@@ -11,4 +11,8 @@ abstract interface class UserRepository {
   Future<void> addEmailToFirestore(String email);
 
   Future<CouponsModel?> getCoupon(int couponId);
+
+  Future<void> deleteUsedCoupon(String userId, int? usedCouponId);
+
+  Future<void> renewCouponCount(String userId);
 }

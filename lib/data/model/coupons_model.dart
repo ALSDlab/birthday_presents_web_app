@@ -13,6 +13,8 @@ class CouponsModel with _$CouponsModel {
     @JsonKey(name: 'couponName') required String couponName,
     @JsonKey(name: 'dcAmount') required int dcAmount,
     @JsonKey(name: 'dcRate') required num dcRate,
+    @JsonKey(name: 'createdDate') required String createdDate,
+    @JsonKey(name: 'validDays') required int validDays,
 
   }) = _CouponsModel;
 

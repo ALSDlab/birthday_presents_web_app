@@ -665,43 +665,47 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                             // _formKey.currentState?.save();
                                             // 정보변경여부 확인
                                             if (viewModel.checkUpdated()) {
-                                              final UserModel updatedUserInfo = UserModel(
-                                                  name: viewModel
-                                                      .controllers['name']!
-                                                      .text,
-                                                  id: viewModel
-                                                      .currentUser.first.id,
-                                                  postcode: viewModel
-                                                      .controllers['postcode']!
-                                                      .text,
-                                                  phone: viewModel
-                                                      .controllers['phone']!
-                                                      .text,
-                                                  address: viewModel
-                                                      .controllers['address']!
-                                                      .text,
-                                                  addressDetail: viewModel
-                                                      .controllers[
-                                                          'addressDetail']!
-                                                      .text,
-                                                  checked: viewModel.currentUser
-                                                      .first.checked,
-                                                  created: viewModel.currentUser
-                                                      .first.created,
-                                                  recreatCount: viewModel
-                                                      .currentUser
-                                                      .first
-                                                      .recreatCount,
-                                                  profileImage: viewModel
-                                                      .currentUser
-                                                      .first
-                                                      .profileImage,
-                                                  coupons: viewModel.currentUser
-                                                      .first.coupons,
-                                                  verificationLimit: viewModel
-                                                      .currentUser
-                                                      .first
-                                                      .verificationLimit);
+                                              final UserModel updatedUserInfo =
+                                                  UserModel(
+                                                name: viewModel
+                                                    .controllers['name']!.text,
+                                                id: viewModel
+                                                    .currentUser.first.id,
+                                                postcode: viewModel
+                                                    .controllers['postcode']!
+                                                    .text,
+                                                phone: viewModel
+                                                    .controllers['phone']!.text,
+                                                address: viewModel
+                                                    .controllers['address']!
+                                                    .text,
+                                                addressDetail: viewModel
+                                                    .controllers[
+                                                        'addressDetail']!
+                                                    .text,
+                                                checked: viewModel
+                                                    .currentUser.first.checked,
+                                                created: viewModel
+                                                    .currentUser.first.created,
+                                                recreatCount: viewModel
+                                                    .currentUser
+                                                    .first
+                                                    .recreatCount,
+                                                profileImage: viewModel
+                                                    .currentUser
+                                                    .first
+                                                    .profileImage,
+                                                coupons: viewModel
+                                                    .currentUser.first.coupons,
+                                                lastCouponCount: viewModel
+                                                    .currentUser
+                                                    .first
+                                                    .lastCouponCount,
+                                                verificationLimit: viewModel
+                                                    .currentUser
+                                                    .first
+                                                    .verificationLimit,
+                                              );
                                               await viewModel.updateUserInfo(
                                                   updatedUserInfo);
                                               if (context.mounted) {

@@ -2,8 +2,6 @@ import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:myk_market_app/data/model/coupons_model.dart';
-import 'package:myk_market_app/view/page/order_history_page/order_history_page_view_model.dart';
 import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
 import 'package:myk_market_app/view/page/signup_page/platform_check/check_file.dart'
     as check;
@@ -42,7 +40,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
   bool isPersonalInfoForDeliverOpened = false;
   bool inevitableChecked = false;
   bool moreDataNeed = false;
-  CouponsModel? selectedCoupon;
+
   SalesModel? salesContent;
 
   final _formKey = GlobalKey<FormState>();
@@ -56,7 +54,6 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
   ];
 
   Map<int, dynamic> errorControllers = {0: null, 1: null};
-  List<CouponsModel?> myCouponList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -771,75 +768,6 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                       ),
                                     ],
                                   )
-                                else
-                                  Container(
-                                    margin: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          spreadRadius: 2,
-                                          blurRadius: 3,
-                                          offset: const Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    padding: const EdgeInsets.all(3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, right: 8.0),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            '쿠폰 사용하기',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 50,
-                                          ),
-                                          Expanded(
-                                            child: DropdownButton(
-                                              value: selectedCoupon,
-                                              items: viewModel.myCouponList
-                                                  .map((e) {
-                                                return DropdownMenuItem(
-                                                    value: e,
-                                                    child: (e != null)
-                                                        ? Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                  e.couponName),
-                                                              const SizedBox(
-                                                                width: 30,
-                                                              ),
-                                                              Text((e.dcAmount >
-                                                                      0)
-                                                                  ? '${e.dcAmount} 원'
-                                                                  : '${e.dcRate} %')
-                                                            ],
-                                                          )
-                                                        : const Text('사용안함'));
-                                              }).toList(),
-                                              onChanged: (value) {
-                                                // items 의 DropdownMenuItem 의 value 반환
-                                                setState(() {
-                                                  selectedCoupon =
-                                                      value as CouponsModel?;
-                                                });
-                                              },
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
                               ],
                             ),
                           ),
@@ -954,11 +882,10 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                           final ordererAddressDetail = viewModel
                                               .controllers['extraAddress']
                                               ?.text;
-                                          for (OrderModel item in widget.forOrderItems) {
+                                          for (OrderModel item
+                                              in widget.forOrderItems) {
                                             await viewModel.saveOrdersInfo(
-                                              selectedCoupon,
                                               item,
-                                              widget.forOrderItems.length,
                                               orderedDate,
                                               personalInfoForDeliverChecked,
                                               ordererId,
@@ -969,8 +896,6 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                               ordererPostcode!,
                                             );
                                           }
-
-
 
                                           // ShoppingCart에서 주문서작성 아이템 비우기
                                           if (widget.navSetState != null) {

@@ -6,6 +6,7 @@ import 'package:myk_market_app/view/page/pay_page/pay_address_widget.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/model/coupons_model.dart';
 import '../../../data/model/sales_model.dart';
 import '../../../utils/gif_progress_bar.dart';
 import '../order_page/for_order_list_widget.dart';
@@ -31,6 +32,8 @@ class _PayPageState extends State<PayPage> {
   bool isCalculating = false;
   Map<String, SalesModel?> salesContentsList = {};
   num salePrice = 0;
+  CouponsModel? selectedCoupon;
+  List<CouponsModel?> myCouponList = [];
 
   @override
   void initState() {
@@ -158,7 +161,11 @@ class _PayPageState extends State<PayPage> {
                                       );
                                     },
                                   ),
-                                  const Divider(indent: 30, endIndent: 30, height: 0.2,),
+                                  const Divider(
+                                    indent: 30,
+                                    endIndent: 30,
+                                    height: 0.2,
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 16.0, right: 16),
@@ -206,7 +213,7 @@ class _PayPageState extends State<PayPage> {
                                               style: TextStyle(fontSize: 12),
                                             ),
                                             Text(
-                                              '- ${NumberFormat('###,###,###,###').format((state.orderItems.isNotEmpty) ? state.orderItems.fold(0, (e, v) => e + v.usedCouponPriceInOrder!.toInt()) : 0)} 원',
+                                              '- ${NumberFormat('###,###,###,###').format((state.orderItems.isNotEmpty) ? viewModel.dcResult : 0)} 원',
                                               style:
                                                   const TextStyle(fontSize: 12),
                                             )
@@ -238,7 +245,7 @@ class _PayPageState extends State<PayPage> {
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             Text(
-                                              '${NumberFormat('###,###,###,###').format(state.orderItems.fold(0, (e, v) => e + v.payAmount! - v.usedCouponPriceInOrder!.toInt()))} 원',
+                                              '${NumberFormat('###,###,###,###').format((state.orderItems.fold(0, (e, v) => e + v.payAmount!) - viewModel.dcResult).toInt())} 원',
                                               style: const TextStyle(
                                                   color: Color(0xFF019934),
                                                   fontSize: 16),
@@ -246,6 +253,97 @@ class _PayPageState extends State<PayPage> {
                                           ],
                                         ),
                                       ],
+                                    ),
+                                  ),
+                                  const Divider(),
+                                  Container(
+                                    margin: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 2,
+                                          blurRadius: 3,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    padding: const EdgeInsets.all(3),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                            '쿠폰 사용',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          (viewModel.myCouponList.length == 1)
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: Container(
+                                                      color: const Color(
+                                                          0xFFcacaca),
+                                                      child: const Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8.0),
+                                                        child: Text(
+                                                            '- 보유중인 쿠폰이 없습니다.'),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : DropdownButton(
+                                                  value: selectedCoupon,
+                                                  items: viewModel.myCouponList
+                                                      .map((e) {
+                                                    return DropdownMenuItem(
+                                                        value: e,
+                                                        child: (e != null)
+                                                            ? Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(e
+                                                                      .couponName),
+                                                                  const SizedBox(
+                                                                    width: 30,
+                                                                  ),
+                                                                  Text((e.dcAmount >
+                                                                          0)
+                                                                      ? '${e.dcAmount} 원'
+                                                                      : '${e.dcRate} %')
+                                                                ],
+                                                              )
+                                                            : const Text(
+                                                                '사용안함'));
+                                                  }).toList(),
+                                                  onChanged: (value) {
+                                                    // items 의 DropdownMenuItem 의 value 반환
+                                                    setState(() {
+                                                      selectedCoupon = value
+                                                          as CouponsModel?;
+                                                    });
+                                                    viewModel
+                                                        .calculateDcByCoupon(
+                                                            state.orderItems,
+                                                            selectedCoupon);
+                                                  },
+                                                )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   const Divider(),
@@ -371,10 +469,10 @@ class _PayPageState extends State<PayPage> {
                                                         0,
                                                         (e, v) =>
                                                             e + v.payAmount!) -
-                                                    state.orderItems.first
-                                                        .usedCouponPriceInOrder! +
+                                                    viewModel.dcResult +
                                                     state.orderItems.first
                                                         .deliveryCostByOrder,
+                                                selectedCoupon?.couponId,
                                                 widget.hideNavBar);
                                           }
                                         },

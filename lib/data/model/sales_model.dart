@@ -14,6 +14,9 @@ class SalesModel with _$SalesModel {
     @JsonKey(name: 'salesName') required String salesName,
     @JsonKey(name: 'salesAmount') required int salesAmount,
     @JsonKey(name: 'salesRate') required num salesRate,
+    @JsonKey(name: 'startDate') required String startDate,
+    @JsonKey(name: 'endDate') required String endDate,
+
 
 
   }) = _SalesModel;

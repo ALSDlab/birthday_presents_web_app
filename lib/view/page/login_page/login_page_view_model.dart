@@ -61,10 +61,14 @@ class LoginPageViewModel with ChangeNotifier {
                       Navigator.pop(context);
                     },
                     title: '안녕하세요, ${currentUser.first.name} 고객님',
-                    subtitle: '로그인 되었습니다.',
+                    subtitle: (currentUser.first.lastCouponCount <
+                            currentUser.first.coupons.length)
+                        ? '새 쿠폰이 지급되었습니다!!'
+                        : '로그인 되었습니다.',
                     firstButton: '확인',
                     imagePath: 'assets/gifs/success.gif');
               });
+          await userRepository.renewCouponCount(currentUser.first.id);
         }
         context.go('/main_page');
       }

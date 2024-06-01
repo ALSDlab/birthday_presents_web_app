@@ -18,7 +18,7 @@ abstract class OrderModel with _$OrderModel {
     @JsonKey(name: 'count') required int count,
     @JsonKey(name: 'salesId') required int salesId,
     @JsonKey(name: 'orderedDate') String? orderedDate,
-    @JsonKey(name: 'usedCouponPriceInOrder') num? usedCouponPriceInOrder,
+    @JsonKey(name: 'usedCouponId') int? usedCouponId,
     @JsonKey(name: 'personalInfoForDeliverChecked')
     bool? personalInfoForDeliverChecked,
     @JsonKey(name: 'ordererId') String? ordererId,
@@ -30,8 +30,11 @@ abstract class OrderModel with _$OrderModel {
     @JsonKey(name: 'payAndStatus')
     int? payAndStatus, // -1: 결제실패, 0: 결제전, 1: 결제완료, 2: 결제취소, 3: 배송중, 4: 배송완료
     @JsonKey(name: 'payAmount') int? payAmount,
+    @JsonKey(name: 'actualPaymentByOrder') int? actualPaymentByOrder,
     @JsonKey(name: 'paymentDate') String? paymentDate,
     @JsonKey(name: 'deletedDate') String? deletedDate,
+
+
   }) = _OrderModel;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) =>

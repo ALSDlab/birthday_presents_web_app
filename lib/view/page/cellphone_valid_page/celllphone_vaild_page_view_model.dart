@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../utils/send_sms_widget.dart';
 import '../../../utils/simple_logger.dart';
 
 class CelllphoneVaildPageViewModel {
@@ -30,14 +31,15 @@ class CelllphoneVaildPageViewModel {
     return vNumber;
   }
 
-  Future<void> sendVerificationCode(String servicePhoneNo, String phoneNumber) async {
+  Future<void> sendVerificationCode(
+      String servicePhoneNo, String phoneNumber) async {
     await updateVerificationPhoneNo(verificationTriedNumber, phoneNumber);
 
     // 실제로 문자 메시지를 발송하는 메서드 호출
     verificationNumber = generateVerificationNo();
     debugPrint('[민영기염소탕] 인증번호\n[$verificationNumber]');
-    // sendSMS(
-    //     servicePhoneNo, phoneNumber, '[민영기염소탕] 인증번호\n[$verificationNumber]');
+    sendSMS(
+        servicePhoneNo, phoneNumber, '[민영기염소탕] 인증번호\n[$verificationNumber]');
 
     logger.info("Sending verification code...");
   }
@@ -72,7 +74,8 @@ class CelllphoneVaildPageViewModel {
   }
 
   // 저장된 데이터 추가 또는 신규저장
-  Future<void> updateVerificationPhoneNo(Map<String, int> myData, String phoneNumber) async {
+  Future<void> updateVerificationPhoneNo(
+      Map<String, int> myData, String phoneNumber) async {
     if (myData.containsKey(phoneNumber)) {
       myData[phoneNumber] = myData[phoneNumber]! + 1;
     } else {

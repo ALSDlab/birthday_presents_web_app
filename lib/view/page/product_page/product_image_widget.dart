@@ -37,7 +37,7 @@ class ProductImageWidget extends StatelessWidget {
             ),
             Text(
               (salesContent != null) ? salesContent!.salesName : '',
-              style: TextStyle(fontSize: 9.w, color: Colors.red),
+              style: TextStyle(fontSize: 8.w, color: Colors.red),
             ),
             Text(
               product.title,

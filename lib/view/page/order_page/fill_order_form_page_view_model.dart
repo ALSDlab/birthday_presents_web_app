@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daum_postcode_search/data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:myk_market_app/data/model/coupons_model.dart';
 import 'package:myk_market_app/data/model/order_model.dart';
 import 'package:myk_market_app/domain/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -82,10 +81,7 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       // logger.info(userId?.email!.replaceAll('@gmail.com', ''));
       currentUser = await userRepository.getFirebaseUserData(currentUserId);
       fillTextField();
-      for (int couponId in currentUser.first.coupons) {
-        CouponsModel? myCoupon = await getMyCoupon(couponId);
-        myCouponList.add(myCoupon!);
-      }
+
       notifyListeners();
     } catch (error) {
       // 에러 처리
@@ -138,19 +134,8 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
     return salesContent;
   }
 
-  Future<CouponsModel?> getMyCoupon(int couponId) async {
-    _state = state.copyWith(isLoading: true);
-    notifyListeners();
-    CouponsModel? myCoupon = await userRepository.getCoupon(couponId);
-    _state = state.copyWith(isLoading: false);
-    notifyListeners();
-    return myCoupon;
-  }
-
-  Future<bool> saveOrdersInfo(
-    CouponsModel? selectedCoupon,
+  Future<void> saveOrdersInfo(
     OrderModel item,
-    int itemsCount,
     String currentDate,
     bool personalInfoForDeliverChecked,
     String ordererId,
@@ -180,14 +165,8 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
           'representativeImage': item.representativeImage,
           'price': item.price,
           'count': item.count,
-          'deliveryCostByOrder': item.deliveryCostByOrder,
           'salesId': item.salesId,
           'orderedDate': item.orderedDate,
-          'usedCouponPriceInOrder': (selectedCoupon == null)
-              ? 0
-              : (selectedCoupon.dcAmount > 0)
-                  ? selectedCoupon.dcAmount / itemsCount
-                  : itemPayAmount * selectedCoupon.dcRate / 100,
           'personalInfoForDeliverChecked': personalInfoForDeliverChecked,
           'ordererId': ordererId,
           'ordererName': ordererName,
@@ -199,6 +178,9 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
           'payAmount': itemPayAmount,
           'paymentDate': '',
           'deletedDate': '',
+          'usedCouponId': -1,
+          'actualPaymentByOrder': 0,
+          'deliveryCostByOrder': item.deliveryCostByOrder,
         },
       );
     } catch (error) {
@@ -208,7 +190,6 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       _state = state.copyWith(isLoading: false);
       notifyListeners();
     }
-    return true;
   }
 
   String deCalculatedPrice(String originalPrice, SalesModel saleContent) {
@@ -217,7 +198,8 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       resultPrice = int.parse(originalPrice) - saleContent.salesAmount;
     } else if (saleContent.salesRate > 0 && saleContent.salesAmount <= 0) {
       resultPrice =
-          (int.parse(originalPrice) * (100 - saleContent.salesRate) / 100).round();
+          (int.parse(originalPrice) * (100 - saleContent.salesRate) / 100)
+              .round();
     }
     return resultPrice.toString();
   }

@@ -6,6 +6,7 @@ import 'package:bootpay/model/item.dart';
 import 'package:bootpay/model/payload.dart';
 import 'package:bootpay/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,16 +15,22 @@ import 'package:myk_market_app/domain/order_repository.dart';
 import 'package:myk_market_app/view/page/pay_page/pay_page_state.dart';
 import 'package:myk_market_app/view/widgets/one_answer_dialog.dart';
 
+import '../../../data/model/coupons_model.dart';
 import '../../../data/model/sales_model.dart';
+import '../../../data/model/user_model.dart';
 import '../../../data/repository/product_repository_impl.dart';
+import '../../../domain/user_repository.dart';
 import '../../../env/env.dart';
+import '../../../utils/send_sms_widget.dart';
 import '../../../utils/simple_logger.dart';
 
 class PayPageViewModel extends ChangeNotifier {
   ProductRepositoryImpl repository = ProductRepositoryImpl();
+  final UserRepository userRepository;
   final OrderRepository orderRepository;
 
   PayPageViewModel({
+    required this.userRepository,
     required this.orderRepository,
   });
 
@@ -32,7 +39,9 @@ class PayPageViewModel extends ChangeNotifier {
   PayPageState get state => _state;
 
   List<int> afterPayStatus = [];
-
+  List<UserModel> currentUser = [];
+  List myCouponList = [null];
+  int dcResult = 0;
 
   bool _disposed = false;
 
@@ -54,10 +63,24 @@ class PayPageViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final String userId = firebase_auth
+          .FirebaseAuth.instance.currentUser!.email!
+          .replaceAll('@gmail.com', '');
+      int dotIndex = userId.indexOf('.');
+      String currentUserId = userId.substring(dotIndex + 1);
+
+      // logger.info(userId?.email!.replaceAll('@gmail.com', ''));
+      currentUser = await userRepository.getFirebaseUserData(currentUserId);
       final myOrder =
           await orderRepository.getFirebaseOrdersByOrderNo(orderNumberForPay);
       // logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
+      if (currentUser.isNotEmpty) {
+        for (int couponId in currentUser.first.coupons) {
+          CouponsModel? myCoupon = await getMyCoupon(couponId);
+          myCouponList.add(myCoupon!);
+        }
+      }
 
       notifyListeners();
     } catch (error) {
@@ -69,22 +92,67 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
+  Future<Map<String, SalesModel?>> getSalesContentsList(
+      List<OrderModel> forOrderItems) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+    Map<String, SalesModel?> salesContentsList = {};
+    for (var product in forOrderItems) {
+      SalesModel? salesContent = await repository.getSales(product.salesId);
+      salesContentsList[product.productId] = salesContent;
+    }
+    _state = state.copyWith(isLoading: false);
+    notifyListeners();
+    return salesContentsList;
+  }
+
+  Future<CouponsModel?> getMyCoupon(int couponId) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+    CouponsModel? myCoupon = await userRepository.getCoupon(couponId);
+    _state = state.copyWith(isLoading: false);
+    notifyListeners();
+    return myCoupon;
+  }
+
+  // 쿠폰 적용으로 할인된 금액 계산
+  void calculateDcByCoupon(
+      List<OrderModel> orderItems, CouponsModel? selectedCoupon) {
+    if (selectedCoupon != null) {
+      if (orderItems.isNotEmpty && selectedCoupon.dcAmount <= 0) {
+        num result = orderItems.fold(
+            0, (e, v) {
+              return e + ((v.payAmount != null) ? v.payAmount! : 0) * selectedCoupon.dcRate / 100;
+            });
+        dcResult = result.round();
+      } else {
+        dcResult = selectedCoupon.dcAmount;
+      }
+    }
+  }
+
   Future<void> postPaidItems(
-      BuildContext context, List<OrderModel> orderItems, int payStatus) async {
+      BuildContext context, List<OrderModel> orderItems, int payStatus, int? usedCouponId, int actualPaymentByOrder) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
     try {
-      await Future.forEach(orderItems.asMap().entries, (entry) async {
-        final index = entry.key;
-        final item = entry.value;
+      for (OrderModel item in orderItems) {
         await FirebaseFirestore.instance
             .collection('orders')
             .doc(item.orderId + item.productId)
             .update({
           'payAndStatus': payStatus,
+          'usedCouponId': usedCouponId,
+          'actualPaymentByOrder': actualPaymentByOrder,
           'paymentDate': DateTime.now().toString().substring(0, 21)
         });
-      });
+      }
+      // 사용된 쿠폰 삭제기능
+      if (orderItems.first.ordererId != null) {
+        await userRepository.deleteUsedCoupon(orderItems.first.ordererId!, usedCouponId);
+      }
+
+      notifyListeners();
     } catch (error) {
       // 에러 처리
       logger.info('Error post payInfo: $error');
@@ -141,25 +209,8 @@ class PayPageViewModel extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, SalesModel?>> getSalesContentsList(List<OrderModel> forOrderItems) async {
-    _state = state.copyWith(isLoading: true);
-    notifyListeners();
-    Map<String, SalesModel?> salesContentsList = {};
-    for (var product in forOrderItems) {
-      SalesModel? salesContent = await repository.getSales(product.salesId);
-      salesContentsList[product.productId] = salesContent;
-    }
-    _state = state.copyWith(isLoading: false);
-    notifyListeners();
-    return salesContentsList;
-  }
-
-
-
-
-  void bootpayPayment(BuildContext context, List<OrderModel> orderItems, num totalPayment,
-      bool Function(bool) hideNavBar) {
-
+  void bootpayPayment(BuildContext context, List<OrderModel> orderItems,
+      num totalPayment, int? usedCouponId, bool Function(bool) hideNavBar) {
     Payload payload = getPayload(totalPayment);
     if (kIsWeb) {
       payload.extra!.openType = "iframe";
@@ -173,9 +224,9 @@ class PayPageViewModel extends ChangeNotifier {
       onCancel: (String data) {
         logger.info('------- onCancel: $data');
       },
-      onError: (String data) async{
+      onError: (String data) async {
         logger.info('------- onError: $data');
-        await postPaidItems(context, orderItems, -1);
+        await postPaidItems(context, orderItems, -1, usedCouponId, 0);
       },
       onClose: () async {
         logger.info('------- onClose');
@@ -202,11 +253,11 @@ class PayPageViewModel extends ChangeNotifier {
                   firstButton: '확인');
             },
           );
-          logger.info('[민영기염소탕]주문완료.\n주문번호: ${_state.orderItems.first.orderId}\n${_state.orderItems.first.ordererName} 고객님, 저희 제품을\n구매해 주셔서 감사드립니다.');
-          // sendSMS('01058377427', _state.orderItems.first.ordererPhoneNo!,
-          //     '[민영기염소탕]주문완료.\n주문번호: ${_state.orderItems.first.orderId}\n${_state.orderItems.first.ordererName} 고객님, 저희 제품을\n구매해 주셔서 감사드립니다.');
+          logger.info(
+              '[민영기염소탕]주문완료.\n주문번호: ${_state.orderItems.first.orderId}\n${_state.orderItems.first.ordererName} 고객님, 저희 제품을\n구매해 주셔서 감사드립니다.');
+          sendSMS('01058377427', _state.orderItems.first.ordererPhoneNo!,
+              '[민영기염소탕]주문완료.\n주문번호: ${_state.orderItems.first.orderId}\n${_state.orderItems.first.ordererName} 고객님, 저희 제품을\n구매해 주셔서 감사드립니다.');
           hideNavBar(false);
-
         }
       },
       onIssued: (String data) {
@@ -235,7 +286,8 @@ class PayPageViewModel extends ChangeNotifier {
         String paidResultData = jsonDecode(data)['event'];
         logger.info(paidResultData);
         if (paidResultData == 'done') {
-          await postPaidItems(context, orderItems, 1); // 결제완료되면 서버로 pay status 변경
+          await postPaidItems(
+              context, orderItems, 1, usedCouponId, totalPayment.toInt()); // 결제완료되면 서버로 pay status 변경
         }
       },
     );
@@ -294,6 +346,4 @@ class PayPageViewModel extends ChangeNotifier {
     payload.extra = extra;
     return payload;
   }
-
-
 }
