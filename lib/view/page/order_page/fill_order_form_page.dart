@@ -882,10 +882,8 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                           final ordererAddressDetail = viewModel
                                               .controllers['extraAddress']
                                               ?.text;
-                                          for (OrderModel item
-                                              in widget.forOrderItems) {
-                                            await viewModel.saveOrdersInfo(
-                                              item,
+                                          await viewModel.saveOrdersInfo(
+                                              widget.forOrderItems,
                                               orderedDate,
                                               personalInfoForDeliverChecked,
                                               ordererId,
@@ -894,17 +892,7 @@ class _FillOrderFormPageState extends State<FillOrderFormPage> {
                                               ordererAddress!,
                                               ordererAddressDetail!,
                                               ordererPostcode!,
-                                            );
-                                          }
-
-                                          // ShoppingCart에서 주문서작성 아이템 비우기
-                                          if (widget.navSetState != null) {
-                                            final int newCartCount =
-                                                await viewModel
-                                                    .updateShoppingCart(
-                                                        widget.forOrderItems);
-                                            widget.navSetState!(newCartCount);
-                                          }
+                                              widget.navSetState);
 
                                           if (context.mounted) {
                                             GoRouter.of(context).push(

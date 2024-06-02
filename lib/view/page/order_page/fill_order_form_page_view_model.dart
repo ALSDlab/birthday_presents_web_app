@@ -135,54 +135,62 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   }
 
   Future<void> saveOrdersInfo(
-    OrderModel item,
-    String currentDate,
-    bool personalInfoForDeliverChecked,
-    String ordererId,
-    String ordererName,
-    String ordererPhoneNo,
-    String ordererAddress,
-    String ordererAddressDetail,
-    String ordererPostcode,
-  ) async {
+      List<OrderModel> itemList,
+      String currentDate,
+      bool personalInfoForDeliverChecked,
+      String ordererId,
+      String ordererName,
+      String ordererPhoneNo,
+      String ordererAddress,
+      String ordererAddressDetail,
+      String ordererPostcode,
+      bool Function(int)? navSetState) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
     try {
-      final salesContent = await getSalesContent(item.salesId);
-      final itemPayAmount = item.count *
-          int.parse((salesContent != null)
-              ? deCalculatedPrice(item.price.replaceAll(',', ''), salesContent)
-              : item.price.replaceAll(',', ''));
-      await FirebaseFirestore.instance
-          .collection('orders')
-          .doc(item.orderId + item.productId)
-          .set(
-        {
-          'orderId': item.orderId,
-          'productId': item.productId,
-          'orderProductName': item.orderProductName,
-          'representativeImage': item.representativeImage,
-          'price': item.price,
-          'count': item.count,
-          'salesId': item.salesId,
-          'orderedDate': item.orderedDate,
-          'personalInfoForDeliverChecked': personalInfoForDeliverChecked,
-          'ordererId': ordererId,
-          'ordererName': ordererName,
-          'ordererPhoneNo': ordererPhoneNo,
-          'ordererAddress': ordererAddress,
-          'ordererAddressDetail': ordererAddressDetail,
-          'ordererPostcode': ordererPostcode,
-          'payAndStatus': 0,
-          'payAmount': itemPayAmount,
-          'paymentDate': '',
-          'deletedDate': '',
-          'usedCouponId': -1,
-          'actualPaymentByOrder': 0,
-          'deliveryCostByOrder': item.deliveryCostByOrder,
-        },
-      );
+      for (OrderModel item in itemList) {
+        final salesContent = await getSalesContent(item.salesId);
+        final itemPayAmount = item.count *
+            int.parse((salesContent != null)
+                ? deCalculatedPrice(
+                    item.price.replaceAll(',', ''), salesContent)
+                : item.price.replaceAll(',', ''));
+        await FirebaseFirestore.instance
+            .collection('orders')
+            .doc(item.orderId + item.productId)
+            .set(
+          {
+            'orderId': item.orderId,
+            'productId': item.productId,
+            'orderProductName': item.orderProductName,
+            'representativeImage': item.representativeImage,
+            'price': item.price,
+            'count': item.count,
+            'salesId': item.salesId,
+            'orderedDate': item.orderedDate,
+            'personalInfoForDeliverChecked': personalInfoForDeliverChecked,
+            'ordererId': ordererId,
+            'ordererName': ordererName,
+            'ordererPhoneNo': ordererPhoneNo,
+            'ordererAddress': ordererAddress,
+            'ordererAddressDetail': ordererAddressDetail,
+            'ordererPostcode': ordererPostcode,
+            'payAndStatus': 0,
+            'payAmount': itemPayAmount,
+            'paymentDate': '',
+            'deletedDate': '',
+            'usedCouponId': -1,
+            'actualPaymentByOrder': 0,
+            'deliveryCostByOrder': item.deliveryCostByOrder,
+          },
+        );
+      }
+      // ShoppingCart에서 주문서작성 아이템 비우기
+      if (navSetState != null) {
+        final int newCartCount = await updateShoppingCart(itemList);
+        navSetState(newCartCount);
+      }
     } catch (error) {
       // 에러 처리
       logger.info('Error saving ordersInfo: $error');
@@ -205,8 +213,6 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
   }
 
   Future<int> updateShoppingCart(List<OrderModel> orderItems) async {
-    _state = state.copyWith(isLoading: true);
-    notifyListeners();
     try {
       List<ShoppingProductForCart> currentList = await getShoppingCartList();
       List<String> orderIds = orderItems.map((e) => e.orderId).toSet().toList();
@@ -220,9 +226,6 @@ class FillOrderFormPageViewModel extends ChangeNotifier {
       // 에러 처리
       logger.info('Error update shoppingcart: $error');
       return 0;
-    } finally {
-      _state = state.copyWith(isLoading: false);
-      notifyListeners();
     }
   }
 

@@ -22,8 +22,8 @@ class ShoppingCartPage extends StatefulWidget {
 }
 
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
-  bool isAllChecked = false;
-  bool resetShoppingCart = false;
+  bool isAllChecked = true;
+  bool resetShoppingCart = true;
 
   // @override
   // void initState() {
