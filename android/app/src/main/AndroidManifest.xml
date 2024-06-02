@@ -2,7 +2,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="false"
-        android:label="myk_market_app"
+        android:label="민영기염소탕 흑염소진액"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
