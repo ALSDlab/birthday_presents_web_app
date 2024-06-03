@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Container(
               color: const Color(0xFFFFF8E7),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(25, 40, 25, 10),
+                padding: const EdgeInsets.fromLTRB(25, 20, 25, 10),
                 child: ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
@@ -199,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     SizedBox(
-                      height: 70.h,
+                      height: 30.h,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -380,6 +380,34 @@ class _ProfilePageState extends State<ProfilePage> {
                           thickness: 0.5,
                           height: 10,
                         ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    const Column(
+                      children: [
+                        Text(
+                          softWrap: true, //긴 텍스트 줄 바꿈
+                          style: TextStyle(
+                              letterSpacing: 1.1,
+                              height: 1.4,
+                              fontFamily: 'Kopub',
+                              color: Colors.grey),
+                          '상호: 건강담은 민영기염소탕 흑염소진액 | 대표: 임유리 | 주소: 충남 아산시 둔포면 중앙공원로 33번길 3-11 | 사업자번호: 106-53-60883 | 통신판매업신고: 2024-충남아산-0466 | \n고객상담실: 041) 531-6023 | e-메일: envy1012@naver.com',
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                            softWrap: true, //긴 텍스트 줄 바꿈
+                            style: TextStyle(
+                                fontSize: 10,
+                                letterSpacing: 1.1,
+                                height: 1.4,
+                                fontFamily: 'Kopub',
+                                color: Colors.grey),
+                            'ⓒ 2024. 건강담은 민영기염소탕 흑염소진액 Co. All rights reserved.'),
                       ],
                     ),
                   ],
