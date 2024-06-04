@@ -10,7 +10,7 @@ abstract interface class UserRepository {
 
   Future<void> addEmailToFirestore(String email);
 
-  Future<CouponsModel?> getCoupon(int couponId);
+  Future<CouponsModel?> getCoupon(Map<String, dynamic> couponItem);
 
   Future<void> deleteUsedCoupon(String userId, int? usedCouponId);
 

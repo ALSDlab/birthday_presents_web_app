@@ -306,46 +306,65 @@ class _PayPageState extends State<PayPage> {
                                                   ),
                                                 )
                                               :
-                                          // DropdownButtonWidget(myCouponList: myCouponList)
+                                              // DropdownButtonWidget(myCouponList: myCouponList)
 
-
-                                          DropdownButton(
-                                                  value: selectedCoupon,
-                                                  items: viewModel.myCouponList
-                                                      .map((e) {
-                                                    return DropdownMenuItem(
-                                                        value: e,
-                                                        child: (e != null)
-                                                            ? Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(e
-                                                                      .couponName),
-                                                                  const SizedBox(
-                                                                    width: 30,
-                                                                  ),
-                                                                  Text((e.dcAmount >
-                                                                          0)
-                                                                      ? '${e.dcAmount} 원'
-                                                                      : '${e.dcRate} %')
-                                                                ],
-                                                              )
-                                                            : const Text(
-                                                                '사용안함'));
-                                                  }).toList(),
-                                                  onChanged: (value) {
-                                                    // items 의 DropdownMenuItem 의 value 반환
-                                                    setState(() {
-                                                      selectedCoupon = value
-                                                          as CouponsModel?;
-                                                    });
-                                                    viewModel
-                                                        .calculateDcByCoupon(
-                                                            state.orderItems,
-                                                            selectedCoupon);
-                                                  },
+                                              DropdownButtonHideUnderline(
+                                                  child: DropdownButton(
+                                                    value: selectedCoupon,
+                                                    items: viewModel
+                                                        .myCouponList
+                                                        .where((e) =>
+                                                            e == null ||
+                                                            e.validDays - viewModel
+                                                                    .couponVaildCalculate(
+                                                                        e) >
+                                                                0)
+                                                        .map((e) {
+                                                      return DropdownMenuItem(
+                                                          value: e,
+                                                          child: (e != null)
+                                                              ? Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    Text(
+                                                                        '${e.couponName}'),
+                                                                    Text(
+                                                                      ' (${e.validDays - viewModel.couponVaildCalculate(e)}일 남음)',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.grey),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Text((e.dcAmount >
+                                                                            0)
+                                                                        ? '${e.dcAmount}원'
+                                                                        : '${e.dcRate}%')
+                                                                  ],
+                                                                )
+                                                              : const Text(
+                                                                  '사용안함'));
+                                                    }).toList(),
+                                                    onChanged: (value) {
+                                                      // items 의 DropdownMenuItem 의 value 반환
+                                                      setState(() {
+                                                        selectedCoupon = value
+                                                            as CouponsModel?;
+                                                      });
+                                                      viewModel
+                                                          .calculateDcByCoupon(
+                                                              state.orderItems,
+                                                              selectedCoupon);
+                                                    },
+                                                  ),
                                                 )
                                         ],
                                       ),
