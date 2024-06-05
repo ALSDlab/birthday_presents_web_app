@@ -307,16 +307,16 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     TextButton(
                                       style: ButtonStyle(
-                                        minimumSize: WidgetStateProperty.all(
+                                        minimumSize: MaterialStateProperty.all(
                                           Size(double.infinity, 52.h),
                                         ),
-                                        shape: const WidgetStatePropertyAll(
+                                        shape: const MaterialStatePropertyAll(
                                           RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10))),
                                         ),
                                         backgroundColor:
-                                            const WidgetStatePropertyAll(
+                                            const MaterialStatePropertyAll(
                                                 Color(0xFF008080)),
                                       ),
                                       onPressed: () async {
@@ -594,16 +594,16 @@ class _LoginPageState extends State<LoginPage> {
                                           }
                                         },
                                         style: ButtonStyle(
-                                          minimumSize: WidgetStateProperty.all(
+                                          minimumSize: MaterialStateProperty.all(
                                             Size(double.infinity, 52.h),
                                           ),
-                                          shape: const WidgetStatePropertyAll(
+                                          shape: const MaterialStatePropertyAll(
                                             RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(10))),
                                           ),
                                           backgroundColor:
-                                              const WidgetStatePropertyAll(
+                                              const MaterialStatePropertyAll(
                                                   Colors.black),
                                         ),
                                         child: const Text(

@@ -129,6 +129,9 @@ class PayPageViewModel extends ChangeNotifier {
         dcResult = selectedCoupon.dcAmount;
       }
     }
+    else {
+      dcResult = 0;
+    }
   }
 
   Future<void> postPaidItems(
