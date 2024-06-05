@@ -20,7 +20,7 @@ class UserModel with _$UserModel {
     @JsonKey(name: 'created') required int created,
     @JsonKey(name: 'recreatCount') required int recreatCount,
     @JsonKey(name: 'profileImage') required String profileImage,
-    @JsonKey(name: 'coupons') required List<int> coupons,
+    @JsonKey(name: 'coupons') required List<Map<String, dynamic>> coupons,
     @JsonKey(name: 'lastCouponCount') required int lastCouponCount,
     @JsonKey(name: 'verificationLimit') required int verificationLimit,
 

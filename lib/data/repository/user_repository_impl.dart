@@ -66,14 +66,15 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<CouponsModel?> getCoupon(int couponId) async {
+  Future<CouponsModel?> getCoupon(Map<String, dynamic> couponItem) async {
     try {
       // Firebase Firestore에서 데이터 읽어오기
       var querySnapshot = await _firestore
           .collection('coupons')
-          .where('couponId', isEqualTo: couponId)
+          .where('couponId', isEqualTo: couponItem['couponId'])
           .get();
 
+      print(querySnapshot.docs);
       if (querySnapshot.docs.isNotEmpty) {
         // 첫 번째 문서를 가져와서 CouponsModel로 변환
         var doc = querySnapshot.docs.first;

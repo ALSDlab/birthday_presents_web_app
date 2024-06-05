@@ -118,7 +118,7 @@ class FindIdPasswordViewModel extends ChangeNotifier {
       int recreatCount,
       bool checked,
       String profileImage,
-      List<int> coupons,
+      List<Map<String, dynamic>> coupons,
       int verificationLimit) async {
     try {
       firebase_auth.UserCredential userCredential = await firebase_auth

@@ -42,6 +42,7 @@ class PayPageViewModel extends ChangeNotifier {
   List<UserModel> currentUser = [];
   List myCouponList = [null];
   int dcResult = 0;
+  DateTime todayDate = DateTime.now();
 
   bool _disposed = false;
 
@@ -76,9 +77,11 @@ class PayPageViewModel extends ChangeNotifier {
       // logger.info(myOrder);
       _state = state.copyWith(orderItems: myOrder);
       if (currentUser.isNotEmpty) {
-        for (int couponId in currentUser.first.coupons) {
-          CouponsModel? myCoupon = await getMyCoupon(couponId);
-          myCouponList.add(myCoupon!);
+        for (Map<String, dynamic> couponItem in currentUser.first.coupons) {
+          CouponsModel? myCoupon = await getMyCoupon(couponItem);
+          if(myCoupon != null && myCoupon.validDays - couponVaildCalculate(myCoupon) > 0 ) {
+            myCouponList.add(myCoupon);
+          }
         }
       }
 
@@ -106,13 +109,21 @@ class PayPageViewModel extends ChangeNotifier {
     return salesContentsList;
   }
 
-  Future<CouponsModel?> getMyCoupon(int couponId) async {
+  Future<CouponsModel?> getMyCoupon(Map<String, dynamic> couponItem) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
-    CouponsModel? myCoupon = await userRepository.getCoupon(couponId);
+    CouponsModel? myCoupon = await userRepository.getCoupon(couponItem);
     _state = state.copyWith(isLoading: false);
     notifyListeners();
     return myCoupon;
+  }
+
+  // 쿠폰 유효기간 확인
+  int couponVaildCalculate(CouponsModel myCouponItem){
+    final DateTime startDate = DateTime.parse(currentUser.first.coupons.firstWhere((e) => e['couponId'] == myCouponItem.couponId)['startDate']);
+    // 날짜 차이 계산 (단위: 일)
+    Duration difference = todayDate.difference(startDate);
+    return difference.inDays;
   }
 
   // 쿠폰 적용으로 할인된 금액 계산

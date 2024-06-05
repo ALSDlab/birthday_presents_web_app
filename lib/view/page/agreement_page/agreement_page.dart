@@ -21,6 +21,7 @@ class _AgreementPageState extends State<AgreementPage> {
   bool isPersonalInfoForDeliverChecked = false;
   bool isPersonalInfoForDeliverOpened = false;
   bool inevitableChecked = false;
+  bool privacyPolicy = false;
 
   @override
   Widget build(BuildContext context) {
@@ -244,6 +245,49 @@ class _AgreementPageState extends State<AgreementPage> {
                               height:
                                   isPersonalInfoForDeliverOpened ? null : 0.0,
                               child: Text(agreementTexts[2]),
+                            ),
+                          ),
+                          const Divider(
+                            indent: 50,
+                            endIndent: 50,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('        - 개인정보 처리방침 -'),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    privacyPolicy =
+                                    !privacyPolicy;
+                                  });
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 100,
+                                  alignment: Alignment.center,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: privacyPolicy
+                                      ? const Text(
+                                    '닫기 ▲',
+                                  )
+                                      : const Text(
+                                    '열기 ▼',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          AnimatedSize(
+                            duration: const Duration(milliseconds: 500),
+                            child: SizedBox(
+                              height:
+                              privacyPolicy ? null : 0.0,
+                              child: Text(agreementTexts[3]),
                             ),
                           ),
                         ],

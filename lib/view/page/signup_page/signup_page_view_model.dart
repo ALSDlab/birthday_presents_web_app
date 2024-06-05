@@ -85,7 +85,7 @@ class SignupPageViewModel extends ChangeNotifier {
       int created,
       int recreatCount,
       bool checked,
-      List<int> coupons,
+      List<Map<String, dynamic>> coupons,
       int lastCouponCount,
       int verificationLimit) async {
     _state = state.copyWith(isLoading: true);
