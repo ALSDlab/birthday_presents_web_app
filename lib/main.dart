@@ -8,7 +8,6 @@ import 'package:myk_market_app/router.dart';
 import 'package:myk_market_app/url_strategy_mobile.dart'
 if (dart.library.html) 'package:myk_market_app/url_strategy_web.dart';
 
-import 'firebase_options.dart';
 
 Future<ByteData> fetchFont() async {
   return rootBundle.load('assets/fonts/KoPubWorld Dotum Bold.ttf');
