@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myk_market_app/view/page/main_page/main_page.dart';
-import 'package:myk_market_app/view/page/main_page/store_view_model.dart';
+import 'package:myk_market_app/view/page/navigation_page/navigation_page_view_model.dart';
 import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar.dart';
-import 'package:myk_market_app/view/page/order_page/fill_order_form_page.dart';
-import 'package:myk_market_app/view/page/order_page/fill_order_form_page_view_model.dart';
-import 'package:myk_market_app/view/page/product_detail_page/product_detail_page.dart';
-import 'package:myk_market_app/view/page/product_detail_page/product_detail_page_view_model.dart';
-import 'package:myk_market_app/view/page/product_page/product_page.dart';
-import 'package:myk_market_app/view/page/product_page/product_view_model.dart';
-import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_page.dart';
-import 'package:myk_market_app/view/page/shopping_cart_page/shopping_cart_view_model.dart';
+import 'package:myk_market_app/view/page/search_page/search_page.dart';
+import 'package:myk_market_app/view/page/search_page/search_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'di/get_it.dart';
@@ -25,81 +19,77 @@ final router = GoRouter(
     ShellRoute(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) => NoTransitionPage(
-                child: ChangeNotifierProvider(
-              create: (_) => ProductDetailPageViewModel(),
-              child: ScaffoldWithNavBar(
-                location: state.matchedLocation,
-                child: child,
+              child: MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                    create: (_) => getIt<SearchPageViewModel>(),
+                  ),
+                  ChangeNotifierProvider(
+                    create: (_) => getIt<NavigationPageViewModel>(),
+                  ),
+                ],
+                child: ScaffoldWithNavBar(
+                  location: state.matchedLocation,
+                  child: child,
+                ),
               ),
-            )),
+            ),
         routes: [
           GoRoute(
             path: '/main_page',
-            builder: (context, state) => ChangeNotifierProvider(
-              create: (_) => StoreViewModel(),
-              child: const MainPage(),
-            ),
-          ),
-          GoRoute(
-            path: '/product_page',
             builder: (context, state) {
-              final extra = state.extra! as Map<String, dynamic>;
-              final navSetState = extra['navSetState'];
-              final hideNavBar = extra['hideNavBar'];
+              final navigationViewModel =
+                  Provider.of<NavigationPageViewModel>(context, listen: false);
               return ChangeNotifierProvider(
-                create: (_) => ProductViewModel(),
-                child: ProductPage(
-                    navSetState: navSetState, hideNavBar: hideNavBar),
+                create: (_) => getIt<NavigationPageViewModel>(),
+                child: MainPage(
+                  hideNavBar: navigationViewModel.hideNavBar,
+                  resetNavigation: navigationViewModel.resetNavigation,
+                ),
               );
             },
           ),
           GoRoute(
-              path: '/shopping_cart_page',
-              builder: (context, state) {
-                final extra = state.extra! as Map<String, dynamic>;
-                final navSetState = extra['navSetState'];
-                final hideNavBar = extra['hideNavBar'];
-                return ChangeNotifierProvider(
-                  create: (_) => getIt<ShoppingCartViewModel>(),
-                  child: ShoppingCartPage(
-                      navSetState: navSetState, hideNavBar: hideNavBar),
-                );
-              },
-              routes: [
-                GoRoute(
-                    path: 'fill_order_page',
-                    builder: (context, state) {
-                      final extra = state.extra! as Map<String, dynamic>;
-                      final hideNavBar = extra['hideNavBar'];
-                      final navSetState = extra['navSetState'];
-                      return ChangeNotifierProvider(
-                        create: (_) => getIt<FillOrderFormPageViewModel>(),
-                        child: FillOrderFormPage(
-                            forOrderItems: extra['orderModelList'],
-                            hideNavBar: hideNavBar,
-                            navSetState: navSetState),
-                      );
-                    },
-                    ),
-              ]),
-
-          GoRoute(
-            path: '/product_detail_page',
+            path: '/search_page',
             builder: (context, state) {
               final extra = state.extra! as Map<String, dynamic>;
-              final productDetailMap = extra['product'];
-              final navSetState = extra['navSetState'];
+              final resetNavigation = extra['resetNavigation'];
               final hideNavBar = extra['hideNavBar'];
-              final salesContent = extra['salesContent'];
+              final docId = extra['docId'];
+              final name = extra['name'];
+              final birthYear = extra['birthYear'];
               return ChangeNotifierProvider(
-                  create: (_) => ProductDetailPageViewModel(),
-                  child: ProductDetailPage(
-                      product: productDetailMap,
-                      navSetState: navSetState,
-                      hideNavBar: hideNavBar,
-                      salesContent: salesContent,));
+                  create: (_) => getIt<SearchPageViewModel>(),
+                  child: SearchPage(
+                    resetNavigation: resetNavigation,
+                    hideNavBar: hideNavBar,
+                    docId: docId,
+                    name: name,
+                    birthYear: birthYear,
+                  ));
             },
           ),
+          // GoRoute(
+          //   path: '/presents_list_page',
+          //   builder: (context, state) {
+          //     final extra = state.extra! as Map<String, dynamic>;
+          //     final resetNavigation = extra['resetNavigation'];
+          //     final hideNavBar = extra['hideNavBar'];
+          //     final docId = extra['docId'];
+          //     final name = extra['name'];
+          //     final birthYear = extra['birthYear'];
+          //     return ChangeNotifierProvider(
+          //       create: (_) => getIt<PresentsListViewModel>(),
+          //       child: PresentsListPage(
+          //         resetNavigation: resetNavigation,
+          //         hideNavBar: hideNavBar,
+          //         docId: docId,
+          //         name: name,
+          //         birthYear: birthYear,
+          //       ),
+          //     );
+          //   },
+          // ),
         ]),
   ],
 );

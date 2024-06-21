@@ -8,6 +8,7 @@ import 'package:myk_market_app/router.dart';
 import 'package:myk_market_app/url_strategy_mobile.dart'
 if (dart.library.html) 'package:myk_market_app/url_strategy_web.dart';
 
+import 'firebase_options.dart';
 
 Future<ByteData> fetchFont() async {
   return rootBundle.load('assets/fonts/KoPubWorld Dotum Bold.ttf');
@@ -18,8 +19,7 @@ void main() async {
   configureUrlStrategy();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
-  diSetup();
+  );  diSetup();
   var fontLoader = FontLoader('Kopub');
   fontLoader.addFont(fetchFont());
   await fontLoader.load();
@@ -39,8 +39,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.transparent,
           fontFamily: 'Kopub',
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2F362F))
-              .copyWith(surface: Colors.white),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFFF9C4))
+              .copyWith(surface: Colors.black),
         ),
         routerConfig: router,
       ),

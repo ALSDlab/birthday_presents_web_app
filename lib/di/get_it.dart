@@ -1,49 +1,43 @@
 import 'package:get_it/get_it.dart';
-import 'package:myk_market_app/view/page/edit_user_info_page/edit_user_info_view_model.dart';
-import 'package:myk_market_app/view/page/find_id_password_page/find_id_password_page_view_model.dart';
-import 'package:myk_market_app/view/page/profile_page/profile_page_view_model.dart';
+import 'package:myk_market_app/domain/use_case/get_presents_list_use_case.dart';
 
-import '../data/repository/order_repository_impl.dart';
-import '../data/repository/user_repository_impl.dart';
-import '../domain/order_repository.dart';
-import '../domain/user_repository.dart';
-import '../view/page/login_page/login_page_view_model.dart';
-import '../view/page/order_history_page/order_history_page_view_model.dart';
-import '../view/page/order_page/fill_order_form_page_view_model.dart';
-import '../view/page/pay_page/pay_page_view_model.dart';
-import '../view/page/shopping_cart_page/shopping_cart_view_model.dart';
-import '../view/page/signup_page/signup_page_view_model.dart';
+import '../data/repository/presents_list_repository_impl.dart';
+import '../domain/repository/presents_list_repository.dart';
+import '../domain/use_case/load_presents_list_use_case.dart';
+import '../domain/use_case/post_presents_list_use_case.dart';
+import '../domain/use_case/save_presents_list_use_case.dart';
+import '../view/page/navigation_page/navigation_page_view_model.dart';
+import '../view/page/presents_list_page/presents_list_view_model.dart';
+import '../view/page/search_page/search_page_view_model.dart';
 
 final getIt = GetIt.instance;
 
 void diSetup() {
   // Repository
+  getIt.registerSingleton<PresentsListRepository>(
+    PresentsListRepositoryImpl(),
+  );
+
+  // use case
   getIt
-    ..registerSingleton<OrderRepository>(
-      OrderRepositoryImpl(),
+    ..registerSingleton<GetPresentsListUseCase>(
+      GetPresentsListUseCase(
+        presentsListRepository: getIt<PresentsListRepository>(),
+      ),
     )
-    ..registerSingleton<UserRepository>(
-      UserRepositoryImpl(),
-    );
+    ..registerSingleton<PostPresentsListUseCase>(PostPresentsListUseCase(
+      presentsListRepository: getIt<PresentsListRepository>(),
+    ))
+    ..registerSingleton<LoadPresentsListUseCase>(LoadPresentsListUseCase())
+    ..registerSingleton<SavePresentsListUseCase>(SavePresentsListUseCase());
 
   // ViewModel
   getIt
-    ..registerFactory<PayPageViewModel>(
-        () => PayPageViewModel(orderRepository: getIt<OrderRepository>(), userRepository: getIt<UserRepository>(),))
-    ..registerFactory<FillOrderFormPageViewModel>(() =>
-        FillOrderFormPageViewModel(userRepository: getIt<UserRepository>()))
-    ..registerFactory<FindIdPasswordViewModel>(
-        () => FindIdPasswordViewModel(userRepository: getIt<UserRepository>()))
-    ..registerFactory<ShoppingCartViewModel>(() => ShoppingCartViewModel())
-    ..registerFactory<LoginPageViewModel>(() => LoginPageViewModel(
-        orderRepository: getIt<OrderRepository>(),
-        userRepository: getIt<UserRepository>()))
-    ..registerFactory<OrderHistoryPageViewModel>(() =>
-        OrderHistoryPageViewModel(orderRepository: getIt<OrderRepository>()))
-    ..registerFactory<SignupPageViewModel>(
-        () => SignupPageViewModel(userRepository: getIt<UserRepository>()))
-    ..registerFactory<EditUserInfoViewModel>(
-        () => EditUserInfoViewModel(userRepository: getIt<UserRepository>()))
-    ..registerFactory<ProfilePageViewModel>(
-        () => ProfilePageViewModel(userRepository: getIt<UserRepository>()));
+    ..registerFactory<NavigationPageViewModel>(() => NavigationPageViewModel())
+    ..registerFactory<PresentsListViewModel>(() => PresentsListViewModel(
+        savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
+        loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()))
+    ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
+        savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
+        loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()));
 }
