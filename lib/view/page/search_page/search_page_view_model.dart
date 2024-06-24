@@ -1,6 +1,5 @@
-
+import 'package:Birthday_Presents_List/view/page/search_page/search_page_state.dart';
 import 'package:flutter/material.dart';
-import 'package:myk_market_app/view/page/search_page/search_page_state.dart';
 
 import '../../../data/core/result.dart';
 import '../../../domain/use_case/load_presents_list_use_case.dart';
@@ -112,6 +111,4 @@ class SearchPageViewModel extends ChangeNotifier {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
-
 }

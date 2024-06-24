@@ -1,10 +1,11 @@
+import 'package:Birthday_Presents_List/view/page/main_page/main_page.dart';
+import 'package:Birthday_Presents_List/view/page/navigation_page/navigation_page_view_model.dart';
+import 'package:Birthday_Presents_List/view/page/navigation_page/scaffold_with_nav_bar.dart';
+import 'package:Birthday_Presents_List/view/page/search_page/amazon_webview_page.dart';
+import 'package:Birthday_Presents_List/view/page/search_page/search_page.dart';
+import 'package:Birthday_Presents_List/view/page/search_page/search_page_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:myk_market_app/view/page/main_page/main_page.dart';
-import 'package:myk_market_app/view/page/navigation_page/navigation_page_view_model.dart';
-import 'package:myk_market_app/view/page/navigation_page/scaffold_with_nav_bar.dart';
-import 'package:myk_market_app/view/page/search_page/search_page.dart';
-import 'package:myk_market_app/view/page/search_page/search_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'di/get_it.dart';
@@ -50,25 +51,36 @@ final router = GoRouter(
             },
           ),
           GoRoute(
-            path: '/search_page',
-            builder: (context, state) {
-              final extra = state.extra! as Map<String, dynamic>;
-              final resetNavigation = extra['resetNavigation'];
-              final hideNavBar = extra['hideNavBar'];
-              final docId = extra['docId'];
-              final name = extra['name'];
-              final birthYear = extra['birthYear'];
-              return ChangeNotifierProvider(
-                  create: (_) => getIt<SearchPageViewModel>(),
-                  child: SearchPage(
-                    resetNavigation: resetNavigation,
-                    hideNavBar: hideNavBar,
-                    docId: docId,
-                    name: name,
-                    birthYear: birthYear,
-                  ));
-            },
-          ),
+              path: '/search_page',
+              builder: (context, state) {
+                final extra = state.extra! as Map<String, dynamic>;
+                final resetNavigation = extra['resetNavigation'];
+                final hideNavBar = extra['hideNavBar'];
+                final docId = extra['docId'];
+                final name = extra['name'];
+                final birthYear = extra['birthYear'];
+                return ChangeNotifierProvider(
+                    create: (_) => getIt<SearchPageViewModel>(),
+                    child: SearchPage(
+                      resetNavigation: resetNavigation,
+                      hideNavBar: hideNavBar,
+                      docId: docId,
+                      name: name,
+                      birthYear: birthYear,
+                    ));
+              },
+              // routes: [
+              //   GoRoute(
+              //       path: 'amazon_page',
+              //       builder: (context, state) {
+              //         final extra = state.extra! as Map<String, dynamic>;
+              //         final name = extra['name'];
+              //         final yearCountWithEnding = extra['yearCountWithEnding'];
+              //         return AmazonWebviewPage(
+              //             name: name, yearCountWithEnding: yearCountWithEnding);
+              //       })
+              // ]
+              ),
           // GoRoute(
           //   path: '/presents_list_page',
           //   builder: (context, state) {

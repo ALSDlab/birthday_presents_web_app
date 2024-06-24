@@ -28,7 +28,8 @@ class PresentListFirebase {
 
   Future<Result<PresentsListDto>> getPresentListData(String myListDocId) async {
     try {
-      DocumentSnapshot docSnapshot = await _firestore.collection('presentsList').doc(myListDocId).get();
+      DocumentSnapshot docSnapshot =
+          await _firestore.collection('presentsList').doc(myListDocId).get();
 
       return Result.success(PresentsListDto.fromJson(docSnapshot[myListDocId]));
     } catch (e) {
@@ -38,11 +39,13 @@ class PresentListFirebase {
     }
   }
 
-  Future<Result<void>> updatePresentListData(String myListDocId, String fieldName, dynamic editedValue) async {
+  Future<Result<void>> updatePresentListData(
+      String myListDocId, String fieldName, dynamic editedValue) async {
     try {
-      await _firestore.collection('presentsList').doc(myListDocId).update({
-        fieldName: editedValue
-      });
+      await _firestore
+          .collection('presentsList')
+          .doc(myListDocId)
+          .update({fieldName: editedValue});
 
       // 성공 시 Result.success(null) 반환
       return const Result.success(null);
@@ -65,7 +68,4 @@ class PresentListFirebase {
       return Result.error(e.toString());
     }
   }
-
-
-
 }

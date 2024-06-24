@@ -18,7 +18,7 @@ class NavigationPageViewModel with ChangeNotifier {
   bool hideNavBar(bool newValue) {
     isHideNavBar = newValue;
     notifyListeners();
-    return true;
+    return isHideNavBar;
   }
 
   void setNameAndBirthYear(String nameValue, int birthYearValue) {

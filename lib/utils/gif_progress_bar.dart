@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class GifProgressBar extends StatelessWidget {
   GifProgressBar({super.key, this.radius = 25});
+
   double? radius;
 
   @override

@@ -1,5 +1,4 @@
-import 'package:myk_market_app/domain/model/presents_list_model.dart';
-
+import '../model/presents_list_model.dart';
 import '../repository/presents_list_repository.dart';
 
 class GetPresentsListUseCase {

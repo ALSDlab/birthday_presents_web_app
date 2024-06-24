@@ -1,6 +1,5 @@
-import 'package:myk_market_app/data/dto/presents_list_dto.dart';
-
 import '../../data/core/result.dart';
+import '../../data/dto/presents_list_dto.dart';
 import '../model/presents_list_model.dart';
 
 abstract interface class PresentsListRepository {

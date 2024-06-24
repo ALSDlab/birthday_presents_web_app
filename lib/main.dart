@@ -1,13 +1,12 @@
-
+import 'package:Birthday_Presents_List/router.dart';
+import 'package:Birthday_Presents_List/url_strategy_mobile.dart'
+    if (dart.library.html) 'package:Birthday_Presents_List/url_strategy_web.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:myk_market_app/di/get_it.dart';
-import 'package:myk_market_app/router.dart';
-import 'package:myk_market_app/url_strategy_mobile.dart'
-if (dart.library.html) 'package:myk_market_app/url_strategy_web.dart';
 
+import 'di/get_it.dart';
 import 'firebase_options.dart';
 
 Future<ByteData> fetchFont() async {
@@ -19,7 +18,8 @@ void main() async {
   configureUrlStrategy();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );  diSetup();
+  );
+  diSetup();
   var fontLoader = FontLoader('Kopub');
   fontLoader.addFont(fetchFont());
   await fontLoader.load();

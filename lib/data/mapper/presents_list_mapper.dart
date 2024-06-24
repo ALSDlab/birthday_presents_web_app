@@ -1,6 +1,5 @@
-import 'package:myk_market_app/data/dto/presents_list_dto.dart';
-
 import '../../domain/model/presents_list_model.dart';
+import '../dto/presents_list_dto.dart';
 
 class PresentsListMapper {
   static PresentsListModel fromDTO(PresentsListDto dto) {

@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:myk_market_app/domain/use_case/get_presents_list_use_case.dart';
 
 import '../data/repository/presents_list_repository_impl.dart';
 import '../domain/repository/presents_list_repository.dart';
+import '../domain/use_case/get_presents_list_use_case.dart';
 import '../domain/use_case/load_presents_list_use_case.dart';
 import '../domain/use_case/post_presents_list_use_case.dart';
 import '../domain/use_case/save_presents_list_use_case.dart';

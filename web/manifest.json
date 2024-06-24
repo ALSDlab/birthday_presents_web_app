@@ -1,6 +1,6 @@
 {
-    "name": "myk_market_app",
-    "short_name": "myk_market_app",
+    "name": "Birthday_Presents_List",
+    "short_name": "Birthday_Presents_List",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

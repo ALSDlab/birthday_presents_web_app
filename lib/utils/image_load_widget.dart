@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:myk_market_app/utils/gif_progress_bar.dart';
+
+import 'gif_progress_bar.dart';
 
 class ImageLoadWidget extends StatefulWidget {
   const ImageLoadWidget({
@@ -9,7 +10,8 @@ class ImageLoadWidget extends StatefulWidget {
     required this.imageUrl,
     required this.width,
     required this.fit,
-    this.height, this.loadingBarRadius,
+    this.height,
+    this.loadingBarRadius,
   });
 
   final String imageUrl;
@@ -61,7 +63,9 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
             child: SizedBox(
               width: widget.width,
               height: (widget.width >= 110.w) ? 110.w : widget.width,
-              child: GifProgressBar(radius: widget.loadingBarRadius,),
+              child: GifProgressBar(
+                radius: widget.loadingBarRadius,
+              ),
             ),
           )
         : CachedNetworkImage(
@@ -78,7 +82,9 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
             ),
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 Center(
-              child: GifProgressBar(radius: widget.loadingBarRadius,),
+              child: GifProgressBar(
+                radius: widget.loadingBarRadius,
+              ),
             ),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           );

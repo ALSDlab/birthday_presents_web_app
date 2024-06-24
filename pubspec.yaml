@@ -1,4 +1,4 @@
-name: myk_market_app
+name: Birthday_Presents_List
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -62,6 +62,10 @@ dependencies:
   image_picker: ^1.1.1
   firebase_storage: ^11.7.6
   dropdown_button2: ^2.3.9
+  url_launcher: ^6.3.0
+
+
+
 
 
 dev_dependencies:

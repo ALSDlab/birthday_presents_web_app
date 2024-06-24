@@ -33,19 +33,14 @@
 //     final state = viewModel.state;
 //     final yearCount = DateTime.now().year - widget.birthYear;
 //     String countEnding = '';
-//     switch (yearCount % 10) {
-//       case 1:
-//         countEnding = 'st';
-//         break;
-//       case 2:
-//         countEnding = 'nd';
-//         break;
-//       case 3:
-//         countEnding = 'rd';
-//         break;
-//       default:
-//         countEnding = 'th';
-//         break;
+//     if (yearCount % 10 == 1 && yearCount != 11) {
+//       countEnding = 'st';
+//     } else if (yearCount % 10 == 2 && yearCount != 12) {
+//       countEnding = 'nd';
+//     } else if (yearCount % 10 == 3 && yearCount != 13) {
+//       countEnding = 'rd';
+//     } else {
+//       countEnding = 'th';
 //     }
 //     return Center(
 //       child: Container(

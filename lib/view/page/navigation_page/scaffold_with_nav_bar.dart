@@ -114,8 +114,8 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  const Color(0xFFFFF9C4).withOpacity(0.8),
-                  const Color(0xFFFFF9C4).withOpacity(0.8),
+                  const Color(0xFFFFF9C4).withOpacity(0.9),
+                  const Color(0xFFFFF9C4).withOpacity(0.9),
                 ],
               ),
             ),
@@ -145,7 +145,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                 ),
                 BottomBarItem(
                   icon: const Icon(BootstrapIcons.box2),
-                  selectedIcon: const Icon(BootstrapIcons.box2_fill),
+                  selectedIcon: const Icon(BootstrapIcons.list_stars),
                   selectedColor: CupertinoColors.black,
                   unSelectedColor: const Color(0xFF3A405A),
                   badge: Text('$badgeCount'),
