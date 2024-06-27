@@ -43,7 +43,7 @@ class SearchPageViewModel extends ChangeNotifier {
     try {
       await getSavedPresentsList();
       notifyListeners();
-      return state.forBadgeList.length;
+      return _state.forBadgeList.length;
     } catch (error) {
       // 에러 처리
       logger.info('Error get badge: $error');
@@ -58,11 +58,13 @@ class SearchPageViewModel extends ChangeNotifier {
   Future<void> getSavedPresentsList() async {
     final result = await _loadPresentsListUseCase.execute();
     switch (result) {
-      case Success<List<Map<String, dynamic>>>():
-        _state = state.copyWith(forBadgeList: result.data);
+      case Success<Map<String, List<Map<String, dynamic>>>>():
+        if(result.data.isNotEmpty){
+          _state = state.copyWith(forBadgeList: result.data.values.first);
+        }
         notifyListeners();
         break;
-      case Error<List<Map<String, dynamic>>>():
+      case Error<Map<String, List<Map<String, dynamic>>>>():
         logger.info(result.message);
         notifyListeners();
         break;
@@ -70,12 +72,12 @@ class SearchPageViewModel extends ChangeNotifier {
   }
 
   // 리스트에 담는 메서드
-  Future<void> addToPresentsList(
+  Future<void> addToPresentsList(String docId,
       Map<String, dynamic> item, BuildContext context) async {
     await getSavedPresentsList();
     List<Map<String, dynamic>> currentList = List.from(state.forBadgeList);
     currentList.add(item);
-    final result = await _savePresentsListUseCase.execute(currentList);
+    final result = await _savePresentsListUseCase.execute({docId: currentList});
 
     switch (result) {
       case Success<void>():
@@ -99,7 +101,7 @@ class SearchPageViewModel extends ChangeNotifier {
 
     final snackBar = SnackBar(
       content:
-          const Text('리스트에 담겼습니다.', style: TextStyle(fontFamily: 'Jalnan')),
+          const Text('Added to list.', style: TextStyle(fontFamily: 'Jalnan')),
       duration: const Duration(seconds: 2),
       onVisible: () {
         // snackbar가 사라질 때 패딩을 제거합니다.

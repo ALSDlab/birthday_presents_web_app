@@ -10,7 +10,7 @@ import 'di/get_it.dart';
 import 'firebase_options.dart';
 
 Future<ByteData> fetchFont() async {
-  return rootBundle.load('assets/fonts/KoPubWorld Dotum Bold.ttf');
+  return rootBundle.load('assets/fonts/KoPubWorldDotumBold.ttf');
 }
 
 void main() async {

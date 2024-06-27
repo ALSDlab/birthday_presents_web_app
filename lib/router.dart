@@ -1,7 +1,8 @@
 import 'package:Birthday_Presents_List/view/page/main_page/main_page.dart';
 import 'package:Birthday_Presents_List/view/page/navigation_page/navigation_page_view_model.dart';
 import 'package:Birthday_Presents_List/view/page/navigation_page/scaffold_with_nav_bar.dart';
-import 'package:Birthday_Presents_List/view/page/search_page/amazon_webview_page.dart';
+import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_page.dart';
+import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_view_model.dart';
 import 'package:Birthday_Presents_List/view/page/search_page/search_page.dart';
 import 'package:Birthday_Presents_List/view/page/search_page/search_page_view_model.dart';
 import 'package:flutter/material.dart';
@@ -81,27 +82,27 @@ final router = GoRouter(
               //       })
               // ]
               ),
-          // GoRoute(
-          //   path: '/presents_list_page',
-          //   builder: (context, state) {
-          //     final extra = state.extra! as Map<String, dynamic>;
-          //     final resetNavigation = extra['resetNavigation'];
-          //     final hideNavBar = extra['hideNavBar'];
-          //     final docId = extra['docId'];
-          //     final name = extra['name'];
-          //     final birthYear = extra['birthYear'];
-          //     return ChangeNotifierProvider(
-          //       create: (_) => getIt<PresentsListViewModel>(),
-          //       child: PresentsListPage(
-          //         resetNavigation: resetNavigation,
-          //         hideNavBar: hideNavBar,
-          //         docId: docId,
-          //         name: name,
-          //         birthYear: birthYear,
-          //       ),
-          //     );
-          //   },
-          // ),
+          GoRoute(
+            path: '/presents_list_page',
+            builder: (context, state) {
+              final extra = state.extra! as Map<String, dynamic>;
+              final resetNavigation = extra['resetNavigation'];
+              final hideNavBar = extra['hideNavBar'];
+              final docId = extra['docId'];
+              final name = extra['name'];
+              final birthYear = extra['birthYear'];
+              return ChangeNotifierProvider(
+                create: (_) => getIt<PresentsListViewModel>(),
+                child: PresentsListPage(
+                  resetNavigation: resetNavigation,
+                  hideNavBar: hideNavBar,
+                  docId: docId,
+                  name: name,
+                  birthYear: birthYear,
+                ),
+              );
+            },
+          ),
         ]),
   ],
 );

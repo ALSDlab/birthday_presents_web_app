@@ -9,7 +9,7 @@ class SavePresentsListUseCase {
   // shared_preferences를 이용하여 리스트에 담는 기능 구현
   static const String _key = 'presentsList';
 
-  Future<Result<void>> execute(List<Map<String, dynamic>> items) async {
+  Future<Result<void>> execute(Map<String, List<Map<String, dynamic>>> items) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {

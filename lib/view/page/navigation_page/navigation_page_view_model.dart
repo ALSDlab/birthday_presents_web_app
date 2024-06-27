@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 class NavigationPageViewModel with ChangeNotifier {
   int badgeCount = 0;
   bool isHideNavBar = false;
-  String docId = '';
-  String name = '';
-  int birthYear = 0;
+  static String docId = '';
+  static String name = '';
+  static int birthYear = 0;
 
   bool resetNavigation(int newCount) {
     badgeCount = newCount;

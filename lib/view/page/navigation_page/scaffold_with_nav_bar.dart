@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:bootstrap_icons/bootstrap_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -79,6 +78,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
     );
   }
 
+
   @override
   void dispose() {
     _subscription?.cancel();
@@ -88,6 +88,8 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<NavigationPageViewModel>();
+    final searchPageViewModel = context.watch<SearchPageViewModel>();
+    final state = searchPageViewModel.state;
     return Scaffold(
       body: Stack(
         children: [
@@ -98,10 +100,6 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  Color(0xFFAEC6CF),
-                  BlendMode.dstATop,
-                ),
                 image: AssetImage(
                   'assets/images/background.jpg',
                 ),
@@ -134,27 +132,52 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
               ),
               items: [
                 BottomBarItem(
-                  icon: const Icon(BootstrapIcons.house_door),
-                  selectedIcon: const Icon(BootstrapIcons.search_heart),
-                  selectedColor: CupertinoColors.black,
+                  icon: const Icon(BootstrapIcons.search_heart),
+                  selectedIcon:
+                      const Icon(BootstrapIcons.search_heart_fill, shadows: [
+                    Shadow(
+                      offset: Offset(2.0, 2.0),
+                      blurRadius: 3.0,
+                      color: Colors.black,
+                    ),
+                  ]),
+                  selectedColor: const Color(0xFF98FF98),
                   unSelectedColor: const Color(0xFF3A405A),
                   title: const Text(
                     'SEARCH',
-                    style: TextStyle(fontFamily: 'KoPub'),
+                    style: TextStyle(fontFamily: 'KoPub', shadows: [
+                      Shadow(
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 3.0,
+                        color: Colors.grey,
+                      ),
+                    ]),
                   ),
                 ),
                 BottomBarItem(
-                  icon: const Icon(BootstrapIcons.box2),
-                  selectedIcon: const Icon(BootstrapIcons.list_stars),
-                  selectedColor: CupertinoColors.black,
+                  icon: const Icon(BootstrapIcons.list_task),
+                  selectedIcon: const Icon(BootstrapIcons.list_check, shadows: [
+                    Shadow(
+                      offset: Offset(2.0, 2.0),
+                      blurRadius: 3.0,
+                      color: Colors.black,
+                    ),
+                  ]),
+                  selectedColor: const Color(0xFF98FF98),
                   unSelectedColor: const Color(0xFF3A405A),
-                  badge: Text('$badgeCount'),
-                  showBadge: badgeCount > 0,
+                  badge: Text('${viewModel.badgeCount}'),
+                  showBadge: viewModel.badgeCount > 0,
                   badgeColor: Colors.red,
                   badgePadding: const EdgeInsets.only(left: 4, right: 4),
                   title: const Text(
                     'LIST',
-                    style: TextStyle(fontFamily: 'KoPub'),
+                    style: TextStyle(fontFamily: 'KoPub', shadows: [
+                      Shadow(
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 3.0,
+                        color: Colors.grey,
+                      ),
+                    ]),
                   ),
                 ),
               ],
@@ -175,10 +198,10 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                   String? location = locations[index];
                   router.go(location, extra: {
                     'resetNavigation': viewModel.resetNavigation,
-                    'hideNavBar': viewModel.hideNavBar,
-                    'docId': viewModel.docId,
-                    'name': viewModel.name,
-                    'birthYear': viewModel.birthYear
+                    'hideNavBar': viewModel.hideNavBar(false),
+                    'docId': NavigationPageViewModel.docId,
+                    'name': NavigationPageViewModel.name,
+                    'birthYear': NavigationPageViewModel.birthYear
                   });
                 }
               },

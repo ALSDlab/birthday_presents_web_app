@@ -19,9 +19,7 @@ class PresentsListViewModel extends ChangeNotifier {
     required SavePresentsListUseCase savePresentsListUseCase,
     required LoadPresentsListUseCase loadPresentsListUseCase,
   })   : _savePresentsListUseCase = savePresentsListUseCase,
-        _loadPresentsListUseCase = loadPresentsListUseCase {
-    getBadgeCount();
-  }
+        _loadPresentsListUseCase = loadPresentsListUseCase;
 
   bool _disposed = false;
 
@@ -44,7 +42,7 @@ class PresentsListViewModel extends ChangeNotifier {
     try {
       await getSavedPresentsList();
       notifyListeners();
-      return state.linksList.length;
+      return _state.linksList.length;
     } catch (error) {
       // 에러 처리
       logger.info('Error get badge: $error');
@@ -59,11 +57,12 @@ class PresentsListViewModel extends ChangeNotifier {
   Future<void> getSavedPresentsList() async {
     final result = await _loadPresentsListUseCase.execute();
     switch (result) {
-      case Success<List<Map<String, dynamic>>>():
-        _state = state.copyWith(linksList: result.data);
+      case Success<Map<String, List<Map<String, dynamic>>>>():
+        _state = state.copyWith(loadedDocId: result.data.keys.first);
+        _state = state.copyWith(linksList: result.data.values.first);
         notifyListeners();
         break;
-      case Error<List<Map<String, dynamic>>>():
+      case Error<Map<String, List<Map<String, dynamic>>>>():
         logger.info(result.message);
         notifyListeners();
         break;
@@ -71,12 +70,12 @@ class PresentsListViewModel extends ChangeNotifier {
   }
 
   // 리스트에 담는 메서드
-  Future<void> addToPresentsList(
+  Future<void> addToPresentsList(String docId,
       Map<String, dynamic> item, BuildContext context) async {
     await getSavedPresentsList();
     List<Map<String, dynamic>> currentList = List.from(state.linksList);
     currentList.add(item);
-    final result = await _savePresentsListUseCase.execute(currentList);
+    final result = await _savePresentsListUseCase.execute({docId: currentList});
 
     switch (result) {
       case Success<void>():

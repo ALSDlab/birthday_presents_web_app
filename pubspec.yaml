@@ -118,7 +118,7 @@ flutter:
         - asset: assets/fonts/Pretendard-Regular.ttf
     - family: KoPub
       fonts:
-        - asset: assets/fonts/KoPubWorld Dotum Bold.ttf
+        - asset: assets/fonts/KoPubWorldDotumBold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
