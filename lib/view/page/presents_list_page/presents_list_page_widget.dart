@@ -102,8 +102,8 @@ class _PresentListPageWidgetState extends State<PresentListPageWidget> {
                               Navigator.pop(context);
                             },
                             onSecondTap: () async {
-                              // await widget.removeFromCartList(
-                              //     widget.shoppingProductForCart);
+                              await viewModel.removeFromPresentsList(
+                                  widget.presentsListItem, context);
                               final newBadgeCount =
                                   await viewModel.getBadgeCount();
                               widget.resetNavigation(newBadgeCount);

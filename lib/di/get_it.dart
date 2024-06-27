@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 
 import '../data/repository/presents_list_repository_impl.dart';
 import '../domain/repository/presents_list_repository.dart';
+import '../domain/use_case/delete_presents_list_use_case.dart';
 import '../domain/use_case/get_presents_list_use_case.dart';
 import '../domain/use_case/load_presents_list_use_case.dart';
 import '../domain/use_case/post_presents_list_use_case.dart';
@@ -29,14 +30,16 @@ void diSetup() {
       presentsListRepository: getIt<PresentsListRepository>(),
     ))
     ..registerSingleton<LoadPresentsListUseCase>(LoadPresentsListUseCase())
-    ..registerSingleton<SavePresentsListUseCase>(SavePresentsListUseCase());
+    ..registerSingleton<SavePresentsListUseCase>(SavePresentsListUseCase())
+    ..registerSingleton<DeletePresentsListUseCase>(DeletePresentsListUseCase());
 
   // ViewModel
   getIt
     ..registerFactory<NavigationPageViewModel>(() => NavigationPageViewModel())
     ..registerFactory<PresentsListViewModel>(() => PresentsListViewModel(
         savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
-        loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()))
+        loadPresentsListUseCase: getIt<LoadPresentsListUseCase>(),
+        deletePresentsListUseCase: getIt<DeletePresentsListUseCase>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
         loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()));

@@ -150,7 +150,7 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                           });
                                         },
                                         child: const Text(
-                                          '선물 담으러 가기',
+                                          'Go to search page',
                                           style: TextStyle(
                                             color: Colors.black,
                                           ),

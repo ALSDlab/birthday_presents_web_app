@@ -1,3 +1,4 @@
+import 'package:Birthday_Presents_List/domain/use_case/delete_presents_list_use_case.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_state.dart';
 import 'package:flutter/material.dart';
 
@@ -6,20 +7,22 @@ import '../../../domain/use_case/load_presents_list_use_case.dart';
 import '../../../domain/use_case/save_presents_list_use_case.dart';
 import '../../../utils/simple_logger.dart';
 
-
 class PresentsListViewModel extends ChangeNotifier {
   final SavePresentsListUseCase _savePresentsListUseCase;
   final LoadPresentsListUseCase _loadPresentsListUseCase;
+  final DeletePresentsListUseCase _deletePresentsListUseCase;
 
   PresentsListState _state = const PresentsListState();
 
   PresentsListState get state => _state;
 
-  PresentsListViewModel({
-    required SavePresentsListUseCase savePresentsListUseCase,
-    required LoadPresentsListUseCase loadPresentsListUseCase,
-  })   : _savePresentsListUseCase = savePresentsListUseCase,
-        _loadPresentsListUseCase = loadPresentsListUseCase;
+  PresentsListViewModel(
+      {required SavePresentsListUseCase savePresentsListUseCase,
+      required LoadPresentsListUseCase loadPresentsListUseCase,
+      required DeletePresentsListUseCase deletePresentsListUseCase})
+      : _savePresentsListUseCase = savePresentsListUseCase,
+        _loadPresentsListUseCase = loadPresentsListUseCase,
+        _deletePresentsListUseCase = deletePresentsListUseCase;
 
   bool _disposed = false;
 
@@ -69,29 +72,6 @@ class PresentsListViewModel extends ChangeNotifier {
     }
   }
 
-  // 리스트에 담는 메서드
-  Future<void> addToPresentsList(String docId,
-      Map<String, dynamic> item, BuildContext context) async {
-    await getSavedPresentsList();
-    List<Map<String, dynamic>> currentList = List.from(state.linksList);
-    currentList.add(item);
-    final result = await _savePresentsListUseCase.execute({docId: currentList});
-
-    switch (result) {
-      case Success<void>():
-      // 스낵바로 표시
-        if (context.mounted) {
-          listAddSnackBar(context);
-        }
-        notifyListeners();
-        break;
-      case Error<void>():
-        logger.info(result.message);
-        notifyListeners();
-        break;
-    }
-  }
-
   // 스낵바 구현 매서드
   void listAddSnackBar(BuildContext context) {
     _state = state.copyWith(showSnackbarPadding: true);
@@ -99,7 +79,7 @@ class PresentsListViewModel extends ChangeNotifier {
 
     final snackBar = SnackBar(
       content:
-      const Text('리스트에 담겼습니다.', style: TextStyle(fontFamily: 'Jalnan')),
+          const Text('Deleted the Link.', style: TextStyle(fontFamily: 'Jalnan')),
       duration: const Duration(seconds: 2),
       onVisible: () {
         // snackbar가 사라질 때 패딩을 제거합니다.
@@ -112,23 +92,24 @@ class PresentsListViewModel extends ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+// 리스트에서 제거하는 기능
+Future<void> removeFromPresentsList(Map<String, dynamic> item, BuildContext context) async {
+  final result = await _deletePresentsListUseCase.execute(item);
+  switch (result) {
+    case Success<void>():
+    // 스낵바로 표시
+      if (context.mounted) {
+        listAddSnackBar(context);
+      }
+      notifyListeners();
+      break;
+    case Error<void>():
+      logger.info(result.message);
+      notifyListeners();
+      break;
+  }
+  notifyListeners();
+}
 
-  // // 장바구니에서 제거하는 기능
-  // Future<void> removeFromCartList(ShoppingProductForCart item) async {
-  //   try {
-  //     List<ShoppingProductForCart> currentList = await getSavedPresentsList();
-  //     currentList.remove(item);
-  //
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     String jsonString =
-  //     jsonEncode(currentList.map((e) => e.toJson()).toList());
-  //     prefs.setString(_key, jsonString);
-  //   } catch (e) {
-  //     logger.info('Error during removal: $e');
-  //   }
-  //   notifyListeners();
-  // }
-
-
-  //TODO: 파이어베이스 POST 기능 작성
+//TODO: 파이어베이스 POST 기능 작성
 }

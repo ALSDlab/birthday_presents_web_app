@@ -136,8 +136,8 @@ class _SearchPageState extends State<SearchPage> {
                       const Spacer(),
                       Center(
                         child: SizedBox(
-                          width: 140.w,
-                          height: 140.w,
+                          width: 130.w,
+                          height: 130.w,
                           child: GridView.count(
                               crossAxisCount: 2,
                               crossAxisSpacing: 16.0,
@@ -281,6 +281,7 @@ class _SearchPageState extends State<SearchPage> {
                                           ),
                                           onPressed: () async {
                                             Map<String, dynamic> item = {
+                                              'linkId': state.forBadgeList.length + 1,
                                               'isSelected': false,
                                               'mallLink':
                                               linkController.text
