@@ -1,4 +1,7 @@
+import 'package:Birthday_Presents_List/view/page/list_for_guest_page/list_for_guest_page.dart';
+import 'package:Birthday_Presents_List/view/page/list_for_guest_page/list_for_guest_page_view_model.dart';
 import 'package:Birthday_Presents_List/view/page/main_page/main_page.dart';
+import 'package:Birthday_Presents_List/view/page/navigation_page/globals.dart';
 import 'package:Birthday_Presents_List/view/page/navigation_page/navigation_page_view_model.dart';
 import 'package:Birthday_Presents_List/view/page/navigation_page/scaffold_with_nav_bar.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_page.dart';
@@ -13,6 +16,7 @@ import 'di/get_it.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
+
 
 final router = GoRouter(
   initialLocation: '/main_page',
@@ -70,17 +74,6 @@ final router = GoRouter(
                       birthYear: birthYear,
                     ));
               },
-              // routes: [
-              //   GoRoute(
-              //       path: 'amazon_page',
-              //       builder: (context, state) {
-              //         final extra = state.extra! as Map<String, dynamic>;
-              //         final name = extra['name'];
-              //         final yearCountWithEnding = extra['yearCountWithEnding'];
-              //         return AmazonWebviewPage(
-              //             name: name, yearCountWithEnding: yearCountWithEnding);
-              //       })
-              // ]
               ),
           GoRoute(
             path: '/presents_list_page',
@@ -104,5 +97,15 @@ final router = GoRouter(
             },
           ),
         ]),
+    GoRoute(
+      path: '/${Globals.docId}',
+      builder: (context, state) {
+        return ChangeNotifierProvider(
+          create: (_) => getIt<ListForGuestPageViewModel>(),
+          child: const ListForGuestPage(
+          ),
+        );
+      },
+    ),
   ],
 );

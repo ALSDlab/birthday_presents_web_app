@@ -37,9 +37,9 @@ void diSetup() {
   getIt
     ..registerFactory<NavigationPageViewModel>(() => NavigationPageViewModel())
     ..registerFactory<PresentsListViewModel>(() => PresentsListViewModel(
-        savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
         loadPresentsListUseCase: getIt<LoadPresentsListUseCase>(),
-        deletePresentsListUseCase: getIt<DeletePresentsListUseCase>()))
+        deletePresentsListUseCase: getIt<DeletePresentsListUseCase>(),
+        postPresentsListUseCase: getIt<PostPresentsListUseCase>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
         loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()));

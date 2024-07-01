@@ -1,3 +1,4 @@
+import '../../data/core/result.dart';
 import '../model/presents_list_model.dart';
 import '../repository/presents_list_repository.dart';
 
@@ -8,11 +9,11 @@ class GetPresentsListUseCase {
 
   final PresentsListRepository _presentsListRepository;
 
-  Future<PresentsListModel> execute(String docId) async {
+  Future<Result<PresentsListModel>> execute(String docId) async {
     final result = await _presentsListRepository.getFirebasePresentsList(docId);
 
     return result.when(
-      success: (data) => data,
+      success: (data) => Result.success(data),
       error: (message) => throw Exception(message),
     );
   }

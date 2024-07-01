@@ -1,11 +1,14 @@
+import 'package:Birthday_Presents_List/domain/model/presents_list_model.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_page_widget.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/gif_progress_bar.dart';
-import '../../widgets/one_answer_dialog.dart';
+import '../../widgets/two_answer_dialog.dart';
 
 class PresentsListPage extends StatefulWidget {
   const PresentsListPage({
@@ -182,54 +185,97 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(5.0),
-                                      child: Row(
-                                        children: [
-                                          Expanded(child: Container()),
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () async {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return OneAnswerDialog(
-                                                          onTap: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          title:
-                                                              '선택된 상품이 없습니다.',
-                                                          subtitle:
-                                                              '상품을 선택해 주세요',
-                                                          firstButton: '확인',
-                                                          imagePath:
-                                                              'assets/gifs/alert.gif');
-                                                    });
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color(0xFF2F362F),
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          10)))),
-                                              child: const Text(
-                                                'COMPLETE',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              // style: ButtonStyle(
-                                              //   backgroundColor: MaterialStateProperty.all(
-                                              //     const Color(0xFF2F362F),
-                                              //   ),
-                                              // ),
+                                      child: (state.isCompleted)
+                                          ? Center(
+                                              child: SelectableText(Uri.base.toString() +
+                                                  ((state.loadedDocId == '')
+                                                      ? widget.docId
+                                                      : state.loadedDocId)),
+                                            )
+                                          : Row(
+                                              children: [
+                                                Expanded(child: Container()),
+                                                Expanded(
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              TwoAnswerDialog(
+                                                                title:
+                                                                    'Complete my list',
+                                                                subtitle:
+                                                                    'Create the link for list',
+                                                                firstButton:
+                                                                    'NO',
+                                                                secondButton:
+                                                                    'YES',
+                                                                imagePath:
+                                                                    'assets/gifs/two_answer_dialog.gif',
+                                                                onFirstTap: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                onSecondTap:
+                                                                    () async {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  await viewModel
+                                                                      .getSavedPresentsList();
+                                                                  final PresentsListModel completedList = PresentsListModel(
+                                                                      name: widget
+                                                                          .name,
+                                                                      birthYear:
+                                                                          widget
+                                                                              .birthYear,
+                                                                      createdDate: DateFormat(
+                                                                              'yyyy.MM.dd_HH:mm:ss')
+                                                                          .format(DateTime
+                                                                              .now()),
+                                                                      links: state
+                                                                          .linksList);
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    await viewModel.postAndMakeListLink(
+                                                                        widget
+                                                                            .docId,
+                                                                        completedList,
+                                                                        context);
+                                                                  }
+                                                                  Clipboard.setData(ClipboardData(
+                                                                      text: Uri
+                                                                              .base
+                                                                              .toString() +
+                                                                          ((state.loadedDocId == '')
+                                                                              ? widget.docId
+                                                                              : state.loadedDocId)));
+                                                                },
+                                                              ));
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                        backgroundColor:
+                                                            const Color(
+                                                                0xFF2F362F),
+                                                        shape: const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        10)))),
+                                                    child: const Text(
+                                                      'COMPLETE',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    // style: ButtonStyle(
+                                                    //   backgroundColor: MaterialStateProperty.all(
+                                                    //     const Color(0xFF2F362F),
+                                                    //   ),
+                                                    // ),
+                                                  ),
+                                                ),
+                                                Expanded(child: Container()),
+                                              ],
                                             ),
-                                          ),
-                                          Expanded(child: Container()),
-                                        ],
-                                      ),
                                     ),
                                   ],
                                 ),

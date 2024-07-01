@@ -10,6 +10,7 @@ class PresentsListState with _$PresentsListState {
   const factory PresentsListState({
     @Default(false) bool isLoading,
     @Default(false) bool showSnackbarPadding,
+    @Default(false) bool isCompleted,
     @Default('') String loadedDocId,
     @Default([]) List<Map<String, dynamic>> linksList,
 

@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'globals.dart';
+
 class NavigationPageViewModel with ChangeNotifier {
   int badgeCount = 0;
   bool isHideNavBar = false;
-  static String docId = '';
-  static String name = '';
-  static int birthYear = 0;
+
 
   bool resetNavigation(int newCount) {
     badgeCount = newCount;
@@ -22,8 +22,8 @@ class NavigationPageViewModel with ChangeNotifier {
   }
 
   void setNameAndBirthYear(String nameValue, int birthYearValue) {
-    name = nameValue;
-    birthYear = birthYearValue;
+    Globals.name = nameValue;
+    Globals.birthYear = birthYearValue;
   }
 
   // 문서ID 생성하는 매서드 (영문 대소문자,숫자 10자리 조합)
@@ -33,7 +33,7 @@ class NavigationPageViewModel with ChangeNotifier {
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     Random random = Random();
     for (int i = 0; i < 15; i++) {
-      docId += letters[random.nextInt(62)];
+      Globals.docId += letters[random.nextInt(62)];
     }
   }
 }

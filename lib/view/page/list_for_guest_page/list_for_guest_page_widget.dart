@@ -1,26 +1,19 @@
-import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_view_model.dart';
-import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../widgets/two_answer_dialog.dart';
 import '../search_page/mall_link_list.dart';
 
-class PresentListPageWidget extends StatelessWidget {
+class ListForGuestPageWidget extends StatelessWidget {
   final Map<String, dynamic> presentsListItem;
-  final bool Function(int) resetNavigation;
 
-  PresentListPageWidget({
+  ListForGuestPageWidget({
     super.key,
     required this.presentsListItem,
-    required this.resetNavigation,
   });
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<PresentsListViewModel>();
     return Column(
       children: [
         Row(
@@ -31,7 +24,7 @@ class PresentListPageWidget extends StatelessWidget {
                 absorbing: (presentsListItem['isSelected']),
                 child: GestureDetector(
                   onTap:
-                  () async {
+                      () async {
                     await launchUrl(
                         Uri.parse(presentsListItem['mallLink']));
                   },
@@ -85,31 +78,6 @@ class PresentListPageWidget extends StatelessWidget {
                 ),
               ),
             ),
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => TwoAnswerDialog(
-                            title: 'Delete the item?',
-                            firstButton: 'NO',
-                            secondButton: 'YES',
-                            imagePath: 'assets/gifs/two_answer_dialog.gif',
-                            onFirstTap: () {
-                              Navigator.pop(context);
-                            },
-                            onSecondTap: () async {
-                              await viewModel.removeFromPresentsList(
-                                  presentsListItem, context);
-                              final newBadgeCount =
-                                  await viewModel.getBadgeCount();
-                              resetNavigation(newBadgeCount);
-                              if (context.mounted) {
-                                Navigator.pop(context);
-                              }
-                            },
-                          ));
-                },
-                icon: const Icon(BootstrapIcons.trash3))
           ],
         ),
         const Divider(),

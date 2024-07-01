@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../widgets/two_answer_dialog.dart';
+import '../navigation_page/globals.dart';
 import '../navigation_page/navigation_page_view_model.dart';
 
 class MainPage extends StatefulWidget {
@@ -566,8 +567,7 @@ class _MainPageState extends State<MainPage> {
                                                         .getInstance();
                                                 await prefs
                                                     .remove('presentsList');
-                                                widget
-                                                    .resetNavigation(0);
+                                                widget.resetNavigation(0);
                                                 if (context.mounted) {
                                                   Navigator.pop(context);
                                                   GoRouter.of(context).go(
@@ -577,9 +577,7 @@ class _MainPageState extends State<MainPage> {
                                                             .resetNavigation,
                                                         'hideNavBar': widget
                                                             .hideNavBar(false),
-                                                        'docId':
-                                                            NavigationPageViewModel
-                                                                .docId,
+                                                        'docId': Globals.docId,
                                                         'name':
                                                             nameController.text,
                                                         'birthYear': int.parse(
@@ -671,8 +669,7 @@ class _MainPageState extends State<MainPage> {
                                               widget.resetNavigation,
                                           'hideNavBar':
                                               widget.hideNavBar(false),
-                                          'docId':
-                                              NavigationPageViewModel.docId,
+                                          'docId': Globals.docId,
                                           'name': nameController.text,
                                           'birthYear': int.parse(
                                               birthYearController.text)

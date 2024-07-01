@@ -12,6 +12,7 @@ import '../../../data/repository/network_connectivity_observer.dart';
 import '../../../utils/simple_logger.dart';
 import '../../widgets/one_answer_dialog.dart';
 import '../search_page/search_page_view_model.dart';
+import 'globals.dart';
 import 'navigation_page_view_model.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
@@ -88,8 +89,6 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<NavigationPageViewModel>();
-    final searchPageViewModel = context.watch<SearchPageViewModel>();
-    final state = searchPageViewModel.state;
     return Scaffold(
       body: Stack(
         children: [
@@ -199,9 +198,9 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                   router.go(location, extra: {
                     'resetNavigation': viewModel.resetNavigation,
                     'hideNavBar': viewModel.hideNavBar(false),
-                    'docId': NavigationPageViewModel.docId,
-                    'name': NavigationPageViewModel.name,
-                    'birthYear': NavigationPageViewModel.birthYear
+                    'docId': Globals.docId,
+                    'name': Globals.name,
+                    'birthYear': Globals.birthYear
                   });
                 }
               },
