@@ -85,31 +85,37 @@ class PresentListPageWidget extends StatelessWidget {
                 ),
               ),
             ),
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => TwoAnswerDialog(
-                            title: 'Delete the item?',
-                            firstButton: 'NO',
-                            secondButton: 'YES',
-                            imagePath: 'assets/gifs/two_answer_dialog.gif',
-                            onFirstTap: () {
-                              Navigator.pop(context);
-                            },
-                            onSecondTap: () async {
-                              await viewModel.removeFromPresentsList(
-                                  presentsListItem, context);
-                              final newBadgeCount =
-                                  await viewModel.getBadgeCount();
-                              resetNavigation(newBadgeCount);
-                              if (context.mounted) {
-                                Navigator.pop(context);
-                              }
-                            },
-                          ));
-                },
-                icon: const Icon(BootstrapIcons.trash3))
+            Visibility(
+              visible: (!viewModel.state.isCompleted),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 24.0),
+                child: IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => TwoAnswerDialog(
+                                title: 'Delete the item?',
+                                firstButton: 'NO',
+                                secondButton: 'YES',
+                                imagePath: 'assets/gifs/two_answer_dialog.gif',
+                                onFirstTap: () {
+                                  Navigator.pop(context);
+                                },
+                                onSecondTap: () async {
+                                  await viewModel.removeFromPresentsList(
+                                      presentsListItem, context);
+                                  final newBadgeCount =
+                                      await viewModel.getBadgeCount();
+                                  resetNavigation(newBadgeCount);
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                              ));
+                    },
+                    icon: const Icon(BootstrapIcons.trash3, size: 35,)),
+              ),
+            )
           ],
         ),
         const Divider(),

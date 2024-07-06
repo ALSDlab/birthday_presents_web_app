@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/gif_progress_bar.dart';
 import '../../widgets/two_answer_dialog.dart';
+import '../navigation_page/globals.dart';
 
 class PresentsListPage extends StatefulWidget {
   const PresentsListPage({
@@ -64,7 +66,7 @@ class _PresentsListPageState extends State<PresentsListPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            GoRouter.of(context).go('/main_page', extra: {
+            GoRouter.of(context).go('/', extra: {
               'resetNavigation': widget.resetNavigation,
               'hideNavBar': widget.hideNavBar,
             });
@@ -86,205 +88,260 @@ class _PresentsListPageState extends State<PresentsListPage> {
         ),
         centerTitle: true,
       ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(
-                  'assets/images/background.jpg',
+      body: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    'assets/images/background.jpg',
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFFFFF9C4).withOpacity(0.9),
-                  const Color(0xFFFFF9C4).withOpacity(0.9),
-                ],
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    const Color(0xFFFFF9C4).withOpacity(0.9),
+                    const Color(0xFFFFF9C4).withOpacity(0.9),
+                  ],
+                ),
               ),
             ),
-          ),
-          (state.isLoading)
-              ? Center(
-                  child: GifProgressBar(),
-                )
-              : Padding(
-                  padding: EdgeInsets.only(
-                      top: 5.0,
-                      left: 5.0,
-                      right: 5.0,
-                      bottom: state.showSnackbarPadding
-                          ? MediaQuery.of(context).padding.bottom + 48.0
-                          : 0), // Snackbar 높이만큼 padding 추가
-                  child: Column(
-                    children: [
-                      state.linksList.isEmpty
-                          ? Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text('EMPTY LIST'),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)))),
-                                        onPressed: () {
-                                          GoRouter.of(context)
-                                              .go('/search_page', extra: {
-                                            'resetNavigation':
-                                                widget.resetNavigation,
-                                            'hideNavBar': widget.hideNavBar,
-                                            'docId': widget.docId,
-                                            'name': widget.name,
-                                            'birthYear': widget.birthYear
-                                          });
-                                        },
-                                        child: const Text(
-                                          'Go to search page',
-                                          style: TextStyle(
-                                            color: Colors.black,
+            (state.isLoading)
+                ? Center(
+                    child: GifProgressBar(),
+                  )
+                : Padding(
+                    padding: EdgeInsets.only(
+                        top: 5.0,
+                        left: 5.0,
+                        right: 5.0,
+                        bottom: state.showSnackbarPadding
+                            ? MediaQuery.of(context).padding.bottom + 48.0
+                            : 0), // Snackbar 높이만큼 padding 추가
+                    child: Column(
+                      children: [
+                        state.linksList.isEmpty
+                            ? Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        const Text('EMPTY LIST'),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                              shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(10)))),
+                                          onPressed: () {
+                                            GoRouter.of(context)
+                                                .go('/search_page', extra: {
+                                              'resetNavigation':
+                                                  widget.resetNavigation,
+                                              'hideNavBar': widget.hideNavBar,
+                                              'docId': widget.docId,
+                                              'name': widget.name,
+                                              'birthYear': widget.birthYear
+                                            });
+                                          },
+                                          child: const Text(
+                                            'Go to search page',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                          physics: const BouncingScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            return PresentListPageWidget(
+                                              presentsListItem:
+                                                  state.linksList[index],
+                                              resetNavigation:
+                                                  widget.resetNavigation,
+                                            );
+                                          },
+                                          itemCount: state.linksList.length,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: (state.isCompleted)
+                                            ? Row(
+                                              children: [
+                                                Expanded(child: Container()),
+                                                SelectableText(
+                                                  Globals.rootUrl +
+                                                      ((state.loadedDocId ==
+                                                              '')
+                                                          ? widget.docId
+                                                          : state
+                                                              .loadedDocId),
+                                                  style: const TextStyle(
+                                                      fontSize: 20),
+                                                ),
+                                                const SizedBox(width: 30,),
+                                                ElevatedButton(
+                                                  onPressed: () async {
+                                                    await launchUrl(Uri
+                                                        .parse(Globals
+                                                                .rootUrl +
+                                                            ((state.loadedDocId ==
+                                                                    '')
+                                                                ? widget
+                                                                    .docId
+                                                                : state
+                                                                    .loadedDocId)));
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xFF98FF98),
+                                                      shape: const RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius
+                                                              .all(Radius
+                                                                  .circular(
+                                                                      10)))),
+                                                  child: const Text(
+                                                    'LINK',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFF3A405A)),
+                                                  ),
+                                                  // style: ButtonStyle(
+                                                  //   backgroundColor: MaterialStateProperty.all(
+                                                  //     const Color(0xFF2F362F),
+                                                  //   ),
+                                                  // ),
+                                                ),
+                                                //TODO: EDIT 버튼 만들기
+
+                                                Expanded(child: Container()),
+                                              ],
+                                            )
+                                            : Row(
+                                                children: [
+                                                  Expanded(child: Container()),
+                                                  Expanded(
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (context) =>
+                                                                TwoAnswerDialog(
+                                                                  title:
+                                                                      'Complete my list',
+                                                                  subtitle:
+                                                                      'Create the link for list',
+                                                                  firstButton:
+                                                                      'NO',
+                                                                  secondButton:
+                                                                      'YES',
+                                                                  imagePath:
+                                                                      'assets/gifs/two_answer_dialog.gif',
+                                                                  onFirstTap: () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  onSecondTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    await viewModel
+                                                                        .getSavedPresentsList();
+                                                                    final PresentsListModel completedList = PresentsListModel(
+                                                                        name: widget
+                                                                            .name,
+                                                                        birthYear:
+                                                                            widget
+                                                                                .birthYear,
+                                                                        createdDate: DateFormat(
+                                                                                'yyyy.MM.dd_HH:mm:ss')
+                                                                            .format(DateTime
+                                                                                .now()),
+                                                                        links: state
+                                                                            .linksList);
+                                                                    if (context
+                                                                        .mounted) {
+                                                                      await viewModel.postAndMakeListLink(
+                                                                          widget
+                                                                              .docId,
+                                                                          completedList,
+                                                                          context);
+                                                                      Clipboard.setData(ClipboardData(
+                                                                          text: Globals
+                                                                              .rootUrl +
+                                                                              ((state.loadedDocId == '')
+                                                                                  ? widget.docId
+                                                                                  : state.loadedDocId)));
+                                                                    }
+
+                                                                  },
+                                                                ));
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              const Color(
+                                                                  0xFF98FF98),
+                                                          shape: const RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.all(
+                                                                      Radius.circular(
+                                                                          10)))),
+                                                      child: (state.isPosting)
+                                                          ? Center(
+                                                              child:
+                                                                  GifProgressBar(radius: 15,),
+                                                            )
+                                                          : const Text(
+                                                              'COMPLETE',
+                                                              style: TextStyle(
+                                                                  color: Color(0xFF3A405A)),
+                                                            ),
+                                                      // style: ButtonStyle(
+                                                      //   backgroundColor: MaterialStateProperty.all(
+                                                      //     const Color(0xFF2F362F),
+                                                      //   ),
+                                                      // ),
+                                                    ),
+                                                  ),
+                                                  Expanded(child: Container()),
+                                                ],
+                                              ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                            )
-                          : Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                        physics: const BouncingScrollPhysics(),
-                                        itemBuilder: (context, index) {
-                                          return PresentListPageWidget(
-                                            presentsListItem:
-                                                state.linksList[index],
-                                            resetNavigation:
-                                                widget.resetNavigation,
-                                          );
-                                        },
-                                        itemCount: state.linksList.length,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: (state.isCompleted)
-                                          ? Center(
-                                              child: SelectableText(Uri.base.toString() +
-                                                  ((state.loadedDocId == '')
-                                                      ? widget.docId
-                                                      : state.loadedDocId)),
-                                            )
-                                          : Row(
-                                              children: [
-                                                Expanded(child: Container()),
-                                                Expanded(
-                                                  child: ElevatedButton(
-                                                    onPressed: () async {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) =>
-                                                              TwoAnswerDialog(
-                                                                title:
-                                                                    'Complete my list',
-                                                                subtitle:
-                                                                    'Create the link for list',
-                                                                firstButton:
-                                                                    'NO',
-                                                                secondButton:
-                                                                    'YES',
-                                                                imagePath:
-                                                                    'assets/gifs/two_answer_dialog.gif',
-                                                                onFirstTap: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                onSecondTap:
-                                                                    () async {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                  await viewModel
-                                                                      .getSavedPresentsList();
-                                                                  final PresentsListModel completedList = PresentsListModel(
-                                                                      name: widget
-                                                                          .name,
-                                                                      birthYear:
-                                                                          widget
-                                                                              .birthYear,
-                                                                      createdDate: DateFormat(
-                                                                              'yyyy.MM.dd_HH:mm:ss')
-                                                                          .format(DateTime
-                                                                              .now()),
-                                                                      links: state
-                                                                          .linksList);
-                                                                  if (context
-                                                                      .mounted) {
-                                                                    await viewModel.postAndMakeListLink(
-                                                                        widget
-                                                                            .docId,
-                                                                        completedList,
-                                                                        context);
-                                                                  }
-                                                                  Clipboard.setData(ClipboardData(
-                                                                      text: Uri
-                                                                              .base
-                                                                              .toString() +
-                                                                          ((state.loadedDocId == '')
-                                                                              ? widget.docId
-                                                                              : state.loadedDocId)));
-                                                                },
-                                                              ));
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFF2F362F),
-                                                        shape: const RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        10)))),
-                                                    child: const Text(
-                                                      'COMPLETE',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    // style: ButtonStyle(
-                                                    //   backgroundColor: MaterialStateProperty.all(
-                                                    //     const Color(0xFF2F362F),
-                                                    //   ),
-                                                    // ),
-                                                  ),
-                                                ),
-                                                Expanded(child: Container()),
-                                              ],
-                                            ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                    ],
+                              )
+                      ],
+                    ),
                   ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }

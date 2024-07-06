@@ -31,7 +31,14 @@ class PresentListFirebase {
       DocumentSnapshot docSnapshot =
           await _firestore.collection('presentsList').doc(myListDocId).get();
 
-      return Result.success(PresentsListDto.fromJson(docSnapshot[myListDocId]));
+      if (docSnapshot.exists) {
+        // 데이터가 존재하는 경우
+        Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>;
+
+        return Result.success(PresentsListDto.fromJson(data));
+      } else {
+        return const Result.error('Document not exist');
+      }
     } catch (e) {
       // Firestore 예외 발생 시 오류 메시지 반환
       logger.info('Firestore 통신 에러 => $e');

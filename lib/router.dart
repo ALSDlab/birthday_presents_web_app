@@ -1,7 +1,6 @@
 import 'package:Birthday_Presents_List/view/page/list_for_guest_page/list_for_guest_page.dart';
 import 'package:Birthday_Presents_List/view/page/list_for_guest_page/list_for_guest_page_view_model.dart';
 import 'package:Birthday_Presents_List/view/page/main_page/main_page.dart';
-import 'package:Birthday_Presents_List/view/page/navigation_page/globals.dart';
 import 'package:Birthday_Presents_List/view/page/navigation_page/navigation_page_view_model.dart';
 import 'package:Birthday_Presents_List/view/page/navigation_page/scaffold_with_nav_bar.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_page.dart';
@@ -19,7 +18,7 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 
 final router = GoRouter(
-  initialLocation: '/main_page',
+  initialLocation: '/',
   navigatorKey: _rootNavigatorKey,
   routes: [
     ShellRoute(
@@ -42,7 +41,7 @@ final router = GoRouter(
             ),
         routes: [
           GoRoute(
-            path: '/main_page',
+            path: '/',
             builder: (context, state) {
               final navigationViewModel =
                   Provider.of<NavigationPageViewModel>(context, listen: false);
@@ -57,6 +56,13 @@ final router = GoRouter(
           ),
           GoRoute(
               path: '/search_page',
+              redirect: (context, state) {
+                // 직접 접근이 아닌 다른 페이지에서 이동 시에만 표시
+                if(state.extra == null) {
+                  return '/';
+                }
+                return null;
+              },
               builder: (context, state) {
                 final extra = state.extra! as Map<String, dynamic>;
                 final resetNavigation = extra['resetNavigation'];
@@ -77,6 +83,13 @@ final router = GoRouter(
               ),
           GoRoute(
             path: '/presents_list_page',
+            redirect: (context, state) {
+              // 직접 접근이 아닌 다른 페이지에서 이동 시에만 표시
+              if(state.extra == null) {
+                return '/';
+              }
+              return null;
+            },
             builder: (context, state) {
               final extra = state.extra! as Map<String, dynamic>;
               final resetNavigation = extra['resetNavigation'];
@@ -98,11 +111,19 @@ final router = GoRouter(
           ),
         ]),
     GoRoute(
-      path: '/${Globals.docId}',
+      path: '/:docId',
+      redirect: (context, state) {
+        // 직접 접근이 아닌 다른 페이지에서 이동 시에만 표시
+        if(state.extra == null) {
+          return '/';
+        }
+        return null;
+      },
       builder: (context, state) {
+        final docId = state.pathParameters['docId']!;
         return ChangeNotifierProvider(
           create: (_) => getIt<ListForGuestPageViewModel>(),
-          child: const ListForGuestPage(
+          child: ListForGuestPage(docId: docId
           ),
         );
       },

@@ -9,6 +9,7 @@ part 'presents_list_state.g.dart';
 class PresentsListState with _$PresentsListState {
   const factory PresentsListState({
     @Default(false) bool isLoading,
+    @Default(false) bool isPosting,
     @Default(false) bool showSnackbarPadding,
     @Default(false) bool isCompleted,
     @Default('') String loadedDocId,

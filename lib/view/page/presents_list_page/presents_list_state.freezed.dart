@@ -21,6 +21,7 @@ PresentsListState _$PresentsListStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PresentsListState {
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isPosting => throw _privateConstructorUsedError;
   bool get showSnackbarPadding => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
   String get loadedDocId => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $PresentsListStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isLoading,
+      bool isPosting,
       bool showSnackbarPadding,
       bool isCompleted,
       String loadedDocId,
@@ -61,6 +63,7 @@ class _$PresentsListStateCopyWithImpl<$Res, $Val extends PresentsListState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? isPosting = null,
     Object? showSnackbarPadding = null,
     Object? isCompleted = null,
     Object? loadedDocId = null,
@@ -70,6 +73,10 @@ class _$PresentsListStateCopyWithImpl<$Res, $Val extends PresentsListState>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isPosting: null == isPosting
+          ? _value.isPosting
+          : isPosting // ignore: cast_nullable_to_non_nullable
               as bool,
       showSnackbarPadding: null == showSnackbarPadding
           ? _value.showSnackbarPadding
@@ -101,6 +108,7 @@ abstract class _$$PresentsListStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {bool isLoading,
+      bool isPosting,
       bool showSnackbarPadding,
       bool isCompleted,
       String loadedDocId,
@@ -119,6 +127,7 @@ class __$$PresentsListStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? isPosting = null,
     Object? showSnackbarPadding = null,
     Object? isCompleted = null,
     Object? loadedDocId = null,
@@ -128,6 +137,10 @@ class __$$PresentsListStateImplCopyWithImpl<$Res>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isPosting: null == isPosting
+          ? _value.isPosting
+          : isPosting // ignore: cast_nullable_to_non_nullable
               as bool,
       showSnackbarPadding: null == showSnackbarPadding
           ? _value.showSnackbarPadding
@@ -156,6 +169,7 @@ class _$PresentsListStateImpl
     implements _PresentsListState {
   const _$PresentsListStateImpl(
       {this.isLoading = false,
+      this.isPosting = false,
       this.showSnackbarPadding = false,
       this.isCompleted = false,
       this.loadedDocId = '',
@@ -168,6 +182,9 @@ class _$PresentsListStateImpl
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final bool isPosting;
   @override
   @JsonKey()
   final bool showSnackbarPadding;
@@ -188,7 +205,7 @@ class _$PresentsListStateImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PresentsListState(isLoading: $isLoading, showSnackbarPadding: $showSnackbarPadding, isCompleted: $isCompleted, loadedDocId: $loadedDocId, linksList: $linksList)';
+    return 'PresentsListState(isLoading: $isLoading, isPosting: $isPosting, showSnackbarPadding: $showSnackbarPadding, isCompleted: $isCompleted, loadedDocId: $loadedDocId, linksList: $linksList)';
   }
 
   @override
@@ -197,6 +214,7 @@ class _$PresentsListStateImpl
     properties
       ..add(DiagnosticsProperty('type', 'PresentsListState'))
       ..add(DiagnosticsProperty('isLoading', isLoading))
+      ..add(DiagnosticsProperty('isPosting', isPosting))
       ..add(DiagnosticsProperty('showSnackbarPadding', showSnackbarPadding))
       ..add(DiagnosticsProperty('isCompleted', isCompleted))
       ..add(DiagnosticsProperty('loadedDocId', loadedDocId))
@@ -210,6 +228,8 @@ class _$PresentsListStateImpl
             other is _$PresentsListStateImpl &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isPosting, isPosting) ||
+                other.isPosting == isPosting) &&
             (identical(other.showSnackbarPadding, showSnackbarPadding) ||
                 other.showSnackbarPadding == showSnackbarPadding) &&
             (identical(other.isCompleted, isCompleted) ||
@@ -225,6 +245,7 @@ class _$PresentsListStateImpl
   int get hashCode => Object.hash(
       runtimeType,
       isLoading,
+      isPosting,
       showSnackbarPadding,
       isCompleted,
       loadedDocId,
@@ -248,6 +269,7 @@ class _$PresentsListStateImpl
 abstract class _PresentsListState implements PresentsListState {
   const factory _PresentsListState(
       {final bool isLoading,
+      final bool isPosting,
       final bool showSnackbarPadding,
       final bool isCompleted,
       final String loadedDocId,
@@ -258,6 +280,8 @@ abstract class _PresentsListState implements PresentsListState {
 
   @override
   bool get isLoading;
+  @override
+  bool get isPosting;
   @override
   bool get showSnackbarPadding;
   @override

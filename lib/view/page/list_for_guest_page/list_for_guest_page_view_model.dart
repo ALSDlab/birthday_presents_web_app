@@ -1,6 +1,7 @@
 import 'package:Birthday_Presents_List/domain/model/presents_list_model.dart';
 import 'package:Birthday_Presents_List/domain/use_case/get_presents_list_use_case.dart';
 import 'package:Birthday_Presents_List/domain/use_case/post_presents_list_use_case.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/core/result.dart';
@@ -17,10 +18,11 @@ class ListForGuestPageViewModel extends ChangeNotifier {
 
   ListForGuestPageViewModel(
       {required GetPresentsListUseCase getPresentsListUseCase,
-        required PostPresentsListUseCase postPresentsListUseCase})
-      :
-        _getPresentsListUseCase = getPresentsListUseCase,
-        _postPresentsListUseCase = postPresentsListUseCase;
+      required PostPresentsListUseCase postPresentsListUseCase})
+      : _getPresentsListUseCase = getPresentsListUseCase,
+        _postPresentsListUseCase = postPresentsListUseCase {
+    getBadgeCount();
+  }
 
   bool _disposed = false;
 
@@ -40,13 +42,18 @@ class ListForGuestPageViewModel extends ChangeNotifier {
   Future<int> getBadgeCount() async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp();
+    }
     try {
-      await getPresentsList(Uri.base.toString());
+      await getPresentsList(
+          Uri.base.toString().substring(Uri.base.toString().length - 15));
       notifyListeners();
       return _state.linksList.length;
     } catch (error) {
       // 에러 처리
       logger.info('Error get badge: $error');
+
       return 0;
     } finally {
       _state = state.copyWith(isLoading: false);
@@ -64,7 +71,7 @@ class ListForGuestPageViewModel extends ChangeNotifier {
         _state = state.copyWith(linksList: result.data.links);
         notifyListeners();
         break;
-      case Error<PresentsListModel>():
+      case Error():
         logger.info(result.message);
         notifyListeners();
         break;
@@ -90,14 +97,13 @@ class ListForGuestPageViewModel extends ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-
   Future<void> postAndMakeListLink(
       String listDocId, PresentsListModel myList, BuildContext context) async {
     final result = await _postPresentsListUseCase.execute(
         myListDocId: listDocId, myList: myList);
     switch (result) {
       case Success<void>():
-      // 스낵바로 표시
+        // 스낵바로 표시
         if (context.mounted) {
           listAddSnackBar('Made the link for list', context);
           _state = state.copyWith(isCompleted: true);

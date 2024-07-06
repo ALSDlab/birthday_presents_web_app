@@ -66,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            GoRouter.of(context).go('/main_page', extra: {
+            GoRouter.of(context).go('/', extra: {
               'resetNavigation': widget.resetNavigation,
               'hideNavBar': widget.hideNavBar,
             });
@@ -147,7 +147,7 @@ class _SearchPageState extends State<SearchPage> {
                                   width: 100,
                                   height: 100,
                                   imagePath:
-                                  'images/${urls.keys.toList()[index]}.png',
+                                  'assets/images/${urls.keys.toList()[index]}.png',
                                   onTap: () async {
                                     await launchUrl(
                                         Uri.parse(urls.values.toList()[index]));

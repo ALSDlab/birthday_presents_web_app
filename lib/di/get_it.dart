@@ -7,6 +7,7 @@ import '../domain/use_case/get_presents_list_use_case.dart';
 import '../domain/use_case/load_presents_list_use_case.dart';
 import '../domain/use_case/post_presents_list_use_case.dart';
 import '../domain/use_case/save_presents_list_use_case.dart';
+import '../view/page/list_for_guest_page/list_for_guest_page_view_model.dart';
 import '../view/page/navigation_page/navigation_page_view_model.dart';
 import '../view/page/presents_list_page/presents_list_view_model.dart';
 import '../view/page/search_page/search_page_view_model.dart';
@@ -42,5 +43,9 @@ void diSetup() {
         postPresentsListUseCase: getIt<PostPresentsListUseCase>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
-        loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()));
+        loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()))
+    ..registerFactory<ListForGuestPageViewModel>(() =>
+        ListForGuestPageViewModel(
+            getPresentsListUseCase: getIt<GetPresentsListUseCase>(),
+            postPresentsListUseCase: getIt<PostPresentsListUseCase>()));
 }

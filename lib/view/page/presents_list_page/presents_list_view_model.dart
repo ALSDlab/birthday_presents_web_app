@@ -126,22 +126,22 @@ class PresentsListViewModel extends ChangeNotifier {
 
   Future<void> postAndMakeListLink(
       String listDocId, PresentsListModel myList, BuildContext context) async {
+    _state = state.copyWith(isPosting: true);
+    notifyListeners();
     final result = await _postPresentsListUseCase.execute(
         myListDocId: listDocId, myList: myList);
-    switch (result) {
-      case Success<void>():
-        // 스낵바로 표시
-        if (context.mounted) {
-          listAddSnackBar(
-              'The link has been copied to your clipboard', context);
-          _state = state.copyWith(isCompleted: true);
-        }
-        notifyListeners();
-        break;
-      case Error<Map<String, List<Map<String, dynamic>>>>():
-        logger.info(result.message);
-        notifyListeners();
-        break;
+    if (result is Success<void>) {
+      // 스낵바로 표시
+      if (context.mounted) {
+        listAddSnackBar('The link has been copied to your clipboard', context);
+      }
+      _state = state.copyWith(isCompleted: true);
+      notifyListeners();
+    } else if (result is Error) {
+      logger.info(result.message);
+      notifyListeners();
     }
+    _state = state.copyWith(isPosting: false);
+    notifyListeners();
   }
 }

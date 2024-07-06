@@ -36,6 +36,7 @@ class _MainPageState extends State<MainPage> {
     });
     load('name', nameController);
     load('birthYear', birthYearController);
+    Globals.rootUrl = Uri.base.toString();
     super.initState();
   }
 

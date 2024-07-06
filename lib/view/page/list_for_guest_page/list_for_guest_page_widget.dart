@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../search_page/mall_link_list.dart';
+import 'list_for_guest_page_view_model.dart';
 
 class ListForGuestPageWidget extends StatelessWidget {
   final Map<String, dynamic> presentsListItem;
@@ -14,6 +16,7 @@ class ListForGuestPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<ListForGuestPageViewModel>();
     return Column(
       children: [
         Row(
@@ -78,6 +81,14 @@ class ListForGuestPageWidget extends StatelessWidget {
                 ),
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 24.0),
+            //   child: Checkbox(
+            //       value:
+            //       onChanged: (value) {
+            //         viewModel.checkBox(value);
+            //       })
+            // )
           ],
         ),
         const Divider(),

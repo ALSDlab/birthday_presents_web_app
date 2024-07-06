@@ -1,10 +1,11 @@
 import 'package:Birthday_Presents_List/router.dart';
-import 'package:Birthday_Presents_List/url_strategy_mobile.dart'
-    if (dart.library.html) 'package:Birthday_Presents_List/url_strategy_web.dart';
+// import 'package:Birthday_Presents_List/url_strategy_mobile.dart'
+//     if (dart.library.html) 'package:Birthday_Presents_List/url_strategy_web.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'di/get_it.dart';
 import 'firebase_options.dart';
@@ -14,8 +15,10 @@ Future<ByteData> fetchFont() async {
 }
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
-  configureUrlStrategy();
+  usePathUrlStrategy();
+  // configureUrlStrategy();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
