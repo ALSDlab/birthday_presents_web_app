@@ -16,7 +16,6 @@ import 'di/get_it.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-
 final router = GoRouter(
   initialLocation: '/',
   navigatorKey: _rootNavigatorKey,
@@ -55,37 +54,37 @@ final router = GoRouter(
             },
           ),
           GoRoute(
-              path: '/search_page',
-              redirect: (context, state) {
-                // 직접 접근이 아닌 다른 페이지에서 이동 시에만 표시
-                if(state.extra == null) {
-                  return '/';
-                }
-                return null;
-              },
-              builder: (context, state) {
-                final extra = state.extra! as Map<String, dynamic>;
-                final resetNavigation = extra['resetNavigation'];
-                final hideNavBar = extra['hideNavBar'];
-                final docId = extra['docId'];
-                final name = extra['name'];
-                final birthYear = extra['birthYear'];
-                return ChangeNotifierProvider(
-                    create: (_) => getIt<SearchPageViewModel>(),
-                    child: SearchPage(
-                      resetNavigation: resetNavigation,
-                      hideNavBar: hideNavBar,
-                      docId: docId,
-                      name: name,
-                      birthYear: birthYear,
-                    ));
-              },
-              ),
+            path: '/search_page',
+            redirect: (context, state) {
+              // 직접 접근이 아닌 다른 페이지에서 이동 시에만 표시
+              if (state.path == '/search_page' && state.extra == null) {
+                return '/';
+              }
+              return null;
+            },
+            builder: (context, state) {
+              final extra = state.extra! as Map<String, dynamic>;
+              final resetNavigation = extra['resetNavigation'];
+              final hideNavBar = extra['hideNavBar'];
+              final docId = extra['docId'];
+              final name = extra['name'];
+              final birthYear = extra['birthYear'];
+              return ChangeNotifierProvider(
+                  create: (_) => getIt<SearchPageViewModel>(),
+                  child: SearchPage(
+                    resetNavigation: resetNavigation,
+                    hideNavBar: hideNavBar,
+                    docId: docId,
+                    name: name,
+                    birthYear: birthYear,
+                  ));
+            },
+          ),
           GoRoute(
             path: '/presents_list_page',
             redirect: (context, state) {
               // 직접 접근이 아닌 다른 페이지에서 이동 시에만 표시
-              if(state.extra == null) {
+              if (state.path == '/presents_list_page' && state.extra == null) {
                 return '/';
               }
               return null;
@@ -112,19 +111,20 @@ final router = GoRouter(
         ]),
     GoRoute(
       path: '/:docId',
-      redirect: (context, state) {
-        // 직접 접근이 아닌 다른 페이지에서 이동 시에만 표시
-        if(state.extra == null) {
-          return '/';
-        }
-        return null;
-      },
+      // redirect: (context, state) {
+      //   final String docId = state.pathParameters['docId']!;
+      //   // 특정 페이지에 접근할 때 URL 전략 설정
+      //   if (docId.length != 15) {
+      //     return '/';
+      //   }
+      //   usePathUrlStrategy();
+      //   return null;
+      // },
       builder: (context, state) {
         final docId = state.pathParameters['docId']!;
         return ChangeNotifierProvider(
           create: (_) => getIt<ListForGuestPageViewModel>(),
-          child: ListForGuestPage(docId: docId
-          ),
+          child: ListForGuestPage(docId: docId),
         );
       },
     ),

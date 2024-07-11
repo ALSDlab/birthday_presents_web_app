@@ -5,12 +5,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/core/result.dart';
+import '../../../domain/use_case/update_presents_list_use_case.dart';
 import '../../../utils/simple_logger.dart';
 import 'list_for_guest_page_state.dart';
 
 class ListForGuestPageViewModel extends ChangeNotifier {
   final GetPresentsListUseCase _getPresentsListUseCase;
   final PostPresentsListUseCase _postPresentsListUseCase;
+  final UpdatePresentsListUseCase _updatePresentsListUseCase;
 
   ListForGuestPageState _state = const ListForGuestPageState();
 
@@ -18,9 +20,11 @@ class ListForGuestPageViewModel extends ChangeNotifier {
 
   ListForGuestPageViewModel(
       {required GetPresentsListUseCase getPresentsListUseCase,
-      required PostPresentsListUseCase postPresentsListUseCase})
+      required PostPresentsListUseCase postPresentsListUseCase,
+      required UpdatePresentsListUseCase updatePresentsListUseCase})
       : _getPresentsListUseCase = getPresentsListUseCase,
-        _postPresentsListUseCase = postPresentsListUseCase {
+        _postPresentsListUseCase = postPresentsListUseCase,
+        _updatePresentsListUseCase = updatePresentsListUseCase{
     getBadgeCount();
   }
 
@@ -66,6 +70,7 @@ class ListForGuestPageViewModel extends ChangeNotifier {
     final result = await _getPresentsListUseCase.execute(docId);
     switch (result) {
       case Success<PresentsListModel>():
+        print(result.data);
         _state = state.copyWith(getName: result.data.name);
         _state = state.copyWith(getBirthYear: result.data.birthYear);
         _state = state.copyWith(linksList: result.data.links);
@@ -96,6 +101,46 @@ class ListForGuestPageViewModel extends ChangeNotifier {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+
+  void toggleSelection(int index, bool isSelected) {
+    final updatedLinksList = List<Map<String, dynamic>>.from(_state.linksList);
+    updatedLinksList[index]['isSelected'] = isSelected;
+    _state = _state.copyWith(linksList: updatedLinksList);
+    notifyListeners();
+  }
+
+  Future<void> postSelectionToFirebase(String listDocId, List<Map<String, dynamic>> updatedFactors, BuildContext context) async {
+    try {
+      // 모든 updatedFactor에 대해 _updatePresentsListUseCase.execute 실행
+      final results = await Future.wait(
+          updatedFactors.map((updatedFactor) => _updatePresentsListUseCase.execute(
+              myListDocId: listDocId, updatedFactor: updatedFactor
+          ))
+      );
+
+      // 모든 작업이 성공적으로 완료되면 Success 상태 처리
+      bool allSuccess = results.every((result) => result is Success<void>);
+
+      if (allSuccess) {
+        if (context.mounted) {
+          listAddSnackBar('The present selected', context);
+          _state = _state.copyWith(isCompleted: true);
+        }
+        notifyListeners();
+      } else {
+        // 하나라도 실패한 경우 Error 상태 처리
+        logger.info("One or more updates failed.");
+        notifyListeners();
+      }
+    } catch (e) {
+      // 예외 처리
+      logger.severe("An error occurred: $e");
+      notifyListeners();
+    }
+  }
+
+
+
 
   Future<void> postAndMakeListLink(
       String listDocId, PresentsListModel myList, BuildContext context) async {

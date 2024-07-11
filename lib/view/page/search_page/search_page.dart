@@ -292,6 +292,7 @@ class _SearchPageState extends State<SearchPage> {
                                                   .text.isEmpty
                                                   ? 'Erforderlich'
                                                   : null);
+                                              linkController.clear();
                                             });
                                             await viewModel
                                                 .addToPresentsList(widget.docId,

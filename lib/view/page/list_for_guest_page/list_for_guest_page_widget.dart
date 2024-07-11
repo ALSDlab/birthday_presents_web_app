@@ -8,10 +8,11 @@ import 'list_for_guest_page_view_model.dart';
 
 class ListForGuestPageWidget extends StatelessWidget {
   final Map<String, dynamic> presentsListItem;
+  final int index;
 
   ListForGuestPageWidget({
     super.key,
-    required this.presentsListItem,
+    required this.presentsListItem, required this.index,
   });
 
   @override
@@ -81,14 +82,15 @@ class ListForGuestPageWidget extends StatelessWidget {
                 ),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(right: 24.0),
-            //   child: Checkbox(
-            //       value:
-            //       onChanged: (value) {
-            //         viewModel.checkBox(value);
-            //       })
-            // )
+            //TODO: 체크박스 기능 구현
+            Padding(
+              padding: const EdgeInsets.only(right: 24.0),
+              child: Checkbox(
+                  value:presentsListItem['isSelected'],
+                  onChanged: (value) {
+                    viewModel.toggleSelection(index, value!);
+                  })
+            )
           ],
         ),
         const Divider(),

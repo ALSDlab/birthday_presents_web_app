@@ -7,6 +7,7 @@ import '../domain/use_case/get_presents_list_use_case.dart';
 import '../domain/use_case/load_presents_list_use_case.dart';
 import '../domain/use_case/post_presents_list_use_case.dart';
 import '../domain/use_case/save_presents_list_use_case.dart';
+import '../domain/use_case/update_presents_list_use_case.dart';
 import '../view/page/list_for_guest_page/list_for_guest_page_view_model.dart';
 import '../view/page/navigation_page/navigation_page_view_model.dart';
 import '../view/page/presents_list_page/presents_list_view_model.dart';
@@ -30,6 +31,9 @@ void diSetup() {
     ..registerSingleton<PostPresentsListUseCase>(PostPresentsListUseCase(
       presentsListRepository: getIt<PresentsListRepository>(),
     ))
+    ..registerSingleton<UpdatePresentsListUseCase>(UpdatePresentsListUseCase(
+      presentsListRepository: getIt<PresentsListRepository>(),
+    ))
     ..registerSingleton<LoadPresentsListUseCase>(LoadPresentsListUseCase())
     ..registerSingleton<SavePresentsListUseCase>(SavePresentsListUseCase())
     ..registerSingleton<DeletePresentsListUseCase>(DeletePresentsListUseCase());
@@ -47,5 +51,6 @@ void diSetup() {
     ..registerFactory<ListForGuestPageViewModel>(() =>
         ListForGuestPageViewModel(
             getPresentsListUseCase: getIt<GetPresentsListUseCase>(),
-            postPresentsListUseCase: getIt<PostPresentsListUseCase>()));
+            postPresentsListUseCase: getIt<PostPresentsListUseCase>(),
+            updatePresentsListUseCase: getIt<UpdatePresentsListUseCase>()));
 }

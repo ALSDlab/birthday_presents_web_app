@@ -47,12 +47,12 @@ class PresentListFirebase {
   }
 
   Future<Result<void>> updatePresentListData(
-      String myListDocId, String fieldName, dynamic editedValue) async {
+      String myListDocId, Map<String, dynamic> updatedFactor) async {
     try {
       await _firestore
           .collection('presentsList')
           .doc(myListDocId)
-          .update({fieldName: editedValue});
+          .update(updatedFactor);
 
       // 성공 시 Result.success(null) 반환
       return const Result.success(null);
