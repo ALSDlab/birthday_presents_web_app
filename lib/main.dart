@@ -18,6 +18,7 @@ Future<ByteData> fetchFont() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (identical(0, 0.0)) {// 웹 플랫폼인지 확인하는 간단한 방법
+    // configureUrlStrategy();
     usePathUrlStrategy();
     Globals.rootUrl = Uri.base.toString();
   }

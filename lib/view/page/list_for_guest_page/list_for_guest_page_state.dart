@@ -16,6 +16,7 @@ class ListForGuestPageState with _$ListForGuestPageState {
     @Default('') String getName,
     @Default(0) int getBirthYear,
     @Default([]) List<Map<String, dynamic>> linksList,
+    @Default([]) List<Map<String, dynamic>> updatedLinksList,
 
 
   }) = _ListForGuestPageState;

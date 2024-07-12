@@ -49,9 +49,9 @@ class PresentsListRepositoryImpl implements PresentsListRepository {
   }
 
   @override
-  Future<Result<void>> updateFirebaseList(String myListDocId, Map<String, dynamic> updatedFactor) async {
+  Future<Result<void>> updateFirebaseList(String myListDocId, List<Map<String, dynamic>> updatedFactors) async {
     final result =
-        await PresentListFirebase().updatePresentListData(myListDocId, updatedFactor);
+        await PresentListFirebase().updatePresentListData(myListDocId, updatedFactors);
 
     return result.when(
       success: (data) {

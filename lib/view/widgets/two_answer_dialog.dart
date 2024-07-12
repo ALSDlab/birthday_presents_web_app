@@ -70,10 +70,10 @@ class TwoAnswerDialog extends StatelessWidget {
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
-                          backgroundColor: const Color(0xFF2F362F)),
+                          backgroundColor: Colors.grey.shade200),
                       child: Text(firstButton,
                           style: const TextStyle(
-                              fontSize: 14, color: Colors.white))),
+                              fontSize: 14, color: Colors.black))),
                 ),
                 const SizedBox(width: 14),
                 SizedBox(
@@ -87,10 +87,10 @@ class TwoAnswerDialog extends StatelessWidget {
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
-                          backgroundColor: Colors.grey.shade200),
+                          backgroundColor: const Color(0xFF98FF98)),
                       child: Text(secondButton,
                           style: const TextStyle(
-                              fontSize: 14, color: Colors.black))),
+                              fontSize: 14, color: Color(0xFF3A405A)))),
                 ),
               ],
             ),

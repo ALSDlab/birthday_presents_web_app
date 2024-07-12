@@ -51,6 +51,5 @@ void diSetup() {
     ..registerFactory<ListForGuestPageViewModel>(() =>
         ListForGuestPageViewModel(
             getPresentsListUseCase: getIt<GetPresentsListUseCase>(),
-            postPresentsListUseCase: getIt<PostPresentsListUseCase>(),
             updatePresentsListUseCase: getIt<UpdatePresentsListUseCase>()));
 }

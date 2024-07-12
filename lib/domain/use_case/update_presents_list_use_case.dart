@@ -11,9 +11,9 @@ class UpdatePresentsListUseCase {
 
   Future<Result<void>> execute(
       {required String myListDocId,
-      required Map<String, dynamic> updatedFactor}) async {
+      required List<Map<String, dynamic>> updatedFactors}) async {
     final result = await _presentsListRepository.updateFirebaseList(
-        myListDocId, updatedFactor);
+        myListDocId, updatedFactors);
 
     return result.when(
       success: (data) => const Result.success(null),

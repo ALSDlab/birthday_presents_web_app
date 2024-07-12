@@ -8,6 +8,6 @@ abstract interface class PresentsListRepository {
 
   Future<Result<PresentsListModel>> getFirebasePresentsList(String docId);
 
-  Future<Result<void>> updateFirebaseList(String myListDocId, Map<String, dynamic> updatedFactor);
+  Future<Result<void>> updateFirebaseList(String myListDocId, List<Map<String, dynamic>> updatedFactors);
 
 }

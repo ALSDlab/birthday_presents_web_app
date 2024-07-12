@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/gif_progress_bar.dart';
+import '../../widgets/one_answer_dialog.dart';
 import '../../widgets/two_answer_dialog.dart';
 
 class ListForGuestPage extends StatefulWidget {
@@ -108,13 +109,21 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                           physics:
                                               const BouncingScrollPhysics(),
                                           itemBuilder: (context, index) {
-                                            return ListForGuestPageWidget(
-                                              presentsListItem:
-                                                  state.linksList[index],
-                                              index: index,
+                                            return Column(
+                                              children: [
+                                                ListForGuestPageWidget(
+                                                  presentsListItem:
+                                                      state.linksList[index],
+                                                  updateListItem: state
+                                                      .updatedLinksList[index],
+                                                  index: index,
+                                                ),
+                                                const Divider(),
+                                              ],
                                             );
                                           },
-                                          itemCount: state.linksList.length,
+                                          itemCount:
+                                              state.updatedLinksList.length,
                                         ),
                                       ),
                                       Padding(
@@ -125,37 +134,72 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                             Expanded(
                                               child: ElevatedButton(
                                                 onPressed: () async {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) =>
-                                                          TwoAnswerDialog(
-                                                            title:
-                                                                'Complete my list',
-                                                            subtitle:
-                                                                'Create the link for list',
-                                                            firstButton: 'NO',
-                                                            secondButton: 'YES',
-                                                            imagePath:
-                                                                'assets/gifs/two_answer_dialog.gif',
-                                                            onFirstTap: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            onSecondTap:
-                                                                () async {
-                                                              await viewModel
-                                                                  .postSelectionToFirebase(
-                                                                      state
-                                                                          .getDocId,
-                                                                      state
-                                                                          .linksList,
+                                                  if (state.linksList
+                                                          .where((element) =>
+                                                              element[
+                                                                  'isSelected'] ==
+                                                              true)
+                                                          .length ==
+                                                      state.updatedLinksList
+                                                          .where((element) =>
+                                                              element[
+                                                                  'isSelected'] ==
+                                                              true)
+                                                          .length) {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            OneAnswerDialog(
+                                                                onTap: () {
+                                                                  Navigator.pop(
                                                                       context);
-                                                            },
-                                                          ));
+                                                                },
+                                                                title:
+                                                                    'No selected present',
+                                                                // subtitle: '신호없음',
+                                                                firstButton:
+                                                                    'OK',
+                                                                imagePath:
+                                                                    'assets/gifs/alert.gif'));
+                                                  } else {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            TwoAnswerDialog(
+                                                              title:
+                                                                  'Did you select the present?',
+                                                              firstButton: 'NO',
+                                                              secondButton:
+                                                                  'YES',
+                                                              imagePath:
+                                                                  'assets/gifs/two_answer_dialog.gif',
+                                                              onFirstTap: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              onSecondTap:
+                                                                  () async {
+                                                                await viewModel
+                                                                    .postSelectionToFirebase(
+                                                                        state
+                                                                            .getDocId,
+                                                                        state
+                                                                            .updatedLinksList,
+                                                                        context);
+                                                                await viewModel
+                                                                    .getBadgeCount();
+                                                                if (context
+                                                                    .mounted) {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                }
+                                                              },
+                                                            ));
+                                                  }
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                     backgroundColor:
-                                                        const Color(0xFF2F362F),
+                                                        const Color(0xFF98FF98),
                                                     shape: const RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius.all(
@@ -164,7 +208,7 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                                 child: const Text(
                                                   'SELECT',
                                                   style: TextStyle(
-                                                      color: Colors.white),
+                                                      color: Color(0xFF3A405A)),
                                                 ),
                                                 // style: ButtonStyle(
                                                 //   backgroundColor: MaterialStateProperty.all(
