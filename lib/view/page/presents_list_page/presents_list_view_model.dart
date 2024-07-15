@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/core/result.dart';
+import '../../../domain/use_case/get_link_preview_use_case.dart';
 import '../../../domain/use_case/load_presents_list_use_case.dart';
 import '../../../utils/simple_logger.dart';
 
@@ -13,6 +14,7 @@ class PresentsListViewModel extends ChangeNotifier {
   final LoadPresentsListUseCase _loadPresentsListUseCase;
   final DeletePresentsListUseCase _deletePresentsListUseCase;
   final PostPresentsListUseCase _postPresentsListUseCase;
+  final GetLinkPreviewUseCase _getLinkPreviewUseCase;
 
   PresentsListState _state = const PresentsListState();
 
@@ -21,10 +23,12 @@ class PresentsListViewModel extends ChangeNotifier {
   PresentsListViewModel(
       {required LoadPresentsListUseCase loadPresentsListUseCase,
       required DeletePresentsListUseCase deletePresentsListUseCase,
-      required PostPresentsListUseCase postPresentsListUseCase})
+      required PostPresentsListUseCase postPresentsListUseCase,
+      required GetLinkPreviewUseCase getLinkPreviewUseCase})
       : _loadPresentsListUseCase = loadPresentsListUseCase,
         _deletePresentsListUseCase = deletePresentsListUseCase,
-        _postPresentsListUseCase = postPresentsListUseCase;
+        _postPresentsListUseCase = postPresentsListUseCase,
+        _getLinkPreviewUseCase = getLinkPreviewUseCase;
 
   bool _disposed = false;
 
@@ -46,7 +50,6 @@ class PresentsListViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       await getSavedPresentsList();
-      notifyListeners();
       return _state.linksList.length;
     } catch (error) {
       // 에러 처리
@@ -60,6 +63,9 @@ class PresentsListViewModel extends ChangeNotifier {
 
   // 선물리스트 서버에 존재여부 확인
   Future<bool> checkListExists(String docId) async {
+    if (docId.isEmpty) {
+      return false;
+    }
     DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
         .collection('presentsList')
         .doc(docId)
@@ -72,16 +78,40 @@ class PresentsListViewModel extends ChangeNotifier {
     final result = await _loadPresentsListUseCase.execute();
     switch (result) {
       case Success<Map<String, List<Map<String, dynamic>>>>():
-        _state = state.copyWith(loadedDocId: result.data.keys.first);
-        _state = state.copyWith(linksList: result.data.values.first);
+        String documentId = result.data.keys.first;
+        // if (documentId.isEmpty) {
+        //   logger.info('Error: Document ID is empty');
+        //   return;
+        // }
+
+        List<Future<Map<String, String>>> futures =
+            result.data.values.first.map((e) async {
+          return await linkPreviewData(e['mallLink']);
+        }).toList();
+        List<Map<String, String>> thumbnailList = await Future.wait(futures);
         _state = state.copyWith(
-            isCompleted: await checkListExists(result.data.keys.first));
+            loadedDocId: documentId,
+            linksList: result.data.values.first,
+            isCompleted: await checkListExists(documentId),
+            thumbnailList: thumbnailList);
+
         notifyListeners();
         break;
       case Error<Map<String, List<Map<String, dynamic>>>>():
         logger.info(result.message);
         notifyListeners();
         break;
+    }
+  }
+
+  // linkPreviewData 메서드 구현
+  Future<Map<String, String>> linkPreviewData(String url) async {
+    try {
+      final result = await _getLinkPreviewUseCase.execute(url);
+      return result;
+    } catch (error) {
+      // 에러 처리
+      return {'title': 'CANNOT LOAD IMAGE & TITLE', 'imageUrl': ''};
     }
   }
 
@@ -104,7 +134,7 @@ class PresentsListViewModel extends ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-// 리스트에서 제거하는 기능
+  // 리스트에서 제거하는 기능
   Future<void> removeFromPresentsList(
       Map<String, dynamic> item, BuildContext context) async {
     final result = await _deletePresentsListUseCase.execute(item);

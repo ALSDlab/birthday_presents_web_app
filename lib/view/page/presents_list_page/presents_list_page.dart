@@ -135,7 +135,8 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: Center(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         const Text('EMPTY LIST'),
                                         const SizedBox(
@@ -143,9 +144,12 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                         ),
                                         OutlinedButton(
                                           style: OutlinedButton.styleFrom(
-                                              shape: const RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10)))),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10)))),
                                           onPressed: () {
                                             GoRouter.of(context)
                                                 .go('/search_page', extra: {
@@ -176,13 +180,22 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                     children: [
                                       Expanded(
                                         child: ListView.builder(
-                                          physics: const BouncingScrollPhysics(),
+                                          physics:
+                                              const BouncingScrollPhysics(),
                                           itemBuilder: (context, index) {
-                                            return PresentListPageWidget(
-                                              presentsListItem:
-                                                  state.linksList[index],
-                                              resetNavigation:
-                                                  widget.resetNavigation,
+                                            return Column(
+                                              children: [
+                                                PresentListPageWidget(
+                                                  presentsListItem: state
+                                                      .linksList[index],
+                                                  resetNavigation: widget
+                                                      .resetNavigation,
+                                                  title: state.thumbnailList[index]['title'] ?? state
+                                                      .linksList[index]['mallLink'],
+                                                  imageUrl: state.thumbnailList[index]['imageUrl'] ?? '',
+                                                ),
+                                                const Divider(),
+                                              ],
                                             );
                                           },
                                           itemCount: state.linksList.length,
@@ -192,57 +205,57 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                         padding: const EdgeInsets.all(5.0),
                                         child: (state.isCompleted)
                                             ? Row(
-                                              children: [
-                                                Expanded(child: Container()),
-                                                SelectableText(
-                                                  Globals.rootUrl +
-                                                      ((state.loadedDocId ==
-                                                              '')
-                                                          ? widget.docId
-                                                          : state
-                                                              .loadedDocId),
-                                                  style: const TextStyle(
-                                                      fontSize: 20),
-                                                ),
-                                                const SizedBox(width: 30,),
-                                                ElevatedButton(
-                                                  onPressed: () async {
-                                                    await launchUrl(Uri
-                                                        .parse(Globals
-                                                                .rootUrl +
-                                                            ((state.loadedDocId ==
-                                                                    '')
-                                                                ? widget
-                                                                    .docId
-                                                                : state
-                                                                    .loadedDocId)));
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                      backgroundColor:
-                                                          const Color(
-                                                              0xFF98FF98),
-                                                      shape: const RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius
-                                                              .all(Radius
-                                                                  .circular(
-                                                                      10)))),
-                                                  child: const Text(
-                                                    'LINK',
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xFF3A405A)),
+                                                children: [
+                                                  Expanded(child: Container()),
+                                                  SelectableText(
+                                                    Globals.rootUrl +
+                                                        ((state.loadedDocId ==
+                                                                '')
+                                                            ? widget.docId
+                                                            : state
+                                                                .loadedDocId),
+                                                    style: const TextStyle(
+                                                        fontSize: 20),
                                                   ),
-                                                  // style: ButtonStyle(
-                                                  //   backgroundColor: MaterialStateProperty.all(
-                                                  //     const Color(0xFF2F362F),
-                                                  //   ),
-                                                  // ),
-                                                ),
-                                                //TODO: EDIT 버튼 만들기
+                                                  const SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () async {
+                                                      await launchUrl(Uri.parse(Globals
+                                                              .rootUrl +
+                                                          ((state.loadedDocId ==
+                                                                  '')
+                                                              ? widget.docId
+                                                              : state
+                                                                  .loadedDocId)));
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                        backgroundColor:
+                                                            const Color(
+                                                                0xFF98FF98),
+                                                        shape: const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        10)))),
+                                                    child: const Text(
+                                                      'LINK',
+                                                      style: TextStyle(
+                                                          color: Color(
+                                                              0xFF3A405A)),
+                                                    ),
+                                                    // style: ButtonStyle(
+                                                    //   backgroundColor: MaterialStateProperty.all(
+                                                    //     const Color(0xFF2F362F),
+                                                    //   ),
+                                                    // ),
+                                                  ),
+                                                  //TODO: EDIT 버튼 만들기
 
-                                                Expanded(child: Container()),
-                                              ],
-                                            )
+                                                  Expanded(child: Container()),
+                                                ],
+                                              )
                                             : Row(
                                                 children: [
                                                   Expanded(child: Container()),
@@ -263,7 +276,8 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                       'YES',
                                                                   imagePath:
                                                                       'assets/gifs/two_answer_dialog.gif',
-                                                                  onFirstTap: () {
+                                                                  onFirstTap:
+                                                                      () {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
@@ -279,9 +293,8 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                         birthYear:
                                                                             widget
                                                                                 .birthYear,
-                                                                        createdDate: DateFormat(
-                                                                                'yyyy.MM.dd_HH:mm:ss')
-                                                                            .format(DateTime
+                                                                        createdDate:
+                                                                            DateFormat('yyyy.MM.dd_HH:mm:ss').format(DateTime
                                                                                 .now()),
                                                                         links: state
                                                                             .linksList);
@@ -293,13 +306,9 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                           completedList,
                                                                           context);
                                                                       Clipboard.setData(ClipboardData(
-                                                                          text: Globals
-                                                                              .rootUrl +
-                                                                              ((state.loadedDocId == '')
-                                                                                  ? widget.docId
-                                                                                  : state.loadedDocId)));
+                                                                          text: Globals.rootUrl +
+                                                                              ((state.loadedDocId == '') ? widget.docId : state.loadedDocId)));
                                                                     }
-
                                                                   },
                                                                 ));
                                                       },
@@ -308,19 +317,22 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                               const Color(
                                                                   0xFF98FF98),
                                                           shape: const RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.all(
-                                                                      Radius.circular(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
                                                                           10)))),
                                                       child: (state.isPosting)
                                                           ? Center(
                                                               child:
-                                                                  GifProgressBar(radius: 15,),
+                                                                  GifProgressBar(
+                                                                radius: 15,
+                                                              ),
                                                             )
                                                           : const Text(
                                                               'COMPLETE',
                                                               style: TextStyle(
-                                                                  color: Color(0xFF3A405A)),
+                                                                  color: Color(
+                                                                      0xFF3A405A)),
                                                             ),
                                                       // style: ButtonStyle(
                                                       //   backgroundColor: MaterialStateProperty.all(

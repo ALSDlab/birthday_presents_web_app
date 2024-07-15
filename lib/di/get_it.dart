@@ -1,3 +1,4 @@
+import 'package:Birthday_Presents_List/domain/use_case/get_link_preview_use_case.dart';
 import 'package:get_it/get_it.dart';
 
 import '../data/repository/presents_list_repository_impl.dart';
@@ -36,7 +37,8 @@ void diSetup() {
     ))
     ..registerSingleton<LoadPresentsListUseCase>(LoadPresentsListUseCase())
     ..registerSingleton<SavePresentsListUseCase>(SavePresentsListUseCase())
-    ..registerSingleton<DeletePresentsListUseCase>(DeletePresentsListUseCase());
+    ..registerSingleton<DeletePresentsListUseCase>(DeletePresentsListUseCase())
+    ..registerSingleton<GetLinkPreviewUseCase>(GetLinkPreviewUseCase());
 
   // ViewModel
   getIt
@@ -44,12 +46,14 @@ void diSetup() {
     ..registerFactory<PresentsListViewModel>(() => PresentsListViewModel(
         loadPresentsListUseCase: getIt<LoadPresentsListUseCase>(),
         deletePresentsListUseCase: getIt<DeletePresentsListUseCase>(),
-        postPresentsListUseCase: getIt<PostPresentsListUseCase>()))
+        postPresentsListUseCase: getIt<PostPresentsListUseCase>(),
+        getLinkPreviewUseCase: getIt<GetLinkPreviewUseCase>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
         loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()))
     ..registerFactory<ListForGuestPageViewModel>(() =>
         ListForGuestPageViewModel(
             getPresentsListUseCase: getIt<GetPresentsListUseCase>(),
-            updatePresentsListUseCase: getIt<UpdatePresentsListUseCase>()));
+            updatePresentsListUseCase: getIt<UpdatePresentsListUseCase>(),
+            getLinkPreviewUseCase: getIt<GetLinkPreviewUseCase>()));
 }

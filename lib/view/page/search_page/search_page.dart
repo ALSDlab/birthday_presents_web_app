@@ -136,8 +136,8 @@ class _SearchPageState extends State<SearchPage> {
                       const Spacer(),
                       Center(
                         child: SizedBox(
-                          width: 130.w,
-                          height: 130.w,
+                          width: 200 + 50.w,
+                          height: 200 + 50.w,
                           child: GridView.count(
                               crossAxisCount: 2,
                               crossAxisSpacing: 16.0,
@@ -181,6 +181,7 @@ class _SearchPageState extends State<SearchPage> {
                                                   linkController,
                                                   decoration:
                                                   InputDecoration(
+                                                    hintStyle: const TextStyle(color: Colors.grey),
                                                     hintText:
                                                     'Fügen Sie den Link hier ein',
                                                     border:

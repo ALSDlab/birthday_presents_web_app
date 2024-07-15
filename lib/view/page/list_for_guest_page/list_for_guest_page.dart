@@ -112,11 +112,12 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                             return Column(
                                               children: [
                                                 ListForGuestPageWidget(
-                                                  presentsListItem:
-                                                      state.linksList[index],
-                                                  updateListItem: state
-                                                      .updatedLinksList[index],
+                                                  presentsListItem: state.linksList[index],
+                                                  updateListItem: state.updatedLinksList[index],
                                                   index: index,
+                                                  title: state.thumbnailList[index]['title'] ?? state
+                                                      .linksList[index]['mallLink'],
+                                                  imageUrl: state.thumbnailList[index]['imageUrl'] ?? '',
                                                 ),
                                                 const Divider(),
                                               ],

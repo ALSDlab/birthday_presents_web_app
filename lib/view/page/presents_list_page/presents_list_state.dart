@@ -14,6 +14,7 @@ class PresentsListState with _$PresentsListState {
     @Default(false) bool isCompleted,
     @Default('') String loadedDocId,
     @Default([]) List<Map<String, dynamic>> linksList,
+    @Default([]) List<Map<String, String>> thumbnailList,
 
   }) = _PresentsListState;
 

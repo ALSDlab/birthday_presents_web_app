@@ -3,19 +3,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../search_page/mall_link_list.dart';
 import 'list_for_guest_page_view_model.dart';
 
 class ListForGuestPageWidget extends StatelessWidget {
   final Map<String, dynamic> presentsListItem;
   final Map<String, dynamic> updateListItem;
   final int index;
+  final String title;
+  final String imageUrl;
 
   const ListForGuestPageWidget({
     super.key,
     required this.presentsListItem,
     required this.index,
     required this.updateListItem,
+    required this.title,
+    required this.imageUrl,
   });
 
   @override
@@ -32,15 +35,31 @@ class ListForGuestPageWidget extends StatelessWidget {
             child: ColorFiltered(
               colorFilter: presentsListItem['isSelected']
                   ? const ColorFilter.matrix(<double>[
-                0.2126, 0.7152, 0.0722, 0, 0,
-                0.2126, 0.7152, 0.0722, 0, 0,
-                0.2126, 0.7152, 0.0722, 0, 0,
-                0, 0, 0, 1, 0,
-              ])
+                      0.2126,
+                      0.7152,
+                      0.0722,
+                      0,
+                      0,
+                      0.2126,
+                      0.7152,
+                      0.0722,
+                      0,
+                      0,
+                      0.2126,
+                      0.7152,
+                      0.0722,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                    ])
                   : const ColorFilter.mode(
-                Colors.transparent,
-                BlendMode.multiply,
-              ),
+                      Colors.transparent,
+                      BlendMode.multiply,
+                    ),
               child: Row(
                 children: [
                   Padding(
@@ -48,17 +67,22 @@ class ListForGuestPageWidget extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        width: 50.w, // 너비 설정
-                        height: 50.w, // 높이 설정
+                        width: 100 + 10.w, // 너비 설정
+                        height: 100 + 10.w, // 높이 설정
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20.0),
-                          image: DecorationImage(
-                            image: AssetImage(
-                              'images/${urls.keys.firstWhere((key) => updateListItem['mallLink'].contains(urls[key]!.split('://')[1]), orElse: () => 'Not_found')}.png',
-                            ),
-                            fit: BoxFit.cover,
-                          ),
+                          image: (imageUrl != '')
+                              ? DecorationImage(
+                                  image: NetworkImage(imageUrl),
+                                  fit: BoxFit.cover,
+                                )
+                              : const DecorationImage(
+                                  image: AssetImage(
+                                    'images/Not_found.png',
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                     ),
@@ -67,18 +91,37 @@ class ListForGuestPageWidget extends StatelessWidget {
                     width: 20,
                   ),
                   Expanded(
-                    child: Text(
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      '${updateListItem['mallLink']}',
-                      style: const TextStyle(
-                          fontFamily: 'Jalnan',
-                          fontSize: 18,
-                          color: Color(0xFF3A405A)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          title,
+                          style: const TextStyle(
+                              fontFamily: 'Jalnan',
+                              fontSize: 20,
+                              color: Color(0xFF3A405A)),
+                        ),
+                        SizedBox(
+                          height: 10.w,
+                        ),
+                        Text(
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          '${updateListItem['mallLink']}',
+                          style: const TextStyle(
+                            fontFamily: 'KoPub',
+                            fontSize: 18,
+                            color: Color(0xFF3A405A),
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(
-                    width: 20,
+                    width: 16,
                   ),
                 ],
               ),
@@ -88,7 +131,7 @@ class ListForGuestPageWidget extends StatelessWidget {
         Visibility(
           visible: !presentsListItem['isSelected'],
           child: Padding(
-              padding: const EdgeInsets.only(right: 24.0),
+              padding: const EdgeInsets.only(right: 16.0),
               child: Transform.scale(
                 scale: 2,
                 child: Checkbox(

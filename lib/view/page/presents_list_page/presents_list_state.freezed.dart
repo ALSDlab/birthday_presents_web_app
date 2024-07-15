@@ -27,6 +27,8 @@ mixin _$PresentsListState {
   String get loadedDocId => throw _privateConstructorUsedError;
   List<Map<String, dynamic>> get linksList =>
       throw _privateConstructorUsedError;
+  List<Map<String, String>> get thumbnailList =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,7 +48,8 @@ abstract class $PresentsListStateCopyWith<$Res> {
       bool showSnackbarPadding,
       bool isCompleted,
       String loadedDocId,
-      List<Map<String, dynamic>> linksList});
+      List<Map<String, dynamic>> linksList,
+      List<Map<String, String>> thumbnailList});
 }
 
 /// @nodoc
@@ -68,6 +71,7 @@ class _$PresentsListStateCopyWithImpl<$Res, $Val extends PresentsListState>
     Object? isCompleted = null,
     Object? loadedDocId = null,
     Object? linksList = null,
+    Object? thumbnailList = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -94,6 +98,10 @@ class _$PresentsListStateCopyWithImpl<$Res, $Val extends PresentsListState>
           ? _value.linksList
           : linksList // ignore: cast_nullable_to_non_nullable
               as List<Map<String, dynamic>>,
+      thumbnailList: null == thumbnailList
+          ? _value.thumbnailList
+          : thumbnailList // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, String>>,
     ) as $Val);
   }
 }
@@ -112,7 +120,8 @@ abstract class _$$PresentsListStateImplCopyWith<$Res>
       bool showSnackbarPadding,
       bool isCompleted,
       String loadedDocId,
-      List<Map<String, dynamic>> linksList});
+      List<Map<String, dynamic>> linksList,
+      List<Map<String, String>> thumbnailList});
 }
 
 /// @nodoc
@@ -132,6 +141,7 @@ class __$$PresentsListStateImplCopyWithImpl<$Res>
     Object? isCompleted = null,
     Object? loadedDocId = null,
     Object? linksList = null,
+    Object? thumbnailList = null,
   }) {
     return _then(_$PresentsListStateImpl(
       isLoading: null == isLoading
@@ -158,6 +168,10 @@ class __$$PresentsListStateImplCopyWithImpl<$Res>
           ? _value._linksList
           : linksList // ignore: cast_nullable_to_non_nullable
               as List<Map<String, dynamic>>,
+      thumbnailList: null == thumbnailList
+          ? _value._thumbnailList
+          : thumbnailList // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, String>>,
     ));
   }
 }
@@ -173,8 +187,10 @@ class _$PresentsListStateImpl
       this.showSnackbarPadding = false,
       this.isCompleted = false,
       this.loadedDocId = '',
-      final List<Map<String, dynamic>> linksList = const []})
-      : _linksList = linksList;
+      final List<Map<String, dynamic>> linksList = const [],
+      final List<Map<String, String>> thumbnailList = const []})
+      : _linksList = linksList,
+        _thumbnailList = thumbnailList;
 
   factory _$PresentsListStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$PresentsListStateImplFromJson(json);
@@ -203,9 +219,18 @@ class _$PresentsListStateImpl
     return EqualUnmodifiableListView(_linksList);
   }
 
+  final List<Map<String, String>> _thumbnailList;
+  @override
+  @JsonKey()
+  List<Map<String, String>> get thumbnailList {
+    if (_thumbnailList is EqualUnmodifiableListView) return _thumbnailList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_thumbnailList);
+  }
+
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PresentsListState(isLoading: $isLoading, isPosting: $isPosting, showSnackbarPadding: $showSnackbarPadding, isCompleted: $isCompleted, loadedDocId: $loadedDocId, linksList: $linksList)';
+    return 'PresentsListState(isLoading: $isLoading, isPosting: $isPosting, showSnackbarPadding: $showSnackbarPadding, isCompleted: $isCompleted, loadedDocId: $loadedDocId, linksList: $linksList, thumbnailList: $thumbnailList)';
   }
 
   @override
@@ -218,7 +243,8 @@ class _$PresentsListStateImpl
       ..add(DiagnosticsProperty('showSnackbarPadding', showSnackbarPadding))
       ..add(DiagnosticsProperty('isCompleted', isCompleted))
       ..add(DiagnosticsProperty('loadedDocId', loadedDocId))
-      ..add(DiagnosticsProperty('linksList', linksList));
+      ..add(DiagnosticsProperty('linksList', linksList))
+      ..add(DiagnosticsProperty('thumbnailList', thumbnailList));
   }
 
   @override
@@ -237,7 +263,9 @@ class _$PresentsListStateImpl
             (identical(other.loadedDocId, loadedDocId) ||
                 other.loadedDocId == loadedDocId) &&
             const DeepCollectionEquality()
-                .equals(other._linksList, _linksList));
+                .equals(other._linksList, _linksList) &&
+            const DeepCollectionEquality()
+                .equals(other._thumbnailList, _thumbnailList));
   }
 
   @JsonKey(ignore: true)
@@ -249,7 +277,8 @@ class _$PresentsListStateImpl
       showSnackbarPadding,
       isCompleted,
       loadedDocId,
-      const DeepCollectionEquality().hash(_linksList));
+      const DeepCollectionEquality().hash(_linksList),
+      const DeepCollectionEquality().hash(_thumbnailList));
 
   @JsonKey(ignore: true)
   @override
@@ -273,7 +302,8 @@ abstract class _PresentsListState implements PresentsListState {
       final bool showSnackbarPadding,
       final bool isCompleted,
       final String loadedDocId,
-      final List<Map<String, dynamic>> linksList}) = _$PresentsListStateImpl;
+      final List<Map<String, dynamic>> linksList,
+      final List<Map<String, String>> thumbnailList}) = _$PresentsListStateImpl;
 
   factory _PresentsListState.fromJson(Map<String, dynamic> json) =
       _$PresentsListStateImpl.fromJson;
@@ -290,6 +320,8 @@ abstract class _PresentsListState implements PresentsListState {
   String get loadedDocId;
   @override
   List<Map<String, dynamic>> get linksList;
+  @override
+  List<Map<String, String>> get thumbnailList;
   @override
   @JsonKey(ignore: true)
   _$$PresentsListStateImplCopyWith<_$PresentsListStateImpl> get copyWith =>

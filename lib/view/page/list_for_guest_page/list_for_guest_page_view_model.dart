@@ -1,4 +1,5 @@
 import 'package:Birthday_Presents_List/domain/model/presents_list_model.dart';
+import 'package:Birthday_Presents_List/domain/use_case/get_link_preview_use_case.dart';
 import 'package:Birthday_Presents_List/domain/use_case/get_presents_list_use_case.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'list_for_guest_page_state.dart';
 class ListForGuestPageViewModel extends ChangeNotifier {
   final GetPresentsListUseCase _getPresentsListUseCase;
   final UpdatePresentsListUseCase _updatePresentsListUseCase;
+  final GetLinkPreviewUseCase _getLinkPreviewUseCase;
 
   ListForGuestPageState _state = const ListForGuestPageState();
 
@@ -18,9 +20,11 @@ class ListForGuestPageViewModel extends ChangeNotifier {
 
   ListForGuestPageViewModel(
       {required GetPresentsListUseCase getPresentsListUseCase,
-      required UpdatePresentsListUseCase updatePresentsListUseCase})
+      required UpdatePresentsListUseCase updatePresentsListUseCase,
+      required GetLinkPreviewUseCase getLinkPreviewUseCase})
       : _getPresentsListUseCase = getPresentsListUseCase,
-        _updatePresentsListUseCase = updatePresentsListUseCase {
+        _updatePresentsListUseCase = updatePresentsListUseCase,
+        _getLinkPreviewUseCase = getLinkPreviewUseCase {
     getBadgeCount();
   }
 
@@ -48,12 +52,10 @@ class ListForGuestPageViewModel extends ChangeNotifier {
     try {
       await getPresentsList(
           Uri.base.toString().substring(Uri.base.toString().length - 15));
-      notifyListeners();
       return _state.linksList.length;
     } catch (error) {
       // 에러 처리
       logger.info('Error get badge: $error');
-
       return 0;
     } finally {
       _state = state.copyWith(isLoading: false);
@@ -66,13 +68,19 @@ class ListForGuestPageViewModel extends ChangeNotifier {
     final result = await _getPresentsListUseCase.execute(docId);
     switch (result) {
       case Success<PresentsListModel>():
+        List<Future<Map<String, String>>> futures =
+            result.data.links.map((e) async {
+          return await linkPreviewData(e['mallLink']);
+        }).toList();
+        List<Map<String, String>> thumbnailList = await Future.wait(futures);
         _state = state.copyWith(
             getDocId: docId,
             getName: result.data.name,
             getBirthYear: result.data.birthYear,
             linksList: result.data.links,
             updatedLinksList:
-                List<Map<String, dynamic>>.from(result.data.links));
+                List<Map<String, dynamic>>.from(result.data.links),
+            thumbnailList: thumbnailList);
 
         notifyListeners();
         break;
@@ -83,23 +91,15 @@ class ListForGuestPageViewModel extends ChangeNotifier {
     }
   }
 
-  // 스낵바 구현 매서드
-  void listAddSnackBar(String comment, BuildContext context) {
-    _state = state.copyWith(showSnackbarPadding: true);
-    notifyListeners();
-
-    final snackBar = SnackBar(
-      content: Text(comment, style: const TextStyle(fontFamily: 'Jalnan')),
-      duration: const Duration(seconds: 2),
-      onVisible: () {
-        // snackbar가 사라질 때 패딩을 제거합니다.
-        Future.delayed(const Duration(milliseconds: 2200), () {
-          _state = state.copyWith(showSnackbarPadding: false);
-          notifyListeners();
-        });
-      },
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  // linkPreviewData 메서드 구현
+  Future<Map<String, String>> linkPreviewData(String url) async {
+    try {
+      final result = await _getLinkPreviewUseCase.execute(url);
+      return result;
+    } catch (error) {
+      // 에러 처리
+      return {'title': 'CANNOT LOAD IMAGE & TITLE', 'imageUrl': ''};
+    }
   }
 
   void toggleSelection(int index, bool isSelected) {
@@ -136,5 +136,24 @@ class ListForGuestPageViewModel extends ChangeNotifier {
       logger.severe("An error occurred: $e");
       notifyListeners();
     }
+  }
+
+  // 스낵바 구현 매서드
+  void listAddSnackBar(String comment, BuildContext context) {
+    _state = state.copyWith(showSnackbarPadding: true);
+    notifyListeners();
+
+    final snackBar = SnackBar(
+      content: Text(comment, style: const TextStyle(fontFamily: 'Jalnan')),
+      duration: const Duration(seconds: 2),
+      onVisible: () {
+        // snackbar가 사라질 때 패딩을 제거합니다.
+        Future.delayed(const Duration(milliseconds: 2200), () {
+          _state = state.copyWith(showSnackbarPadding: false);
+          notifyListeners();
+        });
+      },
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
