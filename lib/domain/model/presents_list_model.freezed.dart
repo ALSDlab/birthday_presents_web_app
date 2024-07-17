@@ -26,6 +26,8 @@ mixin _$PresentsListModel {
   int get birthYear => throw _privateConstructorUsedError;
   @JsonKey(name: 'createdDate')
   String get createdDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'completed')
+  bool get completed => throw _privateConstructorUsedError;
   @JsonKey(name: 'links')
   List<Map<String, dynamic>> get links => throw _privateConstructorUsedError;
 
@@ -45,6 +47,7 @@ abstract class $PresentsListModelCopyWith<$Res> {
       {@JsonKey(name: 'name') String name,
       @JsonKey(name: 'birthYear') int birthYear,
       @JsonKey(name: 'createdDate') String createdDate,
+      @JsonKey(name: 'completed') bool completed,
       @JsonKey(name: 'links') List<Map<String, dynamic>> links});
 }
 
@@ -64,6 +67,7 @@ class _$PresentsListModelCopyWithImpl<$Res, $Val extends PresentsListModel>
     Object? name = null,
     Object? birthYear = null,
     Object? createdDate = null,
+    Object? completed = null,
     Object? links = null,
   }) {
     return _then(_value.copyWith(
@@ -79,6 +83,10 @@ class _$PresentsListModelCopyWithImpl<$Res, $Val extends PresentsListModel>
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
               as String,
+      completed: null == completed
+          ? _value.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as bool,
       links: null == links
           ? _value.links
           : links // ignore: cast_nullable_to_non_nullable
@@ -99,6 +107,7 @@ abstract class _$$PresentsListModelImplCopyWith<$Res>
       {@JsonKey(name: 'name') String name,
       @JsonKey(name: 'birthYear') int birthYear,
       @JsonKey(name: 'createdDate') String createdDate,
+      @JsonKey(name: 'completed') bool completed,
       @JsonKey(name: 'links') List<Map<String, dynamic>> links});
 }
 
@@ -116,6 +125,7 @@ class __$$PresentsListModelImplCopyWithImpl<$Res>
     Object? name = null,
     Object? birthYear = null,
     Object? createdDate = null,
+    Object? completed = null,
     Object? links = null,
   }) {
     return _then(_$PresentsListModelImpl(
@@ -131,6 +141,10 @@ class __$$PresentsListModelImplCopyWithImpl<$Res>
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
               as String,
+      completed: null == completed
+          ? _value.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as bool,
       links: null == links
           ? _value._links
           : links // ignore: cast_nullable_to_non_nullable
@@ -146,6 +160,7 @@ class _$PresentsListModelImpl implements _PresentsListModel {
       {@JsonKey(name: 'name') required this.name,
       @JsonKey(name: 'birthYear') required this.birthYear,
       @JsonKey(name: 'createdDate') required this.createdDate,
+      @JsonKey(name: 'completed') required this.completed,
       @JsonKey(name: 'links') required final List<Map<String, dynamic>> links})
       : _links = links;
 
@@ -161,6 +176,9 @@ class _$PresentsListModelImpl implements _PresentsListModel {
   @override
   @JsonKey(name: 'createdDate')
   final String createdDate;
+  @override
+  @JsonKey(name: 'completed')
+  final bool completed;
   final List<Map<String, dynamic>> _links;
   @override
   @JsonKey(name: 'links')
@@ -172,7 +190,7 @@ class _$PresentsListModelImpl implements _PresentsListModel {
 
   @override
   String toString() {
-    return 'PresentsListModel(name: $name, birthYear: $birthYear, createdDate: $createdDate, links: $links)';
+    return 'PresentsListModel(name: $name, birthYear: $birthYear, createdDate: $createdDate, completed: $completed, links: $links)';
   }
 
   @override
@@ -185,13 +203,15 @@ class _$PresentsListModelImpl implements _PresentsListModel {
                 other.birthYear == birthYear) &&
             (identical(other.createdDate, createdDate) ||
                 other.createdDate == createdDate) &&
+            (identical(other.completed, completed) ||
+                other.completed == completed) &&
             const DeepCollectionEquality().equals(other._links, _links));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, name, birthYear, createdDate,
-      const DeepCollectionEquality().hash(_links));
+      completed, const DeepCollectionEquality().hash(_links));
 
   @JsonKey(ignore: true)
   @override
@@ -213,6 +233,7 @@ abstract class _PresentsListModel implements PresentsListModel {
           {@JsonKey(name: 'name') required final String name,
           @JsonKey(name: 'birthYear') required final int birthYear,
           @JsonKey(name: 'createdDate') required final String createdDate,
+          @JsonKey(name: 'completed') required final bool completed,
           @JsonKey(name: 'links')
           required final List<Map<String, dynamic>> links}) =
       _$PresentsListModelImpl;
@@ -229,6 +250,9 @@ abstract class _PresentsListModel implements PresentsListModel {
   @override
   @JsonKey(name: 'createdDate')
   String get createdDate;
+  @override
+  @JsonKey(name: 'completed')
+  bool get completed;
   @override
   @JsonKey(name: 'links')
   List<Map<String, dynamic>> get links;

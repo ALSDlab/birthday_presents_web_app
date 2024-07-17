@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../utils/image_load_widget.dart';
 import 'list_for_guest_page_view_model.dart';
 
 class ListForGuestPageWidget extends StatelessWidget {
@@ -64,27 +65,54 @@ class ListForGuestPageWidget extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        width: 100 + 10.w, // 너비 설정
-                        height: 100 + 10.w, // 높이 설정
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.0),
-                          image: (imageUrl != '')
-                              ? DecorationImage(
-                                  image: NetworkImage(imageUrl),
-                                  fit: BoxFit.cover,
-                                )
-                              : const DecorationImage(
+                    child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: (imageUrl != '')
+                              ? ImageLoadWidget(
+                                  imageUrl: imageUrl,
+                                  width: 100 + 10.w, // 너비 설정
+                                  height: 100 + 10.w,
+                                  fit: BoxFit.cover)
+                              : Container(
+                                  width: 100 + 10.w, // 너비 설정
+                                  height: 100 + 10.w, // 높이 설정
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    image: const DecorationImage(
+                                      image: AssetImage(
+                                        'images/Not_found.png',
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                        Visibility(
+                          visible: presentsListItem['isSelected'],
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                             width: 80 + 10.w, // 너비 설정
+                              height: 80 + 10.w, // 높이 설정
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0),
+                                borderRadius: BorderRadius.circular(20.0),
+                                image: const DecorationImage(
+                                  opacity: 0.5,
                                   image: AssetImage(
-                                    'images/Not_found.png',
+                                    'images/selected.png',
                                   ),
                                   fit: BoxFit.cover,
                                 ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   const SizedBox(

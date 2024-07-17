@@ -74,6 +74,8 @@ class _ImageLoadWidgetState extends State<ImageLoadWidget> {
             imageUrl: widget.imageUrl,
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
                 image: DecorationImage(
                   image: imageProvider,
                   fit: widget.fit,

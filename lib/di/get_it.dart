@@ -8,6 +8,7 @@ import '../domain/use_case/get_presents_list_use_case.dart';
 import '../domain/use_case/load_presents_list_use_case.dart';
 import '../domain/use_case/post_presents_list_use_case.dart';
 import '../domain/use_case/save_presents_list_use_case.dart';
+import '../domain/use_case/update_list_completed.dart';
 import '../domain/use_case/update_presents_list_use_case.dart';
 import '../view/page/list_for_guest_page/list_for_guest_page_view_model.dart';
 import '../view/page/navigation_page/navigation_page_view_model.dart';
@@ -38,7 +39,10 @@ void diSetup() {
     ..registerSingleton<LoadPresentsListUseCase>(LoadPresentsListUseCase())
     ..registerSingleton<SavePresentsListUseCase>(SavePresentsListUseCase())
     ..registerSingleton<DeletePresentsListUseCase>(DeletePresentsListUseCase())
-    ..registerSingleton<GetLinkPreviewUseCase>(GetLinkPreviewUseCase());
+    ..registerSingleton<GetLinkPreviewUseCase>(GetLinkPreviewUseCase())
+    ..registerSingleton<UpdateListCompletedUseCase>(UpdateListCompletedUseCase(
+      presentsListRepository: getIt<PresentsListRepository>(),
+    ));
 
   // ViewModel
   getIt
@@ -47,7 +51,8 @@ void diSetup() {
         loadPresentsListUseCase: getIt<LoadPresentsListUseCase>(),
         deletePresentsListUseCase: getIt<DeletePresentsListUseCase>(),
         postPresentsListUseCase: getIt<PostPresentsListUseCase>(),
-        getLinkPreviewUseCase: getIt<GetLinkPreviewUseCase>()))
+        getLinkPreviewUseCase: getIt<GetLinkPreviewUseCase>(),
+        updateListCompletedUseCase: getIt<UpdateListCompletedUseCase>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         savePresentsListUseCase: getIt<SavePresentsListUseCase>(),
         loadPresentsListUseCase: getIt<LoadPresentsListUseCase>()))

@@ -13,7 +13,6 @@ class SmythsLinkPreviewExtractor implements LinkPreviewExtractor {
     return smythsPreviewResult.when(success: (response) {
       try {
         var document = parser.parse(response.body);
-print(response.body);
         String? title;
         String? imageUrl;
         var elements = document.getElementsByTagName('meta');

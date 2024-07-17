@@ -1,6 +1,7 @@
 import 'package:Birthday_Presents_List/domain/model/presents_list_model.dart';
 import 'package:Birthday_Presents_List/domain/use_case/delete_presents_list_use_case.dart';
 import 'package:Birthday_Presents_List/domain/use_case/post_presents_list_use_case.dart';
+import 'package:Birthday_Presents_List/domain/use_case/update_list_completed.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class PresentsListViewModel extends ChangeNotifier {
   final DeletePresentsListUseCase _deletePresentsListUseCase;
   final PostPresentsListUseCase _postPresentsListUseCase;
   final GetLinkPreviewUseCase _getLinkPreviewUseCase;
+  final UpdateListCompletedUseCase _updateListCompletedUseCase;
 
   PresentsListState _state = const PresentsListState();
 
@@ -22,13 +24,15 @@ class PresentsListViewModel extends ChangeNotifier {
 
   PresentsListViewModel(
       {required LoadPresentsListUseCase loadPresentsListUseCase,
-      required DeletePresentsListUseCase deletePresentsListUseCase,
-      required PostPresentsListUseCase postPresentsListUseCase,
-      required GetLinkPreviewUseCase getLinkPreviewUseCase})
+        required DeletePresentsListUseCase deletePresentsListUseCase,
+        required PostPresentsListUseCase postPresentsListUseCase,
+        required GetLinkPreviewUseCase getLinkPreviewUseCase,
+        required UpdateListCompletedUseCase updateListCompletedUseCase})
       : _loadPresentsListUseCase = loadPresentsListUseCase,
         _deletePresentsListUseCase = deletePresentsListUseCase,
         _postPresentsListUseCase = postPresentsListUseCase,
-        _getLinkPreviewUseCase = getLinkPreviewUseCase;
+        _getLinkPreviewUseCase = getLinkPreviewUseCase,
+        _updateListCompletedUseCase = updateListCompletedUseCase;
 
   bool _disposed = false;
 
@@ -46,8 +50,6 @@ class PresentsListViewModel extends ChangeNotifier {
   }
 
   Future<int> getBadgeCount() async {
-    _state = state.copyWith(isLoading: true);
-    notifyListeners();
     try {
       await getSavedPresentsList();
       return _state.linksList.length;
@@ -55,9 +57,6 @@ class PresentsListViewModel extends ChangeNotifier {
       // 에러 처리
       logger.info('Error get badge: $error');
       return 0;
-    } finally {
-      _state = state.copyWith(isLoading: false);
-      notifyListeners();
     }
   }
 
@@ -70,37 +69,48 @@ class PresentsListViewModel extends ChangeNotifier {
         .collection('presentsList')
         .doc(docId)
         .get();
-    return docSnapshot.exists;
+    return docSnapshot.get('completed');
   }
 
   // 선물리스트 불러오는 기능
   Future<void> getSavedPresentsList() async {
-    final result = await _loadPresentsListUseCase.execute();
-    switch (result) {
-      case Success<Map<String, List<Map<String, dynamic>>>>():
-        String documentId = result.data.keys.first;
-        // if (documentId.isEmpty) {
-        //   logger.info('Error: Document ID is empty');
-        //   return;
-        // }
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+    try {
+      final result = await _loadPresentsListUseCase.execute();
+      switch (result) {
+        case Success<Map<String, List<Map<String, dynamic>>>>():
+          String documentId = result.data.keys.first;
+          // if (documentId.isEmpty) {
+          //   logger.info('Error: Document ID is empty');
+          //   return;
+          // }
 
-        List<Future<Map<String, String>>> futures =
-            result.data.values.first.map((e) async {
-          return await linkPreviewData(e['mallLink']);
-        }).toList();
-        List<Map<String, String>> thumbnailList = await Future.wait(futures);
-        _state = state.copyWith(
-            loadedDocId: documentId,
-            linksList: result.data.values.first,
-            isCompleted: await checkListExists(documentId),
-            thumbnailList: thumbnailList);
+          // 미리보기 데이터 로드
+          List<Future<Map<String, String>>> futures =
+          result.data.values.first.map((e) async {
+            return await linkPreviewData(e['mallLink']);
+          }).toList();
+          List<Map<String, String>> thumbnailList = await Future.wait(futures);
+          _state = state.copyWith(
+              loadedDocId: documentId,
+              linksList: result.data.values.first,
+              isCompleted: (await checkListExists(documentId)),
+              thumbnailList: thumbnailList);
 
-        notifyListeners();
-        break;
-      case Error<Map<String, List<Map<String, dynamic>>>>():
-        logger.info(result.message);
-        notifyListeners();
-        break;
+          notifyListeners();
+          break;
+        case Error<Map<String, List<Map<String, dynamic>>>>():
+          logger.info(result.message);
+          notifyListeners();
+          break;
+      }
+    } catch (error) {
+      // 에러 처리
+      logger.info('Error get SavedPresentsList: $error');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
     }
   }
 
@@ -135,12 +145,12 @@ class PresentsListViewModel extends ChangeNotifier {
   }
 
   // 리스트에서 제거하는 기능
-  Future<void> removeFromPresentsList(
-      Map<String, dynamic> item, BuildContext context) async {
+  Future<void> removeFromPresentsList(Map<String, dynamic> item,
+      BuildContext context) async {
     final result = await _deletePresentsListUseCase.execute(item);
     switch (result) {
       case Success<void>():
-        // 스낵바로 표시
+      // 스낵바로 표시
         if (context.mounted) {
           listAddSnackBar('Deleted the Link.', context);
         }
@@ -154,8 +164,15 @@ class PresentsListViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> postAndMakeListLink(
-      String listDocId, PresentsListModel myList, BuildContext context) async {
+  Future<void> editCompletedList(String listDocId, bool value) async {
+    await _updateListCompletedUseCase.execute(myListDocId: listDocId, value: value);
+    notifyListeners();
+  }
+
+  Future<void> postAndMakeListLink(String listDocId, PresentsListModel myList,
+      BuildContext context) async {
+    // print('DocId: $listDocId');
+    // print('myList: $myList');
     _state = state.copyWith(isPosting: true);
     notifyListeners();
     final result = await _postPresentsListUseCase.execute(

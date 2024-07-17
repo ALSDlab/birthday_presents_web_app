@@ -65,15 +65,15 @@ class TwoAnswerDialog extends StatelessWidget {
                   child: ElevatedButton(
                       onPressed: onFirstTap,
                       style: OutlinedButton.styleFrom(
-                          // shape: const RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.zero),
+                        // shape: const RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.zero),
                           shape: const RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          backgroundColor: Colors.grey.shade200),
+                              BorderRadius.all(Radius.circular(10))),
+                          backgroundColor: const Color(0xFF98FF98)),
                       child: Text(firstButton,
                           style: const TextStyle(
-                              fontSize: 14, color: Colors.black))),
+                              fontSize: 14, color: Color(0xFF3A405A)))),
                 ),
                 const SizedBox(width: 14),
                 SizedBox(
@@ -82,15 +82,15 @@ class TwoAnswerDialog extends StatelessWidget {
                   child: ElevatedButton(
                       onPressed: onSecondTap,
                       style: OutlinedButton.styleFrom(
-                          // shape: const RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.zero),
+                        // shape: const RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.zero),
                           shape: const RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          backgroundColor: const Color(0xFF98FF98)),
+                              BorderRadius.all(Radius.circular(10))),
+                          backgroundColor: Colors.grey.shade200),
                       child: Text(secondButton,
                           style: const TextStyle(
-                              fontSize: 14, color: Color(0xFF3A405A)))),
+                              fontSize: 14, color: Colors.black))),
                 ),
               ],
             ),

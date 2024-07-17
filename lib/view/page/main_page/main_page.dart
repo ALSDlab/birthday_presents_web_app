@@ -521,7 +521,7 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                   backgroundColor:
                                       const MaterialStatePropertyAll(
-                                    Colors.white,
+                                    Color(0xFF98FF98),
                                   ),
                                 ),
                                 onPressed: () async {
@@ -554,14 +554,11 @@ class _MainPageState extends State<MainPage> {
                                         builder: (context) => TwoAnswerDialog(
                                               title: 'Create New List?',
                                               subtitle: 'Deleted Saved Data',
-                                              firstButton: 'NO',
-                                              secondButton: 'YES',
+                                              firstButton: 'YES',
+                                              secondButton: 'NO',
                                               imagePath:
                                                   'assets/gifs/two_answer_dialog.gif',
-                                              onFirstTap: () {
-                                                Navigator.pop(context);
-                                              },
-                                              onSecondTap: () async {
+                                              onFirstTap: () async {
                                                 final prefs =
                                                     await SharedPreferences
                                                         .getInstance();
@@ -585,6 +582,9 @@ class _MainPageState extends State<MainPage> {
                                                                 .text)
                                                       });
                                                 }
+                                              },
+                                              onSecondTap: () {
+                                                Navigator.pop(context);
                                               },
                                             ));
                                   }
@@ -615,7 +615,7 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                   backgroundColor:
                                       const MaterialStatePropertyAll(
-                                    Color(0xFF98FF98),
+                                    Colors.white,
                                   ),
                                 ),
                                 onPressed: () async {
@@ -681,7 +681,7 @@ class _MainPageState extends State<MainPage> {
                                 child: const Text(
                                   'LOAD LIST',
                                   style: TextStyle(
-                                      color: Color(0xFF3A405A), fontSize: 16),
+                                      color: Colors.black, fontSize: 16),
                                 ),
                               ),
                             ),

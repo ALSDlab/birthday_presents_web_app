@@ -44,8 +44,6 @@ class ListForGuestPageViewModel extends ChangeNotifier {
   }
 
   Future<int> getBadgeCount() async {
-    _state = state.copyWith(isLoading: true);
-    notifyListeners();
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp();
     }
@@ -57,37 +55,44 @@ class ListForGuestPageViewModel extends ChangeNotifier {
       // 에러 처리
       logger.info('Error get badge: $error');
       return 0;
-    } finally {
-      _state = state.copyWith(isLoading: false);
-      notifyListeners();
     }
   }
 
   // 선물리스트 불러오는 기능
   Future<void> getPresentsList(String docId) async {
-    final result = await _getPresentsListUseCase.execute(docId);
-    switch (result) {
-      case Success<PresentsListModel>():
-        List<Future<Map<String, String>>> futures =
-            result.data.links.map((e) async {
-          return await linkPreviewData(e['mallLink']);
-        }).toList();
-        List<Map<String, String>> thumbnailList = await Future.wait(futures);
-        _state = state.copyWith(
-            getDocId: docId,
-            getName: result.data.name,
-            getBirthYear: result.data.birthYear,
-            linksList: result.data.links,
-            updatedLinksList:
-                List<Map<String, dynamic>>.from(result.data.links),
-            thumbnailList: thumbnailList);
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+    try {
+      final result = await _getPresentsListUseCase.execute(docId);
+      switch (result) {
+        case Success<PresentsListModel>():
+          List<Future<Map<String, String>>> futures =
+              result.data.links.map((e) async {
+            return await linkPreviewData(e['mallLink']);
+          }).toList();
+          List<Map<String, String>> thumbnailList = await Future.wait(futures);
+          _state = state.copyWith(
+              getDocId: docId,
+              getName: result.data.name,
+              getBirthYear: result.data.birthYear,
+              linksList: result.data.links,
+              updatedLinksList:
+                  List<Map<String, dynamic>>.from(result.data.links),
+              thumbnailList: thumbnailList);
 
-        notifyListeners();
-        break;
-      case Error():
-        logger.info(result.message);
-        notifyListeners();
-        break;
+          notifyListeners();
+          break;
+        case Error():
+          logger.info(result.message);
+          notifyListeners();
+          break;
+      }
+    } catch (error) {
+      // 에러 처리
+      logger.info('Error get PresentsList: $error');
+    } finally {
+      _state = state.copyWith(isLoading: false);
+      notifyListeners();
     }
   }
 

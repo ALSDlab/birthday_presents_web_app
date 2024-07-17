@@ -20,7 +20,7 @@ void main() async {
   if (identical(0, 0.0)) {// 웹 플랫폼인지 확인하는 간단한 방법
     // configureUrlStrategy();
     usePathUrlStrategy();
-    Globals.rootUrl = Uri.base.toString();
+     Globals.rootUrl = Uri.base.toString();
   }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -112,12 +112,20 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                             return Column(
                                               children: [
                                                 ListForGuestPageWidget(
-                                                  presentsListItem: state.linksList[index],
-                                                  updateListItem: state.updatedLinksList[index],
+                                                  presentsListItem:
+                                                      state.linksList[index],
+                                                  updateListItem: state
+                                                      .updatedLinksList[index],
                                                   index: index,
-                                                  title: state.thumbnailList[index]['title'] ?? state
-                                                      .linksList[index]['mallLink'],
-                                                  imageUrl: state.thumbnailList[index]['imageUrl'] ?? '',
+                                                  title:
+                                                      state.thumbnailList[index]
+                                                              ['title'] ??
+                                                          state.linksList[index]
+                                                              ['mallLink'],
+                                                  imageUrl:
+                                                      state.thumbnailList[index]
+                                                              ['imageUrl'] ??
+                                                          '',
                                                 ),
                                                 const Divider(),
                                               ],
@@ -127,6 +135,8 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                               state.updatedLinksList.length,
                                         ),
                                       ),
+
+                                      //TODO: 다른 링크 추가 기능 넣기(다음버전)
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Row(
@@ -169,16 +179,13 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                                             TwoAnswerDialog(
                                                               title:
                                                                   'Did you select the present?',
-                                                              firstButton: 'NO',
-                                                              secondButton:
+                                                              firstButton:
                                                                   'YES',
+                                                              secondButton:
+                                                                  'NO',
                                                               imagePath:
                                                                   'assets/gifs/two_answer_dialog.gif',
-                                                              onFirstTap: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              onSecondTap:
+                                                              onFirstTap:
                                                                   () async {
                                                                 await viewModel
                                                                     .postSelectionToFirebase(
@@ -194,6 +201,10 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                                                   Navigator.pop(
                                                                       context);
                                                                 }
+                                                              },
+                                                              onSecondTap: () {
+                                                                Navigator.pop(
+                                                                    context);
                                                               },
                                                             ));
                                                   }

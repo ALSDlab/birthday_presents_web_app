@@ -15,13 +15,14 @@ class PresentListFirebase {
         'birthYear': myList.birthYear,
         'createdDate': myList.createdDate,
         'links': myList.links,
+        'completed': myList.completed,
       });
 
       // 성공 시 Result.success(null) 반환
       return const Result.success(null);
     } catch (e) {
       // Firestore 예외 발생 시 오류 메시지 반환
-      logger.info('Firestore 통신 에러 => $e');
+      logger.info('Firestore 통신 post 에러 => $e');
       return Result.error(e.toString());
     }
   }
@@ -41,7 +42,7 @@ class PresentListFirebase {
       }
     } catch (e) {
       // Firestore 예외 발생 시 오류 메시지 반환
-      logger.info('Firestore 통신 에러 => $e');
+      logger.info('Firestore 통신 get 에러 => $e');
       return Result.error(e.toString());
     }
   }
@@ -58,7 +59,7 @@ class PresentListFirebase {
       return const Result.success(null);
     } catch (e) {
       // Firestore 예외 발생 시 오류 메시지 반환
-      logger.info('Firestore 통신 에러 => $e');
+      logger.info('Firestore 통신  update 에러 => $e');
       return Result.error(e.toString());
     }
   }
@@ -71,7 +72,23 @@ class PresentListFirebase {
       return const Result.success(null);
     } catch (e) {
       // Firestore 예외 발생 시 오류 메시지 반환
-      logger.info('Firestore 통신 에러 => $e');
+      logger.info('Firestore 통신 delete 에러 => $e');
+      return Result.error(e.toString());
+    }
+  }
+
+  Future<Result<void>> updateCompleted(String myListDocId, bool value) async {
+    try {
+      await _firestore
+          .collection('presentsList')
+          .doc(myListDocId)
+          .update({'completed': value});
+
+      // 성공 시 Result.success(null) 반환
+      return const Result.success(null);
+    } catch (e) {
+      // Firestore 예외 발생 시 오류 메시지 반환
+      logger.info('Firestore 통신  completed 에러 => $e');
       return Result.error(e.toString());
     }
   }

@@ -10,4 +10,5 @@ abstract interface class PresentsListRepository {
 
   Future<Result<void>> updateFirebaseList(String myListDocId, List<Map<String, dynamic>> updatedFactors);
 
+  Future<Result<void>> updateListCompleted(String myListDocId, bool value);
 }

@@ -186,13 +186,19 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                             return Column(
                                               children: [
                                                 PresentListPageWidget(
-                                                  presentsListItem: state
-                                                      .linksList[index],
-                                                  resetNavigation: widget
-                                                      .resetNavigation,
-                                                  title: state.thumbnailList[index]['title'] ?? state
-                                                      .linksList[index]['mallLink'],
-                                                  imageUrl: state.thumbnailList[index]['imageUrl'] ?? '',
+                                                  presentsListItem:
+                                                      state.linksList[index],
+                                                  resetNavigation:
+                                                      widget.resetNavigation,
+                                                  title:
+                                                      state.thumbnailList[index]
+                                                              ['title'] ??
+                                                          state.linksList[index]
+                                                              ['mallLink'],
+                                                  imageUrl:
+                                                      state.thumbnailList[index]
+                                                              ['imageUrl'] ??
+                                                          '',
                                                 ),
                                                 const Divider(),
                                               ],
@@ -251,8 +257,60 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                     //   ),
                                                     // ),
                                                   ),
-                                                  //TODO: EDIT 버튼 만들기
-
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              TwoAnswerDialog(
+                                                                title:
+                                                                'Edit your list',
+                                                                firstButton:
+                                                                'YES',
+                                                                secondButton:
+                                                                'NO',
+                                                                imagePath:
+                                                                'assets/gifs/two_answer_dialog.gif',
+                                                                onFirstTap:
+                                                                    () {
+                                                                  viewModel.editCompletedList((state.loadedDocId ==
+                                                                      '')
+                                                                      ? widget.docId
+                                                                      : state
+                                                                      .loadedDocId, true);
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  }
+                                                                },
+                                                                onSecondTap: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                              ));
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                        backgroundColor: Colors.white,
+                                                        shape: const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10)))),
+                                                    child: const Text(
+                                                      'EDIT',
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                    // style: ButtonStyle(
+                                                    //   backgroundColor: MaterialStateProperty.all(
+                                                    //     const Color(0xFF2F362F),
+                                                    //   ),
+                                                    // ),
+                                                  ),
                                                   Expanded(child: Container()),
                                                 ],
                                               )
@@ -271,22 +329,17 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                   subtitle:
                                                                       'Create the link for list',
                                                                   firstButton:
-                                                                      'NO',
-                                                                  secondButton:
                                                                       'YES',
+                                                                  secondButton:
+                                                                      'NO',
                                                                   imagePath:
                                                                       'assets/gifs/two_answer_dialog.gif',
                                                                   onFirstTap:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  onSecondTap:
                                                                       () async {
                                                                     Navigator.pop(
                                                                         context);
-                                                                    await viewModel
-                                                                        .getSavedPresentsList();
+                                                                    // await viewModel
+                                                                    //     .getSavedPresentsList();
                                                                     final PresentsListModel completedList = PresentsListModel(
                                                                         name: widget
                                                                             .name,
@@ -296,19 +349,29 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                         createdDate:
                                                                             DateFormat('yyyy.MM.dd_HH:mm:ss').format(DateTime
                                                                                 .now()),
+                                                                        completed: true,
                                                                         links: state
                                                                             .linksList);
                                                                     if (context
                                                                         .mounted) {
                                                                       await viewModel.postAndMakeListLink(
-                                                                          widget
-                                                                              .docId,
+                                                                          (widget
+                                                                              .docId != '') ?widget
+                                                                              .docId : state.loadedDocId,
                                                                           completedList,
                                                                           context);
                                                                       Clipboard.setData(ClipboardData(
                                                                           text: Globals.rootUrl +
                                                                               ((state.loadedDocId == '') ? widget.docId : state.loadedDocId)));
                                                                     }
+                                                                    // // Globals.docId 초기화
+                                                                    // Globals.docId =
+                                                                    //     '';
+                                                                  },
+                                                                  onSecondTap:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
                                                                   },
                                                                 ));
                                                       },
@@ -329,7 +392,7 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                               ),
                                                             )
                                                           : const Text(
-                                                              'COMPLETE',
+                                                              'SAVE',
                                                               style: TextStyle(
                                                                   color: Color(
                                                                       0xFF3A405A)),

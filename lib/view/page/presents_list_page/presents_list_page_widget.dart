@@ -1,3 +1,4 @@
+import 'package:Birthday_Presents_List/utils/image_load_widget.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_view_model.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
@@ -35,56 +36,87 @@ class PresentListPageWidget extends StatelessWidget {
             child: ColorFiltered(
               colorFilter: presentsListItem['isSelected']
                   ? const ColorFilter.matrix(<double>[
-                0.2126,
-                0.7152,
-                0.0722,
-                0,
-                0,
-                0.2126,
-                0.7152,
-                0.0722,
-                0,
-                0,
-                0.2126,
-                0.7152,
-                0.0722,
-                0,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0,
-              ])
+                      0.2126,
+                      0.7152,
+                      0.0722,
+                      0,
+                      0,
+                      0.2126,
+                      0.7152,
+                      0.0722,
+                      0,
+                      0,
+                      0.2126,
+                      0.7152,
+                      0.0722,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                    ])
                   : const ColorFilter.mode(
-                Colors.transparent,
-                BlendMode.multiply,
-              ),
+                      Colors.transparent,
+                      BlendMode.multiply,
+                    ),
               child: Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        width: 100 + 10.w, // 너비 설정
-                        height: 100 + 10.w, // 높이 설정
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.0),
-                          image: (imageUrl != '')
-                              ? DecorationImage(
-                                  image: NetworkImage(imageUrl),
-                                  fit: BoxFit.cover,
-                                )
-                              : const DecorationImage(
+                    child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: (imageUrl != '')
+                              ? ImageLoadWidget(
+                                  imageUrl: imageUrl,
+                                  width: 100 + 10.w, // 너비 설정
+                                  height: 100 + 10.w,
+                                  fit: BoxFit.cover)
+                              // DecorationImage(
+                              //   image: NetworkImage(imageUrl),
+                              //   fit: BoxFit.cover,
+                              // )
+                              : Container(
+                                  width: 100 + 10.w, // 너비 설정
+                                  height: 100 + 10.w, // 높이 설정
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    image: const DecorationImage(
+                                      image: AssetImage(
+                                        'images/Not_found.png',
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                        Visibility(
+                          visible: presentsListItem['isSelected'],
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              width: 80 + 10.w, // 너비 설정
+                              height: 80 + 10.w, // 높이 설정
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0),
+                                borderRadius: BorderRadius.circular(20.0),
+                                image: const DecorationImage(
+                                  opacity: 0.5,
                                   image: AssetImage(
-                                    'images/Not_found.png',
+                                    'images/selected.png',
                                   ),
                                   fit: BoxFit.cover,
                                 ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   const SizedBox(
@@ -138,13 +170,10 @@ class PresentListPageWidget extends StatelessWidget {
                       context: context,
                       builder: (context) => TwoAnswerDialog(
                             title: 'Delete the item?',
-                            firstButton: 'NO',
-                            secondButton: 'YES',
+                            firstButton: 'YES',
+                            secondButton: 'NO',
                             imagePath: 'assets/gifs/two_answer_dialog.gif',
-                            onFirstTap: () {
-                              Navigator.pop(context);
-                            },
-                            onSecondTap: () async {
+                            onFirstTap: () async {
                               await viewModel.removeFromPresentsList(
                                   presentsListItem, context);
                               final newBadgeCount =
@@ -153,6 +182,9 @@ class PresentListPageWidget extends StatelessWidget {
                               if (context.mounted) {
                                 Navigator.pop(context);
                               }
+                            },
+                            onSecondTap: () {
+                              Navigator.pop(context);
                             },
                           ));
                 },

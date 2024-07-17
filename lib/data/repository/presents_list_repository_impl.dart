@@ -5,7 +5,6 @@ import '../data_source/present_list_firebase.dart';
 import '../dto/presents_list_dto.dart';
 import '../mapper/presents_list_mapper.dart';
 
-
 class PresentsListRepositoryImpl implements PresentsListRepository {
   // 선정한 선물리스트 관련정보 저장하기(CREATE)
   @override
@@ -50,9 +49,30 @@ class PresentsListRepositoryImpl implements PresentsListRepository {
   }
 
   @override
-  Future<Result<void>> updateFirebaseList(String myListDocId, List<Map<String, dynamic>> updatedFactors) async {
+  Future<Result<void>> updateFirebaseList(
+      String myListDocId, List<Map<String, dynamic>> updatedFactors) async {
+    final result = await PresentListFirebase()
+        .updatePresentListData(myListDocId, updatedFactors);
+
+    return result.when(
+      success: (data) {
+        try {
+          return Result.success(data);
+        } catch (e) {
+          return Result.error('PresentListRepositoryImpl $e');
+        }
+      },
+      error: (message) {
+        return Result.error(message);
+      },
+    );
+  }
+
+  @override
+  Future<Result<void>> updateListCompleted(
+      String myListDocId, bool value) async {
     final result =
-        await PresentListFirebase().updatePresentListData(myListDocId, updatedFactors);
+        await PresentListFirebase().updateCompleted(myListDocId, value);
 
     return result.when(
       success: (data) {

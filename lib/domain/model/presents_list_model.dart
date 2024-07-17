@@ -9,6 +9,7 @@ class PresentsListModel with _$PresentsListModel {
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'birthYear') required int birthYear,
     @JsonKey(name: 'createdDate') required String createdDate,
+    @JsonKey(name: 'completed') required bool completed,
     @JsonKey(name: 'links') required List<Map<String, dynamic>> links,
   }) = _PresentsListModel;
 
