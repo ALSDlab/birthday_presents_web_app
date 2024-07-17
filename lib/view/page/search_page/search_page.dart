@@ -308,7 +308,7 @@ class _SearchPageState extends State<SearchPage> {
                                             child: (MediaQuery.of(context)
                                                 .size
                                                 .width >
-                                                900)
+                                                850)
                                                 ? const Text(
                                               'ADD LIST',
                                               style: TextStyle(
@@ -316,7 +316,7 @@ class _SearchPageState extends State<SearchPage> {
                                                 Color(0xFF3A405A),
                                               ),
                                             )
-                                                : const Icon(size: 18,
+                                                : const Icon(size: 20,
                                               BootstrapIcons.plus_lg,
                                               color: Color(0xFF3A405A),
                                             ),

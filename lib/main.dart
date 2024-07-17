@@ -17,10 +17,14 @@ Future<ByteData> fetchFont() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (identical(0, 0.0)) {// 웹 플랫폼인지 확인하는 간단한 방법
+  if (identical(0, 0.0)) {
+    // 웹 플랫폼인지 확인하는 간단한 방법
     // configureUrlStrategy();
     usePathUrlStrategy();
-     Globals.rootUrl = Uri.base.toString();
+    Globals.rootUrl = Uri.base
+        .toString()
+        .replaceAll('presents_list_page', '')
+        .replaceAll('search_page', '');
   }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -31,7 +35,6 @@ void main() async {
   await fontLoader.load();
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

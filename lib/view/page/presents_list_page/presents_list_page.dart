@@ -1,8 +1,10 @@
 import 'package:Birthday_Presents_List/domain/model/presents_list_model.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_page_widget.dart';
 import 'package:Birthday_Presents_List/view/page/presents_list_page/presents_list_view_model.dart';
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -208,9 +210,10 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding: const EdgeInsets.only(left: 3.0, top: 5.0, right: 3.0, bottom: 5.0),
                                         child: (state.isCompleted)
                                             ? Row(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                                 children: [
                                                   Expanded(child: Container()),
                                                   SelectableText(
@@ -220,11 +223,14 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                             ? widget.docId
                                                             : state
                                                                 .loadedDocId),
-                                                    style: const TextStyle(
-                                                        fontSize: 20),
+                                                    style: TextStyle(
+                                                        fontSize: (MediaQuery.of(context)
+                                                            .size
+                                                            .width >
+                                                            850) ? 20 : 16),
                                                   ),
                                                   const SizedBox(
-                                                    width: 30,
+                                                    width: 5,
                                                   ),
                                                   ElevatedButton(
                                                     onPressed: () async {
@@ -245,11 +251,17 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                 BorderRadius.all(
                                                                     Radius.circular(
                                                                         10)))),
-                                                    child: const Text(
+                                                    child: (MediaQuery.of(context)
+                                                        .size
+                                                        .width >
+                                                        850) ? const Text(
                                                       'LINK',
                                                       style: TextStyle(
                                                           color: Color(
                                                               0xFF3A405A)),
+                                                    ) : const Icon(size: 20,
+                                                      BootstrapIcons.link,
+                                                      color: Color(0xFF3A405A),
                                                     ),
                                                     // style: ButtonStyle(
                                                     //   backgroundColor: MaterialStateProperty.all(
@@ -258,7 +270,7 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                     // ),
                                                   ),
                                                   const SizedBox(
-                                                    width: 10,
+                                                    width: 5,
                                                   ),
                                                   ElevatedButton(
                                                     onPressed: () {
@@ -267,43 +279,53 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                           builder: (context) =>
                                                               TwoAnswerDialog(
                                                                 title:
-                                                                'Edit your list',
+                                                                    'Edit your list',
                                                                 firstButton:
-                                                                'YES',
+                                                                    'YES',
                                                                 secondButton:
-                                                                'NO',
+                                                                    'NO',
                                                                 imagePath:
-                                                                'assets/gifs/two_answer_dialog.gif',
-                                                                onFirstTap:
-                                                                    () {
-                                                                  viewModel.editCompletedList((state.loadedDocId ==
-                                                                      '')
-                                                                      ? widget.docId
-                                                                      : state
-                                                                      .loadedDocId, true);
+                                                                    'assets/gifs/two_answer_dialog.gif',
+                                                                onFirstTap: () {
+                                                                  viewModel.editCompletedList(
+                                                                      (state.loadedDocId ==
+                                                                              '')
+                                                                          ? widget
+                                                                              .docId
+                                                                          : state
+                                                                              .loadedDocId,
+                                                                      false);
                                                                   if (context
                                                                       .mounted) {
                                                                     Navigator.pop(
                                                                         context);
                                                                   }
                                                                 },
-                                                                onSecondTap: () {
+                                                                onSecondTap:
+                                                                    () {
                                                                   Navigator.pop(
                                                                       context);
                                                                 },
                                                               ));
                                                     },
                                                     style: ElevatedButton.styleFrom(
-                                                        backgroundColor: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.white,
                                                         shape: const RoundedRectangleBorder(
                                                             borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10)))),
-                                                    child: const Text(
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        10)))),
+                                                    child: (MediaQuery.of(context)
+                                                        .size
+                                                        .width >
+                                                        850) ? const Text(
                                                       'EDIT',
                                                       style: TextStyle(
                                                           color: Colors.black),
+                                                    ) : const Icon(size: 20,
+                                                      BootstrapIcons.eraser,
+                                                      color: Color(0xFF3A405A),
                                                     ),
                                                     // style: ButtonStyle(
                                                     //   backgroundColor: MaterialStateProperty.all(
@@ -349,15 +371,16 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                         createdDate:
                                                                             DateFormat('yyyy.MM.dd_HH:mm:ss').format(DateTime
                                                                                 .now()),
-                                                                        completed: true,
+                                                                        completed:
+                                                                            true,
                                                                         links: state
                                                                             .linksList);
                                                                     if (context
                                                                         .mounted) {
                                                                       await viewModel.postAndMakeListLink(
-                                                                          (widget
-                                                                              .docId != '') ?widget
-                                                                              .docId : state.loadedDocId,
+                                                                          (widget.docId != '')
+                                                                              ? widget.docId
+                                                                              : state.loadedDocId,
                                                                           completedList,
                                                                           context);
                                                                       Clipboard.setData(ClipboardData(
@@ -376,6 +399,7 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                 ));
                                                       },
                                                       style: ElevatedButton.styleFrom(
+                                                        minimumSize: Size(double.infinity, 60.h),
                                                           backgroundColor:
                                                               const Color(
                                                                   0xFF98FF98),

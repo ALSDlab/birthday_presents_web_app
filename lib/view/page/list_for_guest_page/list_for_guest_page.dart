@@ -1,6 +1,7 @@
 import 'package:Birthday_Presents_List/view/page/list_for_guest_page/list_for_guest_page_view_model.dart';
 import 'package:Birthday_Presents_List/view/page/list_for_guest_page/list_for_guest_page_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/gif_progress_bar.dart';
@@ -210,6 +211,8 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                                   }
                                                 },
                                                 style: ElevatedButton.styleFrom(
+                                                    minimumSize: Size(
+                                                        double.infinity, 60.h),
                                                     backgroundColor:
                                                         const Color(0xFF98FF98),
                                                     shape: const RoundedRectangleBorder(

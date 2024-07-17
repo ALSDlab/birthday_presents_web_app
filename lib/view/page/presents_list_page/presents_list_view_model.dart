@@ -62,14 +62,16 @@ class PresentsListViewModel extends ChangeNotifier {
 
   // 선물리스트 서버에 존재여부 확인
   Future<bool> checkListExists(String docId) async {
-    if (docId.isEmpty) {
-      return false;
-    }
+
     DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
         .collection('presentsList')
         .doc(docId)
         .get();
-    return docSnapshot.get('completed');
+    if (docSnapshot.exists) {
+      return docSnapshot.get('completed');
+    } else {
+      return false;
+    }
   }
 
   // 선물리스트 불러오는 기능
@@ -166,6 +168,7 @@ class PresentsListViewModel extends ChangeNotifier {
 
   Future<void> editCompletedList(String listDocId, bool value) async {
     await _updateListCompletedUseCase.execute(myListDocId: listDocId, value: value);
+    _state = state.copyWith(isCompleted: value);
     notifyListeners();
   }
 
