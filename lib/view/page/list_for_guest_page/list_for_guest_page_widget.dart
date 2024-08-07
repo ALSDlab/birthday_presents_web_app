@@ -4,22 +4,23 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/image_load_widget.dart';
+import '../search_page/mall_link_list.dart';
 import 'list_for_guest_page_view_model.dart';
 
 class ListForGuestPageWidget extends StatelessWidget {
   final Map<String, dynamic> presentsListItem;
   final Map<String, dynamic> updateListItem;
   final int index;
-  final String title;
-  final String imageUrl;
+  final String? title;
+  final String? imageUrl;
 
   const ListForGuestPageWidget({
     super.key,
     required this.presentsListItem,
     required this.index,
     required this.updateListItem,
-    required this.title,
-    required this.imageUrl,
+     this.title,
+     this.imageUrl,
   });
 
   @override
@@ -70,9 +71,9 @@ class ListForGuestPageWidget extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: (imageUrl != '')
+                          child: (imageUrl != null)
                               ? ImageLoadWidget(
-                                  imageUrl: imageUrl,
+                                  imageUrl: imageUrl!,
                                   width: 100 + 10.w, // 너비 설정
                                   height: 100 + 10.w,
                                   fit: BoxFit.cover)
@@ -82,34 +83,32 @@ class ListForGuestPageWidget extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20.0),
-                                    image: const DecorationImage(
+                                    image: DecorationImage(
                                       image: AssetImage(
-                                        'images/Not_found.png',
+                                        'images/${urls.keys.firstWhere((key) => presentsListItem['mallLink'].contains(urls[key]!.split('://')[1]), orElse: () => 'Not_found')}.png',
                                       ),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
                         ),
-                        Visibility(
-                          visible: presentsListItem['isSelected'],
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                             width: 80 + 10.w, // 너비 설정
-                              height: 80 + 10.w, // 높이 설정
-                              decoration: BoxDecoration(
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            width: 80 + 10.w, // 너비 설정
+                            height: 80 + 10.w, // 높이 설정
+                            decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0),
                                 borderRadius: BorderRadius.circular(20.0),
-                                image: const DecorationImage(
-                                  opacity: 0.5,
-                                  image: AssetImage(
-                                    'images/selected.png',
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
+                                image: (presentsListItem['isSelected'])
+                                    ? const DecorationImage(
+                                        opacity: 0.5,
+                                        image: AssetImage(
+                                          'images/selected.png',
+                                        ),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null),
                           ),
                         ),
                       ],
@@ -120,20 +119,20 @@ class ListForGuestPageWidget extends StatelessWidget {
                   ),
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          title,
-                          style: const TextStyle(
-                              fontFamily: 'Jalnan',
-                              fontSize: 20,
-                              color: Color(0xFF3A405A)),
-                        ),
-                        SizedBox(
-                          height: 10.w,
-                        ),
+                        // Text(
+                        //   maxLines: 2,
+                        //   overflow: TextOverflow.ellipsis,
+                        //   title,
+                        //   style: const TextStyle(
+                        //       fontFamily: 'Jalnan',
+                        //       fontSize: 20,
+                        //       color: Color(0xFF3A405A)),
+                        // ),
+                        // SizedBox(
+                        //   height: 10.w,
+                        // ),
                         Text(
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,

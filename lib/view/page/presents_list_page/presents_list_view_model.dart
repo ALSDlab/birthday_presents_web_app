@@ -24,10 +24,10 @@ class PresentsListViewModel extends ChangeNotifier {
 
   PresentsListViewModel(
       {required LoadPresentsListUseCase loadPresentsListUseCase,
-        required DeletePresentsListUseCase deletePresentsListUseCase,
-        required PostPresentsListUseCase postPresentsListUseCase,
-        required GetLinkPreviewUseCase getLinkPreviewUseCase,
-        required UpdateListCompletedUseCase updateListCompletedUseCase})
+      required DeletePresentsListUseCase deletePresentsListUseCase,
+      required PostPresentsListUseCase postPresentsListUseCase,
+      required GetLinkPreviewUseCase getLinkPreviewUseCase,
+      required UpdateListCompletedUseCase updateListCompletedUseCase})
       : _loadPresentsListUseCase = loadPresentsListUseCase,
         _deletePresentsListUseCase = deletePresentsListUseCase,
         _postPresentsListUseCase = postPresentsListUseCase,
@@ -62,7 +62,6 @@ class PresentsListViewModel extends ChangeNotifier {
 
   // 선물리스트 서버에 존재여부 확인
   Future<bool> checkListExists(String docId) async {
-
     DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
         .collection('presentsList')
         .doc(docId)
@@ -89,16 +88,17 @@ class PresentsListViewModel extends ChangeNotifier {
           // }
 
           // 미리보기 데이터 로드
-          List<Future<Map<String, String>>> futures =
-          result.data.values.first.map((e) async {
-            return await linkPreviewData(e['mallLink']);
-          }).toList();
-          List<Map<String, String>> thumbnailList = await Future.wait(futures);
+          // List<Future<Map<String, String>>> futures =
+          // result.data.values.first.map((e) async {
+          //   return await linkPreviewData(e['mallLink']);
+          // }).toList();
+          // List<Map<String, String>> thumbnailList = await Future.wait(futures);
           _state = state.copyWith(
-              loadedDocId: documentId,
-              linksList: result.data.values.first,
-              isCompleted: (await checkListExists(documentId)),
-              thumbnailList: thumbnailList);
+            loadedDocId: documentId,
+            linksList: result.data.values.first,
+            isCompleted: (await checkListExists(documentId)),
+            // thumbnailList: thumbnailList
+          );
 
           notifyListeners();
           break;
@@ -147,12 +147,12 @@ class PresentsListViewModel extends ChangeNotifier {
   }
 
   // 리스트에서 제거하는 기능
-  Future<void> removeFromPresentsList(Map<String, dynamic> item,
-      BuildContext context) async {
+  Future<void> removeFromPresentsList(
+      Map<String, dynamic> item, BuildContext context) async {
     final result = await _deletePresentsListUseCase.execute(item);
     switch (result) {
       case Success<void>():
-      // 스낵바로 표시
+        // 스낵바로 표시
         if (context.mounted) {
           listAddSnackBar('Deleted the Link.', context);
         }
@@ -167,13 +167,14 @@ class PresentsListViewModel extends ChangeNotifier {
   }
 
   Future<void> editCompletedList(String listDocId, bool value) async {
-    await _updateListCompletedUseCase.execute(myListDocId: listDocId, value: value);
+    await _updateListCompletedUseCase.execute(
+        myListDocId: listDocId, value: value);
     _state = state.copyWith(isCompleted: value);
     notifyListeners();
   }
 
-  Future<void> postAndMakeListLink(String listDocId, PresentsListModel myList,
-      BuildContext context) async {
+  Future<void> postAndMakeListLink(
+      String listDocId, PresentsListModel myList, BuildContext context) async {
     // print('DocId: $listDocId');
     // print('myList: $myList');
     _state = state.copyWith(isPosting: true);

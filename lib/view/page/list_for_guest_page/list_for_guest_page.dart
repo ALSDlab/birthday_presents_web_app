@@ -45,8 +45,10 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
         backgroundColor: const Color(0xFFAEC6CF),
         title: Text(
           "${state.getName}'s $yearCount$countEnding BIRTHDAY!!",
-          style: const TextStyle(
-              fontFamily: 'Jalnan', fontSize: 27, color: Color(0xFF3A405A)),
+          style: TextStyle(
+              fontFamily: 'Jalnan',
+              fontSize: 20 + 5.w,
+              color: const Color(0xFF3A405A)),
         ),
         centerTitle: true,
       ),
@@ -118,15 +120,15 @@ class _ListForGuestPageState extends State<ListForGuestPage> {
                                                   updateListItem: state
                                                       .updatedLinksList[index],
                                                   index: index,
-                                                  title:
-                                                      state.thumbnailList[index]
-                                                              ['title'] ??
-                                                          state.linksList[index]
-                                                              ['mallLink'],
-                                                  imageUrl:
-                                                      state.thumbnailList[index]
-                                                              ['imageUrl'] ??
-                                                          '',
+                                                  // title:
+                                                  //     state.thumbnailList[index]
+                                                  //             ['title'] ??
+                                                  //         state.linksList[index]
+                                                  //             ['mallLink'],
+                                                  // imageUrl:
+                                                  //     state.thumbnailList[index]
+                                                  //             ['imageUrl'] ??
+                                                  //         '',
                                                 ),
                                                 const Divider(),
                                               ],

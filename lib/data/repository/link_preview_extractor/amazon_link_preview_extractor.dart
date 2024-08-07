@@ -1,5 +1,6 @@
 import 'package:Birthday_Presents_List/data/data_source/get_meta_data.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:html/dom.dart' as dom;
 
 import '../../../domain/repository/link_preview_extractor.dart';
 import '../../core/result.dart';
@@ -11,7 +12,7 @@ class AmazonLinkPreviewExtractor implements LinkPreviewExtractor {
         await GetMetaData().fetchLinkPreview(url);
     return amazonPreviewResult.when(success: (response) {
       try {
-        var document = parser.parse(response.body);
+         dom.Document document = parser.parse(response.body);
         String? title = document.querySelector('#productTitle')?.text.trim();
         String? imageUrl =
             document.querySelector('#imgTagWrapperId img')?.attributes['src'];

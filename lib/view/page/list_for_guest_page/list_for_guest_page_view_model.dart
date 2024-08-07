@@ -66,19 +66,20 @@ class ListForGuestPageViewModel extends ChangeNotifier {
       final result = await _getPresentsListUseCase.execute(docId);
       switch (result) {
         case Success<PresentsListModel>():
-          List<Future<Map<String, String>>> futures =
-              result.data.links.map((e) async {
-            return await linkPreviewData(e['mallLink']);
-          }).toList();
-          List<Map<String, String>> thumbnailList = await Future.wait(futures);
+          // List<Future<Map<String, String>>> futures =
+          //     result.data.links.map((e) async {
+          //   return await linkPreviewData(e['mallLink']);
+          // }).toList();
+          // List<Map<String, String>> thumbnailList = await Future.wait(futures);
           _state = state.copyWith(
-              getDocId: docId,
-              getName: result.data.name,
-              getBirthYear: result.data.birthYear,
-              linksList: result.data.links,
-              updatedLinksList:
-                  List<Map<String, dynamic>>.from(result.data.links),
-              thumbnailList: thumbnailList);
+            getDocId: docId,
+            getName: result.data.name,
+            getBirthYear: result.data.birthYear,
+            linksList: result.data.links,
+            updatedLinksList:
+                List<Map<String, dynamic>>.from(result.data.links),
+            // thumbnailList: thumbnailList
+          );
 
           notifyListeners();
           break;

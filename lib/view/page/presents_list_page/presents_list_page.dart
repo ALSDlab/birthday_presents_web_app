@@ -85,8 +85,10 @@ class _PresentsListPageState extends State<PresentsListPage> {
         backgroundColor: const Color(0xFFAEC6CF),
         title: Text(
           "${widget.name}'s $yearCount$countEnding BIRTHDAY!!",
-          style: const TextStyle(
-              fontFamily: 'Jalnan', fontSize: 27, color: Color(0xFF3A405A)),
+          style: TextStyle(
+              fontFamily: 'Jalnan',
+              fontSize: 20 + 5.w,
+              color: const Color(0xFF3A405A)),
         ),
         centerTitle: true,
       ),
@@ -192,15 +194,15 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                       state.linksList[index],
                                                   resetNavigation:
                                                       widget.resetNavigation,
-                                                  title:
-                                                      state.thumbnailList[index]
-                                                              ['title'] ??
-                                                          state.linksList[index]
-                                                              ['mallLink'],
-                                                  imageUrl:
-                                                      state.thumbnailList[index]
-                                                              ['imageUrl'] ??
-                                                          '',
+                                                  // title:
+                                                  //     state.thumbnailList[index]
+                                                  //             ['title'] ??
+                                                  //         state.linksList[index]
+                                                  //             ['mallLink'],
+                                                  // imageUrl:
+                                                  //     state.thumbnailList[index]
+                                                  //             ['imageUrl'] ??
+                                                  //         '',
                                                 ),
                                                 const Divider(),
                                               ],
@@ -210,10 +212,15 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 3.0, top: 5.0, right: 3.0, bottom: 5.0),
+                                        padding: const EdgeInsets.only(
+                                            left: 3.0,
+                                            top: 5.0,
+                                            right: 3.0,
+                                            bottom: 5.0),
                                         child: (state.isCompleted)
                                             ? Row(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
                                                 children: [
                                                   Expanded(child: Container()),
                                                   SelectableText(
@@ -224,10 +231,13 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                             : state
                                                                 .loadedDocId),
                                                     style: TextStyle(
-                                                        fontSize: (MediaQuery.of(context)
-                                                            .size
-                                                            .width >
-                                                            850) ? 20 : 16),
+                                                        fontSize: (MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width >
+                                                                850)
+                                                            ? 20
+                                                            : 16),
                                                   ),
                                                   const SizedBox(
                                                     width: 5,
@@ -251,18 +261,24 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                 BorderRadius.all(
                                                                     Radius.circular(
                                                                         10)))),
-                                                    child: (MediaQuery.of(context)
-                                                        .size
-                                                        .width >
-                                                        850) ? const Text(
-                                                      'LINK',
-                                                      style: TextStyle(
-                                                          color: Color(
-                                                              0xFF3A405A)),
-                                                    ) : const Icon(size: 20,
-                                                      BootstrapIcons.link,
-                                                      color: Color(0xFF3A405A),
-                                                    ),
+                                                    child:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width >
+                                                                850)
+                                                            ? const Text(
+                                                                'LINK',
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xFF3A405A)),
+                                                              )
+                                                            : const Icon(
+                                                                size: 20,
+                                                                BootstrapIcons
+                                                                    .link,
+                                                                color: Color(
+                                                                    0xFF3A405A),
+                                                              ),
                                                     // style: ButtonStyle(
                                                     //   backgroundColor: MaterialStateProperty.all(
                                                     //     const Color(0xFF2F362F),
@@ -316,17 +332,24 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                 BorderRadius.all(
                                                                     Radius.circular(
                                                                         10)))),
-                                                    child: (MediaQuery.of(context)
-                                                        .size
-                                                        .width >
-                                                        850) ? const Text(
-                                                      'EDIT',
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                    ) : const Icon(size: 20,
-                                                      BootstrapIcons.eraser,
-                                                      color: Color(0xFF3A405A),
-                                                    ),
+                                                    child:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width >
+                                                                850)
+                                                            ? const Text(
+                                                                'EDIT',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black),
+                                                              )
+                                                            : const Icon(
+                                                                size: 20,
+                                                                BootstrapIcons
+                                                                    .eraser,
+                                                                color: Color(
+                                                                    0xFF3A405A),
+                                                              ),
                                                     // style: ButtonStyle(
                                                     //   backgroundColor: MaterialStateProperty.all(
                                                     //     const Color(0xFF2F362F),
@@ -399,7 +422,9 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                 ));
                                                       },
                                                       style: ElevatedButton.styleFrom(
-                                                        minimumSize: Size(double.infinity, 60.h),
+                                                          minimumSize: Size(
+                                                              double.infinity,
+                                                              60.h),
                                                           backgroundColor:
                                                               const Color(
                                                                   0xFF98FF98),
