@@ -87,7 +87,7 @@ class _PresentsListPageState extends State<PresentsListPage> {
           "${widget.name}'s $yearCount$countEnding BIRTHDAY!!",
           style: TextStyle(
               fontFamily: 'Jalnan',
-              fontSize: 20 + 5.w,
+              fontSize: 15 + 5.w,
               color: const Color(0xFF3A405A)),
         ),
         centerTitle: true,

@@ -83,7 +83,7 @@ class _SearchPageState extends State<SearchPage> {
           "${widget.name}'s $yearCount$countEnding BIRTHDAY!!",
           style: TextStyle(
               fontFamily: 'Jalnan',
-              fontSize: 20 + 5.w,
+              fontSize: 15 + 5.w,
               color: const Color(0xFF3A405A)),
         ),
         centerTitle: true,
@@ -182,10 +182,16 @@ class _SearchPageState extends State<SearchPage> {
                                                             linkController,
                                                         decoration:
                                                             InputDecoration(
-                                                          hintStyle:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .grey),
+                                                          hintStyle: TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                              fontSize: (MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width >
+                                                                      850)
+                                                                  ? 18
+                                                                  : 13),
                                                           hintText:
                                                               'Fügen Sie den Link hier ein',
                                                           border:
@@ -275,6 +281,7 @@ class _SearchPageState extends State<SearchPage> {
                                             flex: 2,
                                             child: OutlinedButton(
                                                 style: OutlinedButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
                                                   shadowColor: Colors.black,
                                                   elevation: 4,
                                                   minimumSize:
@@ -320,26 +327,23 @@ class _SearchPageState extends State<SearchPage> {
                                                   widget.resetNavigation(
                                                       newBadgeCount);
                                                 },
-                                                child: Center(
-                                                  child: (MediaQuery.of(context)
-                                                              .size
-                                                              .width >
-                                                          850)
-                                                      ? const Text(
-                                                          'ADD LIST',
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFF3A405A),
-                                                          ),
-                                                        )
-                                                      : const Icon(
-                                                          size: 20,
-                                                          BootstrapIcons
-                                                              .plus_lg,
+                                                child: (MediaQuery.of(context)
+                                                            .size
+                                                            .width >
+                                                        850)
+                                                    ? const Text(
+                                                        'ADD LIST',
+                                                        style: TextStyle(
                                                           color:
                                                               Color(0xFF3A405A),
                                                         ),
-                                                )),
+                                                      )
+                                                    : const Icon(
+                                                        size: 20,
+                                                        BootstrapIcons.plus_lg,
+                                                        color:
+                                                            Color(0xFF3A405A),
+                                                      )),
                                           ),
                                         ],
                                       ),

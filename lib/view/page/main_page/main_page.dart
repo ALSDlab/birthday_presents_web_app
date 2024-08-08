@@ -589,9 +589,11 @@ class _MainPageState extends State<MainPage> {
                                             ));
                                   }
                                 },
-                                child: const Text(
-                                  'NEW LIST',
-                                  style: TextStyle(
+                                child: Text(
+                                  (MediaQuery.of(context).size.width > 850)
+                                      ? 'NEW LIST'
+                                      : 'NEW',
+                                  style: const TextStyle(
                                       color: Color(0xFF3A405A), fontSize: 16),
                                 ),
                               ),
@@ -678,9 +680,11 @@ class _MainPageState extends State<MainPage> {
                                     }
                                   }
                                 },
-                                child: const Text(
-                                  'LOAD LIST',
-                                  style: TextStyle(
+                                child: Text(
+                                  (MediaQuery.of(context).size.width > 850)
+                                      ? 'LOAD LIST'
+                                      : 'LOAD',
+                                  style: const TextStyle(
                                       color: Colors.black, fontSize: 16),
                                 ),
                               ),
