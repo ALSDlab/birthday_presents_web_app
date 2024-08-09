@@ -219,53 +219,50 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                             bottom: 5.0),
                                         child: (state.isCompleted)
                                             ? Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Expanded(child: Container()),
-                                                  SelectableText(
-                                                    Globals.rootUrl +
-                                                        ((state.loadedDocId ==
-                                                                '')
-                                                            ? widget.docId
-                                                            : state
-                                                                .loadedDocId),
-                                                    style: TextStyle(
-                                                        fontSize: (MediaQuery.of(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Expanded(
+                                                          child: Container()),
+                                                      SelectableText(
+                                                        Globals.rootUrl +
+                                                            ((state.loadedDocId ==
+                                                                    '')
+                                                                ? widget.docId
+                                                                : state
+                                                                    .loadedDocId),
+                                                        style: TextStyle(
+                                                            fontSize: 10 + 4.w),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5.w,
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () async {
+                                                          await launchUrl(
+                                                              Uri.parse(Globals
+                                                                      .rootUrl +
+                                                                  ((state.loadedDocId ==
+                                                                          '')
+                                                                      ? widget
+                                                                          .docId
+                                                                      : state
+                                                                          .loadedDocId)));
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                const Color(
+                                                                    0xFF98FF98),
+                                                            shape: const RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10)))),
+                                                        child: (MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width >
-                                                                850)
-                                                            ? 20
-                                                            : 16),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () async {
-                                                      await launchUrl(Uri.parse(Globals
-                                                              .rootUrl +
-                                                          ((state.loadedDocId ==
-                                                                  '')
-                                                              ? widget.docId
-                                                              : state
-                                                                  .loadedDocId)));
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFF98FF98),
-                                                        shape: const RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        10)))),
-                                                    child:
-                                                        (MediaQuery.of(context)
-                                                                    .size
-                                                                    .width >
-                                                                850)
+                                                                800)
                                                             ? const Text(
                                                                 'LINK',
                                                                 style: TextStyle(
@@ -279,64 +276,62 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                 color: Color(
                                                                     0xFF3A405A),
                                                               ),
-                                                    // style: ButtonStyle(
-                                                    //   backgroundColor: MaterialStateProperty.all(
-                                                    //     const Color(0xFF2F362F),
-                                                    //   ),
-                                                    // ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) =>
-                                                              TwoAnswerDialog(
-                                                                title:
-                                                                    'Edit your list',
-                                                                firstButton:
-                                                                    'YES',
-                                                                secondButton:
-                                                                    'NO',
-                                                                imagePath:
-                                                                    'assets/gifs/two_answer_dialog.gif',
-                                                                onFirstTap: () {
-                                                                  viewModel.editCompletedList(
-                                                                      (state.loadedDocId ==
-                                                                              '')
-                                                                          ? widget
-                                                                              .docId
-                                                                          : state
-                                                                              .loadedDocId,
-                                                                      false);
-                                                                  if (context
-                                                                      .mounted) {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  }
-                                                                },
-                                                                onSecondTap:
-                                                                    () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                              ));
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        shape: const RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        10)))),
-                                                    child:
-                                                        (MediaQuery.of(context)
+                                                        // style: ButtonStyle(
+                                                        //   backgroundColor: MaterialStateProperty.all(
+                                                        //     const Color(0xFF2F362F),
+                                                        //   ),
+                                                        // ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (context) =>
+                                                                  TwoAnswerDialog(
+                                                                    title:
+                                                                        'Edit your list',
+                                                                    firstButton:
+                                                                        'YES',
+                                                                    secondButton:
+                                                                        'NO',
+                                                                    imagePath:
+                                                                        'assets/gifs/two_answer_dialog.gif',
+                                                                    onFirstTap:
+                                                                        () {
+                                                                      viewModel.editCompletedList(
+                                                                          (state.loadedDocId == '')
+                                                                              ? widget.docId
+                                                                              : state.loadedDocId,
+                                                                          false);
+                                                                      if (context
+                                                                          .mounted) {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      }
+                                                                    },
+                                                                    onSecondTap:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                  ));
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            shape: const RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10)))),
+                                                        child: (MediaQuery.of(
+                                                                        context)
                                                                     .size
                                                                     .width >
-                                                                850)
+                                                                800)
                                                             ? const Text(
                                                                 'EDIT',
                                                                 style: TextStyle(
@@ -350,15 +345,17 @@ class _PresentsListPageState extends State<PresentsListPage> {
                                                                 color: Color(
                                                                     0xFF3A405A),
                                                               ),
-                                                    // style: ButtonStyle(
-                                                    //   backgroundColor: MaterialStateProperty.all(
-                                                    //     const Color(0xFF2F362F),
-                                                    //   ),
-                                                    // ),
-                                                  ),
-                                                  Expanded(child: Container()),
-                                                ],
-                                              )
+                                                        // style: ButtonStyle(
+                                                        //   backgroundColor: MaterialStateProperty.all(
+                                                        //     const Color(0xFF2F362F),
+                                                        //   ),
+                                                        // ),
+                                                      ),
+                                                      Expanded(
+                                                          child: Container()),
+                                                    ],
+                                                  )
+
                                             : Row(
                                                 children: [
                                                   Expanded(child: Container()),

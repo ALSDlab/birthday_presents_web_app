@@ -74,21 +74,21 @@ class _MainPageState extends State<MainPage> {
               child: Row(
                 children: [
                   Expanded(
-                      flex: (MediaQuery.of(context).size.width > 900)
+                      flex: (MediaQuery.of(context).size.width > 800)
                           ? 2
-                          : (2450 -
+                          : (1450 -
                               (MediaQuery.of(context).size.width / 2).round()),
                       child: Container()),
                   Expanded(
-                    flex: (MediaQuery.of(context).size.width > 900)
+                    flex: (MediaQuery.of(context).size.width > 800)
                         ? 4
-                        : (3100 + MediaQuery.of(context).size.width.round()),
+                        : (4100 + MediaQuery.of(context).size.width.round()),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Expanded(
-                          child: (MediaQuery.of(context).size.width > 900)
+                          child: (MediaQuery.of(context).size.width > 800)
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -590,7 +590,7 @@ class _MainPageState extends State<MainPage> {
                                   }
                                 },
                                 child: Text(
-                                  (MediaQuery.of(context).size.width > 850)
+                                  (MediaQuery.of(context).size.width > 800)
                                       ? 'NEW LIST'
                                       : 'NEW',
                                   style: const TextStyle(
@@ -681,7 +681,7 @@ class _MainPageState extends State<MainPage> {
                                   }
                                 },
                                 child: Text(
-                                  (MediaQuery.of(context).size.width > 850)
+                                  (MediaQuery.of(context).size.width > 800)
                                       ? 'LOAD LIST'
                                       : 'LOAD',
                                   style: const TextStyle(
@@ -696,9 +696,9 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Expanded(
-                      flex: (MediaQuery.of(context).size.width > 900)
+                      flex: (MediaQuery.of(context).size.width > 800)
                           ? 2
-                          : (2450 -
+                          : (1450 -
                               (MediaQuery.of(context).size.width / 2).round()),
                       child: Container()),
                 ],
@@ -719,7 +719,7 @@ class _MainPageState extends State<MainPage> {
                     "Ver.| 0.0.1\nDeveloper| ALSDlab(RAON's dad)\nLocation| Kronberg",
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 12,
                   ),
                   Text(
                       softWrap: true, //긴 텍스트 줄 바꿈

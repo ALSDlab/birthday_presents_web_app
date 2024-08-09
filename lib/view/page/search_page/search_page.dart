@@ -147,10 +147,10 @@ class _SearchPageState extends State<SearchPage> {
                                         width: 100,
                                         height: 100,
                                         imagePath:
-                                            'assets/images/${urls.keys.toList()[index]}.png',
+                                            'assets/images/${urls.keys.toList()[index+1]}.png',
                                         onTap: () async {
                                           await launchUrl(Uri.parse(
-                                              urls.values.toList()[index]));
+                                              urls.values.toList()[index+1]));
                                         },
                                       );
                                     })),
@@ -161,9 +161,9 @@ class _SearchPageState extends State<SearchPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Expanded(flex: 1, child: Container()),
+                                  Expanded(flex: (MediaQuery.of(context).size.width > 800) ? 2 : 1, child: Container()),
                                   Expanded(
-                                    flex: 5,
+                                    flex: 10,
                                     child: Padding(
                                       padding: const EdgeInsets.all(4.0),
                                       child: Row(
@@ -189,7 +189,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                               context)
                                                                           .size
                                                                           .width >
-                                                                      850)
+                                                                      800)
                                                                   ? 18
                                                                   : 13),
                                                           hintText:
@@ -330,7 +330,7 @@ class _SearchPageState extends State<SearchPage> {
                                                 child: (MediaQuery.of(context)
                                                             .size
                                                             .width >
-                                                        850)
+                                                        800)
                                                     ? const Text(
                                                         'ADD LIST',
                                                         style: TextStyle(
@@ -349,7 +349,7 @@ class _SearchPageState extends State<SearchPage> {
                                       ),
                                     ),
                                   ),
-                                  Expanded(flex: 1, child: Container()),
+                                  Expanded(flex: (MediaQuery.of(context).size.width > 800) ? 2 : 1, child: Container()),
                                 ],
                               ),
                             ),
